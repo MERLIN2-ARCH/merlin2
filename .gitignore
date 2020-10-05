@@ -1,0 +1,5 @@
+.pytest_cache
+assets
+.coverage
+report.html
+__pycache__
