@@ -12,9 +12,9 @@ class Test_Mongoengine_PDDL_DAO_Object(Test_PDDL_DAO_Object):
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
         self.pddl_dao_object = pddl_dao_factory.create_dao_pddl_object(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
         self.pddl_dao_type = pddl_dao_factory.create_dao_pddl_type(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
 
 
 del(Test_PDDL_DAO_Object)

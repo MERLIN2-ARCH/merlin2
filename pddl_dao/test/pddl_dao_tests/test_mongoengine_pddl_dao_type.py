@@ -12,7 +12,7 @@ class Test_Mongoengine_PDDL_DAO_Type(Test_PDDL_DAO_Type):
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
         self.pddl_dao_type = pddl_dao_factory.create_dao_pddl_type(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
 
     def tearDown(self):
         self.pddl_dao_type.delete_all()
