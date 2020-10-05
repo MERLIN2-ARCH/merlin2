@@ -15,6 +15,9 @@ sudo apt-get install -y mongodb-org
 sudo systemctl start mongod
 ```
 
+## Mongo Compass (Optional)
+https://docs.mongodb.com/compass/master/install/
+
 ## Running Tests
 ```
 cd ~/ros2_foxy/src/merlin2/pddl_dao/
