@@ -12,11 +12,11 @@ class Test_Mongoengine_PDDL_DAO_Object(Test_PDDL_DAO_Action):
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
         self.pddl_dao_type = pddl_dao_factory.create_dao_pddl_type(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
         self.pdd_dao_predicate = pddl_dao_factory.create_dao_pddl_predicate(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
         self.pddl_dao_action = pddl_dao_factory.create_dao_pddl_action(
-            "mongodb://localhost:27017/merlin2")
+            "mongodb://localhost:27017/merlin2_tests")
 
 
 del(Test_PDDL_DAO_Action)
