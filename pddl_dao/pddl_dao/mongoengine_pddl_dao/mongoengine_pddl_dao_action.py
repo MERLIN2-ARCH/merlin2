@@ -14,6 +14,8 @@ from pddl_dao.pddl_dto.pddl_dto_condition_efect import PDDL_DTO_ConditionEffect
 from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_predicate import Mongoengine_PDDL_DAO_Predicate
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_PDDL_DAO_Type
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_proposition import Mongoengine_PDDL_DAO_Proposition
 
 
 class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
@@ -22,6 +24,12 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
 
         PDDL_DAO_Action.__init__(self)
         Mongoengine_PDDL_DAO.__init__(self, uri)
+
+        self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
+        self._mongoengine_pddl_dao_proposition = Mongoengine_PDDL_DAO_Proposition(
+            uri)
+        self._mongoengine_pddl_dao_predicate = Mongoengine_PDDL_DAO_Predicate(
+            uri)
 
     def __condition_effect_mongoengine_to_dto(self, pddl_condition_effect_mongoengine, parameter_dict):
 
@@ -85,30 +93,19 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
 
     def __condition_effect_dto_to_mongoengine(self, pddl_dto_condition_effect, parameter_dict):
 
-       # check if condition/effect is correct
-        if(len(pddl_dto_condition_effect.get_pddl_objects_list()) !=
-           len(pddl_dto_condition_effect.get_pddl_predicate().get_pddl_types_list())):
-            return None
-
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
-            predicate_name=pddl_dto_condition_effect.get_pddl_predicate().get_predicate_name())
+        pddl_predicate_mongoengine = self._mongoengine_pddl_dao_predicate._get_mongoengine(
+            pddl_dto_condition_effect.get_pddl_predicate())
 
         # check if predicate exists
         if(not pddl_predicate_mongoengine):
             return None
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine[0]
 
         pddl_condi_mongoengine = pddl_condition_effect_mongoengine_model()
         pddl_condi_mongoengine.pddl_predicate = pddl_predicate_mongoengine
         pddl_condi_mongoengine.time = pddl_dto_condition_effect.get_time()
         pddl_condi_mongoengine.is_negative = pddl_dto_condition_effect.get_is_negative()
 
-        for param, pddl_dto_type in zip(pddl_dto_condition_effect.get_pddl_objects_list(),
-                                        pddl_dto_condition_effect.get_pddl_predicate().get_pddl_types_list()):
-
-           # check if proposition is correct
-            if(param.get_pddl_type().get_type_name() != pddl_dto_type.get_type_name()):
-                return None
+        for param in pddl_dto_condition_effect.get_pddl_objects_list():
 
             pddl_condi_mongoengine.pddl_parameters.append(
                 parameter_dict[param.get_object_name()])
@@ -127,13 +124,12 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
 
         # ACTION PARAMS
         for param in pddl_dto_action.get_parameters_list():
-            pddl_type_mongoengine = pddl_type_mongoengine_model.objects(
-                type_name=param.get_pddl_type().get_type_name())
+            pddl_type_mongoengine = self._mongoengine_pddl_dao_type._get_mongoengine(
+                param.get_pddl_type())
 
             # check if type exists
             if(not pddl_type_mongoengine):
                 return None
-            pddl_type_mongoengine = pddl_type_mongoengine[0]
 
             param_name = param.get_object_name()
 
@@ -174,11 +170,28 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
 
     def _exist_in_mongo(self, pddl_dto_action):
 
-        pddl_action_mongoengine = ppddl_action_mongoengine_model.objects(
-            action_name=pddl_dto_action.get_action_name())
-        if(pddl_action_mongoengine):
+        if(self._get_mongoengine(pddl_dto_action)):
             return True
         return False
+
+    def _get_mongoengine(self, pddl_dto_action):
+        pddl_action_mongoengine = ppddl_action_mongoengine_model.objects(
+            action_name=pddl_dto_action.get_action_name())
+        if(not pddl_action_mongoengine):
+            return None
+        return pddl_action_mongoengine[0]
+
+    def _check_pddl_dto_condition_effect_is_correct(self, pddl_dto_action):
+
+        for condition in pddl_dto_action.get_conditions_list():
+            if(not self._mongoengine_pddl_dao_proposition._check_pddl_dto_predicate_is_correct(condition)):
+                return False
+
+        for effect in pddl_dto_action.get_effects_list():
+            if(not self._mongoengine_pddl_dao_proposition._check_pddl_dto_predicate_is_correct(effect)):
+                return False
+
+        return True
 
     def get(self, action_name):
 
@@ -206,7 +219,27 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
 
         return pddl_dto_action_list
 
-    def save(self, pddl_dto_action):
+    def _save(self, pddl_dto_action):
+
+        if(not self._check_pddl_dto_condition_effect_is_correct(pddl_dto_action)):
+            return False
+
+       # propagating saving
+        for pddl_dto_type in pddl_dto_action.get_parameters_list():
+            result = self._mongoengine_pddl_dao_type.save(
+                pddl_dto_type.get_pddl_type())
+            if(not result):
+                return False
+        for pddl_dto_condition in pddl_dto_action.get_conditions_list():
+            result = self._mongoengine_pddl_dao_predicate.save(
+                pddl_dto_condition.get_pddl_predicate())
+            if(not result):
+                return False
+        for pddl_dto_effect in pddl_dto_action.get_effects_list():
+            result = self._mongoengine_pddl_dao_predicate.save(
+                pddl_dto_effect.get_pddl_predicate())
+            if(not result):
+                return False
 
         if(self._exist_in_mongo(pddl_dto_action)):
             return False
@@ -221,10 +254,12 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def update(self, pddl_dto_action):
+    def _update(self, pddl_dto_action):
 
-        pddl_action_mongoengine = ppddl_action_mongoengine_model.objects(
-            action_name=pddl_dto_action.get_action_name())
+        if(not self._check_pddl_dto_condition_effect_is_correct(pddl_dto_action)):
+            return False
+
+        pddl_action_mongoengine = self._get_mongoengine(pddl_dto_action)
 
         # check if action exists
         if(pddl_action_mongoengine):
@@ -232,7 +267,6 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
                 pddl_dto_action)
 
             if(new_pddl_action_mongoengine):
-                pddl_action_mongoengine = pddl_action_mongoengine[0]
                 pddl_action_mongoengine.action_name = new_pddl_action_mongoengine.action_name
                 pddl_action_mongoengine.durative = new_pddl_action_mongoengine.durative
                 pddl_action_mongoengine.duration = new_pddl_action_mongoengine.duration
@@ -248,26 +282,27 @@ class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def save_update(self, pddl_dto_action):
+    def save(self, pddl_dto_action):
 
         if(self._exist_in_mongo(pddl_dto_action)):
-            return self.update(pddl_dto_action)
+            return self._update(pddl_dto_action)
 
         else:
-            return self.save(pddl_dto_action)
+            return self._save(pddl_dto_action)
 
     def delete(self, pddl_dto_action):
 
-        pddl_action_mongoengine = ppddl_action_mongoengine_model.objects(
-            action_name=pddl_dto_action.get_action_name())
+        pddl_action_mongoengine = self._get_mongoengine(pddl_dto_action)
 
         # check if action exists
         if(pddl_action_mongoengine):
-            pddl_action_mongoengine = pddl_action_mongoengine[0]
             pddl_action_mongoengine.delete()
             return True
 
+        return False
+
     def delete_all(self):
+
         pddl_dto_action_list = self.get_all()
 
         for ele in pddl_dto_action_list:

@@ -8,6 +8,8 @@ from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_type as p
 from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
 from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
 
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_PDDL_DAO_Type
+
 
 class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
@@ -15,6 +17,8 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         PDDL_DAO_Predicate.__init__(self)
         Mongoengine_PDDL_DAO.__init__(self, uri)
+
+        self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
 
     def _mongoengine_to_dto(self, pddl_predicate_mongoengine):
 
@@ -37,13 +41,12 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         for pddl_dto_type in pddl_dto_predicate.get_pddl_types_list():
 
-            pddl_type_mongoengine = pddl_type_mongoengine_model.objects(
-                type_name=pddl_dto_type.get_type_name())
+            pddl_type_mongoengine = self._mongoengine_pddl_dao_type._get_mongoengine(
+                pddl_dto_type)
 
             # check if type exist
             if(not pddl_type_mongoengine):
                 return None
-            pddl_type_mongoengine = pddl_type_mongoengine[0]
 
             pddl_predicate_mongoengine.pddl_types.append(pddl_type_mongoengine)
 
@@ -51,11 +54,19 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
     def _exist_in_mongo(self, pddl_dto_predicate):
 
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
-            predicate_name=pddl_dto_predicate.get_predicate_name())
-        if(pddl_predicate_mongoengine):
+        if(self._get_mongoengine(pddl_dto_predicate)):
             return True
         return False
+
+    def _get_mongoengine(self, pddl_dto_predicate):
+
+        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
+            predicate_name=pddl_dto_predicate.get_predicate_name())
+
+        if(not pddl_predicate_mongoengine):
+            return None
+
+        return pddl_predicate_mongoengine[0]
 
     def get(self, predicate_name):
 
@@ -83,10 +94,16 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         return pddl_dto_predicate_list
 
-    def save(self, pddl_dto_predicate):
+    def _save(self, pddl_dto_predicate):
 
         if(self._exist_in_mongo(pddl_dto_predicate)):
             return False
+
+        # propagating saving
+        for pddl_dto_type in pddl_dto_predicate.get_pddl_types_list():
+            result = self._mongoengine_pddl_dao_type.save(pddl_dto_type)
+            if(not result):
+                return False
 
         pddl_predicate_mongoengine = self._dto_to_mongoengine(
             pddl_dto_predicate)
@@ -98,10 +115,9 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def update(self, pddl_dto_predicate):
+    def _update(self, pddl_dto_predicate):
 
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
-            predicate_name=pddl_dto_predicate.get_predicate_name())
+        pddl_predicate_mongoengine = self._get_mongoengine(pddl_dto_predicate)
 
         # check if predicate exists
         if(pddl_predicate_mongoengine):
@@ -109,7 +125,6 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
                 pddl_dto_predicate)
 
             if(new_pddl_predicate_mongoengine):
-                pddl_predicate_mongoengine = pddl_predicate_mongoengine[0]
                 pddl_predicate_mongoengine.predicate_name = new_pddl_predicate_mongoengine.predicate_name
                 pddl_predicate_mongoengine.pddl_types = new_pddl_predicate_mongoengine.pddl_types
                 pddl_predicate_mongoengine.save()
@@ -121,26 +136,25 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def save_update(self, pddl_dto_predicate):
+    def save(self, pddl_dto_predicate):
 
         if(self._exist_in_mongo(pddl_dto_predicate)):
-            return self.update(pddl_dto_predicate)
+            return self._update(pddl_dto_predicate)
 
         else:
-            return self.save(pddl_dto_predicate)
+            return self._save(pddl_dto_predicate)
 
     def delete(self, pddl_dto_predicate):
 
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
-            predicate_name=pddl_dto_predicate.get_predicate_name())
+        pddl_predicate_mongoengine = self._get_mongoengine(pddl_dto_predicate)
 
         # check if predicate exists
         if(pddl_predicate_mongoengine):
-            pddl_predicate_mongoengine = pddl_predicate_mongoengine[0]
             pddl_predicate_mongoengine.delete()
             return True
 
     def delete_all(self):
+
         pddl_dto_predicate_list = self.get_all()
 
         for ele in pddl_dto_predicate_list:
