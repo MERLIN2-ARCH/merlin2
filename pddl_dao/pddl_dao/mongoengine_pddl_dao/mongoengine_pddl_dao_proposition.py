@@ -4,9 +4,8 @@ from typing import List
 from pddl_dao.pddl_dao_interface.pddl_dao_proposition import PDDL_DAO_Proposition
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
 
-from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_proposition as pddl_proposition_mongoengine_model
-from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_predicate as pddl_predicate_mongoengine_model
-from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_object as pddl_object_mongoengine_model
+from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_proposition as pddl_mongoengine_proposition_model
+from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_predicate as pddl_mongoengine_predicate_model
 
 from pddl_dao.pddl_dto.pddl_dto_proposition import PDDL_DTO_Proposition
 
@@ -28,15 +27,15 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
         self._mongoengine_pddl_dao_predicate = Mongoengine_PDDL_DAO_Predicate(
             uri)
 
-    def _check_pddl_mongoengine_proposition_is_correct(self, pddl_proposition_mongoengine: pddl_proposition_mongoengine_model) -> bool:
+    def _check_pddl_mongoengine_proposition_is_correct(self, pddl_mongoengine_proposition: pddl_mongoengine_proposition_model) -> bool:
 
         # check if proposition is correct
-        if(len(pddl_proposition_mongoengine.pddl_objects) !=
-           len(pddl_proposition_mongoengine.pddl_predicate.pddl_types)):
+        if(len(pddl_mongoengine_proposition.pddl_objects) !=
+           len(pddl_mongoengine_proposition.pddl_predicate.pddl_types)):
             return False
 
-        for pddl_object, pddl_type in zip(pddl_proposition_mongoengine.pddl_objects,
-                                          pddl_proposition_mongoengine.pddl_predicate.pddl_types):
+        for pddl_object, pddl_type in zip(pddl_mongoengine_proposition.pddl_objects,
+                                          pddl_mongoengine_proposition.pddl_predicate.pddl_types):
 
             # check if proposition is correct
             if(pddl_object.pddl_type.type_name != pddl_type.type_name):
@@ -44,14 +43,14 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
 
         return True
 
-    def _mongoengine_to_dto(self, pddl_proposition_mongoengine: pddl_proposition_mongoengine_model) -> PDDL_DTO_Proposition:
+    def _mongoengine_to_dto(self, pddl_mongoengine_proposition: pddl_mongoengine_proposition_model) -> PDDL_DTO_Proposition:
 
         pddl_object_list = []
 
         pddl_dto_predicate = self._mongoengine_pddl_dao_predicate._mongoengine_to_dto(
-            pddl_proposition_mongoengine.pddl_predicate)
+            pddl_mongoengine_proposition.pddl_predicate)
 
-        for pddl_object in pddl_proposition_mongoengine.pddl_objects:
+        for pddl_object in pddl_mongoengine_proposition.pddl_objects:
 
             pddl_dto_object = self._mongoengine_pddl_dao_object._mongoengine_to_dto(
                 pddl_object)
@@ -66,7 +65,7 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
             pddl_dto_predicate, pddl_object_list)
 
         pddl_dto_proposition.set_is_goal(
-            pddl_proposition_mongoengine.is_goal)
+            pddl_mongoengine_proposition.is_goal)
 
         return pddl_dto_proposition
 
@@ -88,32 +87,32 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
 
     def _dto_to_mongoengine(self, pddl_dto_proposition: PDDL_DTO_Proposition) -> bool:
 
-        pddl_proposition_mongoengine = pddl_proposition_mongoengine_model()
+        pddl_mongoengine_proposition = pddl_mongoengine_proposition_model()
 
-        pddl_predicate_mongoengine = self._mongoengine_pddl_dao_predicate._get_mongoengine(
+        pddl_mongoengine_predicate = self._mongoengine_pddl_dao_predicate._get_mongoengine(
             pddl_dto_proposition.get_pddl_predicate())
 
         # check if predicate exist
-        if(not pddl_predicate_mongoengine):
+        if(not pddl_mongoengine_predicate):
             return None
 
-        pddl_proposition_mongoengine.pddl_predicate = pddl_predicate_mongoengine
+        pddl_mongoengine_proposition.pddl_predicate = pddl_mongoengine_predicate
 
-        pddl_proposition_mongoengine.is_goal = pddl_dto_proposition.get_is_goal()
+        pddl_mongoengine_proposition.is_goal = pddl_dto_proposition.get_is_goal()
 
         for pddl_dto_object in pddl_dto_proposition.get_pddl_objects_list():
 
-            pddl_object_mongoengine = self._mongoengine_pddl_dao_object._get_mongoengine(
+            pddl_mongoengine_object = self._mongoengine_pddl_dao_object._get_mongoengine(
                 pddl_dto_object)
 
             # check if object exist
-            if(not pddl_object_mongoengine):
+            if(not pddl_mongoengine_object):
                 return None
 
-            pddl_proposition_mongoengine.pddl_objects.append(
-                pddl_object_mongoengine)
+            pddl_mongoengine_proposition.pddl_objects.append(
+                pddl_mongoengine_object)
 
-        return pddl_proposition_mongoengine
+        return pddl_mongoengine_proposition
 
     def _exist_in_mongo(self, pddl_dto_proposition: PDDL_DTO_Proposition) -> bool:
 
@@ -121,53 +120,53 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
             return True
         return False
 
-    def _get_mongoengine(self, pddl_dto_proposition: PDDL_DTO_Proposition) -> pddl_proposition_mongoengine_model:
+    def _get_mongoengine(self, pddl_dto_proposition: PDDL_DTO_Proposition) -> pddl_mongoengine_proposition_model:
 
         pddl_dto_objects_list = pddl_dto_proposition.get_pddl_objects_list()
 
-        pddl_predicate_mongoengine = self._mongoengine_pddl_dao_predicate._get_mongoengine(
+        pddl_mongoengine_predicate = self._mongoengine_pddl_dao_predicate._get_mongoengine(
             pddl_dto_proposition.get_pddl_predicate())
 
         # check if predicate exist
-        if(not pddl_predicate_mongoengine):
+        if(not pddl_mongoengine_predicate):
             return None
 
         pddl_objects_list = []
         for pddl_object in pddl_dto_objects_list:
-            pddl_object_mongoengine = self._mongoengine_pddl_dao_object._get_mongoengine(
+            pddl_mongoengine_object = self._mongoengine_pddl_dao_object._get_mongoengine(
                 pddl_object)
 
             # check if object exist
-            if(not pddl_object_mongoengine):
+            if(not pddl_mongoengine_object):
                 return None
-            pddl_objects_list.append(pddl_object_mongoengine)
+            pddl_objects_list.append(pddl_mongoengine_object)
 
         # getting proposition
-        pddl_proposition_mongoengine = pddl_proposition_mongoengine_model.objects(
-            pddl_predicate=pddl_predicate_mongoengine, pddl_objects=pddl_objects_list)
+        pddl_mongoengine_proposition = pddl_mongoengine_proposition_model.objects(
+            pddl_predicate=pddl_mongoengine_predicate, pddl_objects=pddl_objects_list)
 
         # check if proposition exist
-        if(not pddl_proposition_mongoengine):
+        if(not pddl_mongoengine_proposition):
             return None
 
-        return pddl_proposition_mongoengine[0]
+        return pddl_mongoengine_proposition[0]
 
     def get_by_predicate(self, predicate_name: str) -> List[PDDL_DTO_Proposition]:
 
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine_model.objects(
+        pddl_mongoengine_predicate = pddl_mongoengine_predicate_model.objects(
             predicate_name=predicate_name)
 
         # check if predicate exist
-        if(not pddl_predicate_mongoengine):
+        if(not pddl_mongoengine_predicate):
             return None
-        pddl_predicate_mongoengine = pddl_predicate_mongoengine[0]
+        pddl_mongoengine_predicate = pddl_mongoengine_predicate[0]
 
-        pddl_proposition_mongoengine = pddl_proposition_mongoengine_model.objects(
-            pddl_predicate=pddl_predicate_mongoengine)
+        pddl_mongoengine_proposition = pddl_mongoengine_proposition_model.objects(
+            pddl_predicate=pddl_mongoengine_predicate)
 
         pddl_dto_proposition_list = []
 
-        for ele in pddl_proposition_mongoengine:
+        for ele in pddl_mongoengine_proposition:
             if(self._check_pddl_mongoengine_proposition_is_correct(ele)):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
@@ -175,12 +174,12 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
 
     def get_goals(self) -> List[PDDL_DTO_Proposition]:
 
-        pddl_proposition_mongoengine = pddl_proposition_mongoengine_model.objects(
+        pddl_mongoengine_proposition = pddl_mongoengine_proposition_model.objects(
             is_goal=True)
 
         pddl_dto_proposition_list = []
 
-        for ele in pddl_proposition_mongoengine:
+        for ele in pddl_mongoengine_proposition:
             if(self._check_pddl_mongoengine_proposition_is_correct(ele)):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
@@ -188,11 +187,11 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
 
     def get_all(self) -> List[PDDL_DTO_Proposition]:
 
-        pddl_proposition_mongoengine = pddl_proposition_mongoengine_model.objects()
+        pddl_mongoengine_proposition = pddl_mongoengine_proposition_model.objects()
 
         pddl_dto_proposition_list = []
 
-        for ele in pddl_proposition_mongoengine:
+        for ele in pddl_mongoengine_proposition:
             if(self._check_pddl_mongoengine_proposition_is_correct(ele)):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
@@ -216,11 +215,11 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
             if(not result):
                 return False
 
-        pddl_proposition_mongoengine = self._dto_to_mongoengine(
+        pddl_mongoengine_proposition = self._dto_to_mongoengine(
             pddl_dto_proposition)
 
-        if(pddl_proposition_mongoengine):
-            pddl_proposition_mongoengine.save()
+        if(pddl_mongoengine_proposition):
+            pddl_mongoengine_proposition.save()
             return True
 
         else:
@@ -231,19 +230,19 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
         if(not self._check_pddl_dto_proposition_is_correct(pddl_dto_proposition)):
             return False
 
-        pddl_proposition_mongoengine = self._get_mongoengine(
+        pddl_mongoengine_proposition = self._get_mongoengine(
             pddl_dto_proposition)
 
         # check if proposition exists
-        if(pddl_proposition_mongoengine):
+        if(pddl_mongoengine_proposition):
             new_pddl_proposition_mongoengine = self._dto_to_mongoengine(
                 pddl_dto_proposition)
 
             if(new_pddl_proposition_mongoengine):
-                pddl_proposition_mongoengine.pddl_predicate = new_pddl_proposition_mongoengine.pddl_predicate
-                pddl_proposition_mongoengine.pddl_objects = new_pddl_proposition_mongoengine.pddl_objects
-                pddl_proposition_mongoengine.is_goal = new_pddl_proposition_mongoengine.is_goal
-                pddl_proposition_mongoengine.save()
+                pddl_mongoengine_proposition.pddl_predicate = new_pddl_proposition_mongoengine.pddl_predicate
+                pddl_mongoengine_proposition.pddl_objects = new_pddl_proposition_mongoengine.pddl_objects
+                pddl_mongoengine_proposition.is_goal = new_pddl_proposition_mongoengine.is_goal
+                pddl_mongoengine_proposition.save()
             else:
                 return False
 
@@ -262,12 +261,12 @@ class Mongoengine_PDDL_DAO_Proposition(PDDL_DAO_Proposition, Mongoengine_PDDL_DA
 
     def delete(self, pddl_dto_proposition: PDDL_DTO_Proposition) -> bool:
 
-        pddl_proposition_mongoengine = self._get_mongoengine(
+        pddl_mongoengine_proposition = self._get_mongoengine(
             pddl_dto_proposition)
 
         # check if proposition exists
-        if(pddl_proposition_mongoengine):
-            pddl_proposition_mongoengine.delete()
+        if(pddl_mongoengine_proposition):
+            pddl_mongoengine_proposition.delete()
             return True
 
     def delete_all(self) -> bool:
