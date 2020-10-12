@@ -17,15 +17,15 @@ class PDDL_DAO_Proposition(ABC):
         pass
 
     @abstractmethod
+    def _save(self, pddl_dto_proposition):
+        pass
+
+    @abstractmethod
+    def _update(self, pddl_dto_proposition):
+        pass
+
+    @abstractmethod
     def save(self, pddl_dto_proposition):
-        pass
-
-    @abstractmethod
-    def update(self, pddl_dto_proposition):
-        pass
-
-    @abstractmethod
-    def save_update(self, pddl_dto_proposition):
         pass
 
     @abstractmethod
