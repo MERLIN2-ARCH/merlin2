@@ -22,6 +22,10 @@ class Mongoengine_PDDL_DAO(ABC):
             self.connector = MongoengineConnector()
 
     @abstractmethod
+    def _get_mongoengine(self, pddl_dto):
+        pass
+
+    @abstractmethod
     def _mongoengine_to_dto(self, pddl_mongoengine):
         pass
 
