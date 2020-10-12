@@ -38,7 +38,7 @@ Name                                                                            
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_predicate.py                   88      4    95%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_proposition.py                143     11    92%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_type.py                        66      0   100%
-/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/pddl_mongoengine_models.py                          29      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_models.py                          29      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/__init__.py                                              0      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factories/__init__.py                           0      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factories/mongoengine_pddl_dao_factory.py      17      0   100%
@@ -61,4 +61,4 @@ Name                                                                            
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 TOTAL                                                                                                                                               1015     84    92%
 
-======================= 90 passed, 191 warnings in 4.01s =======================
+======================= 90 passed, 191 warnings in 4.58s =======================
