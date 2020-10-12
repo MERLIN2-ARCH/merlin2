@@ -21,5 +21,5 @@ https://docs.mongodb.com/compass/master/install/
 ## Running Tests
 ```
 cd ~/ros2_foxy/src/merlin2/pddl_dao/
-pytest --cov=/<global_path>/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao ./test/pddl_dao_tests/*.py
+pytest --cov=~/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao ./test/pddl_dao_tests/*.py
 ```
