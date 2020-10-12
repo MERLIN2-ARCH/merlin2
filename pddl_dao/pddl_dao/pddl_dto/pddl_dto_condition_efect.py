@@ -1,4 +1,8 @@
+
+from typing import List
 from pddl_dao.pddl_dto.pddl_dto_proposition import PDDL_DTO_Proposition
+from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
+from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
 
 
 class PDDL_DTO_ConditionEffect(PDDL_DTO_Proposition):
@@ -7,22 +11,26 @@ class PDDL_DTO_ConditionEffect(PDDL_DTO_Proposition):
     AT_END = "at end"
     OVER_ALL = "over all"
 
-    def __init__(self, time, pddl_predicate, pddl_objects_list=None, is_negative=False):
+    def __init__(self, time: str,
+                 pddl_predicate: PDDL_DTO_Predicate,
+                 pddl_objects_list: List[PDDL_DTO_Object] = None,
+                 is_negative: bool = False):
+
         self.set_time(time)
         self.set_is_negative(is_negative)
         super(PDDL_DTO_ConditionEffect, self).__init__(
             pddl_predicate, pddl_objects_list)
 
-    def get_time(self):
+    def get_time(self) -> str:
         return self._time
 
-    def set_time(self, time):
+    def set_time(self, time: str):
         self._time = time
 
-    def get_is_negative(self):
+    def get_is_negative(self) -> bool:
         return self._is_negative
 
-    def set_is_negative(self, is_negative):
+    def set_is_negative(self, is_negative: bool):
         self._is_negative = is_negative
 
     def __str__(self):
