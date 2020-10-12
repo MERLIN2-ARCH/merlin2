@@ -9,17 +9,17 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PDDL_D
 
 class Mongoengine_PDDL_DAO_Factory(PDDL_DAO_Factory):
 
-    def create_dao_pddl_type(self, uri=None):
+    def create_dao_pddl_type(self, uri: str = None) -> Mongoengine_PDDL_DAO_Type:
         return Mongoengine_PDDL_DAO_Type(uri=uri)
 
-    def create_dao_pddl_predicate(self, uri=None):
+    def create_dao_pddl_predicate(self, uri: str = None) -> Mongoengine_PDDL_DAO_Predicate:
         return Mongoengine_PDDL_DAO_Predicate(uri=uri)
 
-    def create_dao_pddl_action(self, uri=None):
+    def create_dao_pddl_action(self, uri: str = None) -> Mongoengine_PDDL_DAO_Action:
         return Mongoengine_PDDL_DAO_Action(uri=uri)
 
-    def create_dao_pddl_object(self, uri=None):
+    def create_dao_pddl_object(self, uri: str = None) -> Mongoengine_PDDL_DAO_Object:
         return Mongoengine_PDDL_DAO_Object(uri=uri)
 
-    def create_dao_pddl_proposition(self, uri=None):
+    def create_dao_pddl_proposition(self, uri: str = None) -> Mongoengine_PDDL_DAO_Proposition:
         return Mongoengine_PDDL_DAO_Proposition(uri=uri)
