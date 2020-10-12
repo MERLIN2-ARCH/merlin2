@@ -17,10 +17,12 @@ class Mongoengine_PDDL_DAO_Type(PDDL_DAO_Type, Mongoengine_PDDL_DAO):
         Mongoengine_PDDL_DAO.__init__(self, uri)
 
     def _mongoengine_to_dto(self, pddl_type_mongoengine: pddl_type_mongoengine_model) -> PDDL_DTO_Type:
+
         pddl_dto_type = PDDL_DTO_Type(pddl_type_mongoengine.type_name)
         return pddl_dto_type
 
     def _dto_to_mongoengine(self, pddl_dto_type: PDDL_DTO_Type) -> pddl_type_mongoengine_model:
+
         pddl_type_mongoengine = pddl_type_mongoengine_model()
         pddl_type_mongoengine.type_name = pddl_dto_type.get_type_name()
         return pddl_type_mongoengine
