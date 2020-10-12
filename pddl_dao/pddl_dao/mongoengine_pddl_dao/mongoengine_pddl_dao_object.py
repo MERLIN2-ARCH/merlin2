@@ -4,7 +4,7 @@ from typing import List
 from pddl_dao.pddl_dao_interface.pddl_dao_object import PDDL_DAO_Object
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
 
-from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_object as pddl_mongoengine_object_model
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_object as mongoengine_pddl_object_model
 
 from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
 from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
@@ -21,31 +21,31 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
 
         self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
 
-    def _mongoengine_to_dto(self, pddl_mongoengine_object: pddl_mongoengine_object_model) -> PDDL_DTO_Object:
+    def _mongoengine_to_dto(self, mongoengine_pddl_object: mongoengine_pddl_object_model) -> PDDL_DTO_Object:
 
         pddl_dto_type = PDDL_DTO_Type(
-            pddl_mongoengine_object.pddl_type.type_name)
+            mongoengine_pddl_object.pddl_type.type_name)
 
         pddl_dto_object = PDDL_DTO_Object(pddl_dto_type,
-                                          pddl_mongoengine_object.object_name)
+                                          mongoengine_pddl_object.object_name)
 
         return pddl_dto_object
 
-    def _dto_to_mongoengine(self, pddl_dto_object: PDDL_DTO_Object) -> pddl_mongoengine_object_model:
+    def _dto_to_mongoengine(self, pddl_dto_object: PDDL_DTO_Object) -> mongoengine_pddl_object_model:
 
-        pddl_mongoengine_type = self._mongoengine_pddl_dao_type._get_mongoengine(
+        mongoengine_pddl_type = self._mongoengine_pddl_dao_type._get_mongoengine(
             pddl_dto_object.get_pddl_type())
 
         if(not pddl_dto_object):
             return None
 
-        pddl_mongoengine_object = pddl_mongoengine_object_model()
+        mongoengine_pddl_object = mongoengine_pddl_object_model()
 
-        pddl_mongoengine_object.object_name = pddl_dto_object.get_object_name()
+        mongoengine_pddl_object.object_name = pddl_dto_object.get_object_name()
 
-        pddl_mongoengine_object.pddl_type = pddl_mongoengine_type
+        mongoengine_pddl_object.pddl_type = mongoengine_pddl_type
 
-        return pddl_mongoengine_object
+        return mongoengine_pddl_object
 
     def _exist_in_mongo(self, pddl_dto_object: PDDL_DTO_Object) -> bool:
 
@@ -54,24 +54,24 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
         return False
 
     def _get_mongoengine(self, pddl_dto_object: PDDL_DTO_Object) -> bool:
-        pddl_mongoengine_object = pddl_mongoengine_object_model.objects(
+        mongoengine_pddl_object = mongoengine_pddl_object_model.objects(
             object_name=pddl_dto_object.get_object_name())
 
-        if(not pddl_mongoengine_object):
+        if(not mongoengine_pddl_object):
             return None
 
-        return pddl_mongoengine_object[0]
+        return mongoengine_pddl_object[0]
 
     def get(self, object_name: str) -> PDDL_DTO_Object:
 
-        pddl_mongoengine_object = pddl_mongoengine_object_model.objects(
+        mongoengine_pddl_object = mongoengine_pddl_object_model.objects(
             object_name=object_name)
 
         # check if object exists
-        if(pddl_mongoengine_object):
-            pddl_mongoengine_object = pddl_mongoengine_object[0]
+        if(mongoengine_pddl_object):
+            mongoengine_pddl_object = mongoengine_pddl_object[0]
             pddl_dto_object = self._mongoengine_to_dto(
-                pddl_mongoengine_object)
+                mongoengine_pddl_object)
             return pddl_dto_object
 
         else:
@@ -79,10 +79,10 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
 
     def get_all(self) -> List[PDDL_DTO_Object]:
 
-        pddl_mongoengine_object = pddl_mongoengine_object_model.objects
+        mongoengine_pddl_object = mongoengine_pddl_object_model.objects
         pddl_dto_object_list = []
 
-        for ele in pddl_mongoengine_object:
+        for ele in mongoengine_pddl_object:
             pddl_dto_object = self._mongoengine_to_dto(ele)
             pddl_dto_object_list.append(pddl_dto_object)
 
@@ -100,11 +100,11 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
         if(not result):
             return False
 
-        pddl_mongoengine_object = self._dto_to_mongoengine(
+        mongoengine_pddl_object = self._dto_to_mongoengine(
             pddl_dto_object)
 
-        if(pddl_mongoengine_object):
-            pddl_mongoengine_object.save()
+        if(mongoengine_pddl_object):
+            mongoengine_pddl_object.save()
             return True
 
         else:
@@ -112,17 +112,17 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
 
     def _update(self, pddl_dto_object: PDDL_DTO_Object) -> bool:
 
-        pddl_mongoengine_object = self._get_mongoengine(pddl_dto_object)
+        mongoengine_pddl_object = self._get_mongoengine(pddl_dto_object)
 
         # check if object exists
-        if(pddl_mongoengine_object):
+        if(mongoengine_pddl_object):
             new_pddl_object_mongoengine = self._dto_to_mongoengine(
                 pddl_dto_object)
 
             if(new_pddl_object_mongoengine):
-                pddl_mongoengine_object.object_name = new_pddl_object_mongoengine.object_name
-                pddl_mongoengine_object.pddl_type = new_pddl_object_mongoengine.pddl_type
-                pddl_mongoengine_object.save()
+                mongoengine_pddl_object.object_name = new_pddl_object_mongoengine.object_name
+                mongoengine_pddl_object.pddl_type = new_pddl_object_mongoengine.pddl_type
+                mongoengine_pddl_object.save()
             else:
                 return False
 
@@ -141,11 +141,11 @@ class Mongoengine_PDDL_DAO_Object(PDDL_DAO_Object, Mongoengine_PDDL_DAO):
 
     def delete(self, pddl_dto_object: PDDL_DTO_Object) -> bool:
 
-        pddl_mongoengine_object = self._get_mongoengine(pddl_dto_object)
+        mongoengine_pddl_object = self._get_mongoengine(pddl_dto_object)
 
         # check if object exists
-        if(pddl_mongoengine_object):
-            pddl_mongoengine_object.delete()
+        if(mongoengine_pddl_object):
+            mongoengine_pddl_object.delete()
             return True
 
         return False

@@ -4,7 +4,7 @@ from typing import List
 from pddl_dao.pddl_dao_interface.pddl_dao_type import PDDL_DAO_Type
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
 
-from pddl_dao.mongoengine_pddl_dao.pddl_mongoengine_models import pddl_type as pddl_mongoengine_type_model
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_type as mongoengine_pddl_type_model
 
 from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
 
@@ -16,16 +16,16 @@ class Mongoengine_PDDL_DAO_Type(PDDL_DAO_Type, Mongoengine_PDDL_DAO):
         PDDL_DAO_Type.__init__(self)
         Mongoengine_PDDL_DAO.__init__(self, uri)
 
-    def _mongoengine_to_dto(self, pddl_mongoengine_type: pddl_mongoengine_type_model) -> PDDL_DTO_Type:
+    def _mongoengine_to_dto(self, mongoengine_pddl_type: mongoengine_pddl_type_model) -> PDDL_DTO_Type:
 
-        pddl_dto_type = PDDL_DTO_Type(pddl_mongoengine_type.type_name)
+        pddl_dto_type = PDDL_DTO_Type(mongoengine_pddl_type.type_name)
         return pddl_dto_type
 
-    def _dto_to_mongoengine(self, pddl_dto_type: PDDL_DTO_Type) -> pddl_mongoengine_type_model:
+    def _dto_to_mongoengine(self, pddl_dto_type: PDDL_DTO_Type) -> mongoengine_pddl_type_model:
 
-        pddl_mongoengine_type = pddl_mongoengine_type_model()
-        pddl_mongoengine_type.type_name = pddl_dto_type.get_type_name()
-        return pddl_mongoengine_type
+        mongoengine_pddl_type = mongoengine_pddl_type_model()
+        mongoengine_pddl_type.type_name = pddl_dto_type.get_type_name()
+        return mongoengine_pddl_type
 
     def _exist_in_mongo(self, pddl_dto_type: PDDL_DTO_Type) -> bool:
 
@@ -33,33 +33,33 @@ class Mongoengine_PDDL_DAO_Type(PDDL_DAO_Type, Mongoengine_PDDL_DAO):
             return True
         return False
 
-    def _get_mongoengine(self, pddl_dao_type: PDDL_DTO_Type) -> pddl_mongoengine_type_model:
-        pddl_mongoengine_type = pddl_mongoengine_type_model.objects(
+    def _get_mongoengine(self, pddl_dao_type: PDDL_DTO_Type) -> mongoengine_pddl_type_model:
+        mongoengine_pddl_type = mongoengine_pddl_type_model.objects(
             type_name=pddl_dao_type.get_type_name())
 
-        if(not pddl_mongoengine_type):
+        if(not mongoengine_pddl_type):
             return None
 
-        return pddl_mongoengine_type[0]
+        return mongoengine_pddl_type[0]
 
     def get(self, type_name: str) -> PDDL_DTO_Type:
 
-        pddl_mongoengine_type = pddl_mongoengine_type_model.objects(
+        mongoengine_pddl_type = mongoengine_pddl_type_model.objects(
             type_name=type_name)
 
-        if(pddl_mongoengine_type):
-            pddl_mongoengine_type = pddl_mongoengine_type[0]
-            return self._mongoengine_to_dto(pddl_mongoengine_type)
+        if(mongoengine_pddl_type):
+            mongoengine_pddl_type = mongoengine_pddl_type[0]
+            return self._mongoengine_to_dto(mongoengine_pddl_type)
 
         else:
             return None
 
     def get_all(self) -> List[PDDL_DTO_Type]:
 
-        pddl_mongoengine_type = pddl_mongoengine_type_model.objects
+        mongoengine_pddl_type = mongoengine_pddl_type_model.objects
         pddl_dto_type_list = []
 
-        for ele in pddl_mongoengine_type:
+        for ele in mongoengine_pddl_type:
             pddl_dto_type = self._mongoengine_to_dto(ele)
             pddl_dto_type_list.append(pddl_dto_type)
 
@@ -70,18 +70,18 @@ class Mongoengine_PDDL_DAO_Type(PDDL_DAO_Type, Mongoengine_PDDL_DAO):
         if(self._exist_in_mongo(pddl_dto_type)):
             return False
 
-        pddl_mongoengine_type = self._dto_to_mongoengine(pddl_dto_type)
-        pddl_mongoengine_type.save()
+        mongoengine_pddl_type = self._dto_to_mongoengine(pddl_dto_type)
+        mongoengine_pddl_type.save()
         return True
 
     def _update(self, pddl_dto_type: PDDL_DTO_Type) -> bool:
 
-        pddl_mongoengine_type = self._get_mongoengine(pddl_dto_type)
+        mongoengine_pddl_type = self._get_mongoengine(pddl_dto_type)
 
         # check if type exists
-        if(pddl_mongoengine_type):
-            pddl_mongoengine_type.type_name = pddl_dto_type.get_type_name()
-            pddl_mongoengine_type.save()
+        if(mongoengine_pddl_type):
+            mongoengine_pddl_type.type_name = pddl_dto_type.get_type_name()
+            mongoengine_pddl_type.save()
             return True
 
         else:
@@ -97,11 +97,11 @@ class Mongoengine_PDDL_DAO_Type(PDDL_DAO_Type, Mongoengine_PDDL_DAO):
 
     def delete(self, pddl_dto_type: PDDL_DTO_Type) -> bool:
 
-        pddl_mongoengine_type = self._get_mongoengine(pddl_dto_type)
+        mongoengine_pddl_type = self._get_mongoengine(pddl_dto_type)
 
         # check if type exists
-        if(pddl_mongoengine_type):
-            pddl_mongoengine_type.delete()
+        if(mongoengine_pddl_type):
+            mongoengine_pddl_type.delete()
             return True
 
         return False
