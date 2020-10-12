@@ -1,4 +1,5 @@
 
+from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
 from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
@@ -13,6 +14,8 @@ class PDDL_DTO_Proposition:
         self.set_pddl_predicate(pddl_predicate)
         self.set_pddl_objects_list(pddl_objects_list)
         self.set_is_goal(is_goal)
+
+        PDDL_DTO.__init__(self)
 
     def get_is_goal(self) -> bool:
         return self._is_goal

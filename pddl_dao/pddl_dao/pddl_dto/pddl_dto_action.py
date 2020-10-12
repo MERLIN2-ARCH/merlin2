@@ -1,11 +1,11 @@
 
-
+from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto_condition_efect import PDDL_DTO_ConditionEffect
 from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
 
 
-class PDDL_DTO_Action:
+class PDDL_DTO_Action(PDDL_DTO):
 
     def __init__(self, action_name: str,
                  parameters_list: List[PDDL_DTO_Object] = None,
@@ -19,6 +19,8 @@ class PDDL_DTO_Action:
         self.set_duration(duration)
         self.set_conditions_list(conditions_list)
         self.set_effects_list(effects_list)
+
+        PDDL_DTO.__init__(self)
 
     def get_action_name(self) -> str:
         return self._action_name

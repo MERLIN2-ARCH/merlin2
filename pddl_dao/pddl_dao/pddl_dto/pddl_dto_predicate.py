@@ -1,4 +1,5 @@
 
+from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
 
@@ -9,6 +10,8 @@ class PDDL_DTO_Predicate:
 
         self.set_predicate_name(predicate_name)
         self.set_pddl_types_list(pddl_types_list)
+
+        PDDL_DTO.__init__(self)
 
     def get_predicate_name(self) -> str:
         return self._predicate_name

@@ -1,11 +1,12 @@
 
+from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto_proposition import PDDL_DTO_Proposition
 from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
 from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
 
 
-class PDDL_DTO_ConditionEffect(PDDL_DTO_Proposition):
+class PDDL_DTO_ConditionEffect(PDDL_DTO_Proposition, PDDL_DTO):
 
     AT_START = "at start"
     AT_END = "at end"
@@ -18,8 +19,10 @@ class PDDL_DTO_ConditionEffect(PDDL_DTO_Proposition):
 
         self.set_time(time)
         self.set_is_negative(is_negative)
-        super(PDDL_DTO_ConditionEffect, self).__init__(
-            pddl_predicate, pddl_objects_list)
+
+        PDDL_DTO_Proposition.__init__(
+            self, pddl_predicate, pddl_objects_list)
+        PDDL_DTO.__init__(self)
 
     def get_time(self) -> str:
         return self._time
