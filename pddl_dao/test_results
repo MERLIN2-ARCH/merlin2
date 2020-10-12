@@ -14,9 +14,7 @@ test/pddl_dao_tests/test_pddl_dto_action.py ...........                  [ 84%]
 test/pddl_dao_tests/test_pddl_dto_object.py ...                          [ 87%]
 test/pddl_dao_tests/test_pddl_dto_predicate.py ....                      [ 92%]
 test/pddl_dao_tests/test_pddl_dto_proposition.py .....                   [ 97%]
-test/pddl_dao_tests/test_pddl_dto_type.py ..                             [100%]WARNING: Failed to generate report: No data to report.
-
-
+test/pddl_dao_tests/test_pddl_dto_type.py ..                             [100%]
 
 =============================== warnings summary ===============================
 test/pddl_dao_tests/test_mongoengine_pddl_dao_action.py: 48 warnings
@@ -29,7 +27,38 @@ test/pddl_dao_tests/test_mongoengine_pddl_dao_type.py: 16 warnings
 -- Docs: https://docs.pytest.org/en/stable/warnings.html
 
 ----------- coverage: platform linux, python 3.8.5-final-0 -----------
-Name    Stmts   Miss  Cover
----------------------------
+Name                                                                                                                                               Stmts   Miss  Cover
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/__init__.py                                                               0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/__init__.py                                          0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_connector.py                            12      2    83%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao.py                             27      4    85%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_action.py                     196     16    92%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_object.py                      84      4    95%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_predicate.py                   88      4    95%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_proposition.py                143     11    92%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_type.py                        66      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/pddl_mongoengine_models.py                          29      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/__init__.py                                              0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factories/__init__.py                           0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factories/mongoengine_pddl_dao_factory.py      17      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factories/pddl_dao_factory.py                  22      5    77%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factory_facory.py                              11      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/__init__.py                                            0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao_action.py                                    25      7    72%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao_object.py                                    25      7    72%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao_predicate.py                                 25      7    72%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao_proposition.py                               28      8    71%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao_type.py                                      25      7    72%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/__init__.py                                                      0      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto.py                                                      5      1    80%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_action.py                                              70      1    99%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_condition_efect.py                                     32      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_object.py                                              17      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_predicate.py                                           27      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_proposition.py                                         30      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dto/pddl_dto_type.py                                                11      0   100%
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                                                               1015     84    92%
 
-======================= 90 passed, 191 warnings in 4.18s =======================
+======================= 90 passed, 191 warnings in 4.01s =======================
