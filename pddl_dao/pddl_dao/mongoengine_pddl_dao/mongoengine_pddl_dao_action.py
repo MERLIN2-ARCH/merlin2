@@ -1,7 +1,7 @@
 
 from typing import List
 
-from pddl_dao.pddl_dao_interface.pddl_dao_action import PDDL_DAO_Action
+from pddl_dao.pddl_dao_interface.pddl_dao_action import PddlDaoAction
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_action as mongoengine_pddl_action_model
@@ -18,11 +18,11 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_proposition import Mongoengine_PDDL_DAO_Proposition
 
 
-class Mongoengine_PDDL_DAO_Action(PDDL_DAO_Action, Mongoengine_PDDL_DAO):
+class Mongoengine_PDDL_DAO_Action(PddlDaoAction, Mongoengine_PDDL_DAO):
 
     def __init__(self, uri: str = None):
 
-        PDDL_DAO_Action.__init__(self)
+        PddlDaoAction.__init__(self)
         Mongoengine_PDDL_DAO.__init__(self, uri)
 
         self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
