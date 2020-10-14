@@ -22,8 +22,7 @@ class PddlConditionEffectDto(PddlPropositionDto):
         self.set_time(time)
         self.set_is_negative(is_negative)
 
-        PddlPropositionDto.__init__(
-            self, PddlPredicateModel, pddl_objects_list)
+        super().__init__(PddlPredicateModel, pddl_objects_list)
 
     def get_time(self) -> str:
         """ time getter

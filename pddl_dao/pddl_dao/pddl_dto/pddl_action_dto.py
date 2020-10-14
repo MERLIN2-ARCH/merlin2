@@ -14,7 +14,8 @@ class PddlActionDto(PddlDto):
                  parameters_list: List[PddlObjectDto] = None,
                  conditions_list: List[PddlConditionEffectDto] = None,
                  effects_list: List[PddlConditionEffectDto] = None,
-                 durative: str = True, duration: int = 10):
+                 durative: str = True,
+                 duration: int = 10):
 
         self.set_action_name(action_name)
         self.set_parameters_list(parameters_list)
