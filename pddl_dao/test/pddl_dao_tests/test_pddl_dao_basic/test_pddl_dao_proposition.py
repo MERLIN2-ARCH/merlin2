@@ -1,6 +1,6 @@
 import unittest
 import coverage
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PDDL_DAO_FactoryFactory
+from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
 from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
 from pddl_dao.pddl_dto.pddl_dto_proposition import PddlDtoProposition
@@ -10,14 +10,14 @@ from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 class Test_PDDL_DAO_Proposition(unittest.TestCase):
 
     def setUp(self):
-        pddl_dao_factory_facory = PDDL_DAO_FactoryFactory()
+        pddl_dao_factory_facory = PddlDaoFactoryFactory()
         pddl_dao_factory = pddl_dao_factory_facory.create_pddl_dao_factory(
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
-        self.pddl_dao_type = pddl_dao_factory.create_dao_pddl_type()
-        self.pddl_dao_object = pddl_dao_factory.create_dao_pddl_object()
-        self.pddl_dao_predicate = pddl_dao_factory.create_dao_pddl_predicate()
-        self.pddl_dao_proposition = pddl_dao_factory.create_dao_pddl_proposition()
+        self.pddl_dao_type = pddl_dao_factory.create_pddl_dao_type()
+        self.pddl_dao_object = pddl_dao_factory.create_pddl_dao_object()
+        self.pddl_dao_predicate = pddl_dao_factory.create_pddl_dao_predicate()
+        self.pddl_dao_proposition = pddl_dao_factory.create_pddl_dao_proposition()
 
         self._robot_type = PddlDtoType("robot")
         self._wp_type = PddlDtoType("wp")
