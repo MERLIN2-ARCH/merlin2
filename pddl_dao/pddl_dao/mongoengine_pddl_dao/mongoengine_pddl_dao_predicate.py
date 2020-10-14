@@ -33,7 +33,7 @@ class MongoenginePddlDaoPredicate(PddlDaoPredicate, MongoenginePddlDao):
             mongoengine_pddl_predicate (mongoengine_pddl_predicate_model): Mongoengine pddl predicate document
 
         Returns:
-            PddlDto: PddlDtoPredicate
+            PddlDtoPredicate: PddlDtoPredicate
         """
 
         pddl_dto_type_list = []

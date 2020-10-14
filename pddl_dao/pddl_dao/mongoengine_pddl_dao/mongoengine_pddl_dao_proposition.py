@@ -66,7 +66,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             mongoengine_pddl_proposition (mongoengine_pddl_proposition_model): Mongoengine pddl proposition document
 
         Returns:
-            PddlDto: PddlDtoProposition
+            PddlDtoProposition: PddlDtoProposition
         """
 
         pddl_object_list = []
