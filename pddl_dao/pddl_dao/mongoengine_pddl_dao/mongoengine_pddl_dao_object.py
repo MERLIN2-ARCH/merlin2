@@ -6,7 +6,9 @@ from typing import List
 from pddl_dao.pddl_dao_interface.pddl_dao_object import PddlDaoObject
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlObjectModel as mongoengine_pddl_object_model
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import (
+    PddlObjectModel as mongoengine_pddl_object_model
+)
 
 from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
