@@ -52,6 +52,7 @@ class PddlDaoPredicate(ABC):
          Returns:
              bool: succeed
          """
+
     @abstractmethod
     def save(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
         """ save or update a PddlDtoPredicate

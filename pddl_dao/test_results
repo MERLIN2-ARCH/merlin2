@@ -6,7 +6,7 @@ collected 90 items
 
 test/pddl_dao_tests/test_mongoengine_pddl_dao_action.py ..............   [ 15%]
 test/pddl_dao_tests/test_mongoengine_pddl_dao_object.py ...........      [ 27%]
-test/pddl_dao_tests/test_mongoengine_pddl_dao_predicate.py ............  [ 41%]
+test/pddl_dao_tests/test_MongoenginePddlDaoPredicate.py ............  [ 41%]
 test/pddl_dao_tests/test_mongoengine_pddl_dao_proposition.py ........... [ 53%]
 .....                                                                    [ 58%]
 test/pddl_dao_tests/test_mongoengine_pddl_dao_type.py ............       [ 72%]
@@ -19,7 +19,7 @@ test/pddl_dao_tests/test_pddl_dto_type.py ..                             [100%]
 =============================== warnings summary ===============================
 test/pddl_dao_tests/test_mongoengine_pddl_dao_action.py: 48 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_dao_object.py: 7 warnings
-test/pddl_dao_tests/test_mongoengine_pddl_dao_predicate.py: 48 warnings
+test/pddl_dao_tests/test_MongoenginePddlDaoPredicate.py: 48 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_dao_proposition.py: 72 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_dao_type.py: 16 warnings
   Warning: count is deprecated. Use Collection.count_documents instead.
@@ -35,7 +35,7 @@ Name                                                                            
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao.py                             27      4    85%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_action.py                     196     16    92%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_object.py                      84      4    95%
-/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_predicate.py                   88      4    95%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/MongoenginePddlDaoPredicate.py                   88      4    95%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_proposition.py                143     11    92%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_dao_type.py                        66      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/mongoengine_pddl_dao/mongoengine_pddl_models.py                          29      0   100%

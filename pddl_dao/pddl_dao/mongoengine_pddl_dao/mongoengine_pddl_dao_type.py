@@ -29,7 +29,7 @@ class MongoenginePddlDaoType(PddlDaoType, MongoenginePddlDao):
             mongoengine_pddl_type (mongoengine_pddl_type_model): Mongoengine pddl type document
 
         Returns:
-            PddlDto: PddlDtoType
+            PddlDtoType: PddlDtoType
         """
 
         pddl_dto_type = PddlDtoType(mongoengine_pddl_type.type_name)

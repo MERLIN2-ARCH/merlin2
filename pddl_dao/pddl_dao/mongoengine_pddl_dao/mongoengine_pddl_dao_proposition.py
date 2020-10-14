@@ -16,10 +16,10 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import (
 from pddl_dao.pddl_dto.pddl_dto_proposition import PddlDtoProposition
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_predicate import (
-    Mongoengine_PDDL_DAO_Predicate
+    MongoenginePddlDaoPredicate
 )
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_object import (
-    Mongoengine_PDDL_DAO_Object
+    MongoenginePddlDaoObject
 )
 
 
@@ -31,8 +31,8 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         PddlDaoProposition.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
 
-        self._mongoengine_pddl_dao_object = Mongoengine_PDDL_DAO_Object(uri)
-        self._mongoengine_pddl_dao_predicate = Mongoengine_PDDL_DAO_Predicate(
+        self._mongoengine_pddl_dao_object = MongoenginePddlDaoObject(uri)
+        self._mongoengine_pddl_dao_predicate = MongoenginePddlDaoPredicate(
             uri)
 
     def _check_mongoengine_pddl_proposition_is_correct(self, mongoengine_pddl_proposition: mongoengine_pddl_proposition_model) -> bool:
@@ -47,15 +47,14 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         """
 
         # check if proposition is correct
-        if(len(mongoengine_pddl_proposition.pddl_objects) !=
-           len(mongoengine_pddl_proposition.PddlPredicateModel.pddl_types)):
+        if len(mongoengine_pddl_proposition.pddl_objects) != len(mongoengine_pddl_proposition.PddlPredicateModel.pddl_types):
             return False
 
         for pddl_object_model, pddl_type_model in zip(mongoengine_pddl_proposition.pddl_objects,
                                                       mongoengine_pddl_proposition.PddlPredicateModel.pddl_types):
 
             # check if proposition is correct
-            if(pddl_object_model.PddlTypeModel.type_name != pddl_type_model.type_name):
+            if pddl_object_model.PddlTypeModel.type_name != pddl_type_model.type_name:
                 return False
 
         return True
@@ -81,7 +80,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
                 pddl_object_model)
 
             # check if object exist
-            if(not pddl_dto_object):
+            if not pddl_dto_object:
                 return None
 
             pddl_object_list.append(pddl_dto_object)
@@ -106,15 +105,14 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         """
 
        # check if proposition is correct
-        if(len(pddl_dto_proposition.get_pddl_objects_list()) !=
-           len(pddl_dto_proposition.get_pddl_predicate().get_pddl_types_list())):
+        if len(pddl_dto_proposition.get_pddl_objects_list()) != len(pddl_dto_proposition.get_pddl_predicate().get_pddl_types_list()):
             return False
 
         for pddl_dto_object, pddl_dto_type in zip(pddl_dto_proposition.get_pddl_objects_list(),
                                                   pddl_dto_proposition.get_pddl_predicate().get_pddl_types_list()):
 
             # check if proposition is correct
-            if(pddl_dto_object.get_pddl_type().get_type_name() != pddl_dto_type.get_type_name()):
+            if pddl_dto_object.get_pddl_type().get_type_name() != pddl_dto_type.get_type_name():
                 return False
 
         return True
@@ -135,7 +133,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             pddl_dto_proposition.get_pddl_predicate())
 
         # check if predicate exist
-        if(not mongoengine_pddl_predicate):
+        if not mongoengine_pddl_predicate:
             return None
 
         mongoengine_pddl_proposition.PddlPredicateModel = mongoengine_pddl_predicate
@@ -148,7 +146,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
                 pddl_dto_object)
 
             # check if object exist
-            if(not mongoengine_pddl_object):
+            if not mongoengine_pddl_object:
                 return None
 
             mongoengine_pddl_proposition.pddl_objects.append(
@@ -166,7 +164,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             bool: PddlDtoProposition exists?
         """
 
-        if(self._get_mongoengine(pddl_dto_proposition)):
+        if self._get_mongoengine(pddl_dto_proposition):
             return True
         return False
 
@@ -186,7 +184,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             pddl_dto_proposition.get_pddl_predicate())
 
         # check if predicate exist
-        if(not mongoengine_pddl_predicate):
+        if not mongoengine_pddl_predicate:
             return None
 
         pddl_objects_list = []
@@ -195,7 +193,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
                 PddlObjectModel)
 
             # check if object exist
-            if(not mongoengine_pddl_object):
+            if not mongoengine_pddl_object:
                 return None
             pddl_objects_list.append(mongoengine_pddl_object)
 
@@ -204,7 +202,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             PddlPredicateModel=mongoengine_pddl_predicate, pddl_objects=pddl_objects_list)
 
         # check if proposition exist
-        if(not mongoengine_pddl_proposition):
+        if not mongoengine_pddl_proposition:
             return None
 
         return mongoengine_pddl_proposition[0]
@@ -223,7 +221,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             predicate_name=predicate_name)
 
         # check if predicate exist
-        if(not mongoengine_pddl_predicate):
+        if not mongoengine_pddl_predicate:
             return None
         mongoengine_pddl_predicate = mongoengine_pddl_predicate[0]
 
@@ -233,7 +231,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         pddl_dto_proposition_list = []
 
         for ele in mongoengine_pddl_proposition:
-            if(self._check_mongoengine_pddl_proposition_is_correct(ele)):
+            if self._check_mongoengine_pddl_proposition_is_correct(ele):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
         return pddl_dto_proposition_list
@@ -251,7 +249,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         pddl_dto_proposition_list = []
 
         for ele in mongoengine_pddl_proposition:
-            if(self._check_mongoengine_pddl_proposition_is_correct(ele)):
+            if self._check_mongoengine_pddl_proposition_is_correct(ele):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
         return pddl_dto_proposition_list
@@ -268,7 +266,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
         pddl_dto_proposition_list = []
 
         for ele in mongoengine_pddl_proposition:
-            if(self._check_mongoengine_pddl_proposition_is_correct(ele)):
+            if self._check_mongoengine_pddl_proposition_is_correct(ele):
                 pddl_dto_proposition_list.append(self._mongoengine_to_dto(ele))
 
         return pddl_dto_proposition_list
@@ -284,26 +282,26 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             bool: succeed
         """
 
-        if(self._exist_in_mongo(pddl_dto_proposition)):
+        if self._exist_in_mongo(pddl_dto_proposition):
             return False
 
-        if(not self._check_pddl_dto_proposition_is_correct(pddl_dto_proposition)):
+        if not self._check_pddl_dto_proposition_is_correct(pddl_dto_proposition):
             return False
 
        # propagating saving
         result = self._mongoengine_pddl_dao_predicate.save(
             pddl_dto_proposition.get_pddl_predicate())
-        if(not result):
+        if not result:
             return False
         for pddl_dto_object in pddl_dto_proposition.get_pddl_objects_list():
             result = self._mongoengine_pddl_dao_object.save(pddl_dto_object)
-            if(not result):
+            if not result:
                 return False
 
         mongoengine_pddl_proposition = self._dto_to_mongoengine(
             pddl_dto_proposition)
 
-        if(mongoengine_pddl_proposition):
+        if mongoengine_pddl_proposition:
             mongoengine_pddl_proposition.save()
             return True
 
@@ -321,18 +319,18 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             bool: succeed
         """
 
-        if(not self._check_pddl_dto_proposition_is_correct(pddl_dto_proposition)):
+        if not self._check_pddl_dto_proposition_is_correct(pddl_dto_proposition):
             return False
 
         mongoengine_pddl_proposition = self._get_mongoengine(
             pddl_dto_proposition)
 
         # check if proposition exists
-        if(mongoengine_pddl_proposition):
+        if mongoengine_pddl_proposition:
             new_pddl_proposition_mongoengine = self._dto_to_mongoengine(
                 pddl_dto_proposition)
 
-            if(new_pddl_proposition_mongoengine):
+            if new_pddl_proposition_mongoengine:
                 mongoengine_pddl_proposition.PddlPredicateModel = new_pddl_proposition_mongoengine.PddlPredicateModel
                 mongoengine_pddl_proposition.pddl_objects = new_pddl_proposition_mongoengine.pddl_objects
                 mongoengine_pddl_proposition.is_goal = new_pddl_proposition_mongoengine.is_goal
@@ -356,7 +354,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             bool: succeed
         """
 
-        if(self._exist_in_mongo(pddl_dto_proposition)):
+        if self._exist_in_mongo(pddl_dto_proposition):
             return self._update(pddl_dto_proposition)
 
         else:
@@ -377,7 +375,7 @@ class MongoenginePddlDaoProposition(PddlDaoProposition, MongoenginePddlDao):
             pddl_dto_proposition)
 
         # check if proposition exists
-        if(mongoengine_pddl_proposition):
+        if mongoengine_pddl_proposition:
             mongoengine_pddl_proposition.delete()
             return True
 
