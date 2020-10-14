@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from pddl_dao.mongoengine_pddl_dao.mongoengine_connector import MongoengineConnector
 from mongoengine import Document
-from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
+from pddl_dao.pddl_dto.pddl_dto import PddlDto
 
 
 class Mongoengine_PDDL_DAO(ABC):
@@ -24,17 +24,17 @@ class Mongoengine_PDDL_DAO(ABC):
             self.connector = MongoengineConnector()
 
     @abstractmethod
-    def _get_mongoengine(self, pddl_dto: PDDL_DTO) -> Document:
+    def _get_mongoengine(self, pddl_dto: PddlDto) -> Document:
         pass
 
     @abstractmethod
-    def _mongoengine_to_dto(self, pddl_mongoengine: Document) -> PDDL_DTO:
+    def _mongoengine_to_dto(self, pddl_mongoengine: Document) -> PddlDto:
         pass
 
     @abstractmethod
-    def _dto_to_mongoengine(self, pddl_dto: PDDL_DTO) -> Document:
+    def _dto_to_mongoengine(self, pddl_dto: PddlDto) -> Document:
         pass
 
     @abstractmethod
-    def _exist_in_mongo(self, pddl_dto: PDDL_DTO) -> bool:
+    def _exist_in_mongo(self, pddl_dto: PddlDto) -> bool:
         pass

@@ -1,8 +1,12 @@
+
+""" Pddl Dto Abstract Class """
+
 from abc import ABC, abstractmethod
 
 
-class PDDL_DTO(ABC):
+class PddlDto(ABC):
+    """ Pddl Dto Abstract Class """
 
     @abstractmethod
     def __str__(self):
-        return "PDDL_DTO abstract class"
+        return "PddlDto abstract class"

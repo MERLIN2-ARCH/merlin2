@@ -1,23 +1,23 @@
 import unittest
 import coverage
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
-from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
-from pddl_dao.pddl_dto.pddl_dto_proposition import PDDL_DTO_Proposition
-from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
+from pddl_dao.pddl_dto.pddl_dto_proposition import PddlDtoProposition
+from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 
 
 class Test_PDDL_DTO_Proposition(unittest.TestCase):
 
     def setUp(self):
 
-        self._robot_type = PDDL_DTO_Type("robot")
-        self._wp_type = PDDL_DTO_Type("wp")
-        self._robot_at = PDDL_DTO_Predicate(
+        self._robot_type = PddlDtoType("robot")
+        self._wp_type = PddlDtoType("wp")
+        self._robot_at = PddlDtoPredicate(
             "robot_at", [self._robot_type, self._wp_type])
 
-        self._rb1 = PDDL_DTO_Object(self._robot_type, "rb1")
-        self._wp1 = PDDL_DTO_Object(self._wp_type, "wp1")
-        self.pddl_dto_proposition = PDDL_DTO_Proposition(
+        self._rb1 = PddlDtoObject(self._robot_type, "rb1")
+        self._wp1 = PddlDtoObject(self._wp_type, "wp1")
+        self.pddl_dto_proposition = PddlDtoProposition(
             self._robot_at, [self._rb1, self._wp1])
 
     def test_pddl_dto_proposition_str(self):

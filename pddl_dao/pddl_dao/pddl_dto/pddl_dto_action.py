@@ -1,16 +1,19 @@
 
-from pddl_dao.pddl_dto.pddl_dto import PDDL_DTO
+""" Pddl Dto Action """
+
 from typing import List
-from pddl_dao.pddl_dto.pddl_dto_condition_efect import PDDL_DTO_ConditionEffect
-from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
+from pddl_dao.pddl_dto.pddl_dto import PddlDto
+from pddl_dao.pddl_dto.pddl_dto_condition_efect import PddlDtoConditionEffect
+from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 
 
-class PDDL_DTO_Action(PDDL_DTO):
+class PddlDtoAction(PddlDto):
+    """ Pddl Dto Action Class """
 
     def __init__(self, action_name: str,
-                 parameters_list: List[PDDL_DTO_Object] = None,
-                 conditions_list: List[PDDL_DTO_ConditionEffect] = None,
-                 effects_list: List[PDDL_DTO_ConditionEffect] = None,
+                 parameters_list: List[PddlDtoObject] = None,
+                 conditions_list: List[PddlDtoConditionEffect] = None,
+                 effects_list: List[PddlDtoConditionEffect] = None,
                  durative: str = True, duration: int = 10):
 
         self.set_action_name(action_name)
@@ -20,80 +23,157 @@ class PDDL_DTO_Action(PDDL_DTO):
         self.set_conditions_list(conditions_list)
         self.set_effects_list(effects_list)
 
-        PDDL_DTO.__init__(self)
+        PddlDto.__init__(self)
 
     def get_action_name(self) -> str:
+        """ pdd action name getter
+
+        Returns:
+            str: pddl action name
+        """
+
         return self._action_name
 
     def set_action_name(self, action_name: str):
+        """ pddl action name setter
+
+        Args:
+            action_name (str): pddl action name
+        """
+
         self._action_name = action_name
 
     def get_durative(self) -> bool:
+        """ durative getter
+
+        Returns:
+            bool: is this a durative action
+        """
+
         return self._durative
 
     def set_durative(self, durative: bool):
+        """ durative setter
+
+        Args:
+            durative (bool): is this a durative action
+        """
+
         self._durative = durative
 
     def get_duration(self) -> int:
+        """ duration getter
+
+        Returns:
+            int: action duration
+        """
+
         return self._duration
 
     def set_duration(self, duration: int):
+        """ duration setter
+
+        Args:
+            duration (int): action duration
+        """
+
         self._duration = duration
 
-    def get_parameters_list(self) -> List[PDDL_DTO_ConditionEffect]:
+    def get_parameters_list(self) -> List[PddlDtoConditionEffect]:
+        """ parameters list getter
+
+        Returns:
+            List[PddlDtoConditionEffect]: list of action parameters
+        """
+
         return self._parameters_list
 
-    def set_parameters_list(self, parameters_list: List[PDDL_DTO_ConditionEffect]):
-        if(parameters_list):
+    def set_parameters_list(self, parameters_list: List[PddlDtoConditionEffect]):
+        """ parameters list setter
+
+        Args:
+            parameters_list (List[PddlDtoConditionEffect]): list of action parameters
+        """
+
+        if parameters_list:
             self._parameters_list = parameters_list
         else:
             self._parameters_list = []
 
-    def get_conditions_list(self) -> List[PDDL_DTO_ConditionEffect]:
+    def get_conditions_list(self) -> List[PddlDtoConditionEffect]:
+        """ conditions list getter
+
+        Returns:
+            List[PddlDtoConditionEffect]: list of action conditions
+        """
+
         return self._conditions_list
 
-    def set_conditions_list(self, conditions_list: List[PDDL_DTO_ConditionEffect]):
-        if(conditions_list):
+    def set_conditions_list(self, conditions_list: List[PddlDtoConditionEffect]):
+        """ conditions list setter
+
+        Args:
+            conditions_list (List[PddlDtoConditionEffect]): list of action conditions
+        """
+
+        if conditions_list:
             self._conditions_list = conditions_list
         else:
             self._conditions_list = []
 
-    def get_effects_list(self) -> List[PDDL_DTO_ConditionEffect]:
+    def get_effects_list(self) -> List[PddlDtoConditionEffect]:
+        """ effects list getter
+
+        Returns:
+            List[PddlDtoConditionEffect]: list of action effects
+        """
         return self._effects_list
 
-    def set_effects_list(self, effects_list: List[PDDL_DTO_ConditionEffect]):
-        if(effects_list):
+    def set_effects_list(self, effects_list: List[PddlDtoConditionEffect]):
+        """ effects list setter
+
+        Args:
+            effects_list (List[PddlDtoConditionEffect]): list of action effects
+        """
+
+        if effects_list:
             self._effects_list = effects_list
         else:
             self._effects_list = []
 
     def __str__(self):
         string = "(:"
-        if(self._durative):
+
+        # durative
+        if self._durative:
             string += "durative-"
         string += "action " + self._action_name
 
+        # parameters
         string += "\n\t:parameters ("
         for parameter in self._parameters_list:
             string += " ?" + parameter.get_object_name() + " - " + \
                 parameter.get_pddl_type().get_type_name()
         string += ")"
 
-        if(self._durative):
+        # duration
+        if self._durative:
             string += "\n\t:duration (= ?duration " + str(self._duration) + ")"
 
-        if(self._durative):
+        # conditions
+        if self._durative:
             string += "\n\t:condition ("
         else:
             string += "\n\t:precondition ("
-        if(len(self._conditions_list) > 1):
+        if len(self._conditions_list) > 1:
             string += "and"
         for condi in self._conditions_list:
             string += "\n\t\t" + str(condi)
         string += "\n\t)"
 
+        # effects
         string += "\n\t:effect ("
-        if(len(self._effects_list) > 1):
+        if len(self._effects_list) > 1:
             string += "and"
         for effect in self._effects_list:
             string += "\n\t\t" + str(effect)

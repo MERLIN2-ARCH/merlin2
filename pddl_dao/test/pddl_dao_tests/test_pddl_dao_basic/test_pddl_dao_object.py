@@ -1,8 +1,8 @@
 import unittest
 import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PDDL_DAO_FactoryFactory
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
-from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 
 
 class Test_PDDL_DAO_Object(unittest.TestCase):
@@ -14,8 +14,8 @@ class Test_PDDL_DAO_Object(unittest.TestCase):
 
         self.pddl_dao_object = pddl_dao_factory.create_dao_pddl_object()
 
-        pddl_dto_type = PDDL_DTO_Type("robot")
-        self.pddl_dto_object = PDDL_DTO_Object(pddl_dto_type, "rb1")
+        pddl_dto_type = PddlDtoType("robot")
+        self.pddl_dto_object = PddlDtoObject(pddl_dto_type, "rb1")
 
     def tearDown(self):
         self.pddl_dao_object.delete_all()

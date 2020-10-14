@@ -1,11 +1,11 @@
 import unittest
 import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PDDL_DAO_FactoryFactory
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
-from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
-from pddl_dao.pddl_dto.pddl_dto_action import PDDL_DTO_Action
-from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
-from pddl_dao.pddl_dto.pddl_dto_condition_efect import PDDL_DTO_ConditionEffect
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
+from pddl_dao.pddl_dto.pddl_dto_action import PddlDtoAction
+from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
+from pddl_dao.pddl_dto.pddl_dto_condition_efect import PddlDtoConditionEffect
 
 
 class Test_PDDL_DAO_Action(unittest.TestCase):
@@ -19,29 +19,29 @@ class Test_PDDL_DAO_Action(unittest.TestCase):
         self.pddl_dao_predicate = pddl_dao_factory.create_dao_pddl_predicate()
         self.pddl_dao_action = pddl_dao_factory.create_dao_pddl_action()
 
-        self._robot_type = PDDL_DTO_Type("robot")
-        self._wp_type = PDDL_DTO_Type("wp")
-        self._robot_at = PDDL_DTO_Predicate(
+        self._robot_type = PddlDtoType("robot")
+        self._wp_type = PddlDtoType("wp")
+        self._robot_at = PddlDtoPredicate(
             "robot_at", [self._robot_type, self._wp_type])
 
-        r = PDDL_DTO_Object(self._robot_type, "r")
-        s = PDDL_DTO_Object(self._wp_type, "s")
-        d = PDDL_DTO_Object(self._wp_type, "d")
+        r = PddlDtoObject(self._robot_type, "r")
+        s = PddlDtoObject(self._wp_type, "s")
+        d = PddlDtoObject(self._wp_type, "d")
 
-        self._condition_1 = PDDL_DTO_ConditionEffect(PDDL_DTO_ConditionEffect.AT_START,
-                                                     self._robot_at,
-                                                     [r, s])
+        self._condition_1 = PddlDtoConditionEffect(PddlDtoConditionEffect.AT_START,
+                                                   self._robot_at,
+                                                   [r, s])
 
-        self._effect_1 = PDDL_DTO_ConditionEffect(PDDL_DTO_ConditionEffect.AT_START,
-                                                  self._robot_at,
-                                                  [r, s],
-                                                  is_negative=True)
+        self._effect_1 = PddlDtoConditionEffect(PddlDtoConditionEffect.AT_START,
+                                                self._robot_at,
+                                                [r, s],
+                                                is_negative=True)
 
-        self._effect_2 = PDDL_DTO_ConditionEffect(PDDL_DTO_ConditionEffect.AT_END,
-                                                  self._robot_at,
-                                                  [r, d])
+        self._effect_2 = PddlDtoConditionEffect(PddlDtoConditionEffect.AT_END,
+                                                self._robot_at,
+                                                [r, d])
 
-        self.pddl_dto_action = PDDL_DTO_Action(
+        self.pddl_dto_action = PddlDtoAction(
             "navigation", [r, s, d], [self._condition_1], [self._effect_1, self._effect_2])
 
     def tearDown(self):
@@ -99,7 +99,7 @@ class Test_PDDL_DAO_Action(unittest.TestCase):
     def test_pddl_dao_action_update_true(self):
         self.pddl_dao_action._save(self.pddl_dto_action)
         self.pddl_dto_action.get_effects_list()[0].set_time(
-            PDDL_DTO_ConditionEffect.AT_END)
+            PddlDtoConditionEffect.AT_END)
         result = self.pddl_dao_action._update(self.pddl_dto_action)
         self.assertTrue(result)
         self.pddl_dto_action = self.pddl_dao_action.get("navigation")

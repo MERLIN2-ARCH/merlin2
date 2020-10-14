@@ -1,16 +1,16 @@
 import unittest
 import coverage
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
-from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
 
 
 class Test_PDDL_DTO_Predicate(unittest.TestCase):
 
     def setUp(self):
 
-        robot_type = PDDL_DTO_Type("robot")
-        wp_type = PDDL_DTO_Type("wp")
-        self.pddl_dto_predicate = PDDL_DTO_Predicate(
+        robot_type = PddlDtoType("robot")
+        wp_type = PddlDtoType("wp")
+        self.pddl_dto_predicate = PddlDtoPredicate(
             "robot_at", [robot_type, wp_type])
 
     def test_pddl_dto_predicate_str(self):

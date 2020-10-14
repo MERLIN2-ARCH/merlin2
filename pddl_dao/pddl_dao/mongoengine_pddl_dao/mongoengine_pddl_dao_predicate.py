@@ -6,8 +6,8 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_predicate as mongoengine_pddl_predicate_model
 
-from pddl_dao.pddl_dto.pddl_dto_predicate import PDDL_DTO_Predicate
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
+from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_PDDL_DAO_Type
 
@@ -21,20 +21,20 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
 
-    def _mongoengine_to_dto(self, mongoengine_pddl_predicate: mongoengine_pddl_predicate_model) -> PDDL_DTO_Predicate:
+    def _mongoengine_to_dto(self, mongoengine_pddl_predicate: mongoengine_pddl_predicate_model) -> PddlDtoPredicate:
 
         pddl_dto_type_list = []
 
         for pddl_type in mongoengine_pddl_predicate.pddl_types:
-            pddl_dto_type = PDDL_DTO_Type(pddl_type.type_name)
+            pddl_dto_type = PddlDtoType(pddl_type.type_name)
             pddl_dto_type_list.append(pddl_dto_type)
 
-        pddl_dto_predicate = PDDL_DTO_Predicate(
+        pddl_dto_predicate = PddlDtoPredicate(
             mongoengine_pddl_predicate.predicate_name, pddl_dto_type_list)
 
         return pddl_dto_predicate
 
-    def _dto_to_mongoengine(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> mongoengine_pddl_predicate_model:
+    def _dto_to_mongoengine(self, pddl_dto_predicate: PddlDtoPredicate) -> mongoengine_pddl_predicate_model:
 
         mongoengine_pddl_predicate = mongoengine_pddl_predicate_model()
 
@@ -53,13 +53,13 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         return mongoengine_pddl_predicate
 
-    def _exist_in_mongo(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> bool:
+    def _exist_in_mongo(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
 
         if(self._get_mongoengine(pddl_dto_predicate)):
             return True
         return False
 
-    def _get_mongoengine(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> mongoengine_pddl_predicate_model:
+    def _get_mongoengine(self, pddl_dto_predicate: PddlDtoPredicate) -> mongoengine_pddl_predicate_model:
 
         mongoengine_pddl_predicate = mongoengine_pddl_predicate_model.objects(
             predicate_name=pddl_dto_predicate.get_predicate_name())
@@ -69,7 +69,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         return mongoengine_pddl_predicate[0]
 
-    def get(self, predicate_name: str) -> PDDL_DTO_Predicate:
+    def get(self, predicate_name: str) -> PddlDtoPredicate:
 
         mongoengine_pddl_predicate = mongoengine_pddl_predicate_model.objects(
             predicate_name=predicate_name)
@@ -84,7 +84,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return None
 
-    def get_all(self) -> List[PDDL_DTO_Predicate]:
+    def get_all(self) -> List[PddlDtoPredicate]:
 
         mongoengine_pddl_predicate = mongoengine_pddl_predicate_model.objects
         pddl_dto_predicate_list = []
@@ -95,7 +95,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
 
         return pddl_dto_predicate_list
 
-    def _save(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> bool:
+    def _save(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
 
         if(self._exist_in_mongo(pddl_dto_predicate)):
             return False
@@ -116,7 +116,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def _update(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> bool:
+    def _update(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
 
         mongoengine_pddl_predicate = self._get_mongoengine(pddl_dto_predicate)
 
@@ -137,7 +137,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return False
 
-    def save(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> bool:
+    def save(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
 
         if(self._exist_in_mongo(pddl_dto_predicate)):
             return self._update(pddl_dto_predicate)
@@ -145,7 +145,7 @@ class Mongoengine_PDDL_DAO_Predicate(PDDL_DAO_Predicate, Mongoengine_PDDL_DAO):
         else:
             return self._save(pddl_dto_predicate)
 
-    def delete(self, pddl_dto_predicate: PDDL_DTO_Predicate) -> bool:
+    def delete(self, pddl_dto_predicate: PddlDtoPredicate) -> bool:
 
         mongoengine_pddl_predicate = self._get_mongoengine(pddl_dto_predicate)
 

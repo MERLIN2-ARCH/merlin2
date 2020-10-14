@@ -1,15 +1,15 @@
 import unittest
 import coverage
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
-from pddl_dao.pddl_dto.pddl_dto_object import PDDL_DTO_Object
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 
 
 class Test_PDDL_DTO_Object(unittest.TestCase):
 
     def setUp(self):
 
-        pddl_dto_type = PDDL_DTO_Type("robot")
-        self.pddl_dto_object = PDDL_DTO_Object(pddl_dto_type, "rb1")
+        pddl_dto_type = PddlDtoType("robot")
+        self.pddl_dto_object = PddlDtoObject(pddl_dto_type, "rb1")
 
     def test_pddl_dto_object_str(self):
         self.assertEqual("rb1 - robot", str(self.pddl_dto_object))

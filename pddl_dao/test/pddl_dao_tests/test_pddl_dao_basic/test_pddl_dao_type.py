@@ -1,7 +1,7 @@
 import unittest
 import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PDDL_DAO_FactoryFactory
-from pddl_dao.pddl_dto.pddl_dto_type import PDDL_DTO_Type
+from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 
 
 class Test_PDDL_DAO_Type(unittest.TestCase):
@@ -12,7 +12,7 @@ class Test_PDDL_DAO_Type(unittest.TestCase):
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
         self.pddl_dao_type = pddl_dao_factory.create_dao_pddl_type()
-        self.pddl_dto_type = PDDL_DTO_Type("robot")
+        self.pddl_dto_type = PddlDtoType("robot")
 
     def tearDown(self):
         self.pddl_dao_type.delete_all()
