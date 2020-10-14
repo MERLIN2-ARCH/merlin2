@@ -2,7 +2,6 @@
 """ Pddl Action Dao Interface """
 
 from abc import abstractmethod
-from typing import List
 from pddl_dao.pddl_dto.pddl_action_dto import PddlActionDto
 from pddl_dao.pddl_dao_interface.generic_pddl_dao import GenericPddlDao
 

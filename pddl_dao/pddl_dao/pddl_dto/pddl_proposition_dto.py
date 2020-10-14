@@ -47,14 +47,14 @@ class PddlPropositionDto(PddlDto):
 
         return self._pddl_predicate
 
-    def set_pddl_predicate(self, PddlPredicateModel: PddlPredicateDto):
+    def set_pddl_predicate(self, pddl_predicate: PddlPredicateDto):
         """ pddl predicate setter
 
         Args:
-            PddlPredicateModel (PddlPredicateDto): pddl predicate
+            pddl_predicate (PddlPredicateDto): pddl predicate
         """
 
-        self._pddl_predicate = PddlPredicateModel
+        self._pddl_predicate = pddl_predicate
 
     def get_pddl_objects_list(self) -> List[PddlObjectDto]:
         """ pddl objects list getter
@@ -80,8 +80,8 @@ class PddlPropositionDto(PddlDto):
     def __str__(self):
         string = "(" + self._pddl_predicate._predicate_name
 
-        for PddlObjectModel in self._pddl_objects_list:
-            string += " " + PddlObjectModel.get_object_name()
+        for pddl_object in self._pddl_objects_list:
+            string += " " + pddl_object.get_object_name()
 
         string += ")"
 

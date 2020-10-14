@@ -24,14 +24,14 @@ class PddlObjectDto(PddlDto):
 
         return self._pddl_type
 
-    def set_pddl_type(self, PddlTypeModel: PddlTypeDto):
+    def set_pddl_type(self, pddl_type: PddlTypeDto):
         """ pddl type setter
 
         Args:
-            PddlTypeModel (PddlTypeDto): pddl type
+            pddl_type (PddlTypeDto): pddl type
         """
 
-        self._pddl_type = PddlTypeModel
+        self._pddl_type = pddl_type
 
     def get_object_name(self) -> str:
         """ pddl object name getter
