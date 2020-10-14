@@ -15,7 +15,7 @@ class PddlDtoConditionEffect(PddlDtoProposition):
     OVER_ALL = "over all"
 
     def __init__(self, time: str,
-                 pddl_predicate: PddlDtoPredicate,
+                 PddlPredicateModel: PddlDtoPredicate,
                  pddl_objects_list: List[PddlDtoObject] = None,
                  is_negative: bool = False):
 
@@ -23,7 +23,7 @@ class PddlDtoConditionEffect(PddlDtoProposition):
         self.set_is_negative(is_negative)
 
         PddlDtoProposition.__init__(
-            self, pddl_predicate, pddl_objects_list)
+            self, PddlPredicateModel, pddl_objects_list)
 
     def get_time(self) -> str:
         """ time getter

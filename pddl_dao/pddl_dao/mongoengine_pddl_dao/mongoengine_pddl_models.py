@@ -1,52 +1,79 @@
+
+""" mongoengine models"""
+
 import mongoengine
 
 
-class pddl_type(mongoengine.Document):
+class PddlTypeModel(mongoengine.Document):
+    """ pddl type model """
+
+    meta = {"collection": "pddl_type"}
     type_name = mongoengine.StringField(unique=True)
 
 
-class pddl_object(mongoengine.Document):
+class PddlObjectModel(mongoengine.Document):
+    """ pddl object model """
+
+    meta = {"collection": "pddl_object"}
     object_name = mongoengine.StringField(unique=True)
-    pddl_type = mongoengine.ReferenceField(
-        pddl_type, reverse_delete_rule=mongoengine.CASCADE)
+    PddlTypeModel = mongoengine.ReferenceField(
+        PddlTypeModel, reverse_delete_rule=mongoengine.CASCADE)
 
 
-class pddl_predicate(mongoengine.Document):
+class PddlPredicateModel(mongoengine.Document):
+    """ pddl predicate model """
+
+    meta = {"collection": "pddl_predicate"}
     predicate_name = mongoengine.StringField(unique=True)
     pddl_types = mongoengine.ListField(
-        mongoengine.ReferenceField(pddl_type, reverse_delete_rule=mongoengine.CASCADE), unique=True)
+        mongoengine.ReferenceField(PddlTypeModel,
+                                   reverse_delete_rule=mongoengine.CASCADE),
+        unique=True)
 
 
-class pddl_proposition(mongoengine.Document):
-    pddl_predicate = mongoengine.ReferenceField(
-        pddl_predicate, reverse_delete_rule=mongoengine.CASCADE)
+class PddlPropositionModel(mongoengine.Document):
+    """ pddl proposition model """
+
+    meta = {"collection": "pddl_proposition"}
+    PddlPredicateModel = mongoengine.ReferenceField(
+        PddlPredicateModel, reverse_delete_rule=mongoengine.CASCADE)
     pddl_objects = mongoengine.ListField(
-        mongoengine.ReferenceField(pddl_object, reverse_delete_rule=mongoengine.CASCADE))
+        mongoengine.ReferenceField(PddlObjectModel, reverse_delete_rule=mongoengine.CASCADE))
     is_goal = mongoengine.BooleanField()
 
 
-class pddl_parameter(mongoengine.EmbeddedDocument):
+class PddlParameterModel(mongoengine.EmbeddedDocument):
+    """ pddl parameter model """
+
+    meta = {"collection": "pddl_parameter"}
     parameter_name = mongoengine.StringField(unique=True)
-    pddl_type = mongoengine.ReferenceField(pddl_type)
+    PddlTypeModel = mongoengine.ReferenceField(PddlTypeModel)
 
 
-class pddl_condition_effect(mongoengine.EmbeddedDocument):
+class PddlConditionEffectModel(mongoengine.EmbeddedDocument):
+    """ pddl contion/effect model """
+
+    meta = {"collection": "pddl_condition_effect"}
     time = mongoengine.StringField()
     is_negative = mongoengine.BooleanField()
-    pddl_predicate = mongoengine.ReferenceField(pddl_predicate)
-    pddl_parameters = mongoengine.EmbeddedDocumentListField(pddl_parameter)
+    PddlPredicateModel = mongoengine.ReferenceField(PddlPredicateModel)
+    pddl_parameters = mongoengine.EmbeddedDocumentListField(PddlParameterModel)
 
 
-class pddl_action(mongoengine.Document):
+class PddlActionModel(mongoengine.Document):
+    """ pddl action model """
+
+    meta = {"collection": "pddl_action"}
 
     action_name = mongoengine.StringField(unique=True)
     duration = mongoengine.IntField(default=10)
     durative = mongoengine.BooleanField(default=True)
 
     _pddl_predicates_used = mongoengine.ListField(
-        mongoengine.ReferenceField(pddl_predicate, reverse_delete_rule=mongoengine.CASCADE))
+        mongoengine.ReferenceField(PddlPredicateModel, reverse_delete_rule=mongoengine.CASCADE))
 
-    pddl_parameters = mongoengine.EmbeddedDocumentListField(pddl_parameter)
+    pddl_parameters = mongoengine.EmbeddedDocumentListField(PddlParameterModel)
 
-    conditions = mongoengine.EmbeddedDocumentListField(pddl_condition_effect)
-    effects = mongoengine.EmbeddedDocumentListField(pddl_condition_effect)
+    conditions = mongoengine.EmbeddedDocumentListField(
+        PddlConditionEffectModel)
+    effects = mongoengine.EmbeddedDocumentListField(PddlConditionEffectModel)

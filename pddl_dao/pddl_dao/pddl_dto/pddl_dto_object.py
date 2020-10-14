@@ -8,9 +8,9 @@ from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 class PddlDtoObject(PddlDto):
     """ Pddl Dto Object Class """
 
-    def __init__(self, pddl_type: PddlDtoType, object_name: str):
+    def __init__(self, PddlTypeModel: PddlDtoType, object_name: str):
 
-        self.set_pddl_type(pddl_type)
+        self.set_pddl_type(PddlTypeModel)
         self.set_object_name(object_name)
 
         PddlDto.__init__(self)
@@ -24,14 +24,14 @@ class PddlDtoObject(PddlDto):
 
         return self._pddl_type
 
-    def set_pddl_type(self, pddl_type: PddlDtoType):
+    def set_pddl_type(self, PddlTypeModel: PddlDtoType):
         """ pddl type setter
 
         Args:
-            pddl_type (PddlDtoType): pddl type
+            PddlTypeModel (PddlDtoType): pddl type
         """
 
-        self._pddl_type = pddl_type
+        self._pddl_type = PddlTypeModel
 
     def get_object_name(self) -> str:
         """ pddl object name getter

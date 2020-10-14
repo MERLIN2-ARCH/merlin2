@@ -2,31 +2,31 @@
 from typing import List
 
 from pddl_dao.pddl_dao_interface.pddl_dao_predicate import PddlDaoPredicate
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_predicate as mongoengine_pddl_predicate_model
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlPredicateModel as mongoengine_pddl_predicate_model
 
 from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
 from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_PDDL_DAO_Type
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import MongoenginePddlDaoType
 
 
-class Mongoengine_PDDL_DAO_Predicate(PddlDaoPredicate, Mongoengine_PDDL_DAO):
+class Mongoengine_PDDL_DAO_Predicate(PddlDaoPredicate, MongoenginePddlDao):
 
     def __init__(self, uri: str = None):
 
         PddlDaoPredicate.__init__(self)
-        Mongoengine_PDDL_DAO.__init__(self, uri)
+        MongoenginePddlDao.__init__(self, uri)
 
-        self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
+        self._mongoengine_pddl_dao_type = MongoenginePddlDaoType(uri)
 
     def _mongoengine_to_dto(self, mongoengine_pddl_predicate: mongoengine_pddl_predicate_model) -> PddlDtoPredicate:
 
         pddl_dto_type_list = []
 
-        for pddl_type in mongoengine_pddl_predicate.pddl_types:
-            pddl_dto_type = PddlDtoType(pddl_type.type_name)
+        for PddlTypeModel in mongoengine_pddl_predicate.pddl_types:
+            pddl_dto_type = PddlDtoType(PddlTypeModel.type_name)
             pddl_dto_type_list.append(pddl_dto_type)
 
         pddl_dto_predicate = PddlDtoPredicate(

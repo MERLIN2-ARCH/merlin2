@@ -2,29 +2,29 @@
 from typing import List
 
 from pddl_dao.pddl_dao_interface.pddl_dao_object import PddlDaoObject
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import Mongoengine_PDDL_DAO
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import pddl_object as mongoengine_pddl_object_model
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlObjectModel as mongoengine_pddl_object_model
 
 from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
 from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import Mongoengine_PDDL_DAO_Type
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import MongoenginePddlDaoType
 
 
-class Mongoengine_PDDL_DAO_Object(PddlDaoObject, Mongoengine_PDDL_DAO):
+class Mongoengine_PDDL_DAO_Object(PddlDaoObject, MongoenginePddlDao):
 
     def __init__(self, uri: str = None):
 
         PddlDaoObject.__init__(self)
-        Mongoengine_PDDL_DAO.__init__(self, uri)
+        MongoenginePddlDao.__init__(self, uri)
 
-        self._mongoengine_pddl_dao_type = Mongoengine_PDDL_DAO_Type(uri)
+        self._mongoengine_pddl_dao_type = MongoenginePddlDaoType(uri)
 
     def _mongoengine_to_dto(self, mongoengine_pddl_object: mongoengine_pddl_object_model) -> PddlDtoObject:
 
         pddl_dto_type = PddlDtoType(
-            mongoengine_pddl_object.pddl_type.type_name)
+            mongoengine_pddl_object.PddlTypeModel.type_name)
 
         pddl_dto_object = PddlDtoObject(pddl_dto_type,
                                         mongoengine_pddl_object.object_name)
@@ -43,7 +43,7 @@ class Mongoengine_PDDL_DAO_Object(PddlDaoObject, Mongoengine_PDDL_DAO):
 
         mongoengine_pddl_object.object_name = pddl_dto_object.get_object_name()
 
-        mongoengine_pddl_object.pddl_type = mongoengine_pddl_type
+        mongoengine_pddl_object.PddlTypeModel = mongoengine_pddl_type
 
         return mongoengine_pddl_object
 
@@ -121,7 +121,7 @@ class Mongoengine_PDDL_DAO_Object(PddlDaoObject, Mongoengine_PDDL_DAO):
 
             if(new_pddl_object_mongoengine):
                 mongoengine_pddl_object.object_name = new_pddl_object_mongoengine.object_name
-                mongoengine_pddl_object.pddl_type = new_pddl_object_mongoengine.pddl_type
+                mongoengine_pddl_object.PddlTypeModel = new_pddl_object_mongoengine.PddlTypeModel
                 mongoengine_pddl_object.save()
             else:
                 return False

@@ -2,7 +2,7 @@
 """ Mongoengine Pddl Dao Facory """
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import (
-    Mongoengine_PDDL_DAO_Type
+    MongoenginePddlDaoType
 )
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_object import (
     Mongoengine_PDDL_DAO_Object
@@ -11,7 +11,7 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_predicate import (
     Mongoengine_PDDL_DAO_Predicate
 )
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_proposition import (
-    Mongoengine_PDDL_DAO_Proposition
+    MongoenginePddlDaoProposition
 )
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_action import (
     Mongoengine_PDDL_DAO_Action
@@ -23,17 +23,17 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDa
 class MongoenginePddlDaoFactory(PddlDaoFactory):
     """ Mongoengine Pddl Dao Facory Class """
 
-    def create_pddl_dao_type(self, uri: str = None) -> Mongoengine_PDDL_DAO_Type:
+    def create_pddl_dao_type(self, uri: str = None) -> MongoenginePddlDaoType:
         """ create a mongoengine pddl dao type object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            Mongoengine_PDDL_DAO_Type: mongoengine dao for pddl type
+            MongoenginePddlDaoType: mongoengine dao for pddl type
         """
 
-        return Mongoengine_PDDL_DAO_Type(uri=uri)
+        return MongoenginePddlDaoType(uri=uri)
 
     def create_pddl_dao_predicate(self, uri: str = None) -> Mongoengine_PDDL_DAO_Predicate:
         """ create a mongoengine pddl dao predicate object
@@ -71,14 +71,14 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
 
         return Mongoengine_PDDL_DAO_Object(uri=uri)
 
-    def create_pddl_dao_proposition(self, uri: str = None) -> Mongoengine_PDDL_DAO_Proposition:
+    def create_pddl_dao_proposition(self, uri: str = None) -> MongoenginePddlDaoProposition:
         """ create a mongoengine pddl dao proposition object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            Mongoengine_PDDL_DAO_Proposition: mongoengine dao for pddl proposition
+            MongoenginePddlDaoProposition: mongoengine dao for pddl proposition
         """
 
-        return Mongoengine_PDDL_DAO_Proposition(uri=uri)
+        return MongoenginePddlDaoProposition(uri=uri)

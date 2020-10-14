@@ -60,8 +60,8 @@ class PddlDtoPredicate(PddlDto):
 
         if self._pddl_types_list:
             for i in range(len(self._pddl_types_list)):
-                pddl_type = self._pddl_types_list[i]
-                type_name = pddl_type.get_type_name()
+                PddlTypeModel = self._pddl_types_list[i]
+                type_name = PddlTypeModel.get_type_name()
                 string += " ?" + type_name[0] + str(i) + " - " + type_name
 
         string += ")"
