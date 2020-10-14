@@ -35,7 +35,7 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
         """
 
         pddl_type_dto = PddlTypeDto(
-            pddl_object_model.PddlTypeModel.type_name)
+            pddl_object_model.pddl_type.type_name)
 
         pddl_object_dto = PddlObjectDto(pddl_type_dto,
                                         pddl_object_model.object_name)
@@ -62,7 +62,7 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
 
         pddl_object_model.object_name = pddl_object_dto.get_object_name()
 
-        pddl_object_model.PddlTypeModel = pddl_type_model
+        pddl_object_model.pddl_type = pddl_type_model
 
         return pddl_object_model
 
@@ -119,8 +119,7 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
                 pddl_object_model)
             return pddl_object_dto
 
-        else:
-            return None
+        return None
 
     def get_all(self) -> List[PddlObjectDto]:
         """ get all PddlObjectDto
@@ -166,8 +165,7 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
             pddl_object_model.save()
             return True
 
-        else:
-            return False
+        return False
 
     def _update(self, pddl_object_dto: PddlObjectDto) -> bool:
         """ update a PddlObjectDto
@@ -189,15 +187,14 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
 
             if new_pddl_object_model:
                 pddl_object_model.object_name = new_pddl_object_model.object_name
-                pddl_object_model.PddlTypeModel = new_pddl_object_model.PddlTypeModel
+                pddl_object_model.pddl_type = new_pddl_object_model.pddl_type
                 pddl_object_model.save()
             else:
                 return False
 
             return True
 
-        else:
-            return False
+        return False
 
     def save(self, pddl_object_dto: PddlObjectDto) -> bool:
         """ save or update a PddlObjectDto
@@ -213,8 +210,7 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_object_dto):
             return self._update(pddl_object_dto)
 
-        else:
-            return self._save(pddl_object_dto)
+        return self._save(pddl_object_dto)
 
     def delete(self, pddl_object_dto: PddlObjectDto) -> bool:
         """ delete a PddlObjectDto

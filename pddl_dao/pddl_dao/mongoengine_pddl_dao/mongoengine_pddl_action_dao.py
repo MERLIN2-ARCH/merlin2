@@ -39,14 +39,14 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
         self._me_pddl_proposition_dao = MongoenginePddlPropositionDao(uri)
         self._me_pddl_predicate_dao = MongoenginePddlPredicateDao(uri)
 
-    def __condition_effect_mongoengine_to_dto(self,
-                                              pddl_condition_effect_model: PddlConditionEffectModel,
-                                              parameter_dict: dict) -> PddlConditionEffectDto:
+    def __condition_effect_model_to_dto(self,
+                                        pddl_condition_effect_model: PddlConditionEffectModel,
+                                        parameter_dict: dict) -> PddlConditionEffectDto:
 
         pddl_predicate_dao = MongoenginePddlPredicateDao(self.get_uri())
 
         pddl_dto_precicate = pddl_predicate_dao.get(
-            pddl_condition_effect_model.PddlPredicateModel.predicate_name)
+            pddl_condition_effect_model.pddl_predicate.predicate_name)
 
         pddl_dto_condition_effect = PddlConditionEffectDto(
             pddl_condition_effect_model.time,
@@ -55,8 +55,8 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
         pddl_dto_objects_list = []
 
-        for param in pddl_condition_effect_model.pddl_parameters:
-            pddl_object_dto = parameter_dict[param.parameter_name]
+        for pddl_parameter_model in pddl_condition_effect_model.pddl_parameters:
+            pddl_object_dto = parameter_dict[pddl_parameter_model.parameter_name]
             pddl_dto_objects_list.append(pddl_object_dto)
 
         pddl_dto_condition_effect.set_pddl_objects_list(pddl_dto_objects_list)
@@ -76,23 +76,24 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
         parameter_dict = {}
 
         # ACTION PARAMS
-        for param in pddl_action_model.pddl_parameters:
-            pddl_type_dto = PddlTypeDto(param.PddlTypeModel.type_name)
+        for pddl_parameter_model in pddl_action_model.pddl_parameters:
+            pddl_type_dto = PddlTypeDto(
+                pddl_parameter_model.pddl_type.type_name)
             pddl_object_dto = PddlObjectDto(
-                pddl_type_dto, param.parameter_name)
-            parameter_dict[param.parameter_name] = pddl_object_dto
+                pddl_type_dto, pddl_parameter_model.parameter_name)
+            parameter_dict[pddl_parameter_model.parameter_name] = pddl_object_dto
             parameters_list.append(pddl_object_dto)
 
         # ACTION CONDIS
-        for condi in pddl_action_model.conditions:
-            pddl_dto_condition_effect = self.__condition_effect_mongoengine_to_dto(
-                condi, parameter_dict)
+        for pddl_condition_model in pddl_action_model.conditions:
+            pddl_dto_condition_effect = self.__condition_effect_model_to_dto(
+                pddl_condition_model, parameter_dict)
             conditions_list.append(pddl_dto_condition_effect)
 
         # ACTION EFFECTS
-        for effect in pddl_action_model.effects:
-            pddl_dto_condition_effect = self.__condition_effect_mongoengine_to_dto(
-                effect, parameter_dict)
+        for pddl_effect_model in pddl_action_model.effects:
+            pddl_dto_condition_effect = self.__condition_effect_model_to_dto(
+                pddl_effect_model, parameter_dict)
             effects_list.append(pddl_dto_condition_effect)
 
         pddl_action_dto.set_parameters_list(parameters_list)
@@ -101,9 +102,9 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
         return pddl_action_dto
 
-    def __condition_effect_dto_to_mongoengine(self,
-                                              pddl_dto_condition_effect: PddlConditionEffectDto,
-                                              parameter_dict: dict) -> PddlConditionEffectModel:
+    def __condition_effect_dto_to_model(self,
+                                        pddl_dto_condition_effect: PddlConditionEffectDto,
+                                        parameter_dict: dict) -> PddlConditionEffectModel:
 
         pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
             pddl_dto_condition_effect.get_pddl_predicate())
@@ -112,17 +113,17 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
         if not pddl_predicate_model:
             return None
 
-        mongoengine_pddl_condi = PddlConditionEffectModel()
-        mongoengine_pddl_condi.PddlPredicateModel = pddl_predicate_model
-        mongoengine_pddl_condi.time = pddl_dto_condition_effect.get_time()
-        mongoengine_pddl_condi.is_negative = pddl_dto_condition_effect.get_is_negative()
+        pddl_condi_model = PddlConditionEffectModel()
+        pddl_condi_model.pddl_predicate = pddl_predicate_model
+        pddl_condi_model.time = pddl_dto_condition_effect.get_time()
+        pddl_condi_model.is_negative = pddl_dto_condition_effect.get_is_negative()
 
         for param in pddl_dto_condition_effect.get_pddl_objects_list():
 
-            mongoengine_pddl_condi.pddl_parameters.append(
+            pddl_condi_model.pddl_parameters.append(
                 parameter_dict[param.get_object_name()])
 
-        return mongoengine_pddl_condi
+        return pddl_condi_model
 
     def _dto_to_model(self, pddl_action_dto: PddlActionDto) -> PddlActionModel:
 
@@ -145,38 +146,38 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
             param_name = param.get_object_name()
 
-            mongoengine_pddl_parameter = PddlParameterModel()
-            mongoengine_pddl_parameter.parameter_name = param_name
-            mongoengine_pddl_parameter.PddlTypeModel = pddl_type_model
+            pddl_parameter_model = PddlParameterModel()
+            pddl_parameter_model.parameter_name = param_name
+            pddl_parameter_model.pddl_type = pddl_type_model
 
             pddl_action_model.pddl_parameters.append(
-                mongoengine_pddl_parameter)
+                pddl_parameter_model)
 
-            parameter_dict[param_name] = mongoengine_pddl_parameter
+            parameter_dict[param_name] = pddl_parameter_model
 
         # ACTION CONDIS
-        for pddl_dto_condition in pddl_action_dto.get_conditions_list():
-            mongoengine_pddl_condi = self.__condition_effect_dto_to_mongoengine(
-                pddl_dto_condition, parameter_dict)
+        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
+            pddl_condi_model = self.__condition_effect_dto_to_model(
+                pddl_condition_dto, parameter_dict)
 
-            if not mongoengine_pddl_condi:
+            if not pddl_condi_model:
                 return None
 
-            pddl_action_model.conditions.append(mongoengine_pddl_condi)
+            pddl_action_model.conditions.append(pddl_condi_model)
             pddl_action_model._pddl_predicates_used.append(
-                mongoengine_pddl_condi.PddlPredicateModel)
+                pddl_condi_model.pddl_predicate)
 
         # ACTION EFFECTS
-        for pddl_dto_effect in pddl_action_dto.get_effects_list():
-            mongoengine_pddl_effect = self.__condition_effect_dto_to_mongoengine(
-                pddl_dto_effect, parameter_dict)
+        for pddl_effect_dto in pddl_action_dto.get_effects_list():
+            pddl_effect_model = self.__condition_effect_dto_to_model(
+                pddl_effect_dto, parameter_dict)
 
-            if not mongoengine_pddl_effect:
+            if not pddl_effect_model:
                 return None
 
-            pddl_action_model.effects.append(mongoengine_pddl_effect)
+            pddl_action_model.effects.append(pddl_effect_model)
             pddl_action_model._pddl_predicates_used.append(
-                mongoengine_pddl_effect.PddlPredicateModel)
+                pddl_effect_model.pddl_predicate)
 
         return pddl_action_model
 
@@ -211,16 +212,16 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
         # check if proposition is correct
         if(len(pddl_condition_effect_model.pddl_parameters) !=
-           len(pddl_condition_effect_model.PddlPredicateModel.pddl_types)):
+           len(pddl_condition_effect_model.pddl_predicate.pddl_types)):
             return False
 
         pddl_parameter_models = pddl_condition_effect_model.pddl_parameters
-        pddl_type_models = pddl_condition_effect_model.PddlPredicateModel.pddl_types
+        pddl_type_models = pddl_condition_effect_model.pddl_predicate.pddl_types
 
-        for pddl_param, pddl_type_model in zip(pddl_parameter_models, pddl_type_models):
+        for pddl_parameter_model, pddl_type_model in zip(pddl_parameter_models, pddl_type_models):
 
             # check if proposition is correct
-            if pddl_param.PddlTypeModel.type_name != pddl_type_model.type_name:
+            if pddl_parameter_model.pddl_type.type_name != pddl_type_model.type_name:
                 return False
 
         return True
@@ -254,8 +255,7 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
                 pddl_action_model)
             return pddl_action_dto
 
-        else:
-            return None
+        return None
 
     def get_all(self) -> List[PddlActionDto]:
 
@@ -280,14 +280,14 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
                 pddl_type_dto.get_pddl_type())
             if not result:
                 return False
-        for pddl_dto_condition in pddl_action_dto.get_conditions_list():
+        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
             result = self._me_pddl_predicate_dao.save(
-                pddl_dto_condition.get_pddl_predicate())
+                pddl_condition_dto.get_pddl_predicate())
             if not result:
                 return False
-        for pddl_dto_effect in pddl_action_dto.get_effects_list():
+        for pddl_effect_dto in pddl_action_dto.get_effects_list():
             result = self._me_pddl_predicate_dao.save(
-                pddl_dto_effect.get_pddl_predicate())
+                pddl_effect_dto.get_pddl_predicate())
             if not result:
                 return False
 
@@ -301,8 +301,7 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
             pddl_action_model.save()
             return True
 
-        else:
-            return False
+        return False
 
     def _update(self, pddl_action_dto: PddlActionDto) -> bool:
 
@@ -329,16 +328,14 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
             return True
 
-        else:
-            return False
+        return False
 
     def save(self, pddl_action_dto: PddlActionDto) -> bool:
 
         if self._exist_in_mongo(pddl_action_dto):
             return self._update(pddl_action_dto)
 
-        else:
-            return self._save(pddl_action_dto)
+        return self._save(pddl_action_dto)
 
     def delete(self, pddl_action_dto):
 

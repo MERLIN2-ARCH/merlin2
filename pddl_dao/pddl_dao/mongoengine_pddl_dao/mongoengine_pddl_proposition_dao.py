@@ -41,16 +41,16 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         # check if proposition is correct
         if(len(pddl_proposition_model.pddl_objects) !=
-           len(pddl_proposition_model.PddlPredicateModel.pddl_types)):
+           len(pddl_proposition_model.pddl_predicate.pddl_types)):
             return False
 
         pddl_object_models = pddl_proposition_model.pddl_objects
-        pddl_type_models = pddl_proposition_model.PddlPredicateModel.pddl_types
+        pddl_type_models = pddl_proposition_model.pddl_predicate.pddl_types
 
         for pddl_object_model, pddl_type_model in zip(pddl_object_models, pddl_type_models):
 
             # check if proposition is correct
-            if pddl_object_model.PddlTypeModel.type_name != pddl_type_model.type_name:
+            if pddl_object_model.pddl_type.type_name != pddl_type_model.type_name:
                 return False
 
         return True
@@ -69,7 +69,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         pddl_object_list = []
 
         pddl_predicate_dto = self._me_pddl_predicate_dao._model_to_dto(
-            pddl_proposition_model.PddlPredicateModel)
+            pddl_proposition_model.pddl_predicate)
 
         for pddl_object_model in pddl_proposition_model.pddl_objects:
 
@@ -136,7 +136,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         if not pddl_predicate_model:
             return None
 
-        pddl_proposition_model.PddlPredicateModel = pddl_predicate_model
+        pddl_proposition_model.pddl_predicate = pddl_predicate_model
 
         pddl_proposition_model.is_goal = pddl_proposition_dto.get_is_goal()
 
@@ -199,7 +199,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         # getting proposition
         pddl_proposition_model = PddlPropositionModel.objects(
-            PddlPredicateModel=pddl_predicate_model, pddl_objects=pddl_objects_list)
+            pddl_predicate=pddl_predicate_model, pddl_objects=pddl_objects_list)
 
         # check if proposition exist
         if not pddl_proposition_model:
@@ -226,7 +226,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         pddl_predicate_model = pddl_predicate_model[0]
 
         pddl_proposition_model = PddlPropositionModel.objects(
-            PddlPredicateModel=pddl_predicate_model)
+            pddl_predicate=pddl_predicate_model)
 
         pddl_dto_proposition_list = []
 
@@ -305,8 +305,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
             pddl_proposition_model.save()
             return True
 
-        else:
-            return False
+        return False
 
     def _update(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ update a PddlPropositionDto
@@ -331,7 +330,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
                 pddl_proposition_dto)
 
             if new_pddl_proposition_model:
-                pddl_proposition_model.PddlPredicateModel = new_pddl_proposition_model.PddlPredicateModel
+                pddl_proposition_model.pddl_predicate = new_pddl_proposition_model.pddl_predicate
                 pddl_proposition_model.pddl_objects = new_pddl_proposition_model.pddl_objects
                 pddl_proposition_model.is_goal = new_pddl_proposition_model.is_goal
                 pddl_proposition_model.save()
@@ -340,8 +339,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
             return True
 
-        else:
-            return False
+        return False
 
     def save(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ save or update a PddlPropositionDto
@@ -357,8 +355,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_proposition_dto):
             return self._update(pddl_proposition_dto)
 
-        else:
-            return self._save(pddl_proposition_dto)
+        return self._save(pddl_proposition_dto)
 
     def delete(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ delete a PddlPropositionDto
@@ -378,6 +375,8 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         if pddl_proposition_model:
             pddl_proposition_model.delete()
             return True
+
+        return False
 
     def delete_all(self) -> bool:
         """ delete all pddl propositions

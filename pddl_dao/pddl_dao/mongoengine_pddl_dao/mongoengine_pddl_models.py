@@ -16,7 +16,7 @@ class PddlObjectModel(mongoengine.Document):
 
     meta = {"collection": "pddl_object"}
     object_name = mongoengine.StringField(unique=True)
-    PddlTypeModel = mongoengine.ReferenceField(
+    pddl_type = mongoengine.ReferenceField(
         PddlTypeModel, reverse_delete_rule=mongoengine.CASCADE)
 
 
@@ -35,7 +35,7 @@ class PddlPropositionModel(mongoengine.Document):
     """ pddl proposition model """
 
     meta = {"collection": "pddl_proposition"}
-    PddlPredicateModel = mongoengine.ReferenceField(
+    pddl_predicate = mongoengine.ReferenceField(
         PddlPredicateModel, reverse_delete_rule=mongoengine.CASCADE)
     pddl_objects = mongoengine.ListField(
         mongoengine.ReferenceField(PddlObjectModel, reverse_delete_rule=mongoengine.CASCADE))
@@ -47,7 +47,7 @@ class PddlParameterModel(mongoengine.EmbeddedDocument):
 
     meta = {"collection": "pddl_parameter"}
     parameter_name = mongoengine.StringField(unique=True)
-    PddlTypeModel = mongoengine.ReferenceField(PddlTypeModel)
+    pddl_type = mongoengine.ReferenceField(PddlTypeModel)
 
 
 class PddlConditionEffectModel(mongoengine.EmbeddedDocument):
@@ -56,7 +56,7 @@ class PddlConditionEffectModel(mongoengine.EmbeddedDocument):
     meta = {"collection": "pddl_condition_effect"}
     time = mongoengine.StringField()
     is_negative = mongoengine.BooleanField()
-    PddlPredicateModel = mongoengine.ReferenceField(PddlPredicateModel)
+    pddl_predicate = mongoengine.ReferenceField(PddlPredicateModel)
     pddl_parameters = mongoengine.EmbeddedDocumentListField(PddlParameterModel)
 
 

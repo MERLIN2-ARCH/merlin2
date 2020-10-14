@@ -98,8 +98,7 @@ class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
             pddl_type_model = pddl_type_model[0]
             return self._model_to_dto(pddl_type_model)
 
-        else:
-            return None
+        return None
 
     def get_all(self) -> List[PddlTypeDto]:
         """ get all PddlTypeDto
@@ -154,8 +153,7 @@ class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
             pddl_type_model.save()
             return True
 
-        else:
-            return False
+        return False
 
     def save(self, pddl_type_dto: PddlTypeDto) -> bool:
         """ save or update a PddlTypeDto
@@ -171,8 +169,7 @@ class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_type_dto):
             return self._update(pddl_type_dto)
 
-        else:
-            return self._save(pddl_type_dto)
+        return self._save(pddl_type_dto)
 
     def delete(self, pddl_type_dto: PddlTypeDto) -> bool:
         """ delete a PddlTypeDto

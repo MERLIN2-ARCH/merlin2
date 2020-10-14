@@ -126,8 +126,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
                 pddl_predicate_model)
             return pddl_predicate_dto
 
-        else:
-            return None
+        return None
 
     def get_all(self) -> List[PddlPredicateDto]:
         """ get all PddlPredicateDto
@@ -171,8 +170,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
             pddl_predicate_model.save()
             return True
 
-        else:
-            return False
+        return False
 
     def _update(self, pddl_predicate_dto: PddlPredicateDto) -> bool:
         """ update a PddlPredicateDto
@@ -201,8 +199,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
 
             return True
 
-        else:
-            return False
+        return False
 
     def save(self, pddl_predicate_dto: PddlPredicateDto) -> bool:
         """ save or update a PddlPredicateDto
@@ -218,8 +215,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_predicate_dto):
             return self._update(pddl_predicate_dto)
 
-        else:
-            return self._save(pddl_predicate_dto)
+        return self._save(pddl_predicate_dto)
 
     def delete(self, pddl_predicate_dto: PddlPredicateDto) -> bool:
         """ delete a PddlPredicateDto
@@ -238,6 +234,8 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
         if pddl_predicate_model:
             pddl_predicate_model.delete()
             return True
+
+        return False
 
     def delete_all(self) -> bool:
         """ delete all pddl predicates
