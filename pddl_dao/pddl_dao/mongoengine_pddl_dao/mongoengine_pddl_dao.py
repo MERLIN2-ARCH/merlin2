@@ -39,7 +39,7 @@ class MongoenginePddlDao(ABC):
             self.connector = MongoengineConnector()
 
     @abstractmethod
-    def _get_mongoengine(self, pddl_dto: PddlDto) -> Document:
+    def _get_model(self, pddl_dto: PddlDto) -> Document:
         """ get the Mongoengine document corresponding to a give PddlDto
 
         Args:
@@ -50,7 +50,7 @@ class MongoenginePddlDao(ABC):
         """
 
     @abstractmethod
-    def _mongoengine_to_dto(self, pddl_mongoengine: Document) -> PddlDto:
+    def _model_to_dto(self, pddl_mongoengine: Document) -> PddlDto:
         """ convert a Mongoengine document into a PddlDto
 
         Args:
@@ -61,7 +61,7 @@ class MongoenginePddlDao(ABC):
         """
 
     @abstractmethod
-    def _dto_to_mongoengine(self, pddl_dto: PddlDto) -> Document:
+    def _dto_to_model(self, pddl_dto: PddlDto) -> Document:
         """ convert a PddlDto into a Mongoengine document
 
         Args:

@@ -2,52 +2,52 @@
 """ Pddl Dao Facory Interface """
 
 from abc import ABC, abstractmethod
-from pddl_dao.pddl_dao_interface.pddl_dao_type import PddlDaoType
-from pddl_dao.pddl_dao_interface.pddl_dao_object import PddlDaoObject
-from pddl_dao.pddl_dao_interface.pddl_dao_predicate import PddlDaoPredicate
-from pddl_dao.pddl_dao_interface.pddl_dao_proposition import PddlDaoProposition
-from pddl_dao.pddl_dao_interface.pddl_dao_action import PddlDaoAction
+from pddl_dao.pddl_dao_interface.pddl_type_dao import PddlTypeDao
+from pddl_dao.pddl_dao_interface.pddl_object_dao import PddlObjectDao
+from pddl_dao.pddl_dao_interface.pddl_predicate_dao import PddlPredicateDao
+from pddl_dao.pddl_dao_interface.pddl_proposition_dao import PddlPropositionDao
+from pddl_dao.pddl_dao_interface.pddl_action_dao import PddlActionDao
 
 
 class PddlDaoFactory(ABC):
     """ Pddl Dao Facory Abstract Class """
 
     @abstractmethod
-    def create_pddl_dao_type(self) -> PddlDaoType:
+    def create_pddl_type_dao(self) -> PddlTypeDao:
         """ create a pddl dao type object
 
         Returns:
-            PddlDaoType: dao for pddl type
+            PddlTypeDao: dao for pddl type
         """
 
     @abstractmethod
-    def create_pddl_dao_predicate(self) -> PddlDaoPredicate:
+    def create_pddl_predicate_dao(self) -> PddlPredicateDao:
         """ create a pddl dao predicate object
 
         Returns:
-            PddlDaoPredicate: dao for pddl predicate
+            PddlPredicateDao: dao for pddl predicate
         """
 
     @abstractmethod
-    def create_pddl_dao_action(self) -> PddlDaoAction:
+    def create_pddl_action_dao(self) -> PddlActionDao:
         """ create a pddl dao action object
 
         Returns:
-            PddlDaoAction: dao for pddl action
+            PddlActionDao: dao for pddl action
         """
 
     @abstractmethod
-    def create_pddl_dao_object(self) -> PddlDaoObject:
+    def create_pddl_object_dao(self) -> PddlObjectDao:
         """ create a pddl dao object object
 
         Returns:
-            PddlDaoObject: dao for pddl object
+            PddlObjectDao: dao for pddl object
         """
 
     @abstractmethod
-    def create_pddl_dao_proposition(self) -> PddlDaoProposition:
+    def create_pddl_proposition_dao(self) -> PddlPropositionDao:
         """ create a pddl dao type object
 
         Returns:
-            PddlDaoProposition: dao for pddl proposition
+            PddlPropositionDao: dao for pddl proposition
         """

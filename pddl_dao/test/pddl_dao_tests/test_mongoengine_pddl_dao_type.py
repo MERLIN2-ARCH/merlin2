@@ -11,11 +11,11 @@ class Test_Mongoengine_PDDL_DAO_Type(Test_PDDL_DAO_Type):
         pddl_dao_factory = pddl_dao_factory_facory.create_pddl_dao_factory(
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
-        self.pddl_dao_type = pddl_dao_factory.create_pddl_dao_type(
+        self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao(
             "mongodb://localhost:27017/merlin2_tests")
 
     def tearDown(self):
-        self.pddl_dao_type.delete_all()
+        self.pddl_type_dao.delete_all()
 
 
 del(Test_PDDL_DAO_Type)

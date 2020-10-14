@@ -1,19 +1,19 @@
 
-""" Pddl Dto Action """
+""" Pddl Action Dto """
 
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
-from pddl_dao.pddl_dto.pddl_dto_condition_efect import PddlDtoConditionEffect
-from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
+from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
+from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class PddlDtoAction(PddlDto):
-    """ Pddl Dto Action Class """
+class PddlActionDto(PddlDto):
+    """ Pddl Action Dto Class """
 
     def __init__(self, action_name: str,
-                 parameters_list: List[PddlDtoObject] = None,
-                 conditions_list: List[PddlDtoConditionEffect] = None,
-                 effects_list: List[PddlDtoConditionEffect] = None,
+                 parameters_list: List[PddlObjectDto] = None,
+                 conditions_list: List[PddlConditionEffectDto] = None,
+                 effects_list: List[PddlConditionEffectDto] = None,
                  durative: str = True, duration: int = 10):
 
         self.set_action_name(action_name)
@@ -79,20 +79,20 @@ class PddlDtoAction(PddlDto):
 
         self._duration = duration
 
-    def get_parameters_list(self) -> List[PddlDtoConditionEffect]:
+    def get_parameters_list(self) -> List[PddlConditionEffectDto]:
         """ parameters list getter
 
         Returns:
-            List[PddlDtoConditionEffect]: list of action parameters
+            List[PddlConditionEffectDto]: list of action parameters
         """
 
         return self._parameters_list
 
-    def set_parameters_list(self, parameters_list: List[PddlDtoConditionEffect]):
+    def set_parameters_list(self, parameters_list: List[PddlConditionEffectDto]):
         """ parameters list setter
 
         Args:
-            parameters_list (List[PddlDtoConditionEffect]): list of action parameters
+            parameters_list (List[PddlConditionEffectDto]): list of action parameters
         """
 
         if parameters_list:
@@ -100,20 +100,20 @@ class PddlDtoAction(PddlDto):
         else:
             self._parameters_list = []
 
-    def get_conditions_list(self) -> List[PddlDtoConditionEffect]:
+    def get_conditions_list(self) -> List[PddlConditionEffectDto]:
         """ conditions list getter
 
         Returns:
-            List[PddlDtoConditionEffect]: list of action conditions
+            List[PddlConditionEffectDto]: list of action conditions
         """
 
         return self._conditions_list
 
-    def set_conditions_list(self, conditions_list: List[PddlDtoConditionEffect]):
+    def set_conditions_list(self, conditions_list: List[PddlConditionEffectDto]):
         """ conditions list setter
 
         Args:
-            conditions_list (List[PddlDtoConditionEffect]): list of action conditions
+            conditions_list (List[PddlConditionEffectDto]): list of action conditions
         """
 
         if conditions_list:
@@ -121,19 +121,19 @@ class PddlDtoAction(PddlDto):
         else:
             self._conditions_list = []
 
-    def get_effects_list(self) -> List[PddlDtoConditionEffect]:
+    def get_effects_list(self) -> List[PddlConditionEffectDto]:
         """ effects list getter
 
         Returns:
-            List[PddlDtoConditionEffect]: list of action effects
+            List[PddlConditionEffectDto]: list of action effects
         """
         return self._effects_list
 
-    def set_effects_list(self, effects_list: List[PddlDtoConditionEffect]):
+    def set_effects_list(self, effects_list: List[PddlConditionEffectDto]):
         """ effects list setter
 
         Args:
-            effects_list (List[PddlDtoConditionEffect]): list of action effects
+            effects_list (List[PddlConditionEffectDto]): list of action effects
         """
 
         if effects_list:

@@ -1,15 +1,15 @@
 
-""" Pddl Dto Predicate """
+""" Pddl Predicate Dto """
 
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
-from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
-class PddlDtoPredicate(PddlDto):
-    """ Pddl Dto Predicate Class """
+class PddlPredicateDto(PddlDto):
+    """ Pddl Predicate Dto Class """
 
-    def __init__(self, predicate_name: str, pddl_types_list: List[PddlDtoType] = None):
+    def __init__(self, predicate_name: str, pddl_types_list: List[PddlTypeDto] = None):
 
         self.set_predicate_name(predicate_name)
         self.set_pddl_types_list(pddl_types_list)
@@ -34,20 +34,20 @@ class PddlDtoPredicate(PddlDto):
 
         self._predicate_name = predicate_name
 
-    def get_pddl_types_list(self) -> List[PddlDtoType]:
+    def get_pddl_types_list(self) -> List[PddlTypeDto]:
         """ pddl types list getter
 
         Returns:
-            List[PddlDtoType]: list of pddl types
+            List[PddlTypeDto]: list of pddl types
         """
 
         return self._pddl_types_list
 
-    def set_pddl_types_list(self, pddl_types_list: List[PddlDtoType]):
+    def set_pddl_types_list(self, pddl_types_list: List[PddlTypeDto]):
         """ pddl types list setter
 
         Args:
-            pddl_types_list (List[PddlDtoType]): list of pddl types
+            pddl_types_list (List[PddlTypeDto]): list of pddl types
         """
 
         if pddl_types_list:

@@ -1,17 +1,11 @@
 
 """ Pddl Dao Factory of Factories """
 
-from enum import Enum, auto
+from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.mongoengine_pddl_dao_factory import (
     MongoenginePddlDaoFactory
 )
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
-
-
-class PddlDaoFamilies(Enum):
-    """ Enum Class of Pddl Dao Families """
-
-    MONGOENGINE = auto()
 
 
 class PddlDaoFactoryFactory:

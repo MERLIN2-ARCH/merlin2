@@ -1,34 +1,34 @@
 
-""" Pddl Dto Object """
+""" Pddl Object Dto """
 
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
-from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
-class PddlDtoObject(PddlDto):
-    """ Pddl Dto Object Class """
+class PddlObjectDto(PddlDto):
+    """ Pddl Object Dto Class """
 
-    def __init__(self, PddlTypeModel: PddlDtoType, object_name: str):
+    def __init__(self, PddlTypeModel: PddlTypeDto, object_name: str):
 
         self.set_pddl_type(PddlTypeModel)
         self.set_object_name(object_name)
 
         PddlDto.__init__(self)
 
-    def get_pddl_type(self) -> PddlDtoType:
+    def get_pddl_type(self) -> PddlTypeDto:
         """ pddl type getter
 
         Returns:
-            PddlDtoType: pddl type
+            PddlTypeDto: pddl type
         """
 
         return self._pddl_type
 
-    def set_pddl_type(self, PddlTypeModel: PddlDtoType):
+    def set_pddl_type(self, PddlTypeModel: PddlTypeDto):
         """ pddl type setter
 
         Args:
-            PddlTypeModel (PddlDtoType): pddl type
+            PddlTypeModel (PddlTypeDto): pddl type
         """
 
         self._pddl_type = PddlTypeModel

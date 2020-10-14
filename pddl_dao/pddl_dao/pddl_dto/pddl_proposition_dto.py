@@ -1,17 +1,17 @@
 
-""" Pddl Dto Proposition """
+""" Pddl Proposition Dto """
 
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
-from pddl_dao.pddl_dto.pddl_dto_predicate import PddlDtoPredicate
-from pddl_dao.pddl_dto.pddl_dto_object import PddlDtoObject
+from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
+from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class PddlDtoProposition(PddlDto):
-    """ Pddl Dto Proposition Class """
+class PddlPropositionDto(PddlDto):
+    """ Pddl Proposition Dto Class """
 
-    def __init__(self, PddlPredicateModel: PddlDtoPredicate,
-                 pddl_objects_list: List[PddlDtoObject] = None,
+    def __init__(self, PddlPredicateModel: PddlPredicateDto,
+                 pddl_objects_list: List[PddlObjectDto] = None,
                  is_goal: bool = False):
 
         self.set_pddl_predicate(PddlPredicateModel)
@@ -38,38 +38,38 @@ class PddlDtoProposition(PddlDto):
 
         self._is_goal = is_goal
 
-    def get_pddl_predicate(self) -> PddlDtoPredicate:
+    def get_pddl_predicate(self) -> PddlPredicateDto:
         """ pddl predicate getter
 
         Returns:
-            PddlDtoPredicate: pddl predicate
+            PddlPredicateDto: pddl predicate
         """
 
         return self._pddl_predicate
 
-    def set_pddl_predicate(self, PddlPredicateModel: PddlDtoPredicate):
+    def set_pddl_predicate(self, PddlPredicateModel: PddlPredicateDto):
         """ pddl predicate setter
 
         Args:
-            PddlPredicateModel (PddlDtoPredicate): pddl predicate
+            PddlPredicateModel (PddlPredicateDto): pddl predicate
         """
 
         self._pddl_predicate = PddlPredicateModel
 
-    def get_pddl_objects_list(self) -> List[PddlDtoObject]:
+    def get_pddl_objects_list(self) -> List[PddlObjectDto]:
         """ pddl objects list getter
 
         Returns:
-            List[PddlDtoObject]: list of pddl objects
+            List[PddlObjectDto]: list of pddl objects
         """
 
         return self._pddl_objects_list
 
-    def set_pddl_objects_list(self, pddl_objects_list: List[PddlDtoObject]):
+    def set_pddl_objects_list(self, pddl_objects_list: List[PddlObjectDto]):
         """ pddl objects list setter
 
         Args:
-            pddl_objects_list (List[PddlDtoObject]): list of pddl objects
+            pddl_objects_list (List[PddlObjectDto]): list of pddl objects
         """
 
         if pddl_objects_list:

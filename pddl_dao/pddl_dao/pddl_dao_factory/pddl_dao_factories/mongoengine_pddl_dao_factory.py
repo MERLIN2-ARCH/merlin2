@@ -1,19 +1,19 @@
 
 """ Mongoengine Pddl Dao Facory """
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_type import (
-    MongoenginePddlDaoType
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_type_dao import (
+    MongoenginePddlTypeDao
 )
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_object import (
-    MongoenginePddlDaoObject
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_object_dao import (
+    MongoenginePddlObjectDao
 )
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_predicate import (
-    MongoenginePddlDaoPredicate
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import (
+    MongoenginePddlPredicateDao
 )
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_proposition import (
-    MongoenginePddlDaoProposition
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_proposition_dao import (
+    MongoenginePddlPropositionDao
 )
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao_action import (
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_action_dao import (
     MongoenginePddlDaoAction
 )
 
@@ -23,31 +23,31 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDa
 class MongoenginePddlDaoFactory(PddlDaoFactory):
     """ Mongoengine Pddl Dao Facory Class """
 
-    def create_pddl_dao_type(self, uri: str = None) -> MongoenginePddlDaoType:
+    def create_pddl_type_dao(self, uri: str = None) -> MongoenginePddlTypeDao:
         """ create a mongoengine pddl dao type object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            MongoenginePddlDaoType: mongoengine dao for pddl type
+            MongoenginePddlTypeDao: mongoengine dao for pddl type
         """
 
-        return MongoenginePddlDaoType(uri=uri)
+        return MongoenginePddlTypeDao(uri=uri)
 
-    def create_pddl_dao_predicate(self, uri: str = None) -> MongoenginePddlDaoPredicate:
+    def create_pddl_predicate_dao(self, uri: str = None) -> MongoenginePddlPredicateDao:
         """ create a mongoengine pddl dao predicate object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            MongoenginePddlDaoPredicate: mongoengine dao for pddl predicate
+            MongoenginePddlPredicateDao: mongoengine dao for pddl predicate
         """
 
-        return MongoenginePddlDaoPredicate(uri=uri)
+        return MongoenginePddlPredicateDao(uri=uri)
 
-    def create_pddl_dao_action(self, uri: str = None) -> MongoenginePddlDaoAction:
+    def create_pddl_action_dao(self, uri: str = None) -> MongoenginePddlDaoAction:
         """ create a mongoengine pddl dao action object
 
         Args:
@@ -59,26 +59,26 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
 
         return MongoenginePddlDaoAction(uri=uri)
 
-    def create_pddl_dao_object(self, uri: str = None) -> MongoenginePddlDaoObject:
+    def create_pddl_object_dao(self, uri: str = None) -> MongoenginePddlObjectDao:
         """ create a mongoengine pddl dao object object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            MongoenginePddlDaoObject: mongoengine dao for pddl object
+            MongoenginePddlObjectDao: mongoengine dao for pddl object
         """
 
-        return MongoenginePddlDaoObject(uri=uri)
+        return MongoenginePddlObjectDao(uri=uri)
 
-    def create_pddl_dao_proposition(self, uri: str = None) -> MongoenginePddlDaoProposition:
+    def create_pddl_proposition_dao(self, uri: str = None) -> MongoenginePddlPropositionDao:
         """ create a mongoengine pddl dao proposition object
 
         Args:
             uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
-            MongoenginePddlDaoProposition: mongoengine dao for pddl proposition
+            MongoenginePddlPropositionDao: mongoengine dao for pddl proposition
         """
 
-        return MongoenginePddlDaoProposition(uri=uri)
+        return MongoenginePddlPropositionDao(uri=uri)

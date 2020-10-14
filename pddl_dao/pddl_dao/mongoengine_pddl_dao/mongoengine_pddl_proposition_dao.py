@@ -1,0 +1,394 @@
+
+""" Mongoengine Pddl Proposition Dao """
+
+from typing import List
+
+from pddl_dao.pddl_dao_interface.pddl_proposition_dao import PddlPropositionDao
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
+
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlPropositionModel
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlPredicateModel
+
+from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
+
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import MongoenginePddlPredicateDao
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_object_dao import MongoenginePddlObjectDao
+
+
+class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
+    """ Mongoengine Pddl Proposition Dao Class """
+
+    def __init__(self, uri: str = None):
+
+        PddlPropositionDao.__init__(self)
+        MongoenginePddlDao.__init__(self, uri)
+
+        self._me_pddl_object_dao = MongoenginePddlObjectDao(uri)
+        self._me_pddl_predicate_dao = MongoenginePddlPredicateDao(
+            uri)
+
+    def _check_pddl_proposition_model(self,
+                                      pddl_proposition_model: PddlPropositionModel) -> bool:
+        """ check if the types of the objects of a pddl proposition model are
+            the same as the types of its predicate
+
+        Args:
+            pddl_proposition_model (PddlPropositionModel): Mongoengine pddl proposition document
+
+        Returns:
+            bool: poposition is correct?
+        """
+
+        # check if proposition is correct
+        if(len(pddl_proposition_model.pddl_objects) !=
+           len(pddl_proposition_model.PddlPredicateModel.pddl_types)):
+            return False
+
+        pddl_object_models = pddl_proposition_model.pddl_objects
+        pddl_type_models = pddl_proposition_model.PddlPredicateModel.pddl_types
+
+        for pddl_object_model, pddl_type_model in zip(pddl_object_models, pddl_type_models):
+
+            # check if proposition is correct
+            if pddl_object_model.PddlTypeModel.type_name != pddl_type_model.type_name:
+                return False
+
+        return True
+
+    def _model_to_dto(self,
+                      pddl_proposition_model: PddlPropositionModel) -> PddlPropositionDto:
+        """ convert a Mongoengine pddl type document into a PddlPropositionDto
+
+        Args:
+            pddl_proposition_model (PddlPropositionModel): Mongoengine pddl proposition document
+
+        Returns:
+            PddlPropositionDto: PddlPropositionDto
+        """
+
+        pddl_object_list = []
+
+        pddl_predicate_dto = self._me_pddl_predicate_dao._model_to_dto(
+            pddl_proposition_model.PddlPredicateModel)
+
+        for pddl_object_model in pddl_proposition_model.pddl_objects:
+
+            pddl_object_dto = self._me_pddl_object_dao._model_to_dto(
+                pddl_object_model)
+
+            # check if object exist
+            if not pddl_object_dto:
+                return None
+
+            pddl_object_list.append(pddl_object_dto)
+
+        pddl_proposition_dto = PddlPropositionDto(
+            pddl_predicate_dto, pddl_object_list)
+
+        pddl_proposition_dto.set_is_goal(
+            pddl_proposition_model.is_goal)
+
+        return pddl_proposition_dto
+
+    def _check_pddl_proposition_dto(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ check if the types of the objects of a pddl proposition dto are
+            the same as the types of its predicate
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): pddl proposition dto
+
+        Returns:
+            bool: poposition is correct?
+        """
+
+       # check if proposition is correct
+        if(len(pddl_proposition_dto.get_pddl_objects_list()) !=
+           len(pddl_proposition_dto.get_pddl_predicate().get_pddl_types_list())):
+            return False
+
+        pddl_object_dtos = pddl_proposition_dto.get_pddl_objects_list()
+        pddl_type_dtos = pddl_proposition_dto.get_pddl_predicate().get_pddl_types_list()
+
+        for pddl_object_dto, pddl_type_dto in zip(pddl_object_dtos, pddl_type_dtos):
+
+            # check if proposition is correct
+            if pddl_object_dto.get_pddl_type().get_type_name() != pddl_type_dto.get_type_name():
+                return False
+
+        return True
+
+    def _dto_to_model(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ convert a PddlPropositionDto into a Mongoengine pddl propostion document
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto
+
+        Returns:
+            Document: Mongoengine pddl propostion document
+        """
+
+        pddl_proposition_model = PddlPropositionModel()
+
+        pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
+            pddl_proposition_dto.get_pddl_predicate())
+
+        # check if predicate exist
+        if not pddl_predicate_model:
+            return None
+
+        pddl_proposition_model.PddlPredicateModel = pddl_predicate_model
+
+        pddl_proposition_model.is_goal = pddl_proposition_dto.get_is_goal()
+
+        for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
+
+            pddl_object_model = self._me_pddl_object_dao._get_model(
+                pddl_object_dto)
+
+            # check if object exist
+            if not pddl_object_model:
+                return None
+
+            pddl_proposition_model.pddl_objects.append(
+                pddl_object_model)
+
+        return pddl_proposition_model
+
+    def _exist_in_mongo(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ check if PddlPropositionDto exists
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto
+
+        Returns:
+            bool: PddlPropositionDto exists?
+        """
+
+        if self._get_model(pddl_proposition_dto):
+            return True
+        return False
+
+    def _get_model(self, pddl_proposition_dto: PddlPropositionDto) -> PddlPropositionModel:
+        """ get the Mongoengine pddl proposition document corresponding to a give PddlPropositionDto
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto
+
+        Returns:
+            Document: Mongoengine pddl proposition document
+        """
+
+        pddl_dto_objects_list = pddl_proposition_dto.get_pddl_objects_list()
+
+        pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
+            pddl_proposition_dto.get_pddl_predicate())
+
+        # check if predicate exist
+        if not pddl_predicate_model:
+            return None
+
+        pddl_objects_list = []
+        for pddl_object_dto in pddl_dto_objects_list:
+            pddl_object_model = self._me_pddl_object_dao._get_model(
+                pddl_object_dto)
+
+            # check if object exist
+            if not pddl_object_model:
+                return None
+            pddl_objects_list.append(pddl_object_model)
+
+        # getting proposition
+        pddl_proposition_model = PddlPropositionModel.objects(
+            PddlPredicateModel=pddl_predicate_model, pddl_objects=pddl_objects_list)
+
+        # check if proposition exist
+        if not pddl_proposition_model:
+            return None
+
+        return pddl_proposition_model[0]
+
+    def get_by_predicate(self, predicate_name: str) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto with a given pddl predicate name
+
+        Args:
+            predicate_name (str): pddl predicate name
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+        pddl_predicate_model = PddlPredicateModel.objects(
+            predicate_name=predicate_name)
+
+        # check if predicate exist
+        if not pddl_predicate_model:
+            return None
+        pddl_predicate_model = pddl_predicate_model[0]
+
+        pddl_proposition_model = PddlPropositionModel.objects(
+            PddlPredicateModel=pddl_predicate_model)
+
+        pddl_dto_proposition_list = []
+
+        for ele in pddl_proposition_model:
+            if self._check_pddl_proposition_model(ele):
+                pddl_dto_proposition_list.append(self._model_to_dto(ele))
+
+        return pddl_dto_proposition_list
+
+    def get_goals(self) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto that are goals
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+        pddl_proposition_model = PddlPropositionModel.objects(
+            is_goal=True)
+
+        pddl_dto_proposition_list = []
+
+        for ele in pddl_proposition_model:
+            if self._check_pddl_proposition_model(ele):
+                pddl_dto_proposition_list.append(self._model_to_dto(ele))
+
+        return pddl_dto_proposition_list
+
+    def get_all(self) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+        pddl_proposition_model = PddlPropositionModel.objects()
+
+        pddl_dto_proposition_list = []
+
+        for ele in pddl_proposition_model:
+            if self._check_pddl_proposition_model(ele):
+                pddl_dto_proposition_list.append(self._model_to_dto(ele))
+
+        return pddl_dto_proposition_list
+
+    def _save(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ save a PddlPropositionDto
+            if the PddlPropositionDto is already saved return False, else return True
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto to save
+
+        Returns:
+            bool: succeed
+        """
+
+        if self._exist_in_mongo(pddl_proposition_dto):
+            return False
+
+        if not self._check_pddl_proposition_dto(pddl_proposition_dto):
+            return False
+
+       # propagating saving
+        result = self._me_pddl_predicate_dao.save(
+            pddl_proposition_dto.get_pddl_predicate())
+        if not result:
+            return False
+        for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
+            result = self._me_pddl_object_dao.save(pddl_object_dto)
+            if not result:
+                return False
+
+        pddl_proposition_model = self._dto_to_model(
+            pddl_proposition_dto)
+
+        if pddl_proposition_model:
+            pddl_proposition_model.save()
+            return True
+
+        else:
+            return False
+
+    def _update(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ update a PddlPropositionDto
+            if the PddlPropositionDto is not saved return False, else return True
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto to update
+
+        Returns:
+            bool: succeed
+        """
+
+        if not self._check_pddl_proposition_dto(pddl_proposition_dto):
+            return False
+
+        pddl_proposition_model = self._get_model(
+            pddl_proposition_dto)
+
+        # check if proposition exists
+        if pddl_proposition_model:
+            new_pddl_proposition_model = self._dto_to_model(
+                pddl_proposition_dto)
+
+            if new_pddl_proposition_model:
+                pddl_proposition_model.PddlPredicateModel = new_pddl_proposition_model.PddlPredicateModel
+                pddl_proposition_model.pddl_objects = new_pddl_proposition_model.pddl_objects
+                pddl_proposition_model.is_goal = new_pddl_proposition_model.is_goal
+                pddl_proposition_model.save()
+            else:
+                return False
+
+            return True
+
+        else:
+            return False
+
+    def save(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ save or update a PddlPropositionDto
+            if the PddlPropositionDto is not saved it will be saved, else it will be updated
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto to save or update
+
+        Returns:
+            bool: succeed
+        """
+
+        if self._exist_in_mongo(pddl_proposition_dto):
+            return self._update(pddl_proposition_dto)
+
+        else:
+            return self._save(pddl_proposition_dto)
+
+    def delete(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ delete a PddlPropositionDto
+            if the PddlPropositionDto is not saved return False, else return True
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto to delete
+
+        Returns:
+            bool: succeed
+        """
+
+        pddl_proposition_model = self._get_model(
+            pddl_proposition_dto)
+
+        # check if proposition exists
+        if pddl_proposition_model:
+            pddl_proposition_model.delete()
+            return True
+
+    def delete_all(self) -> bool:
+        """ delete all pddl propositions
+
+        Returns:
+            bool: succeed
+        """
+
+        pddl_dto_proposition_list = self.get_all()
+
+        for ele in pddl_dto_proposition_list:
+            self.delete(ele)
+
+        return True

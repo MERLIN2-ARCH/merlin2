@@ -1,7 +1,7 @@
 import unittest
 import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
-from pddl_dao.pddl_dto.pddl_dto_type import PddlDtoType
+from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
 class Test_PDDL_DAO_Type(unittest.TestCase):
@@ -11,70 +11,70 @@ class Test_PDDL_DAO_Type(unittest.TestCase):
         pddl_dao_factory = pddl_dao_factory_facory.create_pddl_dao_factory(
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
-        self.pddl_dao_type = pddl_dao_factory.create_pddl_dao_type()
-        self.pddl_dto_type = PddlDtoType("robot")
+        self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
+        self.pddl_type_dto = PddlTypeDto("robot")
 
     def tearDown(self):
-        self.pddl_dao_type.delete_all()
+        self.pddl_type_dao.delete_all()
 
     def test_pddl_dao_type_save_true(self):
-        result = self.pddl_dao_type._save(self.pddl_dto_type)
+        result = self.pddl_type_dao._save(self.pddl_type_dto)
         self.assertTrue(result)
 
     def test_pddl_dao_type_save_false_type_already_exist(self):
-        result = self.pddl_dao_type._save(self.pddl_dto_type)
-        result = self.pddl_dao_type._save(self.pddl_dto_type)
+        result = self.pddl_type_dao._save(self.pddl_type_dto)
+        result = self.pddl_type_dao._save(self.pddl_type_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_type_get_none(self):
-        self.pddl_dto_type = self.pddl_dao_type.get("robot")
-        self.assertIsNone(self.pddl_dto_type)
+        self.pddl_type_dto = self.pddl_type_dao.get("robot")
+        self.assertIsNone(self.pddl_type_dto)
 
     def test_pddl_dao_type_get(self):
-        self.pddl_dao_type.save(self.pddl_dto_type)
-        self.pddl_dto_type = self.pddl_dao_type.get("robot")
-        self.assertEqual("robot", str(self.pddl_dto_type))
+        self.pddl_type_dao.save(self.pddl_type_dto)
+        self.pddl_type_dto = self.pddl_type_dao.get("robot")
+        self.assertEqual("robot", str(self.pddl_type_dto))
 
     def test_pddl_dao_type_get_all_0(self):
-        pddl_dto_type_list = self.pddl_dao_type.get_all()
+        pddl_dto_type_list = self.pddl_type_dao.get_all()
         self.assertEqual(0, len(pddl_dto_type_list))
 
     def test_pddl_dao_type_update_true(self):
-        self.pddl_dao_type._save(self.pddl_dto_type)
-        result = self.pddl_dao_type._update(self.pddl_dto_type)
+        self.pddl_type_dao._save(self.pddl_type_dto)
+        result = self.pddl_type_dao._update(self.pddl_type_dto)
         self.assertTrue(result)
-        self.pddl_dto_type = self.pddl_dao_type.get("robot")
-        self.assertEqual("robot", str(self.pddl_dto_type))
+        self.pddl_type_dto = self.pddl_type_dao.get("robot")
+        self.assertEqual("robot", str(self.pddl_type_dto))
 
     def test_pddl_dao_type_update_flase(self):
-        result = self.pddl_dao_type._update(self.pddl_dto_type)
+        result = self.pddl_type_dao._update(self.pddl_type_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_type_save_save_true(self):
-        result = self.pddl_dao_type.save(self.pddl_dto_type)
+        result = self.pddl_type_dao.save(self.pddl_type_dto)
         self.assertTrue(result)
 
     def test_pddl_dao_type_save_update_true(self):
-        self.pddl_dao_type.save(self.pddl_dto_type)
-        result = self.pddl_dao_type.save(self.pddl_dto_type)
+        self.pddl_type_dao.save(self.pddl_type_dto)
+        result = self.pddl_type_dao.save(self.pddl_type_dto)
         self.assertTrue(result)
 
     def test_pddl_dao_type_delete_false_type_not_exist(self):
-        result = self.pddl_dao_type.delete(self.pddl_dto_type)
+        result = self.pddl_type_dao.delete(self.pddl_type_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_type_delete_true(self):
-        self.pddl_dao_type.save(self.pddl_dto_type)
-        result = self.pddl_dao_type.delete(self.pddl_dto_type)
+        self.pddl_type_dao.save(self.pddl_type_dto)
+        result = self.pddl_type_dao.delete(self.pddl_type_dto)
         self.assertTrue(result)
-        self.pddl_dto_type = self.pddl_dao_type.get("robot")
-        self.assertIsNone(self.pddl_dto_type)
+        self.pddl_type_dto = self.pddl_type_dao.get("robot")
+        self.assertIsNone(self.pddl_type_dto)
 
     def test_pddl_dao_type_delete_all(self):
-        self.pddl_dao_type.save(self.pddl_dto_type)
-        result = self.pddl_dao_type.delete_all()
+        self.pddl_type_dao.save(self.pddl_type_dto)
+        result = self.pddl_type_dao.delete_all()
         self.assertTrue(result)
-        self.assertEqual(0, len(self.pddl_dao_type.get_all()))
+        self.assertEqual(0, len(self.pddl_type_dao.get_all()))
 
 
 # if __name__ == '__main__':

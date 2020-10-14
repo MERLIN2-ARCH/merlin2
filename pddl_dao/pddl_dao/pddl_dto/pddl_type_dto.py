@@ -1,11 +1,11 @@
 
-""" Pddl Dto Type """
+""" Pddl Type Dto """
 
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
 
 
-class PddlDtoType(PddlDto):
-    """ Pddl Dto Type Class """
+class PddlTypeDto(PddlDto):
+    """ Pddl Type Dto Class """
 
     def __init__(self, type_name: str):
 

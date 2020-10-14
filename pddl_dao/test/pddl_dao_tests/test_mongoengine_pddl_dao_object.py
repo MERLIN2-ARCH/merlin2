@@ -11,9 +11,9 @@ class Test_Mongoengine_PDDL_DAO_Object(Test_PDDL_DAO_Object):
         pddl_dao_factory = pddl_dao_factory_facory.create_pddl_dao_factory(
             pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
 
-        self.pddl_dao_object = pddl_dao_factory.create_pddl_dao_object(
+        self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao(
             "mongodb://localhost:27017/merlin2_tests")
-        self.pddl_dao_type = pddl_dao_factory.create_pddl_dao_type(
+        self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao(
             "mongodb://localhost:27017/merlin2_tests")
 
 
