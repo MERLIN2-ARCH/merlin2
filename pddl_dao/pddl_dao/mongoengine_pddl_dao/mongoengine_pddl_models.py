@@ -27,8 +27,7 @@ class PddlPredicateModel(mongoengine.Document):
     predicate_name = mongoengine.StringField(unique=True)
     pddl_types = mongoengine.ListField(
         mongoengine.ReferenceField(PddlTypeModel,
-                                   reverse_delete_rule=mongoengine.CASCADE),
-        unique=True)
+                                   reverse_delete_rule=mongoengine.CASCADE))
 
 
 class PddlPropositionModel(mongoengine.Document):
@@ -46,7 +45,7 @@ class PddlParameterModel(mongoengine.EmbeddedDocument):
     """ pddl parameter model """
 
     meta = {"collection": "pddl_parameter"}
-    parameter_name = mongoengine.StringField(unique=True)
+    parameter_name = mongoengine.StringField()
     pddl_type = mongoengine.ReferenceField(PddlTypeModel)
 
 
