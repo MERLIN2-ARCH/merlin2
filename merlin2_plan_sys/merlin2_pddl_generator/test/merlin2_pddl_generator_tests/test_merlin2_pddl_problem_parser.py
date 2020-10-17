@@ -34,10 +34,10 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
 
         # goals
         self.rb1_robot_at_goal = PddlPropositionDto(
-            robot_at, [self.rb1, self.wp2])
+            robot_at, [self.rb1, self.wp2], is_goal=True)
 
         self.rb1_wp2_wp_checked_goal = PddlPropositionDto(
-            wp_checked, [self.rb1, self.wp2])
+            wp_checked, [self.rb1, self.wp2], is_goal=True)
 
     def test_parse_pddl_type_dtos(self):
         self.maxDiff = None
