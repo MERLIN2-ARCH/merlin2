@@ -73,6 +73,24 @@ class TestPddlPropositionDao(unittest.TestCase):
         self.assertEqual("(robot_at rb1 wp1)",
                          str(self.pddl_proposition_dto))
 
+    def test_pddl_dao_proposition_get_goals_empty(self):
+        self.pddl_proposition_dto.set_is_goal(False)
+        self.pddl_proposition_dao._save(self.pddl_proposition_dto)
+        self.pddl_proposition_dto = self.pddl_proposition_dao.get_goals()
+        self.assertEqual(0, len(self.pddl_proposition_dto))
+
+    def test_pddl_dao_proposition_get_no_goals(self):
+        self.pddl_proposition_dao._save(self.pddl_proposition_dto)
+        self.pddl_proposition_dto = self.pddl_proposition_dao.get_no_goals()[0]
+        self.assertEqual("(robot_at rb1 wp1)",
+                         str(self.pddl_proposition_dto))
+
+    def test_pddl_dao_proposition_get_no_goals_empty(self):
+        self.pddl_proposition_dto.set_is_goal(True)
+        self.pddl_proposition_dao._save(self.pddl_proposition_dto)
+        self.pddl_proposition_dto = self.pddl_proposition_dao.get_no_goals()
+        self.assertEqual(0, len(self.pddl_proposition_dto))
+
     def test_pddl_dao_proposition_get_all_0(self):
         pddl_dto_proposition_list = self.pddl_proposition_dao.get_all()
         self.assertEqual(0, len(pddl_dto_proposition_list))

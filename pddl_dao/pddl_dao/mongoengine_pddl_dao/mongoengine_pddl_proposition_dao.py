@@ -236,15 +236,24 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         return pddl_dto_proposition_list
 
-    def get_goals(self) -> List[PddlPropositionDto]:
-        """ get all PddlPropositionDto that are goals
+    def _get_all(self, is_goal: bool = None) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto
+            is_goal == None -> get all proposition
+            is_goal == True -> gel all goals
+            is_goal == False -> getl no goals
+
+        Args:
+            is_goal (bool, optional): get all, all goals, all no goals?. Defaults to None.
 
         Returns:
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        pddl_proposition_model = PddlPropositionModel.objects(
-            is_goal=True)
+        if(is_goal is None):
+            pddl_proposition_model = PddlPropositionModel.objects()
+        else:
+            pddl_proposition_model = PddlPropositionModel.objects(
+                is_goal=is_goal)
 
         pddl_dto_proposition_list = []
 
@@ -253,6 +262,24 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
                 pddl_dto_proposition_list.append(self._model_to_dto(ele))
 
         return pddl_dto_proposition_list
+
+    def get_goals(self) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto that are goals
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+        return self._get_all(is_goal=True)
+
+    def get_no_goals(self) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto that are not goals
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+        return self._get_all(is_goal=False)
 
     def get_all(self) -> List[PddlPropositionDto]:
         """ get all PddlPropositionDto
@@ -261,15 +288,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        pddl_proposition_model = PddlPropositionModel.objects()
-
-        pddl_dto_proposition_list = []
-
-        for ele in pddl_proposition_model:
-            if self._check_pddl_proposition_model(ele):
-                pddl_dto_proposition_list.append(self._model_to_dto(ele))
-
-        return pddl_dto_proposition_list
+        return self._get_all()
 
     def _save(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ save a PddlPropositionDto

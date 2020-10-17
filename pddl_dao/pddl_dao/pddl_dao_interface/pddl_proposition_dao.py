@@ -30,6 +30,14 @@ class PddlPropositionDao(GenericPddlDao):
         """
 
     @abstractmethod
+    def get_no_goals(self) -> List[PddlPropositionDto]:
+        """ get all PddlPropositionDto that are not goals
+
+        Returns:
+            List[PddlPropositionDto]: list of PddlPropositionDto
+        """
+
+    @abstractmethod
     def get_all(self) -> List[PddlPropositionDto]:
         """ get all PddlPropositionDto
 
