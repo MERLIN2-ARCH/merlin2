@@ -1,5 +1,4 @@
 import unittest
-import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
@@ -8,7 +7,7 @@ from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
 
 
-class Test_PDDL_DAO_Action(unittest.TestCase):
+class TestPddlDaoAction(unittest.TestCase):
 
     def setUp(self):
         pddl_dao_factory_facory = PddlDaoFactoryFactory()

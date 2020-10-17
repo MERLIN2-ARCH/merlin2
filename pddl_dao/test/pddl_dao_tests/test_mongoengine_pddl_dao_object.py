@@ -1,9 +1,9 @@
-from test_pddl_dao_basic.test_pddl_dao_object import Test_PDDL_DAO_Object
+
+from test_pddl_dao_basic.test_pddl_dao_object import TestPddlDaoObject
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
-import unittest
 
 
-class Test_Mongoengine_PDDL_DAO_Object(Test_PDDL_DAO_Object):
+class TestMongoenginePddlDaoObject(TestPddlDaoObject):
 
     def setUp(self):
         super().setUp()
@@ -17,4 +17,4 @@ class Test_Mongoengine_PDDL_DAO_Object(Test_PDDL_DAO_Object):
             "mongodb://localhost:27017/merlin2_tests")
 
 
-del(Test_PDDL_DAO_Object)
+del(TestPddlDaoObject)

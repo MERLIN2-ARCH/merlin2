@@ -1,5 +1,4 @@
 import unittest
-import coverage
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
 from pddl_dao.pddl_dto.pddl_action_dto import PddlActionDto
@@ -7,7 +6,7 @@ from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
 
 
-class Test_PDDL_DTO_Action(unittest.TestCase):
+class TestPddlDtoAction(unittest.TestCase):
 
     def setUp(self):
 

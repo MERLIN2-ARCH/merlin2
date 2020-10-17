@@ -1,10 +1,9 @@
 import unittest
-import coverage
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
-class Test_PDDL_DAO_Type(unittest.TestCase):
+class TestPddlDaoType(unittest.TestCase):
 
     def setUp(self):
         pddl_dao_factory_facory = PddlDaoFactoryFactory()
@@ -80,7 +79,7 @@ class Test_PDDL_DAO_Type(unittest.TestCase):
 # if __name__ == '__main__':
     #cov = coverage.Coverage()
     # cov.start()
-    # suite = unittest.TestLoader().loadTestsFromTestCase(Test_PDDL_DAO_Type)
+    # suite = unittest.TestLoader().loadTestsFromTestCase(TestPddlDaoType)
     # unittest.TextTestRunner(verbosity=2).run(suite)
     # cov.stop()
     # cov.save()

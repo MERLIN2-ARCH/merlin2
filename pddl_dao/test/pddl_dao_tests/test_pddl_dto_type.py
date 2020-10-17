@@ -1,9 +1,8 @@
 import unittest
-import coverage
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
-class Test_PDDL_DAO_Type(unittest.TestCase):
+class TestPddlDtoType(unittest.TestCase):
 
     def setUp(self):
 

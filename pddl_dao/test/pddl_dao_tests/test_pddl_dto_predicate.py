@@ -1,10 +1,9 @@
 import unittest
-import coverage
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
 
 
-class Test_PDDL_DTO_Predicate(unittest.TestCase):
+class TestPddlDtoPredicate(unittest.TestCase):
 
     def setUp(self):
 
