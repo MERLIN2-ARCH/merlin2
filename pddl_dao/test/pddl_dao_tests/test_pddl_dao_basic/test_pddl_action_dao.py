@@ -64,6 +64,16 @@ class TestPddlActionDao(unittest.TestCase):
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
+    def test_pddl_dao_action_save_false_no_conditions(self):
+        self.pddl_action_dto.set_conditions_list([])
+        result = self.pddl_action_dao._save(self.pddl_action_dto)
+        self.assertFalse(result)
+
+    def test_pddl_dao_action_save_false_no_effects(self):
+        self.pddl_action_dto.set_effects_list([])
+        result = self.pddl_action_dao._save(self.pddl_action_dto)
+        self.assertFalse(result)
+
     def test_pddl_dao_action_save_false_action_already_exist(self):
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         result = self.pddl_action_dao._save(self.pddl_action_dto)

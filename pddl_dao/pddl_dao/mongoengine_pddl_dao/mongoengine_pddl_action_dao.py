@@ -197,6 +197,9 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
 
     def _check_pddl_action_dto(self, pddl_action_dto: PddlActionDto) -> bool:
 
+        if(len(pddl_action_dto.get_conditions_list()) == 0 or len(pddl_action_dto.get_effects_list()) == 0):
+            return False
+
         for condition in pddl_action_dto.get_conditions_list():
             if not self._me_pddl_proposition_dao._check_pddl_proposition_dto(condition):
                 return False
@@ -227,6 +230,9 @@ class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
         return True
 
     def _check_pddl_action_model(self, pddl_action_model: PddlActionModel) -> bool:
+
+        if(len(pddl_action_model.conditions) == 0 or len(pddl_action_model.effects) == 0):
+            return False
 
         for condition in pddl_action_model.conditions:
             if not self._check_pddl_condition_efect_model(condition):
