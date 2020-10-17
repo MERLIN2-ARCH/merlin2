@@ -4,7 +4,7 @@
 import rclpy
 from rclpy.node import Node
 
-from merlin2_plan_sys_interfaces.srv._generate_pddl import GeneratePddl
+from merlin2_plan_sys_interfaces.srv import GeneratePddl
 from merlin2_pddl_generator.merlin2_pddl_generator_factory.merlin2_pddl_generator_factory import(
     Merlin2PddlGeneratorFactory
 )
@@ -37,7 +37,7 @@ class Merlin2PddlGeneratorNode(Node):
 
         # creating pddl generator
         self.pddl_generator = pddl_generator_factory.create_pddl_generator(
-            pddl_dao_family, uri=mongoengine_uri, otro="ajsnd")
+            pddl_dao_family, uri=mongoengine_uri)
 
         # service servers
         self.__start_server = self.create_service(
