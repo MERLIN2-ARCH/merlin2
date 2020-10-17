@@ -40,6 +40,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/PlanAction.msg"
   "srv/ParsePlan.srv"
   "action/DispatchPlan.action"
+  "action/Execute.action"
  )
 
 ament_package()
