@@ -11,10 +11,8 @@ class PopfMerlin2Planner(Merlin2Planner):
     """ Popf Merlin2 Planner Abstract """
 
     def __init__(self):
-        popf_path = ament_index_python.get_package_share_directory(
+        self.popf_path = ament_index_python.get_package_share_directory(
             "merlin2_planner") + "/planners/popf"
-
-        self.popf_command = "timeout 60 " + popf_path  # + " -n "
 
     def plan(self, domain: str, problem: str) -> str:
         domain_file = tempfile.NamedTemporaryFile(mode="w+")
@@ -26,12 +24,17 @@ class PopfMerlin2Planner(Merlin2Planner):
         domain_file.seek(0)
         problem_file.seek(0)
 
-        process = subprocess.Popen(
-            self.popf_command + " " + domain_file.name + " " + problem_file.name, stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        process.wait()
+        process = subprocess.Popen([
+            "timeout",
+            "60",
+            self.popf_path,
+            "-n",
+            str(domain_file.name),
+            str(problem_file.name)],
+            stdout=subprocess.PIPE)
 
-        plan = output
+        process.wait()
+        plan = str(process.stdout.read().decode("utf-8"))
 
         domain_file.close()
         problem_file.close()
