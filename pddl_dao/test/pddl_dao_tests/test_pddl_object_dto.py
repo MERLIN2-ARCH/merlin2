@@ -3,7 +3,7 @@ from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class TestPddlDtoObject(unittest.TestCase):
+class TestPddlObjectDto(unittest.TestCase):
 
     def setUp(self):
 

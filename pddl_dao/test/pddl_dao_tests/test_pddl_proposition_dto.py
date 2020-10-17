@@ -5,7 +5,7 @@ from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class TestPddlDtoProposition(unittest.TestCase):
+class TestPddlPropositionDto(unittest.TestCase):
 
     def setUp(self):
 

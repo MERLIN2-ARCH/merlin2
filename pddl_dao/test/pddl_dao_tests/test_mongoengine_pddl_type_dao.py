@@ -1,9 +1,9 @@
 
-from test_pddl_dao_basic.test_pddl_dao_type import TestPddlDaoType
+from test_pddl_dao_basic.test_pddl_type_dao import TestPddlTypeDao
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
 
 
-class TestMongoenginePddlDaoType(TestPddlDaoType):
+class TestMongoenginePddlDaoType(TestPddlTypeDao):
 
     def setUp(self):
         super().setUp()
@@ -18,4 +18,4 @@ class TestMongoenginePddlDaoType(TestPddlDaoType):
         self.pddl_type_dao.delete_all()
 
 
-del(TestPddlDaoType)
+del(TestPddlTypeDao)

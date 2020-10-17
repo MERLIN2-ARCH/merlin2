@@ -6,7 +6,7 @@ from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class TestPddlDaoProposition(unittest.TestCase):
+class TestPddlPropositionDao(unittest.TestCase):
 
     def setUp(self):
         pddl_dao_factory_facory = PddlDaoFactoryFactory()

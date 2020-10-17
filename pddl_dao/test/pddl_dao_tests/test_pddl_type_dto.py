@@ -2,7 +2,7 @@ import unittest
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 
 
-class TestPddlDtoType(unittest.TestCase):
+class TestPddlTypeDto(unittest.TestCase):
 
     def setUp(self):
 

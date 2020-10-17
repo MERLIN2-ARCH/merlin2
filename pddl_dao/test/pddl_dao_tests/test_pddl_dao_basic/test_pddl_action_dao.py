@@ -7,7 +7,7 @@ from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
 
 
-class TestPddlDaoAction(unittest.TestCase):
+class TestPddlActionDao(unittest.TestCase):
 
     def setUp(self):
         pddl_dao_factory_facory = PddlDaoFactoryFactory()

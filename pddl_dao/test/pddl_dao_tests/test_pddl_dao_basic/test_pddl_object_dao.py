@@ -4,7 +4,7 @@ from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 
 
-class TestPddlDaoObject(unittest.TestCase):
+class TestPddlObjectDao(unittest.TestCase):
 
     def setUp(self):
         pddl_dao_factory_facory = PddlDaoFactoryFactory()
