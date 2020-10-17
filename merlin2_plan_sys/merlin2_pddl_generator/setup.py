@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'pddl_generator_node = merlin2_pddl_generator.merlin2_pddl_generator_node:main',
         ],
     },
 )
