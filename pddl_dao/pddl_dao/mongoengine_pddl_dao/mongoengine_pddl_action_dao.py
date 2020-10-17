@@ -27,7 +27,7 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import (
 )
 
 
-class MongoenginePddlDaoAction(PddlActionDao, MongoenginePddlDao):
+class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
     """ Mongoengine Pddl Dao Action Class """
 
     def __init__(self, uri: str = None):
