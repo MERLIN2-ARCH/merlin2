@@ -42,6 +42,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
     def __condition_effect_model_to_dto(self,
                                         pddl_condition_effect_model: PddlConditionEffectModel,
                                         parameter_dict: dict) -> PddlConditionEffectDto:
+        """ convert a Mongoengine pddl condition/effect document into a PddlConditionEffectDto
+
+        Args:
+            pddl_condition_effect_model
+            (PddlConditionEffectModel): Mongoengine pddl condition/effect document
+
+        Returns:
+            PddlConditionEffectDto: PddlConditionEffectDto
+        """
 
         pddl_predicate_dao = MongoenginePddlPredicateDao(self.get_uri())
 
@@ -64,6 +73,14 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return pddl_dto_condition_effect
 
     def _model_to_dto(self, pddl_action_model: PddlActionModel) -> PddlActionDto:
+        """ convert a Mongoengine pddl action document into a PddlActionDto
+
+        Args:
+            pddl_action_model (PddlActionModel): Mongoengine pddl action document
+
+        Returns:
+            PddlActionDto: PddlActionDto
+        """
 
         pddl_action_dto = PddlActionDto(
             pddl_action_model.action_name)
@@ -105,6 +122,14 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
     def __condition_effect_dto_to_model(self,
                                         pddl_dto_condition_effect: PddlConditionEffectDto,
                                         parameter_dict: dict) -> PddlConditionEffectModel:
+        """ convert a PddlConditionEffectDto into a Mongoengine pddl condition/effect document
+
+        Args:
+            pddl_dto_condition_effect (PddlConditionEffectDto): PddlConditionEffectDto
+
+        Returns:
+            Document: Mongoengine pddl condition/effect document
+        """
 
         pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
             pddl_dto_condition_effect.get_pddl_predicate())
@@ -126,6 +151,14 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return pddl_condi_model
 
     def _dto_to_model(self, pddl_action_dto: PddlActionDto) -> PddlActionModel:
+        """ convert a PddlActionDto into a Mongoengine pddl action document
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto
+
+        Returns:
+            Document: Mongoengine pddl action document
+        """
 
         pddl_action_model = PddlActionModel()
 
@@ -181,13 +214,29 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
         return pddl_action_model
 
-    def _exist_in_mongo(self, pddl_action_dto):
+    def _exist_in_mongo(self, pddl_action_dto: PddlActionDto) -> bool:
+        """ check if PddlActionDto exists
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto
+
+        Returns:
+            bool: PddlActionDto exists?
+        """
 
         if self._get_model(pddl_action_dto):
             return True
         return False
 
     def _get_model(self, pddl_action_dto: PddlActionDto) -> PddlActionModel:
+        """ get the Mongoengine pddl action document corresponding to a give PddlActionDto
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto
+
+        Returns:
+            Document: Mongoengine pddl action document
+        """
 
         pddl_action_model = PddlActionModel.objects(
             action_name=pddl_action_dto.get_action_name())
@@ -196,8 +245,19 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return pddl_action_model[0]
 
     def _check_pddl_action_dto(self, pddl_action_dto: PddlActionDto) -> bool:
+        """ check if a PddlActionDto is correct:
+                there must be a at least one condition and one effect
+                condition and effect must be correct (same as proposition)
 
-        if(len(pddl_action_dto.get_conditions_list()) == 0 or len(pddl_action_dto.get_effects_list()) == 0):
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto to check
+
+        Returns:
+            bool: is PddlActionDto correct?
+        """
+
+        if(len(pddl_action_dto.get_conditions_list()) == 0 or
+           len(pddl_action_dto.get_effects_list()) == 0):
             return False
 
         for condition in pddl_action_dto.get_conditions_list():
@@ -212,6 +272,16 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
     def _check_pddl_condition_efect_model(self,
                                           pddl_condition_effect_model: PddlConditionEffectModel) -> bool:
+        """ check if the types of the objects of a pddl codition/effect model are
+            the same as the types of its predicate
+
+        Args:
+            pddl_condition_effect_model
+            (PddlConditionEffectModel): Mongoengine pddl condition/effect document
+
+        Returns:
+            bool: condition/effect is correct?
+        """
 
         # check if proposition is correct
         if(len(pddl_condition_effect_model.pddl_parameters) !=
@@ -230,6 +300,16 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return True
 
     def _check_pddl_action_model(self, pddl_action_model: PddlActionModel) -> bool:
+        """ check if a PddlActionDto is correct:
+                there must be a at least one condition and one effect
+                condition and effect must be correct (same as proposition)
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto to check
+
+        Returns:
+            bool: is PddlActionDto correct?
+        """
 
         if(len(pddl_action_model.conditions) == 0 or len(pddl_action_model.effects) == 0):
             return False
@@ -245,6 +325,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return True
 
     def get(self, action_name: str) -> PddlActionDto:
+        """ get a PddlActionDto with a given action name
+            return None if there is no pddl with that action name
+
+        Args:
+            action_name (str): pddl action name
+
+        Returns:
+            PddlActionDto: PddlActionDto of the pddl action name
+        """
 
         pddl_action_model = PddlActionModel.objects(
             action_name=action_name)
@@ -264,6 +353,11 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return None
 
     def get_all(self) -> List[PddlActionDto]:
+        """ get all PddlActionDto
+
+        Returns:
+            List[PddlActionDto]: list of all PddlActionDto
+        """
 
         pddl_action_model = PddlActionModel.objects
         pddl_dto_action_list = []
@@ -276,6 +370,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return pddl_dto_action_list
 
     def _save(self, pddl_action_dto: PddlActionDto) -> bool:
+        """ save a PddlActionDto
+            if the PddlActionDto is already saved return False, else return True
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto to save
+
+        Returns:
+            bool: succeed
+        """
 
         if not self._check_pddl_action_dto(pddl_action_dto):
             return False
@@ -310,6 +413,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return False
 
     def _update(self, pddl_action_dto: PddlActionDto) -> bool:
+        """ update a PddlActionDto
+            if the PddlActionDto is not saved return False, else return True
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto to update
+
+        Returns:
+            bool: succeed
+        """
 
         if not self._check_pddl_action_dto(pddl_action_dto):
             return False
@@ -343,7 +455,16 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
         return self._save(pddl_action_dto)
 
-    def delete(self, pddl_action_dto):
+    def delete(self, pddl_action_dto: PddlActionDto) -> bool:
+        """ save or update a PddlActionDto
+            if the PddlActionDto is not saved it will be saved, else it will be updated
+
+        Args:
+            pddl_action_dto (PddlActionDto): PddlActionDto to save or update
+
+        Returns:
+            bool: succeed
+        """
 
         pddl_action_model = self._get_model(pddl_action_dto)
 
@@ -355,6 +476,11 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         return False
 
     def delete_all(self) -> bool:
+        """ delete all pddl actions
+
+        Returns:
+            bool: succeed
+        """
 
         pddl_dto_action_list = self.get_all()
 
