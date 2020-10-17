@@ -16,7 +16,7 @@ class Merlin2PddlGeneratorFactory:
 
     def __init__(self):
         self.pddl_dao_families = PddlDaoFamilies
-        self.__pddl_dao_type_families = {
+        self.__families_to_factory = {
             self.pddl_dao_families.MONGOENGINE: MongoengineMerlin2PddlGenerator
         }
 
@@ -32,7 +32,7 @@ class Merlin2PddlGeneratorFactory:
 
         args_dict = {}
 
-        generator = self.__pddl_dao_type_families[family]
+        generator = self.__families_to_factory[family]
         init_args = list(generator.__init__.__code__.co_varnames)
 
         for key, value in kwargs.items():

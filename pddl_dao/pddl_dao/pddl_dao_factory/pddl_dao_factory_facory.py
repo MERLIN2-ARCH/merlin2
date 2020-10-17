@@ -13,7 +13,7 @@ class PddlDaoFactoryFactory:
 
     def __init__(self):
         self.pddl_dao_families = PddlDaoFamilies
-        self.__pddl_dao_type_families = {
+        self.__families_to_factory = {
             self.pddl_dao_families.MONGOENGINE: MongoenginePddlDaoFactory
         }
 
@@ -27,4 +27,4 @@ class PddlDaoFactoryFactory:
             PddlDaoFactory: pddl dao factory
         """
 
-        return self.__pddl_dao_type_families[family]()
+        return self.__families_to_factory[family]()
