@@ -55,7 +55,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
         """
 
         aux_uri = self.uri
-        if not uri:
+        if not uri is None:
             aux_uri = uri
 
         return MongoenginePddlTypeDao(uri=aux_uri)
@@ -71,7 +71,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
         """
 
         aux_uri = self.uri
-        if not uri:
+        if not uri is None:
             aux_uri = uri
 
         return MongoenginePddlPredicateDao(uri=aux_uri)
@@ -87,7 +87,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
         """
 
         aux_uri = self.uri
-        if not uri:
+        if not uri is None:
             aux_uri = uri
 
         return MongoenginePddlActionDao(uri=aux_uri)
@@ -103,7 +103,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
         """
 
         aux_uri = self.uri
-        if not uri:
+        if not uri is None:
             aux_uri = uri
 
         return MongoenginePddlObjectDao(uri=aux_uri)
@@ -119,7 +119,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
         """
 
         aux_uri = self.uri
-        if not uri:
+        if not uri is None:
             aux_uri = uri
 
         return MongoenginePddlPropositionDao(uri=aux_uri)
