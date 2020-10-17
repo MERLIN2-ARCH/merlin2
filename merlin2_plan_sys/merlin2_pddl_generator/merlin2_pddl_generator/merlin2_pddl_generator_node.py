@@ -5,10 +5,10 @@ import rclpy
 from rclpy.node import Node
 
 from merlin2_plan_sys_interfaces.srv._generate_pddl import GeneratePddl
-
-from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import (
-    MongoengineMerlin2PddlGenerator
+from merlin2_pddl_generator.merlin2_pddl_generator_factory.merlin2_pddl_generator_factory import(
+    Merlin2PddlGeneratorFactory
 )
+from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
 
 
 class Merlin2PddlGeneratorNode(Node):
@@ -18,9 +18,31 @@ class Merlin2PddlGeneratorNode(Node):
 
         super().__init__('merlin2_pddl_generator_mode')
 
-        self.pddl_generator = MongoengineMerlin2PddlGenerator()
+        pddl_generator_factory = Merlin2PddlGeneratorFactory()
 
-        # service servers
+        # param names
+        pddl_dao_family_param_name = "pddl_dao_family"
+        mongoengine_uri_param_name = "mongoengine_uri"
+
+        # declaring params
+        self.declare_parameter(pddl_dao_family_param_name,
+                               PddlDaoFamilies.MONGOENGINE)
+        self.declare_parameter(mongoengine_uri_param_name, None)
+
+        # getting params
+        pddl_dao_family = self.get_parameter(
+            pddl_dao_family_param_name).get_parameter_value().integer_value
+        mongoengine_uri = self.get_parameter(
+            mongoengine_uri_param_name).get_parameter_value().string_value
+
+        # creating pddl generator
+        pddl_generator_class = pddl_generator_factory.create_pddl_generator(
+            pddl_dao_family)
+
+        if pddl_dao_family == PddlDaoFamilies.MONGOENGINE:
+            self.pddl_generator = pddl_generator_class(mongoengine_uri)
+
+            # service servers
         self.__start_server = self.create_service(
             GeneratePddl, 'generate_pddl', self.__generate_pddl_srv)
 
