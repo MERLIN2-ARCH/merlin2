@@ -163,19 +163,15 @@ class PddlActionDto(PddlDto):
 
         # conditions
         if self._durative:
-            string += "\n\t:condition ("
+            string += "\n\t:condition (and"
         else:
-            string += "\n\t:precondition ("
-        if len(self._conditions_list) > 1:
-            string += "and"
+            string += "\n\t:precondition (and"
         for condi in self._conditions_list:
             string += "\n\t\t" + str(condi)
         string += "\n\t)"
 
         # effects
-        string += "\n\t:effect ("
-        if len(self._effects_list) > 1:
-            string += "and"
+        string += "\n\t:effect (and"
         for effect in self._effects_list:
             string += "\n\t\t" + str(effect)
         string += "\n\t)"

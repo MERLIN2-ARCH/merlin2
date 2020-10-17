@@ -81,12 +81,12 @@ class TestPddlDaoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
-\t:condition (
-\t\t(at start (robot_at r s))
+\t:condition (and
+\t\t(at start (robot_at ?r ?s))
 \t)
 \t:effect (and
-\t\t(at start (not (robot_at r s)))
-\t\t(at end (robot_at r d))
+\t\t(at start (not (robot_at ?r ?s)))
+\t\t(at end (robot_at ?r ?d))
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -106,12 +106,12 @@ class TestPddlDaoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
-\t:condition (
-\t\t(at start (robot_at r s))
+\t:condition (and
+\t\t(at start (robot_at ?r ?s))
 \t)
 \t:effect (and
-\t\t(at end (not (robot_at r s)))
-\t\t(at end (robot_at r d))
+\t\t(at end (not (robot_at ?r ?s)))
+\t\t(at end (robot_at ?r ?d))
 \t)
 )""",
                          str(self.pddl_action_dto))

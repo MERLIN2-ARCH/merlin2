@@ -61,7 +61,13 @@ class PddlConditionEffectDto(PddlPropositionDto):
         self._is_negative = is_negative
 
     def __str__(self):
-        super_string = super(PddlConditionEffectDto, self).__str__()
+
+        super_string = "(" + self._pddl_predicate._predicate_name
+
+        for pddl_object in self._pddl_objects_list:
+            super_string += " ?" + pddl_object.get_object_name()
+
+        super_string += ")"
 
         string = "(" + self._time + " "
         if self._is_negative:

@@ -41,12 +41,12 @@ class TestPddlDtoAction(unittest.TestCase):
         self.assertEqual("""\
 (:action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
-\t:precondition (
-\t\t(at start (robot_at r s))
+\t:precondition (and
+\t\t(at start (robot_at ?r ?s))
 \t)
 \t:effect (and
-\t\t(at start (not (robot_at r s)))
-\t\t(at end (robot_at r d))
+\t\t(at start (not (robot_at ?r ?s)))
+\t\t(at end (robot_at ?r ?d))
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -57,12 +57,12 @@ class TestPddlDtoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
-\t:condition (
-\t\t(at start (robot_at r s))
+\t:condition (and
+\t\t(at start (robot_at ?r ?s))
 \t)
 \t:effect (and
-\t\t(at start (not (robot_at r s)))
-\t\t(at end (robot_at r d))
+\t\t(at start (not (robot_at ?r ?s)))
+\t\t(at end (robot_at ?r ?d))
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -74,10 +74,10 @@ class TestPddlDtoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
-\t:condition (
-\t\t(at start (robot_at r s))
+\t:condition (and
+\t\t(at start (robot_at ?r ?s))
 \t)
-\t:effect (
+\t:effect (and
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -89,11 +89,11 @@ class TestPddlDtoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
-\t:condition (
+\t:condition (and
 \t)
 \t:effect (and
-\t\t(at start (not (robot_at r s)))
-\t\t(at end (robot_at r d))
+\t\t(at start (not (robot_at ?r ?s)))
+\t\t(at end (robot_at ?r ?d))
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -107,9 +107,9 @@ class TestPddlDtoAction(unittest.TestCase):
 (:durative-action navigation
 \t:parameters ()
 \t:duration (= ?duration 10)
-\t:condition (
+\t:condition (and
 \t)
-\t:effect (
+\t:effect (and
 \t)
 )""",
                          str(self.pddl_action_dto))
@@ -125,13 +125,14 @@ class TestPddlDtoAction(unittest.TestCase):
 
     def test_pddl_dto_action_get_conditions_list(self):
         conditions_list = self.pddl_action_dto.get_conditions_list()
-        self.assertEqual("(at start (robot_at r s))", str(conditions_list[0]))
+        self.assertEqual("(at start (robot_at ?r ?s))",
+                         str(conditions_list[0]))
 
     def test_pddl_dto_action_get_effects_list(self):
         effects_list = self.pddl_action_dto.get_effects_list()
-        self.assertEqual("(at start (not (robot_at r s)))",
+        self.assertEqual("(at start (not (robot_at ?r ?s)))",
                          str(effects_list[0]))
-        self.assertEqual("(at end (robot_at r d))",
+        self.assertEqual("(at end (robot_at ?r ?d))",
                          str(effects_list[1]))
 
     def test_pddl_dto_action_get_durative(self):
