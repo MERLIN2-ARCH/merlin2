@@ -13,7 +13,7 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='migul',
+    maintainer='miguel',
     maintainer_email='mgonzs13@estudiantes.unileon.es',
     description='TODO: Package description',
     license='TODO: License declaration',
