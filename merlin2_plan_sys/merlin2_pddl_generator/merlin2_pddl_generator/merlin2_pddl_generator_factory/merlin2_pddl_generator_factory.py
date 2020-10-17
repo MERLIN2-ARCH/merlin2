@@ -20,14 +20,23 @@ class Merlin2PddlGeneratorFactory:
             self.pddl_dao_families.MONGOENGINE: MongoengineMerlin2PddlGenerator
         }
 
-    def create_pddl_generator(self, family: int) -> Type[GenericMerlin2PddlGenerator]:
+    def create_pddl_generator(self, family: int, **kwargs) -> Type[GenericMerlin2PddlGenerator]:
         """ return the class of the pddl generator of a given family
 
         Args:
             family (int): number of the pddl dao family to create
 
         Returns:
-            Type[GenericMerlin2PddlGenerator]: class of a pddl generator
+            Type[GenericMerlin2PddlGenerator]: class of a   pddl generator
         """
 
-        return self.__pddl_dao_type_families[family]
+        args_dict = {}
+
+        generator = self.__pddl_dao_type_families[family]
+        init_args = list(generator.__init__.__code__.co_varnames)
+
+        for key, value in kwargs.items():
+            if key in init_args:
+                args_dict[key] = value
+
+        return generator(**args_dict)

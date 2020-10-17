@@ -36,13 +36,10 @@ class Merlin2PddlGeneratorNode(Node):
             mongoengine_uri_param_name).get_parameter_value().string_value
 
         # creating pddl generator
-        pddl_generator_class = pddl_generator_factory.create_pddl_generator(
-            pddl_dao_family)
+        self.pddl_generator = pddl_generator_factory.create_pddl_generator(
+            pddl_dao_family, uri=mongoengine_uri, otro="ajsnd")
 
-        if pddl_dao_family == PddlDaoFamilies.MONGOENGINE:
-            self.pddl_generator = pddl_generator_class(mongoengine_uri)
-
-            # service servers
+        # service servers
         self.__start_server = self.create_service(
             GeneratePddl, 'generate_pddl', self.__generate_pddl_srv)
 
