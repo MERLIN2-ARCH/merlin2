@@ -8,9 +8,8 @@ import threading
 import rclpy
 from rclpy.node import Node
 
-from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.action import ActionServer, CancelResponse
 from rclpy.executors import MultiThreadedExecutor
-
 
 from merlin2_plan_sys_interfaces.srv import (
     GeneratePddl, Plan, ParsePlan
@@ -44,21 +43,35 @@ class Merlin2ExecutorNode(Node):
                                            handle_accepted_callback=self.__accepted_callback,
                                            )
 
+    def destroy(self):
+        """ destroy node method
+        """
+
+        self._action_server.destroy()
+        super().destroy_node()
+
     def __execute_server(self, goal_handle):
         """ execute action server
 
         Args:
             goal_handle ([type]): goal_handle
         """
+
         try:
-            result = Execute.Result
+            result = Execute.Result()
+
             pddl_generated = asyncio.run(self.generate_pddl())
             self.get_logger().info(pddl_generated.domain)
             self.get_logger().info(pddl_generated.problem)
+            result.pddl_generator = True
+
             plan = asyncio.run(
                 self.plan(pddl_generated.domain, pddl_generated.problem))
             self.get_logger().info(plan.plan)
+            result.planner = True
+
             goal_handle.succeed()
+
             return result
 
         finally:
@@ -155,7 +168,7 @@ def main(args=None):
 
     rclpy.spin(node, executor=executor)
 
-    node.destroy_node()
+    node.destroy()
 
     rclpy.shutdown()
 
