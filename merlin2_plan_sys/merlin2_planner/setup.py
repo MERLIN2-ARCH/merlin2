@@ -1,4 +1,7 @@
 from setuptools import setup
+import os
+from glob import glob
+
 
 package_name = 'merlin2_planner'
 
@@ -10,6 +13,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'planners'), glob('planners/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
