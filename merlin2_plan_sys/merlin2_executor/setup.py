@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'executor_node = merlin2_executor.merlin2_executor_node:main',
         ],
     },
 )
