@@ -12,7 +12,7 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 
     def setUp(self):
 
-        self.domain_generator = Merlin2PddlDomainParser()
+        self.domain_parser = Merlin2PddlDomainParser()
 
         # types
         self.robot_type = PddlTypeDto("robot")
@@ -61,7 +61,7 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 \twp
 )
 """,
-                         self.domain_generator.parse_pddl_type_dtos([self.robot_type, self.wp_type]))
+                         self.domain_parser.parse_pddl_type_dtos([self.robot_type, self.wp_type]))
 
     def test_parse_pddl_type_dtos_empty_list(self):
         self.maxDiff = None
@@ -69,7 +69,7 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 (:types
 )
 """,
-                         self.domain_generator.parse_pddl_type_dtos([]))
+                         self.domain_parser.parse_pddl_type_dtos([]))
 
     def test_parse_pddl_predicate_dtos(self):
         self.maxDiff = None
@@ -79,7 +79,7 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 \t(wp_checked ?r0 - robot ?w1 - wp)
 )
 """,
-                         self.domain_generator.parse_pddl_predicate_dtos([self.robot_at, self.wp_checked]))
+                         self.domain_parser.parse_pddl_predicate_dtos([self.robot_at, self.wp_checked]))
 
     def test_parse_pddl_predicate_dtos_empty_list(self):
         self.maxDiff = None
@@ -87,7 +87,7 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 (:predicates
 )
 """,
-                         self.domain_generator.parse_pddl_predicate_dtos([]))
+                         self.domain_parser.parse_pddl_predicate_dtos([]))
 
     def test_parse_pddl_action_dtos(self):
         self.maxDiff = None
@@ -114,12 +114,12 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 \t)
 )
 """,
-                         self.domain_generator.parse_pddl_action_dtos([self.navigation_action, self.check_wp]))
+                         self.domain_parser.parse_pddl_action_dtos([self.navigation_action, self.check_wp]))
 
     def test_parse_pddl_action_dtos_empty_list(self):
         self.maxDiff = None
         self.assertEqual("",
-                         self.domain_generator.parse_pddl_action_dtos([]))
+                         self.domain_parser.parse_pddl_action_dtos([]))
 
     def test_parse_pddl_domain_dto(self):
         self.maxDiff = None
@@ -157,10 +157,10 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 )
 )
 """,
-                         self.domain_generator.parse_pddl_domain_dto([self.robot_type, self.wp_type],
-                                                                     [self.robot_at,
-                                                                         self.wp_checked],
-                                                                     [self.navigation_action, self.check_wp]))
+                         self.domain_parser.parse_pddl_domain_dto([self.robot_type, self.wp_type],
+                                                                  [self.robot_at,
+                                                                   self.wp_checked],
+                                                                  [self.navigation_action, self.check_wp]))
 
     def test_parse_pddl_domain_dto_empty_lists(self):
         self.maxDiff = None
@@ -173,4 +173,4 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 )
 )
 """,
-                         self.domain_generator.parse_pddl_domain_dto([], [], []))
+                         self.domain_parser.parse_pddl_domain_dto([], [], []))
