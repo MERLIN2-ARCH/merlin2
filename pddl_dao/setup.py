@@ -20,7 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tests_dao = pddl_dao.tests_dao:main',
         ],
     },
 )
