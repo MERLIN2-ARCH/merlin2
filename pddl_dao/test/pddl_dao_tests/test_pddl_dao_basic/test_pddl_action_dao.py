@@ -153,6 +153,30 @@ class TestPddlActionDao(unittest.TestCase):
         result = self.pddl_action_dao.save(self.pddl_action_dto)
         self.assertTrue(result)
 
+    def test_pddl_dao_action_normal_action(self):
+        self.pddl_action_dto.set_durative(False)
+        self._condition_1.set_time(None)
+        self._effect_1.set_time(None)
+        self._effect_2.set_time(None)
+
+        self.pddl_action_dao._save(self.pddl_action_dto)
+
+        result = self.pddl_action_dao._update(self.pddl_action_dto)
+        self.assertTrue(result)
+        self.pddl_action_dto = self.pddl_action_dao.get("navigation")
+        self.assertEqual("""\
+(:action navigation
+\t:parameters ( ?r - robot ?s - wp ?d - wp)
+\t:precondition (and
+\t\t(robot_at ?r ?s)
+\t)
+\t:effect (and
+\t\t(not (robot_at ?r ?s))
+\t\t(robot_at ?r ?d)
+\t)
+)""",
+                         str(self.pddl_action_dto))
+
     def test_pddl_dao_action_delete_false_action_not_exist(self):
         result = self.pddl_action_dao.delete(self.pddl_action_dto)
         self.assertFalse(result)

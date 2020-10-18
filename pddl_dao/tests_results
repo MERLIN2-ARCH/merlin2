@@ -2,14 +2,14 @@
 platform linux -- Python 3.8.5, pytest-6.0.2, py-1.9.0, pluggy-0.13.0
 rootdir: /home/miguel/ros2_foxy/src/merlin2/pddl_dao
 plugins: launch-testing-ros-0.10.2, ament-copyright-0.9.5, ament-lint-0.9.5, ament-pep257-0.9.5, ament-xmllint-0.9.5, ament-flake8-0.9.5, launch-testing-0.10.3, rerunfailures-9.1, metadata-1.10.0, repeat-0.8.0, html-2.1.1, colcon-core-0.6.0, cov-2.8.1
-collected 97 items
+collected 98 items
 
 test/pddl_dao_tests/test_mongoengine_pddl_action_dao.py ................ [ 16%]
-..                                                                       [ 18%]
-test/pddl_dao_tests/test_mongoengine_pddl_object_dao.py ...........      [ 29%]
+...                                                                      [ 19%]
+test/pddl_dao_tests/test_mongoengine_pddl_object_dao.py ...........      [ 30%]
 test/pddl_dao_tests/test_mongoengine_pddl_predicate_dao.py ............  [ 42%]
-test/pddl_dao_tests/test_mongoengine_pddl_proposition_dao.py ........... [ 53%]
-........                                                                 [ 61%]
+test/pddl_dao_tests/test_mongoengine_pddl_proposition_dao.py ........... [ 54%]
+........                                                                 [ 62%]
 test/pddl_dao_tests/test_mongoengine_pddl_type_dao.py ............       [ 74%]
 test/pddl_dao_tests/test_pddl_action_dto.py ...........                  [ 85%]
 test/pddl_dao_tests/test_pddl_object_dto.py ...                          [ 88%]
@@ -18,7 +18,7 @@ test/pddl_dao_tests/test_pddl_proposition_dto.py .....                   [ 97%]
 test/pddl_dao_tests/test_pddl_type_dto.py ..                             [100%]
 
 =============================== warnings summary ===============================
-test/pddl_dao_tests/test_mongoengine_pddl_action_dao.py: 48 warnings
+test/pddl_dao_tests/test_mongoengine_pddl_action_dao.py: 54 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_object_dao.py: 7 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_predicate_dao.py: 48 warnings
 test/pddl_dao_tests/test_mongoengine_pddl_proposition_dao.py: 96 warnings
@@ -64,4 +64,4 @@ Name                                                                            
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 TOTAL                                                                                                                                               1008     48    95%
 
-======================= 97 passed, 215 warnings in 4.53s =======================
+======================= 98 passed, 221 warnings in 4.73s =======================
