@@ -1,13 +1,13 @@
 
-""" Generic Pddl Dao Interface """
+""" Pddl Dao Interface """
 
 from abc import ABC, abstractmethod
 from typing import List
 from pddl_dao.pddl_dto.pddl_dto import PddlDto
 
 
-class GenericPddlDao(ABC):
-    """ Generic Pddl Dao Abstract Class """
+class PddlDao(ABC):
+    """ Pddl Dao Abstract Class """
 
     @abstractmethod
     def get_all(self) -> List[PddlDto]:

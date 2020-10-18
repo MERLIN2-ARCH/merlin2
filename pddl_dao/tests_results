@@ -47,7 +47,7 @@ Name                                                                            
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_factory_facory.py                              10      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_factory/pddl_dao_families.py                                     4      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/__init__.py                                            0      0   100%
-/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/generic_pddl_dao.py                                   17      0   100%
+/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_dao.py                                   17      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_action_dao.py                                     7      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_object_dao.py                                     7      0   100%
 /home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao/pddl_dao_interface/pddl_predicate_dao.py                                  7      0   100%

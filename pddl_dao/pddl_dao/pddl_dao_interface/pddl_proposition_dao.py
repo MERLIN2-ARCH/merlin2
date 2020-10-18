@@ -4,10 +4,10 @@
 from abc import abstractmethod
 from typing import List
 from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dao.pddl_dao_interface.generic_pddl_dao import GenericPddlDao
+from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
 
 
-class PddlPropositionDao(GenericPddlDao):
+class PddlPropositionDao(PddlDao):
     """ Pddl Proposition Dao Abstract Class """
 
     @abstractmethod

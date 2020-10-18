@@ -1,5 +1,5 @@
 
-""" Merlin2 Pddl Generator Generic"""
+""" Merlin2 Pddl Generator """
 
 from typing import List
 
@@ -14,7 +14,7 @@ from pddl_dao.pddl_dto.pddl_dto import PddlDto
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 
-class GenericMerlin2PddlGenerator:
+class Merlin2PddlGenerator:
     """ Merlin2 Pddl Generator Class"""
 
     def __init__(self, pddl_dao_factory: PddlDaoFactory):

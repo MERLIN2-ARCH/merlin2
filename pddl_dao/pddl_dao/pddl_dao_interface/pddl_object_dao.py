@@ -3,10 +3,10 @@
 
 from abc import abstractmethod
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dao.pddl_dao_interface.generic_pddl_dao import GenericPddlDao
+from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
 
 
-class PddlObjectDao(GenericPddlDao):
+class PddlObjectDao(PddlDao):
     """ Pddl Object Dao Interface Abstract Class"""
 
     @abstractmethod

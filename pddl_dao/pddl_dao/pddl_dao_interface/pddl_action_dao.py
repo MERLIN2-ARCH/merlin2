@@ -3,10 +3,10 @@
 
 from abc import abstractmethod
 from pddl_dao.pddl_dto.pddl_action_dto import PddlActionDto
-from pddl_dao.pddl_dao_interface.generic_pddl_dao import GenericPddlDao
+from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
 
 
-class PddlActionDao(GenericPddlDao):
+class PddlActionDao(PddlDao):
     """ Pddl Action Dao Abstract Class """
 
     @abstractmethod
