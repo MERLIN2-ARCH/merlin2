@@ -29,25 +29,25 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
         s = PddlObjectDto(self.wp_type, "s")
         d = PddlObjectDto(self.wp_type, "d")
 
-        condition_1 = PddlConditionEffectDto(PddlConditionEffectDto.AT_START,
-                                             self.robot_at,
-                                             [r, s])
+        condition_1 = PddlConditionEffectDto(self.robot_at,
+                                             [r, s],
+                                             time=PddlConditionEffectDto.AT_START)
 
-        effect_1 = PddlConditionEffectDto(PddlConditionEffectDto.AT_START,
-                                          self.robot_at,
+        effect_1 = PddlConditionEffectDto(self.robot_at,
                                           [r, s],
+                                          time=PddlConditionEffectDto.AT_START,
                                           is_negative=True)
 
-        effect_2 = PddlConditionEffectDto(PddlConditionEffectDto.AT_END,
-                                          self.robot_at,
-                                          [r, d])
+        effect_2 = PddlConditionEffectDto(self.robot_at,
+                                          [r, d],
+                                          time=PddlConditionEffectDto.AT_END)
 
         self.navigation_action = PddlActionDto(
             "navigation", [r, s, d], [condition_1], [effect_1, effect_2])
 
-        effect_3 = PddlConditionEffectDto(PddlConditionEffectDto.AT_END,
-                                          self.wp_checked,
+        effect_3 = PddlConditionEffectDto(self.wp_checked,
                                           [r, s],
+                                          time=PddlConditionEffectDto.AT_END,
                                           is_negative=False)
 
         self.check_wp = PddlActionDto(
