@@ -19,18 +19,18 @@ class TestPddlActionDto(unittest.TestCase):
         s = PddlObjectDto(self._wp_type, "s")
         d = PddlObjectDto(self._wp_type, "d")
 
-        self._condition_1 = PddlConditionEffectDto(PddlConditionEffectDto.AT_START,
-                                                   self._robot_at,
-                                                   [r, s])
+        self._condition_1 = PddlConditionEffectDto(self._robot_at,
+                                                   [r, s],
+                                                   time=PddlConditionEffectDto.AT_START)
 
-        self._effect_1 = PddlConditionEffectDto(PddlConditionEffectDto.AT_START,
-                                                self._robot_at,
+        self._effect_1 = PddlConditionEffectDto(self._robot_at,
                                                 [r, s],
+                                                time=PddlConditionEffectDto.AT_START,
                                                 is_negative=True)
 
-        self._effect_2 = PddlConditionEffectDto(PddlConditionEffectDto.AT_END,
-                                                self._robot_at,
-                                                [r, d])
+        self._effect_2 = PddlConditionEffectDto(self._robot_at,
+                                                [r, d],
+                                                time=PddlConditionEffectDto.AT_END)
 
         self.pddl_action_dto = PddlActionDto(
             "navigation", [r, s, d], [self._condition_1], [self._effect_1, self._effect_2])
@@ -38,15 +38,18 @@ class TestPddlActionDto(unittest.TestCase):
     def test_pddl_dto_action_str(self):
         self.maxDiff = None
         self.pddl_action_dto.set_durative(False)
+        self._condition_1.set_time(None)
+        self._effect_1.set_time(None)
+        self._effect_2.set_time(None)
         self.assertEqual("""\
 (:action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:precondition (and
-\t\t(at start (robot_at ?r ?s))
+\t\t(robot_at ?r ?s)
 \t)
 \t:effect (and
-\t\t(at start (not (robot_at ?r ?s)))
-\t\t(at end (robot_at ?r ?d))
+\t\t(not (robot_at ?r ?s))
+\t\t(robot_at ?r ?d)
 \t)
 )""",
                          str(self.pddl_action_dto))

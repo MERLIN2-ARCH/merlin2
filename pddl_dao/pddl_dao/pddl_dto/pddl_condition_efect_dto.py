@@ -14,9 +14,10 @@ class PddlConditionEffectDto(PddlPropositionDto):
     AT_END = "at end"
     OVER_ALL = "over all"
 
-    def __init__(self, time: str,
+    def __init__(self,
                  pddl_predicate_dto: PddlPredicateDto,
                  pddl_objects_list: List[PddlObjectDto] = None,
+                 time: str = None,
                  is_negative: bool = False):
 
         self.set_time(time)
@@ -62,21 +63,17 @@ class PddlConditionEffectDto(PddlPropositionDto):
 
     def __str__(self):
 
-        super_string = "(" + self._pddl_predicate._predicate_name
+        string = "(" + self._pddl_predicate._predicate_name
 
         for pddl_object in self._pddl_objects_list:
-            super_string += " ?" + pddl_object.get_object_name()
-
-        super_string += ")"
-
-        string = "(" + self._time + " "
-        if self._is_negative:
-            string += "(not "
-
-        string += super_string
+            string += " ?" + pddl_object.get_object_name()
 
         string += ")"
+
         if self._is_negative:
-            string += ")"
+            string = "(not " + string + ")"
+
+        if self._time:
+            string = "(" + self._time + " " + string + ")"
 
         return string

@@ -58,9 +58,9 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             pddl_condition_effect_model.pddl_predicate.predicate_name)
 
         pddl_dto_condition_effect = PddlConditionEffectDto(
-            pddl_condition_effect_model.time,
             pddl_dto_precicate,
-            is_negative=pddl_condition_effect_model.is_negative)
+            is_negative=pddl_condition_effect_model.is_negative,
+            time=pddl_condition_effect_model.time)
 
         pddl_dto_objects_list = []
 
@@ -138,17 +138,17 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         if not pddl_predicate_model:
             return None
 
-        pddl_condi_model = PddlConditionEffectModel()
-        pddl_condi_model.pddl_predicate = pddl_predicate_model
-        pddl_condi_model.time = pddl_dto_condition_effect.get_time()
-        pddl_condi_model.is_negative = pddl_dto_condition_effect.get_is_negative()
+        pddl_condition_model = PddlConditionEffectModel()
+        pddl_condition_model.pddl_predicate = pddl_predicate_model
+        pddl_condition_model.time = pddl_dto_condition_effect.get_time()
+        pddl_condition_model.is_negative = pddl_dto_condition_effect.get_is_negative()
 
         for param in pddl_dto_condition_effect.get_pddl_objects_list():
 
-            pddl_condi_model.pddl_parameters.append(
+            pddl_condition_model.pddl_parameters.append(
                 parameter_dict[param.get_object_name()])
 
-        return pddl_condi_model
+        return pddl_condition_model
 
     def _dto_to_model(self, pddl_action_dto: PddlActionDto) -> PddlActionModel:
         """ convert a PddlActionDto into a Mongoengine pddl action document
@@ -190,15 +190,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
         # ACTION CONDIS
         for pddl_condition_dto in pddl_action_dto.get_conditions_list():
-            pddl_condi_model = self.__condition_effect_dto_to_model(
+            pddl_condition_model = self.__condition_effect_dto_to_model(
                 pddl_condition_dto, parameter_dict)
 
-            if not pddl_condi_model:
+            if not pddl_condition_model:
                 return None
 
-            pddl_action_model.conditions.append(pddl_condi_model)
+            pddl_action_model.conditions.append(pddl_condition_model)
             pddl_action_model._pddl_predicates_used.append(
-                pddl_condi_model.pddl_predicate)
+                pddl_condition_model.pddl_predicate)
 
         # ACTION EFFECTS
         for pddl_effect_dto in pddl_action_dto.get_effects_list():
@@ -256,16 +256,22 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             bool: is PddlActionDto correct?
         """
 
-        if(len(pddl_action_dto.get_conditions_list()) == 0 or
-           len(pddl_action_dto.get_effects_list()) == 0):
-            return False
-
-        for condition in pddl_action_dto.get_conditions_list():
-            if not self._me_pddl_proposition_dao._check_pddl_proposition_dto(condition):
+        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
+            if(not pddl_action_dto.get_durative() and pddl_condition_dto.get_time()):
+                return False
+            elif(pddl_action_dto.get_durative() and not pddl_condition_dto.get_time()):
                 return False
 
-        for effect in pddl_action_dto.get_effects_list():
-            if not self._me_pddl_proposition_dao._check_pddl_proposition_dto(effect):
+            if not self._me_pddl_proposition_dao._check_pddl_proposition_dto(pddl_condition_dto):
+                return False
+
+        for pddl_effect_dto in pddl_action_dto.get_effects_list():
+            if(not pddl_action_dto.get_durative() and pddl_effect_dto.get_time()):
+                return False
+            elif(pddl_action_dto.get_durative() and not pddl_effect_dto.get_time()):
+                return False
+
+            if not self._me_pddl_proposition_dao._check_pddl_proposition_dto(pddl_effect_dto):
                 return False
 
         return True
@@ -311,15 +317,22 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             bool: is PddlActionDto correct?
         """
 
-        if(len(pddl_action_model.conditions) == 0 or len(pddl_action_model.effects) == 0):
-            return False
-
-        for condition in pddl_action_model.conditions:
-            if not self._check_pddl_condition_efect_model(condition):
+        for pddl_condition_model in pddl_action_model.conditions:
+            if(not pddl_action_model.durative and pddl_condition_model.time):
+                return False
+            elif(pddl_action_model.durative and not pddl_condition_model.time):
                 return False
 
-        for effect in pddl_action_model.effects:
-            if not self._check_pddl_condition_efect_model(effect):
+            if not self._check_pddl_condition_efect_model(pddl_condition_model):
+                return False
+
+        for pddl_effect_model in pddl_action_model.effects:
+            if(not pddl_action_model.durative and pddl_effect_model.time):
+                return False
+            elif(pddl_action_model.durative and not pddl_effect_model.time):
+                return False
+
+            if not self._check_pddl_condition_efect_model(pddl_effect_model):
                 return False
 
         return True
