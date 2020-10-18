@@ -1,5 +1,10 @@
 
 import unittest
+
+from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import(
+    MongoengineMerlin2PddlGenerator
+)
+
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
@@ -7,10 +12,6 @@ from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
 from pddl_dao.pddl_dto.pddl_action_dto import PddlActionDto
 from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
-
-from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import(
-    MongoengineMerlin2PddlGenerator
-)
 
 
 class TestMerlin2PddlProblemParser(unittest.TestCase):
