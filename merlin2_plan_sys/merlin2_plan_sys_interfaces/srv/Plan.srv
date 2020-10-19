@@ -2,3 +2,4 @@ string domain
 string problem
 ---
 string plan
+bool plan_solved
