@@ -1,0 +1,4 @@
+bool get_all
+string predicate_name
+---
+merlin2_knowledge_base_interfaces/PddlPredicate[] pddl_predicates

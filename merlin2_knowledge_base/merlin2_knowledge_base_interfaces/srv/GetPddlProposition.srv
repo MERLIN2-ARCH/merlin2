@@ -1,0 +1,10 @@
+
+uint8 GET_ALL=1
+uint8 GET_BY_PREDICATE=2
+uint8 GET_GOALS=3
+uint8 GET_NO_GOALS=4
+
+uint8 get_type
+string predicate_name
+---
+merlin2_knowledge_base_interfaces/PddlProposition[] pddl_propositions

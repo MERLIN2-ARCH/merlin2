@@ -47,6 +47,11 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/UpdatePddlPredicate.srv"
   "srv/UpdatePddlProposition.srv"
   "srv/UpdatePddlAction.srv"
+  "srv/GetPddlType.srv"
+  "srv/GetPddlObject.srv"
+  "srv/GetPddlPredicate.srv"
+  "srv/GetPddlProposition.srv"
+  "srv/GetPddlAction.srv"
   )
 
  ament_package()
