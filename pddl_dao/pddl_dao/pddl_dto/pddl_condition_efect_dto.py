@@ -77,3 +77,27 @@ class PddlConditionEffectDto(PddlPropositionDto):
             string = "(" + self._time + " " + string + ")"
 
         return string
+
+    def __eq__(self, other: PddlConditionEffectDto) -> bool:
+        if isinstance(other, PddlConditionEffectDto):
+
+            if not other.get_pddl_predicate() == self.get_pddl_predicate():
+                return False
+
+            if not len(other.get_pddl_objects_list()) == len(self.get_pddl_objects_list()):
+                return False
+
+            if not other.get_is_negative() == self.get_is_negative():
+                return False
+
+            if not other.get_time() == self.get_time():
+                return False
+
+            for pddl_object, other_pddl_object in zip(self.get_pddl_objects_list(),
+                                                      other.get_pddl_objects_list()):
+                if not pddl_object == other_pddl_object:
+                    return False
+
+            return True
+
+        return False

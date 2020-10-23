@@ -33,3 +33,9 @@ class PddlTypeDto(PddlDto):
 
     def __str__(self):
         return self._type_name
+
+    def __eq__(self, other: PddlTypeDto) -> bool:
+        if isinstance(other, PddlTypeDto):
+            return self.get_type_name() == other.get_type_name()
+
+        return False

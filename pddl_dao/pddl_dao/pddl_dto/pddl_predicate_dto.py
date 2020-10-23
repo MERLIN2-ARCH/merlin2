@@ -67,3 +67,9 @@ class PddlPredicateDto(PddlDto):
         string += ")"
 
         return string
+
+    def __eq__(self, other: PddlPredicateDto) -> bool:
+        if isinstance(other, PddlPredicateDto):
+            return self.get_predicate_name() == other.get_predicate_name()
+
+        return False

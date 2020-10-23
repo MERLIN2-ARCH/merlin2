@@ -179,3 +179,9 @@ class PddlActionDto(PddlDto):
         string += "\n)"
 
         return string
+
+    def __eq__(self, other: PddlActionDto) -> bool:
+        if isinstance(other, PddlActionDto):
+            return self.get_action_name() == other.get_action_name()
+
+        return False

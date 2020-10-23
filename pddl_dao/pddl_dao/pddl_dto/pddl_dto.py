@@ -10,3 +10,7 @@ class PddlDto(ABC):
     @abstractmethod
     def __str__(self):
         return "PddlDto abstract class"
+
+    @abstractmethod
+    def __eq__(self, other: PddlDto) -> bool:
+        return False
