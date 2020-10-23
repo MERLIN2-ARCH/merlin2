@@ -180,7 +180,7 @@ class PddlActionDto(PddlDto):
 
         return string
 
-    def __eq__(self, other: PddlActionDto) -> bool:
+    def __eq__(self, other) -> bool:
         if isinstance(other, PddlActionDto):
             return self.get_action_name() == other.get_action_name()
 

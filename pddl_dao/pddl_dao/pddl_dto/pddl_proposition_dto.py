@@ -87,7 +87,7 @@ class PddlPropositionDto(PddlDto):
 
         return string
 
-    def __eq__(self, other: PddlPropositionDto) -> bool:
+    def __eq__(self, other) -> bool:
         if isinstance(other, PddlPropositionDto):
 
             if not other.get_pddl_predicate() == self.get_pddl_predicate():

@@ -54,7 +54,7 @@ class PddlObjectDto(PddlDto):
     def __str__(self):
         return self._object_name + " - " + self._pddl_type.get_type_name()
 
-    def __eq__(self, other: PddlObjectDto) -> bool:
+    def __eq__(self, other) -> bool:
         if isinstance(other, PddlObjectDto):
             return self.get_object_name() == other.get_object_name()
 

@@ -12,5 +12,5 @@ class PddlDto(ABC):
         return "PddlDto abstract class"
 
     @abstractmethod
-    def __eq__(self, other: PddlDto) -> bool:
+    def __eq__(self, other) -> bool:
         return False
