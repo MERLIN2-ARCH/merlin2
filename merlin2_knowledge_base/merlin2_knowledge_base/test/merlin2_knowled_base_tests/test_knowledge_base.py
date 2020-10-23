@@ -1,6 +1,6 @@
 
 import unittest
-from merlin2_knowledge_base.merlin2_konwledge_base.merlin2_konwledge_base import Merlin2KnowledgeBase
+from merlin2_knowledge_base.merlin2_knowledge_base.merlin2_konwledge_base import Merlin2KnowledgeBase
 
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto

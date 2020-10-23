@@ -1,6 +1,6 @@
 
 import unittest
-from merlin2_knowledge_base.merlin2_knowled_base_parser.msg_dto_parser import MsgDtoParser
+from merlin2_knowledge_base.merlin2_knowledge_base_parser.msg_dto_parser import MsgDtoParser
 
 from merlin2_knowledge_base_interfaces.msg import PddlType
 from merlin2_knowledge_base_interfaces.msg import PddlObject

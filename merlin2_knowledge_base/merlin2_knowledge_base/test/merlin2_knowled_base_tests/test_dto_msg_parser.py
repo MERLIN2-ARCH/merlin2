@@ -1,6 +1,6 @@
 
 import unittest
-from merlin2_knowledge_base.merlin2_knowled_base_parser.dto_msg_parser import DtoMsgParser
+from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
 
 from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto

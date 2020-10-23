@@ -1,5 +1,6 @@
 
 """ Merlin2 Knowledge Base """
+
 from typing import List
 
 from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
