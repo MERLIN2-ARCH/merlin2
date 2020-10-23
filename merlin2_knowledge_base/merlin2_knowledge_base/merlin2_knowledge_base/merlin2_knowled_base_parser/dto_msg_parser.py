@@ -91,7 +91,7 @@ class DtoMsgParser:
 
         msg.pddl_objects = []
         for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
-            msg.pddl_objects.append(self.type_dto_to_msg(pddl_object_dto))
+            msg.pddl_objects.append(self.object_dto_to_msg(pddl_object_dto))
 
         return msg
 
@@ -111,7 +111,7 @@ class DtoMsgParser:
         msg.pddl_proposition = self.proposition_dto_to_msg(
             pddl_condition_efect_dto)
 
-        msg.time = pddl_condition_efect_dto.get_time
+        msg.time = pddl_condition_efect_dto.get_time()
         msg.is_negative = pddl_condition_efect_dto.get_is_negative()
 
         return msg
@@ -134,7 +134,7 @@ class DtoMsgParser:
 
         msg.pddl_parameters = []
         for pddl_object_dto in pddl_action_dto.get_parameters_list():
-            msg.pddl_parameters.append(self.type_dto_to_msg(pddl_object_dto))
+            msg.pddl_parameters.append(self.object_dto_to_msg(pddl_object_dto))
 
         msg.pddl_coditions = []
         for pddl_condition_dto in pddl_action_dto.get_conditions_list():
