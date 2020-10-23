@@ -337,7 +337,7 @@ class Merlin2KnowledgeBase:
         proposition_list = []
 
         for proposition in self.propositions_list:
-            if proposition.get_pddl_predicate().is_goal():
+            if proposition.get_is_goal():
                 proposition_list.append(proposition)
 
         return proposition_list
@@ -352,12 +352,12 @@ class Merlin2KnowledgeBase:
         proposition_list = []
 
         for proposition in self.propositions_list:
-            if not proposition.get_pddl_predicate().is_goal():
+            if not proposition.get_is_goal():
                 proposition_list.append(proposition)
 
         return proposition_list
 
-    def get_all_proposition(self) -> List[PddlPropositionDto]:
+    def get_all_propositions(self) -> List[PddlPropositionDto]:
         """ get all PddlPropositionDto
 
         Returns:
@@ -390,6 +390,9 @@ class Merlin2KnowledgeBase:
         Returns:
             bool: succeed
         """
+
+        if not pddl_proposition_dto in self.propositions_list:
+            return False
 
         self.propositions_list.remove(pddl_proposition_dto)
 
