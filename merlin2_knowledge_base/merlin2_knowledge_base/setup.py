@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'knowledge_base_node = merlin2_knowledge_base.merlin2_knowledge_base_node:main',
         ],
     },
 )
