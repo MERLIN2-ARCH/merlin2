@@ -41,6 +41,12 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/PddlProposition.msg"
   "msg/PddlConditionEffect.msg"
   "msg/PddlAction.msg"
- )
+  "msg/UpdateKnowledge.msg"
+  "srv/UpdatePddlType.srv"
+  "srv/UpdatePddlObject.srv"
+  "srv/UpdatePddlPredicate.srv"
+  "srv/UpdatePddlProposition.srv"
+  "srv/UpdatePddlAction.srv"
+  )
 
  ament_package()

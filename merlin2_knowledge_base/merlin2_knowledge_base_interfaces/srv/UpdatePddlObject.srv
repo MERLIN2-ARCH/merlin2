@@ -1,0 +1,4 @@
+merlin2_knowledge_base_interfaces/PddlObject pddl_object
+merlin2_knowledge_base_interfaces/UpdateKnowledge update_konwledge
+---
+bool success
