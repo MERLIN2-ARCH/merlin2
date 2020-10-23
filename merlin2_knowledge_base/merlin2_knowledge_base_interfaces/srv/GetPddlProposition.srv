@@ -1,8 +1,8 @@
 
-uint8 GET_ALL=1
-uint8 GET_BY_PREDICATE=2
-uint8 GET_GOALS=3
-uint8 GET_NO_GOALS=4
+uint8 ALL=1
+uint8 GOALS=2
+uint8 NO_GOALS=3
+uint8 BY_PREDICATE=4
 
 uint8 get_type 1
 string predicate_name ""
