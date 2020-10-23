@@ -1,0 +1,2 @@
+merlin2_knowledge_base_interfaces/PddlPredicate pddl_predicate
+merlin2_knowledge_base_interfaces/PddlObject[] pddl_objects

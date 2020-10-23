@@ -1,0 +1,3 @@
+merlin2_knowledge_base_interfaces/PddlProposition pddl_proposition
+string time
+bool is_negative

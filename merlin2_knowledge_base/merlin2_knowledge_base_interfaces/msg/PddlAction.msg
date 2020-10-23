@@ -1,0 +1,6 @@
+string action_name
+bool durative
+int32 duration
+merlin2_knowledge_base_interfaces/PddlObject[] pddl_parameters
+merlin2_knowledge_base_interfaces/PddlConditionEffect[] pddl_effects
+merlin2_knowledge_base_interfaces/PddlConditionEffect[] pddl_coditions
