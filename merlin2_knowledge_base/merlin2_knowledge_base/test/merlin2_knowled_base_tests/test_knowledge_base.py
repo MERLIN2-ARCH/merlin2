@@ -67,7 +67,7 @@ class TestDtoMsgParser(unittest.TestCase):
         self.knowledge_nase.delete_all_predicates()
         self.knowledge_nase.delete_all_types()
 
-    def test_save_type(self):
+    def test_save_type_true(self):
         succ = self.knowledge_nase.save_type(self.robot_type)
         self.assertTrue(succ)
         dto = self.knowledge_nase.get_type("robot")
@@ -92,7 +92,7 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertTrue(succ)
         self.assertEqual(0, len(self.knowledge_nase.get_all_types()))
 
-    def test_save_object(self):
+    def test_save_object_true(self):
         succ = self.knowledge_nase.save_object(self.rb1)
         self.assertTrue(succ)
         dto = self.knowledge_nase.get_object("rb1")
@@ -117,7 +117,7 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertTrue(succ)
         self.assertEqual(0, len(self.knowledge_nase.get_all_objects()))
 
-    def test_save_predicate(self):
+    def test_save_predicate_true(self):
         succ = self.knowledge_nase.save_predicate(self.robot_at)
         self.assertTrue(succ)
         dto = self.knowledge_nase.get_predicate("robot_at")
@@ -177,7 +177,7 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertTrue(succ)
         self.assertEqual(0, len(self.knowledge_nase.get_all_propositions()))
 
-    def test_save_action(self):
+    def test_save_action_true(self):
         succ = self.knowledge_nase.save_action(self.navigation_action)
         self.assertTrue(succ)
         dto = self.knowledge_nase.get_action("navigation")

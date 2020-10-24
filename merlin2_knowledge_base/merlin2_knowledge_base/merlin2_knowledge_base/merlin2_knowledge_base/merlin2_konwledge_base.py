@@ -135,7 +135,10 @@ class Merlin2KnowledgeBase:
 
         # propagating saving
         if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
-            self.save_type(pddl_object_dto.get_pddl_type())
+            succ = self.save_type(pddl_object_dto.get_pddl_type())
+
+            if not succ:
+                return False
 
         pddl_object_dto.set_pddl_type(self.get_type(
             pddl_object_dto.get_pddl_type().get_type_name()))
@@ -216,7 +219,10 @@ class Merlin2KnowledgeBase:
         pddl_type_dto_list = []
         for pddl_type_dto in pddl_predicate_dto.get_pddl_types_list():
             if not pddl_type_dto.get_type_name() in self.types_dict:
-                self.save_type(pddl_type_dto)
+                succ = self.save_type(pddl_type_dto)
+
+                if not succ:
+                    return False
 
             pddl_type_dto_list.append(self.get_type(
                 pddl_type_dto.get_type_name()))
@@ -302,14 +308,21 @@ class Merlin2KnowledgeBase:
             pddl_predicate_dto = pddl_condition_dto.get_pddl_predicate()
 
             if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
-                self.save_predicate(pddl_condition_dto.get_pddl_predicate())
+                succ = self.save_predicate(
+                    pddl_condition_dto.get_pddl_predicate())
+
+                if not succ:
+                    return False
 
             pddl_condition_dto.set_pddl_predicate(self.get_predicate(
                 pddl_condition_dto.get_pddl_predicate().get_predicate_name()))
 
             for pddl_object_dto in pddl_condition_dto.get_pddl_objects_list():
                 if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
-                    self.save_type(pddl_object_dto.get_pddl_type())
+                    succ = self.save_type(pddl_object_dto.get_pddl_type())
+
+                    if not succ:
+                        return False
 
                 pddl_object_dto.set_pddl_type(self.get_type(
                     pddl_object_dto.get_pddl_type().get_type_name()))
@@ -331,7 +344,10 @@ class Merlin2KnowledgeBase:
         # parameters
         for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
             if not pddl_parameter_dto.get_pddl_type().get_type_name() in self.types_dict:
-                self.save_type(pddl_parameter_dto.get_pddl_type())
+                succ = self.save_type(pddl_parameter_dto.get_pddl_type())
+
+                if not succ:
+                    return False
 
             pddl_parameter_dto.set_pddl_type(self.get_type(
                 pddl_parameter_dto.get_pddl_type().get_type_name()))
@@ -444,7 +460,11 @@ class Merlin2KnowledgeBase:
         pddl_predicate_dto = pddl_proposition_dto.get_pddl_predicate()
 
         if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
-            self.save_predicate(pddl_proposition_dto.get_pddl_predicate())
+            succ = self.save_predicate(
+                pddl_proposition_dto.get_pddl_predicate())
+
+            if not succ:
+                return False
 
         pddl_proposition_dto.set_pddl_predicate(self.get_predicate(
             pddl_proposition_dto.get_pddl_predicate().get_predicate_name()))
@@ -452,7 +472,10 @@ class Merlin2KnowledgeBase:
         pddl_object_dto_list = []
         for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
             if not pddl_object_dto.get_object_name() in self.objects_dict:
-                self.save_object(pddl_object_dto)
+                succ = self.save_object(pddl_object_dto)
+
+                if not succ:
+                    return False
 
             pddl_object_dto_list.append(self.get_object(
                 pddl_object_dto.get_object_name()))
