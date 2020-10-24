@@ -8,7 +8,6 @@ from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDa
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlTypeModel
 
-
 from pddl_dto.pddl_type_dto import PddlTypeDto
 
 
