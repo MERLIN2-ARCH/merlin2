@@ -8,3 +8,4 @@ class PddlDaoFamilies(IntEnum):
     """ Enum Class of Pddl Dao Families """
 
     MONGOENGINE = auto()
+    MERLIN2 = auto()
