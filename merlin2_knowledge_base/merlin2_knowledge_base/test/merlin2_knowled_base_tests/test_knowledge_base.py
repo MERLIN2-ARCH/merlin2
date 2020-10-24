@@ -31,9 +31,14 @@ class TestDtoMsgParser(unittest.TestCase):
         self.wp_checked = PddlPredicateDto(
             "wp_checked", [self.robot_type, self.wp_type])
 
+        self.empty_wp = PddlPredicateDto(
+            "empty_wp", [self.wp_type])
+
         # propositions
         self.rb1_robot_at = PddlPropositionDto(
             self.robot_at, [self.rb1, self.wp1])
+        self.wp1_empty_wp = PddlPropositionDto(
+            self.empty_wp, [self.wp1])
 
         # goals
         self.rb1_wp2_wp_checked_goal = PddlPropositionDto(
@@ -59,6 +64,14 @@ class TestDtoMsgParser(unittest.TestCase):
 
         self.navigation_action = PddlActionDto(
             "navigation", [r, s, d], [condition_1], [effect_1, effect_2])
+
+        w = PddlObjectDto(self.wp_type, "w")
+        effect_3 = PddlConditionEffectDto(self.empty_wp,
+                                          [w],
+                                          time=PddlConditionEffectDto.AT_START,
+                                          is_negative=True)
+        self.empty_wp_action = PddlActionDto(
+            "empty_wp", [w], [], [effect_3])
 
     def tearDown(self):
         self.knowledge_base.delete_all_actions()
@@ -333,3 +346,135 @@ class TestDtoMsgParser(unittest.TestCase):
         succ = self.knowledge_base.delete_all_actions()
         self.assertTrue(succ)
         self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
+
+    def test_delete_type_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_type(self.robot_type)
+        self.assertTrue(succ)
+
+        self.assertEqual(1, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(1, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(1, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(1, len(self.knowledge_base.get_all_propositions()))
+
+    def test_delete_all_types_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_all_types()
+        self.assertTrue(succ)
+
+        self.assertEqual(0, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_propositions()))
+
+    def test_delete_object_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_object(self.rb1)
+        self.assertTrue(succ)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(1, len(self.knowledge_base.get_all_propositions()))
+
+    def test_delete_all_objects_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_all_objects()
+        self.assertTrue(succ)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_propositions()))
+
+    def test_delete_predicate_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_predicate(self.robot_at)
+        self.assertTrue(succ)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(1, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_propositions()))
+
+    def test_delete_all_predicates_propagating_deleting(self):
+        self.knowledge_base.save_action(self.navigation_action)
+        self.knowledge_base.save_action(self.empty_wp_action)
+        self.knowledge_base.save_proposition(self.rb1_robot_at)
+        self.knowledge_base.save_proposition(self.rb1_wp2_wp_checked_goal)
+        self.knowledge_base.save_proposition(self.wp1_empty_wp)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(2, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_propositions()))
+
+        succ = self.knowledge_base.delete_all_predicates()
+        self.assertTrue(succ)
+
+        self.assertEqual(2, len(self.knowledge_base.get_all_types()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_predicates()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
+        self.assertEqual(3, len(self.knowledge_base.get_all_objects()))
+        self.assertEqual(0, len(self.knowledge_base.get_all_propositions()))

@@ -79,6 +79,34 @@ class Merlin2KnowledgeBase:
         if not pddl_type_dto.get_type_name() in self.types_dict:
             return False
 
+        # propagating deleting
+        for pddl_object_dto in self.get_all_objects():
+            if pddl_object_dto.get_pddl_type() == pddl_type_dto:
+                succ = self.delete_object(pddl_object_dto)
+
+                if not succ:
+                    return False
+
+        for pddl_predicate_dto in self.get_all_predicates():
+            for pddl_pred_type_dto in pddl_predicate_dto.get_pddl_types_list():
+                if pddl_pred_type_dto == pddl_type_dto:
+                    succ = self.delete_predicate(pddl_predicate_dto)
+
+                    if not succ:
+                        return False
+
+                    break
+
+        for pddl_action_dto in self.get_all_actions():
+            for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
+                if pddl_parameter_dto.get_pddl_type() == pddl_type_dto:
+                    succ = self.delete_action(pddl_action_dto)
+
+                    if not succ:
+                        return False
+
+                    break
+
         del self.types_dict[pddl_type_dto.get_type_name()]
 
         return True
@@ -90,7 +118,11 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        self.types_dict = {}
+        for pddl_type_dto in self.get_all_types():
+            succ = self.delete_type(pddl_type_dto)
+
+            if not succ:
+                return False
 
         return True
 
@@ -161,6 +193,17 @@ class Merlin2KnowledgeBase:
         if not pddl_object_dto.get_object_name() in self.objects_dict:
             return False
 
+        # propagating deleting
+        for pddl_proposition_dto in self.get_all_propositions():
+            for pddl_prop_object_dto in pddl_proposition_dto.get_pddl_objects_list():
+                if pddl_prop_object_dto == pddl_object_dto:
+                    succ = self.delete_proposition(pddl_proposition_dto)
+
+                    if not succ:
+                        return False
+
+                    break
+
         del self.objects_dict[pddl_object_dto.get_object_name()]
 
         return True
@@ -172,7 +215,11 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        self.objects_dict = {}
+        for pddl_object_dto in self.get_all_objects():
+            succ = self.delete_object(pddl_object_dto)
+
+            if not succ:
+                return False
 
         return True
 
@@ -248,6 +295,25 @@ class Merlin2KnowledgeBase:
         if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
             return False
 
+        # propagating deleting
+        for pddl_proposition_dto in self.get_all_propositions():
+            if pddl_proposition_dto.get_pddl_predicate() == pddl_predicate_dto:
+                succ = self.delete_proposition(pddl_proposition_dto)
+
+                if not succ:
+                    return False
+
+        for pddl_action_dto in self.get_all_actions():
+            for pddl_condi_effect_dto in (pddl_action_dto.get_conditions_list() +
+                                          pddl_action_dto.get_effects_list()):
+                if pddl_condi_effect_dto.get_pddl_predicate() == pddl_predicate_dto:
+                    succ = self.delete_action(pddl_action_dto)
+
+                    if not succ:
+                        return False
+
+                    break
+
         del self.predicates_dict[pddl_predicate_dto.get_predicate_name()]
 
         return True
@@ -259,7 +325,11 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        self.predicates_dict = {}
+        for pddl_predicate_dto in self.get_all_predicates():
+            succ = self.delete_predicate(pddl_predicate_dto)
+
+            if not succ:
+                return False
 
         return True
 
