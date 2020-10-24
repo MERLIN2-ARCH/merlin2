@@ -112,7 +112,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         for pddl_object_dto, pddl_type_dto in zip(pddl_object_dtos, pddl_type_dtos):
 
             # check if proposition is correct
-            if pddl_object_dto.get_pddl_type().get_type_name() != pddl_type_dto.get_type_name():
+            if pddl_object_dto.get_pddl_type() != pddl_type_dto:
                 return False
 
         return True
