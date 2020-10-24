@@ -28,7 +28,7 @@ class Merlin2PddlDaoFactory(PddlDaoFactory):
     def __init__(self, node: Node):
         self.set_node(node)
 
-    def get_node(self) -> None:
+    def get_node(self) -> Node:
         """ node getter
 
         Returns:
@@ -37,11 +37,11 @@ class Merlin2PddlDaoFactory(PddlDaoFactory):
 
         return self._node
 
-    def set_node(self, node: None):
+    def set_node(self, node: Node):
         """ node setter
 
         Args:
-            node (None): None
+            node (None): Node
         """
 
         self._node = node
