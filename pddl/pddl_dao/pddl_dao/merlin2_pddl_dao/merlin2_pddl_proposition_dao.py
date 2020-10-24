@@ -59,6 +59,7 @@ class Merlin2PddlPropositionDao(PddlPropositionDao):
         req.predicate_name = predicate_name
         req.get_type = get_type
 
+        self._get_client.wait_for_service()
         future = self._get_client.call_async(req)
 
         try:
@@ -95,6 +96,7 @@ class Merlin2PddlPropositionDao(PddlPropositionDao):
             pddl_proposition_dto)
         req.update_konwledge.update_type = update_type
 
+        self._update_client.wait_for_service()
         future = self._update_client.call_async(req)
 
         try:
@@ -116,6 +118,7 @@ class Merlin2PddlPropositionDao(PddlPropositionDao):
 
         req = Empty.Request()
 
+        self._delete_all_client.wait_for_service()
         future = self._delete_all_client.call_async(req)
 
         try:

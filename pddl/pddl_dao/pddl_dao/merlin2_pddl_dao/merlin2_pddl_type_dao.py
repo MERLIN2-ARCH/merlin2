@@ -56,6 +56,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
 
         req.type_name = type_name
 
+        self._get_client.wait_for_service()
         future = self._get_client.call_async(req)
 
         try:
@@ -90,6 +91,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         req.pddl_type = self.dto_msg_parser.type_dto_to_msg(pddl_type_dto)
         req.update_konwledge.update_type = update_type
 
+        self._update_client.wait_for_service()
         future = self._update_client.call_async(req)
 
         try:
@@ -111,6 +113,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
 
         req = Empty.Request()
 
+        self._delete_all_client.wait_for_service()
         future = self._delete_all_client.call_async(req)
 
         try:

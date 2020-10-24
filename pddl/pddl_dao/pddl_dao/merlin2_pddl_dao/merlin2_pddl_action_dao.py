@@ -56,6 +56,7 @@ class Merlin2PddlActionDao(PddlActionDao):
 
         req.action_name = action_name
 
+        self._get_client.wait_for_service()
         future = self._get_client.call_async(req)
 
         try:
@@ -92,6 +93,7 @@ class Merlin2PddlActionDao(PddlActionDao):
             pddl_action_dto)
         req.update_konwledge.update_type = update_type
 
+        self._update_client.wait_for_service()
         future = self._update_client.call_async(req)
 
         try:
@@ -113,6 +115,7 @@ class Merlin2PddlActionDao(PddlActionDao):
 
         req = Empty.Request()
 
+        self._delete_all_client.wait_for_service()
         future = self._delete_all_client.call_async(req)
 
         try:
