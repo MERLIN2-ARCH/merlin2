@@ -1,7 +1,7 @@
 
 """ Merlin2 Pddl Dao Facory """
 
-from rclpy import Node
+from rclpy.node import Node
 
 from pddl_dao.merlin2_pddl_dao.merlin2_pddl_type_dao import (
     Merlin2PddlTypeDao

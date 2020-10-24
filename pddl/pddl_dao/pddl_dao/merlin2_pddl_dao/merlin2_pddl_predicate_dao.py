@@ -3,7 +3,7 @@
 
 from typing import List
 import asyncio
-from rclpy import Node
+from rclpy.node import Node
 
 from pddl_dao.pddl_dao_interface.pddl_predicate_dao import PddlPredicateDao
 from pddl_dto.pddl_predicate_dto import PddlPredicateDto
