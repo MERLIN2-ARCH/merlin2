@@ -246,8 +246,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
     def _check_pddl_action_dto(self, pddl_action_dto: PddlActionDto) -> bool:
         """ check if a PddlActionDto is correct:
-                there must be a at least one condition and one effect
-                condition and effect must be correct (same as proposition)
+            condition and effect must be correct (same as proposition)
 
         Args:
             pddl_action_dto (PddlActionDto): PddlActionDto to check
@@ -307,8 +306,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
     def _check_pddl_action_model(self, pddl_action_model: PddlActionModel) -> bool:
         """ check if a PddlActionDto is correct:
-                there must be a at least one condition and one effect
-                condition and effect must be correct (same as proposition)
+            condition and effect must be correct (same as proposition)
 
         Args:
             pddl_action_dto (PddlActionDto): PddlActionDto to check
