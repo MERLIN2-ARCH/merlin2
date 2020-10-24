@@ -60,6 +60,13 @@ class TestDtoMsgParser(unittest.TestCase):
         self.navigation_action = PddlActionDto(
             "navigation", [r, s, d], [condition_1], [effect_1, effect_2])
 
+    def tearDown(self):
+        self.knowledge_nase.delete_all_actions()
+        self.knowledge_nase.delete_all_objects()
+        self.knowledge_nase.delete_all_propositions()
+        self.knowledge_nase.delete_all_predicates()
+        self.knowledge_nase.delete_all_types()
+
     def test_save_type(self):
         succ = self.knowledge_nase.save_type(self.robot_type)
         self.assertTrue(succ)

@@ -8,6 +8,7 @@ from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
 from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
 from pddl_dao.pddl_dto.pddl_action_dto import PddlActionDto
+from pddl_dao.pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
 
 
 class Merlin2KnowledgeBase:
@@ -17,8 +18,9 @@ class Merlin2KnowledgeBase:
         self.types_dict = {}
         self.objects_dict = {}
         self.predicates_dict = {}
-        self.propositions_list = []
         self.actions_dict = {}
+        self.propositions_goal_list = []
+        self.propositions_no_goal_list = []
 
     def get_type(self, type_name: str) -> PddlTypeDto:
         """ get the PddlTypeDto with a given type name
@@ -131,6 +133,13 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
+        # propagating saving
+        if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
+            self.save_type(pddl_object_dto.get_pddl_type())
+
+        pddl_object_dto.set_pddl_type(self.get_type(
+            pddl_object_dto.get_pddl_type().get_type_name()))
+
         self.objects_dict[pddl_object_dto.get_object_name()] = pddl_object_dto
 
         return True
@@ -203,6 +212,17 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
+        # propagating saving
+        pddl_type_dto_list = []
+        for pddl_type_dto in pddl_predicate_dto.get_pddl_types_list():
+            if not pddl_type_dto.get_type_name() in self.types_dict:
+                self.save_type(pddl_type_dto)
+
+            pddl_type_dto_list.append(self.get_type(
+                pddl_type_dto.get_type_name()))
+
+        pddl_predicate_dto.set_pddl_types_list(pddl_type_dto_list)
+
         self.predicates_dict[pddl_predicate_dto.get_predicate_name(
         )] = pddl_predicate_dto
 
@@ -266,6 +286,36 @@ class Merlin2KnowledgeBase:
 
         return action_list
 
+    def _prepare_conditions_effects_to_save(self,
+                                            condition_effect_list: PddlConditionEffectDto) -> bool:
+        """ propagate saving of conditions/effects and check if they are correct
+
+        Args:
+            condition_effect_list (PddlConditionEffectDto): list of conditions/effects
+
+        Returns:
+            bool: are conditions/effects correct?
+        """
+
+        for pddl_condition_dto in condition_effect_list:
+
+            pddl_predicate_dto = pddl_condition_dto.get_pddl_predicate()
+
+            if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
+                self.save_predicate(pddl_condition_dto.get_pddl_predicate())
+
+            pddl_condition_dto.set_pddl_predicate(self.get_predicate(
+                pddl_condition_dto.get_pddl_predicate().get_predicate_name()))
+
+            for pddl_object_dto in pddl_condition_dto.get_pddl_objects_list():
+                if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
+                    self.save_type(pddl_object_dto.get_pddl_type())
+
+                pddl_object_dto.set_pddl_type(self.get_type(
+                    pddl_object_dto.get_pddl_type().get_type_name()))
+
+        return True
+
     def save_action(self, pddl_action_dto: PddlActionDto) -> bool:
         """ save or update a pddl action
 
@@ -275,6 +325,30 @@ class Merlin2KnowledgeBase:
         Returns:
             bool: succeed
         """
+
+        # propagating saving
+
+        # parameters
+        for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
+            if not pddl_parameter_dto.get_pddl_type().get_type_name() in self.types_dict:
+                self.save_type(pddl_parameter_dto.get_pddl_type())
+
+            pddl_parameter_dto.set_pddl_type(self.get_type(
+                pddl_parameter_dto.get_pddl_type().get_type_name()))
+
+        # conditions
+        succ = self._prepare_conditions_effects_to_save(
+            pddl_action_dto.get_conditions_list())
+
+        if not succ:
+            return False
+
+        # effects
+        succ = self._prepare_conditions_effects_to_save(
+            pddl_action_dto.get_effects_list())
+
+        if not succ:
+            return False
 
         self.actions_dict[pddl_action_dto.get_action_name(
         )] = pddl_action_dto
@@ -322,7 +396,7 @@ class Merlin2KnowledgeBase:
 
         proposition_list = []
 
-        for proposition in self.propositions_list:
+        for proposition in self.propositions_goal_list + self.get_propositions_no_goals:
             if proposition.get_pddl_predicate().get_predicate_name() == predicate_name:
                 proposition_list.append(proposition)
 
@@ -335,13 +409,7 @@ class Merlin2KnowledgeBase:
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        proposition_list = []
-
-        for proposition in self.propositions_list:
-            if proposition.get_is_goal():
-                proposition_list.append(proposition)
-
-        return proposition_list
+        return self.propositions_goal_list
 
     def get_propositions_no_goals(self) -> List[PddlPropositionDto]:
         """ get all no goal PddlPropositionDto
@@ -350,13 +418,7 @@ class Merlin2KnowledgeBase:
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        proposition_list = []
-
-        for proposition in self.propositions_list:
-            if not proposition.get_is_goal():
-                proposition_list.append(proposition)
-
-        return proposition_list
+        return self.propositions_no_goal_list
 
     def get_all_propositions(self) -> List[PddlPropositionDto]:
         """ get all PddlPropositionDto
@@ -365,7 +427,7 @@ class Merlin2KnowledgeBase:
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        return self.propositions_list
+        return self.propositions_goal_list + self.propositions_no_goal_list
 
     def save_proposition(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ save or update a pddl action
@@ -377,7 +439,30 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        self.propositions_list.append(pddl_proposition_dto)
+        # propagating saving
+
+        pddl_predicate_dto = pddl_proposition_dto.get_pddl_predicate()
+
+        if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
+            self.save_predicate(pddl_proposition_dto.get_pddl_predicate())
+
+        pddl_proposition_dto.set_pddl_predicate(self.get_predicate(
+            pddl_proposition_dto.get_pddl_predicate().get_predicate_name()))
+
+        pddl_object_dto_list = []
+        for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
+            if not pddl_object_dto.get_object_name() in self.objects_dict:
+                self.save_object(pddl_object_dto)
+
+            pddl_object_dto_list.append(self.get_object(
+                pddl_object_dto.get_object_name()))
+
+        pddl_proposition_dto.set_pddl_objects_list(pddl_object_dto_list)
+
+        if pddl_proposition_dto.get_is_goal():
+            self.propositions_goal_list.append(pddl_proposition_dto)
+        else:
+            self.propositions_no_goal_list.append(pddl_proposition_dto)
 
         return True
 
@@ -392,10 +477,17 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        if not pddl_proposition_dto in self.propositions_list:
-            return False
+        if pddl_proposition_dto.get_is_goal():
+            if not pddl_proposition_dto in self.propositions_goal_list:
+                return False
 
-        self.propositions_list.remove(pddl_proposition_dto)
+            self.propositions_goal_list.remove(pddl_proposition_dto)
+
+        else:
+            if not pddl_proposition_dto in self.propositions_no_goal_list:
+                return False
+
+            self.propositions_no_goal_list.remove(pddl_proposition_dto)
 
         return True
 
@@ -406,6 +498,7 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        self.propositions_list = []
+        self.propositions_goal_list = []
+        self.propositions_no_goal_list = []
 
         return True
