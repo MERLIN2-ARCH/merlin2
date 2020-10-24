@@ -80,20 +80,20 @@ class PddlActionDto(PddlDto):
 
         self._duration = duration
 
-    def get_parameters_list(self) -> List[PddlConditionEffectDto]:
+    def get_parameters_list(self) -> List[PddlObjectDto]:
         """ parameters list getter
 
         Returns:
-            List[PddlConditionEffectDto]: list of action parameters
+            List[PddlObjectDto]: list of action parameters
         """
 
         return self._parameters_list
 
-    def set_parameters_list(self, parameters_list: List[PddlConditionEffectDto]):
+    def set_parameters_list(self, parameters_list: List[PddlObjectDto]):
         """ parameters list setter
 
         Args:
-            parameters_list (List[PddlConditionEffectDto]): list of action parameters
+            parameters_list (List[PddlObjectDto]): list of action parameters
         """
 
         if parameters_list:
