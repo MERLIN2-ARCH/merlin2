@@ -161,8 +161,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             bool: succeed
         """
 
-        if not self.get(pddl_predicate_dto.get_predicate_name())):
-            succ=asyncio.run(self._merlin2_update(
+        if not self.get(pddl_predicate_dto.get_predicate_name()):
+            succ = asyncio.run(self._merlin2_update(
                 pddl_predicate_dto, UpdateKnowledge.SAVE))
             return succ
 
@@ -180,7 +180,7 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         """
 
         if self.get(pddl_predicate_dto.get_predicate_name()):
-            succ=asyncio.run(self._merlin2_update(
+            succ = asyncio.run(self._merlin2_update(
                 pddl_predicate_dto, UpdateKnowledge.SAVE))
             return succ
 
@@ -198,9 +198,9 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         """
 
         if not self.get(pddl_predicate_dto.get_predicate_name()):
-            succ=self._save(pddl_predicate_dto)
+            succ = self._save(pddl_predicate_dto)
         else:
-            succ=self._update(pddl_predicate_dto)
+            succ = self._update(pddl_predicate_dto)
 
         return succ
 
@@ -215,7 +215,7 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             bool: succeed
         """
 
-        succ=asyncio.run(self._merlin2_update(
+        succ = asyncio.run(self._merlin2_update(
             pddl_predicate_dto, UpdateKnowledge.DELETE))
         return succ
 
