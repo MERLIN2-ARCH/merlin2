@@ -362,43 +362,71 @@ class Merlin2KnowledgeBase:
 
         return action_list
 
-    def _prepare_conditions_effects_to_save(self,
-                                            condition_effect_list: PddlConditionEffectDto) -> bool:
-        """ propagate saving of conditions/effects and check if they are correct
+    def _prepare_condition_effect_to_save(self,
+                                          pddl_condi_effect_dto: PddlConditionEffectDto,
+                                          pddl_action_dto: PddlActionDto) -> bool:
+        """ propagate saving of conditions/effects and check if they are correct.
+            a condition/effect is correct if its objects types are the same as the
+            types of its predicate, if its objects are action parameters, and if the time
+            and durative are correct
 
         Args:
-            condition_effect_list (PddlConditionEffectDto): list of conditions/effects
+            pddl_condi_effect_dto (PddlConditionEffectDto): conditions/effects
 
         Returns:
             bool: are conditions/effects correct?
         """
 
-        for pddl_condi_effect_dto in condition_effect_list:
+        # checking condition/effect
 
-            if not self._check_proposition(pddl_condi_effect_dto):
+        # checking time and durative
+        if(not pddl_action_dto.get_durative() and pddl_condi_effect_dto.get_time()):
+            return False
+        elif(pddl_action_dto.get_durative() and not pddl_condi_effect_dto.get_time()):
+            return False
+
+        # checking objects
+        pddl_object_dto_list = pddl_condi_effect_dto.get_pddl_objects_list()
+        pddl_type_dto_list = pddl_condi_effect_dto.get_pddl_predicate().get_pddl_types_list()
+
+        # checking len
+        if len(pddl_object_dto_list) != len(pddl_type_dto_list):
+            return False
+
+        # checking types and parameters
+        for pddl_object_dto, pddl_type_dto in zip(pddl_object_dto_list, pddl_type_dto_list):
+
+            if pddl_object_dto.get_pddl_type() != pddl_type_dto:
                 return False
 
-            pddl_predicate_dto = pddl_condi_effect_dto.get_pddl_predicate()
+            if not pddl_object_dto in pddl_action_dto.get_parameters_list():
+                return False
 
-            if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
-                succ = self.save_predicate(
-                    pddl_condi_effect_dto.get_pddl_predicate())
+        # propagating saving of condition/effect
+
+        # condition/effect predicate
+        pddl_predicate_dto = pddl_condi_effect_dto.get_pddl_predicate()
+
+        if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
+            succ = self.save_predicate(
+                pddl_condi_effect_dto.get_pddl_predicate())
+
+            if not succ:
+                return False
+
+        pddl_condi_effect_dto.set_pddl_predicate(self.get_predicate(
+            pddl_condi_effect_dto.get_pddl_predicate().get_predicate_name()))
+
+        # condition/effect objects
+        for pddl_object_dto in pddl_condi_effect_dto.get_pddl_objects_list():
+            if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
+                succ = self.save_type(pddl_object_dto.get_pddl_type())
 
                 if not succ:
                     return False
 
-            pddl_condi_effect_dto.set_pddl_predicate(self.get_predicate(
-                pddl_condi_effect_dto.get_pddl_predicate().get_predicate_name()))
-
-            for pddl_object_dto in pddl_condi_effect_dto.get_pddl_objects_list():
-                if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
-                    succ = self.save_type(pddl_object_dto.get_pddl_type())
-
-                    if not succ:
-                        return False
-
-                pddl_object_dto.set_pddl_type(self.get_type(
-                    pddl_object_dto.get_pddl_type().get_type_name()))
+            pddl_object_dto.set_pddl_type(self.get_type(
+                pddl_object_dto.get_pddl_type().get_type_name()))
 
         return True
 
@@ -412,9 +440,7 @@ class Merlin2KnowledgeBase:
             bool: succeed
         """
 
-        # propagating saving
-
-        # parameters
+        # propagating saving of parameter
         for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
             if not pddl_parameter_dto.get_pddl_type().get_type_name() in self.types_dict:
                 succ = self.save_type(pddl_parameter_dto.get_pddl_type())
@@ -425,19 +451,14 @@ class Merlin2KnowledgeBase:
             pddl_parameter_dto.set_pddl_type(self.get_type(
                 pddl_parameter_dto.get_pddl_type().get_type_name()))
 
-        # conditions
-        succ = self._prepare_conditions_effects_to_save(
-            pddl_action_dto.get_conditions_list())
+        # conditions and effects
+        for pddl_condi_effect_dto in (pddl_action_dto.get_conditions_list() +
+                                      pddl_action_dto.get_effects_list()):
+            succ = self._prepare_condition_effect_to_save(
+                pddl_condi_effect_dto, pddl_action_dto)
 
-        if not succ:
-            return False
-
-        # effects
-        succ = self._prepare_conditions_effects_to_save(
-            pddl_action_dto.get_effects_list())
-
-        if not succ:
-            return False
+            if not succ:
+                return False
 
         self.actions_dict[pddl_action_dto.get_action_name(
         )] = pddl_action_dto

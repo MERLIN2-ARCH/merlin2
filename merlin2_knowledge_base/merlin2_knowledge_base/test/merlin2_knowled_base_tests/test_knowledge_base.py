@@ -306,28 +306,64 @@ class TestDtoMsgParser(unittest.TestCase):
         )[0].get_pddl_objects_list().reverse()
         succ = self.knowledge_base.save_action(self.navigation_action)
         self.assertFalse(succ)
-        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
 
     def test_save_action_false_bad_condition_len(self):
         self.navigation_action.get_conditions_list(
         )[0].set_pddl_objects_list([])
         succ = self.knowledge_base.save_action(self.navigation_action)
         self.assertFalse(succ)
-        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
+
+    def test_save_action_false_durative_condition_no_time(self):
+        self.navigation_action.get_conditions_list()[0].set_time(None)
+        self.navigation_action.set_effects_list([])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
+
+    def test_save_action_false_no_durative_condition_time(self):
+        self.navigation_action.set_durative(False)
+        self.navigation_action.set_effects_list([])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
+
+    def test_save_action_false_durative_condition_bad_parameter(self):
+        r = PddlObjectDto(self.robot_type, "a")
+        s = PddlObjectDto(self.wp_type, "s")
+        d = PddlObjectDto(self.wp_type, "d")
+        self.navigation_action.set_parameters_list([r, s, d])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
 
     def test_save_action_false_bad_effect_types(self):
         self.navigation_action.get_effects_list(
         )[0].get_pddl_objects_list().reverse()
         succ = self.knowledge_base.save_action(self.navigation_action)
         self.assertFalse(succ)
-        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
 
     def test_save_action_false_bad_effect_len(self):
         self.navigation_action.get_effects_list(
         )[0].set_pddl_objects_list([])
         succ = self.knowledge_base.save_action(self.navigation_action)
         self.assertFalse(succ)
-        self.assertEqual(0, len(self.knowledge_base.get_all_actions()))
+
+    def test_save_action_false_durative_effect_no_time(self):
+        self.navigation_action.get_effects_list()[1].set_time(None)
+        self.navigation_action.set_conditions_list([])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
+
+    def test_save_action_false_no_durative_effect_time(self):
+        self.navigation_action.set_durative(False)
+        self.navigation_action.set_conditions_list([])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
+
+    def test_save_action_false_durative_effect_bad_parameter(self):
+        r = PddlObjectDto(self.robot_type, "r")
+        s = PddlObjectDto(self.wp_type, "s")
+        d = PddlObjectDto(self.wp_type, "a")
+        self.navigation_action.set_parameters_list([r, s, d])
+        succ = self.knowledge_base.save_action(self.navigation_action)
+        self.assertFalse(succ)
 
     def test_delete_action_true(self):
         self.knowledge_base.save_action(self.navigation_action)
