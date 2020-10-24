@@ -303,21 +303,24 @@ class Merlin2KnowledgeBase:
             bool: are conditions/effects correct?
         """
 
-        for pddl_condition_dto in condition_effect_list:
+        for pddl_condi_effect_dto in condition_effect_list:
 
-            pddl_predicate_dto = pddl_condition_dto.get_pddl_predicate()
+            if not self._check_proposition(pddl_condi_effect_dto):
+                return False
+
+            pddl_predicate_dto = pddl_condi_effect_dto.get_pddl_predicate()
 
             if not pddl_predicate_dto.get_predicate_name() in self.predicates_dict:
                 succ = self.save_predicate(
-                    pddl_condition_dto.get_pddl_predicate())
+                    pddl_condi_effect_dto.get_pddl_predicate())
 
                 if not succ:
                     return False
 
-            pddl_condition_dto.set_pddl_predicate(self.get_predicate(
-                pddl_condition_dto.get_pddl_predicate().get_predicate_name()))
+            pddl_condi_effect_dto.set_pddl_predicate(self.get_predicate(
+                pddl_condi_effect_dto.get_pddl_predicate().get_predicate_name()))
 
-            for pddl_object_dto in pddl_condition_dto.get_pddl_objects_list():
+            for pddl_object_dto in pddl_condi_effect_dto.get_pddl_objects_list():
                 if not pddl_object_dto.get_pddl_type().get_type_name() in self.types_dict:
                     succ = self.save_type(pddl_object_dto.get_pddl_type())
 
@@ -445,6 +448,30 @@ class Merlin2KnowledgeBase:
 
         return self.propositions_goal_list + self.propositions_no_goal_list
 
+    def _check_proposition(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+        """ check if a proposition (of condition/effect) is correct
+            comparing the types of its objects with the types of its
+            predicate
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): PddlPropositionDto
+
+        Returns:
+            bool: is proposition correct?
+        """
+
+        pddl_object_dto_list = pddl_proposition_dto.get_pddl_objects_list()
+        pddl_type_dto_list = pddl_proposition_dto.get_pddl_predicate().get_pddl_types_list()
+
+        if len(pddl_object_dto_list) != len(pddl_type_dto_list):
+            return False
+
+        for pddl_object_dto, pddl_type_dto in zip(pddl_object_dto_list, pddl_type_dto_list):
+            if pddl_object_dto.get_pddl_type() != pddl_type_dto:
+                return False
+
+        return True
+
     def save_proposition(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
         """ save or update a pddl action
 
@@ -454,6 +481,9 @@ class Merlin2KnowledgeBase:
         Returns:
             bool: succeed
         """
+
+        if not self._check_proposition(pddl_proposition_dto):
+            return False
 
         # propagating saving
 
