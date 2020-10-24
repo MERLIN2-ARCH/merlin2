@@ -43,7 +43,7 @@ class Merlin2PddlObjectDao(PddlObjectDao):
             Empty, "delete_all_objects")
 
     async def _merlin2_get(self, object_name: str = "") -> List[PddlObjectDto]:
-        """ asyn get_objects method
+        """ asyn merlin2_get method
 
         Args:
             object_name (str): object name
@@ -77,7 +77,7 @@ class Merlin2PddlObjectDao(PddlObjectDao):
     async def _merlin2_update(self,
                               pddl_object_dto: PddlObjectDto,
                               update_type: int) -> bool:
-        """ asyn update_type method
+        """ asyn merlin2_delete_all method
 
         Args:
             pddl_object_dto (PddlObjectDto): PddlObjectDto to update

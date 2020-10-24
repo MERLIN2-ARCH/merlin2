@@ -43,7 +43,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
             Empty, "delete_all_types")
 
     async def _merlin2_get(self, type_name: str = "") -> List[PddlTypeDto]:
-        """ asyn get_types method
+        """ asyn merlin2_get method
 
         Args:
             type_name (str): type name
@@ -76,7 +76,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
     async def _merlin2_update(self,
                               pddl_type_dto: PddlTypeDto,
                               update_type: int) -> bool:
-        """ asyn update_type method
+        """ asyn merlin2_update method
 
         Args:
             pddl_type_dto (PddlTypeDto): PddlTypeDto to update
@@ -103,7 +103,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         return result.success
 
     async def _merlin2_delete_all(self):
-        """ asyn delete_all method
+        """ asyn merlin2_delete_all method
 
         Returns:
             boo: succeed
