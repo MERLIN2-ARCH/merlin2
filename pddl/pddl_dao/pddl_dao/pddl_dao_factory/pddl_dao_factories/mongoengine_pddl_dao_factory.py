@@ -23,7 +23,7 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDa
 class MongoenginePddlDaoFactory(PddlDaoFactory):
     """ Mongoengine Pddl Dao Facory Class """
 
-    def __init__(self, uri=None):
+    def __init__(self, uri: str = None):
         self.set_uri(uri)
 
     def get_uri(self) -> str:
@@ -33,7 +33,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             str: uri str
         """
 
-        return self.uri
+        return self._uri
 
     def set_uri(self, uri: str):
         """ uri setter
@@ -42,7 +42,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             uri (str): uri str
         """
 
-        self.uri = uri
+        self._uri = uri
 
     def create_pddl_type_dao(self, uri: str = None) -> MongoenginePddlTypeDao:
         """ create a mongoengine pddl dao type object
@@ -54,7 +54,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlTypeDao: mongoengine dao for pddl type
         """
 
-        aux_uri = self.uri
+        aux_uri = self._uri
         if not uri is None:
             aux_uri = uri
 
@@ -70,7 +70,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlPredicateDao: mongoengine dao for pddl predicate
         """
 
-        aux_uri = self.uri
+        aux_uri = self._uri
         if not uri is None:
             aux_uri = uri
 
@@ -86,7 +86,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlActionDao: mongoengine dao for pddl action
         """
 
-        aux_uri = self.uri
+        aux_uri = self._uri
         if not uri is None:
             aux_uri = uri
 
@@ -102,7 +102,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlObjectDao: mongoengine dao for pddl object
         """
 
-        aux_uri = self.uri
+        aux_uri = self._uri
         if not uri is None:
             aux_uri = uri
 
@@ -118,7 +118,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlPropositionDao: mongoengine dao for pddl proposition
         """
 
-        aux_uri = self.uri
+        aux_uri = self._uri
         if not uri is None:
             aux_uri = uri
 
