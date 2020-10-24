@@ -1,10 +1,10 @@
 
 import unittest
 from merlin2_pddl_generator.merlin2_pddl_parser.merlin2_pddl_problem_parser import Merlin2PddlProblemParser
-from pddl_dao.pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dao.pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dao.pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dao.pddl_dto.pddl_predicate_dto import PddlPredicateDto
+from pddl_dto.pddl_object_dto import PddlObjectDto
+from pddl_dto.pddl_proposition_dto import PddlPropositionDto
+from pddl_dto.pddl_type_dto import PddlTypeDto
+from pddl_dto.pddl_predicate_dto import PddlPredicateDto
 
 
 class TestMerlin2PddlProblemParser(unittest.TestCase):
