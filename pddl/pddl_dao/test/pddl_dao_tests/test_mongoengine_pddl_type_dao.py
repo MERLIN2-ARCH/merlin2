@@ -15,8 +15,5 @@ class TestMongoenginePddlTypeDao(TestPddlTypeDao):
 
         self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
 
-    def tearDown(self):
-        self.pddl_type_dao.delete_all()
-
 
 del(TestPddlTypeDao)
