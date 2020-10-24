@@ -4,29 +4,27 @@
 import rclpy
 from rclpy.node import Node
 
-from merlin2_knowledge_base.merlin2_knowledge_base.merlin2_konwledge_base import (
-    Merlin2KnowledgeBase
-)
-
-from merlin2_knowledge_base_interfaces.srv import UpdatePddlAction
-from merlin2_knowledge_base_interfaces.srv import UpdatePddlType
-from merlin2_knowledge_base_interfaces.srv import UpdatePddlObject
-from merlin2_knowledge_base_interfaces.srv import UpdatePddlPredicate
-from merlin2_knowledge_base_interfaces.srv import UpdatePddlProposition
-
-from merlin2_knowledge_base_interfaces.srv import GetPddlAction
-from merlin2_knowledge_base_interfaces.srv import GetPddlType
-from merlin2_knowledge_base_interfaces.srv import GetPddlObject
-from merlin2_knowledge_base_interfaces.srv import GetPddlPredicate
-from merlin2_knowledge_base_interfaces.srv import GetPddlProposition
-
-from std_srvs.srv import Empty
-
-
 from merlin2_knowledge_base_interfaces.msg import UpdateKnowledge
+
+from merlin2_knowledge_base_interfaces.srv import (
+    UpdatePddlAction,
+    UpdatePddlType,
+    UpdatePddlPredicate,
+    UpdatePddlProposition,
+    GetPddlAction,
+    GetPddlType,
+    GetPddlObject,
+    GetPddlPredicate,
+    GetPddlProposition
+)
+from std_srvs.srv import Empty
 
 from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
 from merlin2_knowledge_base.merlin2_knowledge_base_parser.msg_dto_parser import MsgDtoParser
+
+from merlin2_knowledge_base.merlin2_knowledge_base.merlin2_konwledge_base import (
+    Merlin2KnowledgeBase
+)
 
 
 class Merlin2KnowledgeBaseNode(Node):
