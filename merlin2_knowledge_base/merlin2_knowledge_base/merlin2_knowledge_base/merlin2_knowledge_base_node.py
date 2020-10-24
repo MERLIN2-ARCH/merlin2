@@ -11,6 +11,7 @@ from merlin2_knowledge_base_interfaces.srv import (
     UpdatePddlType,
     UpdatePddlPredicate,
     UpdatePddlProposition,
+    UpdatePddlObject,
     GetPddlAction,
     GetPddlType,
     GetPddlObject,
