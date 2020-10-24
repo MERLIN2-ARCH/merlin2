@@ -3,7 +3,7 @@ from test_pddl_dao_basic.test_pddl_type_dao import TestPddlTypeDao
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
 
 
-class TestMongoenginePddlDaoType(TestPddlTypeDao):
+class TestMongoenginePddlTypeDao(TestPddlTypeDao):
 
     def setUp(self):
         super().setUp()
