@@ -5,6 +5,9 @@ from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.mongoengine_pddl_dao_factory import (
     MongoenginePddlDaoFactory
 )
+from pddl_dao.pddl_dao_factory.pddl_dao_factories.merlin2_pddl_dao_factory import (
+    Merlin2PddlDaoFactory
+)
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 
@@ -14,7 +17,8 @@ class PddlDaoFactoryFactory:
     def __init__(self):
         self.pddl_dao_families = PddlDaoFamilies
         self.__families_to_factory = {
-            self.pddl_dao_families.MONGOENGINE: MongoenginePddlDaoFactory
+            self.pddl_dao_families.MONGOENGINE: MongoenginePddlDaoFactory,
+            self.pddl_dao_families.MERLIN2: Merlin2PddlDaoFactory
         }
 
     def create_pddl_dao_factory(self, family: int, **kwargs) -> PddlDaoFactory:
