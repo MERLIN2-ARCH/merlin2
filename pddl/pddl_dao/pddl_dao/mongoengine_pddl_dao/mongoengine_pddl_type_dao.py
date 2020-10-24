@@ -107,13 +107,13 @@ class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
         """
 
         pddl_type_model = PddlTypeModel.objects
-        pddl_dto_type_list = []
+        pddl_type_dto_list = []
 
         for ele in pddl_type_model:
             pddl_type_dto = self._model_to_dto(ele)
-            pddl_dto_type_list.append(pddl_type_dto)
+            pddl_type_dto_list.append(pddl_type_dto)
 
-        return pddl_dto_type_list
+        return pddl_type_dto_list
 
     def _save(self, pddl_type_dto: PddlTypeDto) -> bool:
         """ save a PddlTypeDto
@@ -197,9 +197,9 @@ class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
             bool: succeed
         """
 
-        pddl_dto_type_list = self.get_all()
+        pddl_type_dto_list = self.get_all()
 
-        for ele in pddl_dto_type_list:
+        for ele in pddl_type_dto_list:
             self.delete(ele)
 
         return True
