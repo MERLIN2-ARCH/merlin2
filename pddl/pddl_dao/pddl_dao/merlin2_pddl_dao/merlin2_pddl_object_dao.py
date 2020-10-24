@@ -42,14 +42,14 @@ class Merlin2PddlObjectDao(PddlObjectDao):
         self._delete_all_client = self.node.create_client(
             Empty, "delete_all_objects")
 
-    async def _merlin2_get(self, object_name: str = "") -> List[PddlObjectDao]:
+    async def _merlin2_get(self, object_name: str = "") -> List[PddlObjectDto]:
         """ asyn get_objects method
 
         Args:
             object_name (str): object name
 
         Returns:
-            List[PddlObjectDao]: list of PddlObjectDao
+            List[PddlObjectDto]: list of PddlObjectDto
         """
 
         req = GetPddlObject.Request()
@@ -75,7 +75,7 @@ class Merlin2PddlObjectDao(PddlObjectDao):
         return pddl_object_dto_list
 
     async def _merlin2_update(self,
-                              pddl_object_dto: PddlObjectDao,
+                              pddl_object_dto: PddlObjectDto,
                               update_type: int) -> bool:
         """ asyn update_type method
 
