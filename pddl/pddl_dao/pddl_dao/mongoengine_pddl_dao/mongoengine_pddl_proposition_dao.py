@@ -222,7 +222,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         # check if predicate exist
         if not pddl_predicate_model:
-            return None
+            return []
         pddl_predicate_model = pddl_predicate_model[0]
 
         pddl_proposition_model = PddlPropositionModel.objects(
