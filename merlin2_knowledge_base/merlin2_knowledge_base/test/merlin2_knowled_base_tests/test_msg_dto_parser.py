@@ -117,7 +117,7 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertEqual("(robot_at rb1 wp2)", str(dto))
         self.assertTrue(dto.get_is_goal())
 
-    def test_parse_action(self):
+    def test_parse_durative_action(self):
         dto = self.parser.action_msg_to_dto(self.navigation_action)
         self.assertEqual("""\
 (:durative-action navigation
@@ -129,6 +129,26 @@ class TestDtoMsgParser(unittest.TestCase):
 \t:effect (and
 \t\t(at start (not (robot_at ?r ?s)))
 \t\t(at end (robot_at ?r ?d))
+\t)
+)""",
+                         str(dto))
+
+    def test_parse_action(self):
+        self.navigation_action.durative = False
+        self.navigation_action.pddl_coditions[0].time = ""
+        self.navigation_action.pddl_effects[0].time = ""
+        self.navigation_action.pddl_effects[1].time = ""
+
+        dto = self.parser.action_msg_to_dto(self.navigation_action)
+        self.assertEqual("""\
+(:action navigation
+\t:parameters ( ?r - robot ?s - wp ?d - wp)
+\t:precondition (and
+\t\t(robot_at ?r ?s)
+\t)
+\t:effect (and
+\t\t(not (robot_at ?r ?s))
+\t\t(robot_at ?r ?d)
 \t)
 )""",
                          str(dto))
