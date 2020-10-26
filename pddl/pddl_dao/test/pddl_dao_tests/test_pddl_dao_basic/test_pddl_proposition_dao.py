@@ -53,10 +53,10 @@ class TestPddlPropositionDao(unittest.TestCase):
         result = self.pddl_proposition_dao._save(self.pddl_proposition_dto)
         self.assertFalse(result)
 
-    def test_pddl_dao_proposition_get_by_predicate_none(self):
+    def test_pddl_dao_proposition_get_by_predicate_empty(self):
         self.pddl_proposition_dto = self.pddl_proposition_dao.get_by_predicate(
             "robot_at")
-        self.assertIsNone(self.pddl_proposition_dto)
+        self.assertEqual([], self.pddl_proposition_dto)
 
     def test_pddl_dao_proposition_get_by_predicate(self):
         self.pddl_proposition_dao._save(self.pddl_proposition_dto)
