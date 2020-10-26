@@ -13,7 +13,7 @@ def main(args=None):
 
     node = MyNode()
 
-    node.wait_spinning()
+    node.join_spin()
 
     node.destroy_node()
 
