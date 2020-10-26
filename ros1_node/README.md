@@ -1,0 +1,26 @@
+# ros1_node
+
+```python
+from ros1_node.node import Node
+import rclpy
+
+class MyNode(Node):
+    def __init__(self):
+        super().__init__("my_node")
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    node = MyNode()
+
+    node.wait_spinning()
+
+    node.destroy_node()
+
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
+
+```
