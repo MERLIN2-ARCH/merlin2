@@ -114,7 +114,9 @@ class MsgDtoParser:
         )
 
         dto.set_is_negative(pddl_condition_efect_msg.is_negative)
-        dto.set_time(pddl_condition_efect_msg.time)
+
+        if pddl_condition_efect_msg.time:
+            dto.set_time(pddl_condition_efect_msg.time)
 
         pddl_objects_list = []
 

@@ -111,7 +111,8 @@ class DtoMsgParser:
         msg.pddl_proposition = self.proposition_dto_to_msg(
             pddl_condition_efect_dto)
 
-        msg.time = pddl_condition_efect_dto.get_time()
+        if pddl_condition_efect_dto.get_time():
+            msg.time = pddl_condition_efect_dto.get_time()
         msg.is_negative = pddl_condition_efect_dto.get_is_negative()
 
         return msg

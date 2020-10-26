@@ -277,7 +277,7 @@ class Merlin2KnowledgeBaseNode(Node):
             if pddl_predicate_dto:
 
                 pddl_predicate_msg = self.dto_msg_parser.predicate_dto_to_msg(
-                    pddl_predicate_msg)
+                    pddl_predicate_dto)
 
                 res.pddl_predicates = [pddl_predicate_msg]
         else:
@@ -288,7 +288,7 @@ class Merlin2KnowledgeBaseNode(Node):
                 pddl_predicate_msg_list.append(
                     self.dto_msg_parser.predicate_dto_to_msg(pddl_predicate_dto))
 
-            res.pddl_objects = pddl_predicate_msg_list
+            res.pddl_predicates = pddl_predicate_msg_list
 
         return res
 
@@ -368,10 +368,10 @@ class Merlin2KnowledgeBaseNode(Node):
         pddl_predicate_msg_list = []
 
         for pddl_proposition_dto in pddl_proposition_dtos:
-            pddl_proposition_dtos.append(
+            pddl_predicate_msg_list.append(
                 self.dto_msg_parser.proposition_dto_to_msg(pddl_proposition_dto))
 
-            res.pddl_propositions = pddl_predicate_msg_list
+        res.pddl_propositions = pddl_predicate_msg_list
 
         return res
 
@@ -390,7 +390,7 @@ class Merlin2KnowledgeBaseNode(Node):
 
         succ = False
 
-        pddl_proposition_dto = self.msg_dto_parser.predicate_msg_to_dto(
+        pddl_proposition_dto = self.msg_dto_parser.proposition_msg_to_dto(
             req.pddl_proposition)
 
         if req.update_konwledge.update_type == UpdateKnowledge.SAVE:
@@ -454,7 +454,7 @@ class Merlin2KnowledgeBaseNode(Node):
                 pddl_action_msg_list.append(
                     self.dto_msg_parser.action_dto_to_msg(pddl_action_dto))
 
-            res.pddl_types = pddl_action_msg_list
+            res.pddl_actions = pddl_action_msg_list
 
         return res
 

@@ -506,7 +506,7 @@ class Merlin2KnowledgeBase:
 
         proposition_list = []
 
-        for proposition in self.propositions_goal_list + self.get_propositions_no_goals:
+        for proposition in self.propositions_goal_list + self.get_propositions_no_goals():
             if proposition.get_pddl_predicate().get_predicate_name() == predicate_name:
                 proposition_list.append(proposition)
 
