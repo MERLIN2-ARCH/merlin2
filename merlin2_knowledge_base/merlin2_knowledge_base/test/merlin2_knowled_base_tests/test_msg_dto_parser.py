@@ -71,20 +71,20 @@ class TestDtoMsgParser(unittest.TestCase):
         d.pddl_type = self.wp_type
 
         condition_1 = PddlConditionEffect()
-        condition_1.pddl_proposition.pddl_predicate = self.robot_at
-        condition_1.pddl_proposition.pddl_objects = [r, s]
+        condition_1.pddl_predicate = self.robot_at
+        condition_1.pddl_objects = [r, s]
         condition_1.time = "at start"
         condition_1.is_negative = False
 
         effect_1 = PddlConditionEffect()
-        effect_1.pddl_proposition.pddl_predicate = self.robot_at
-        effect_1.pddl_proposition.pddl_objects = [r, s]
+        effect_1.pddl_predicate = self.robot_at
+        effect_1.pddl_objects = [r, s]
         effect_1.time = "at start"
         effect_1.is_negative = True
 
         effect_2 = PddlConditionEffect()
-        effect_2.pddl_proposition.pddl_predicate = self.robot_at
-        effect_2.pddl_proposition.pddl_objects = [r, d]
+        effect_2.pddl_predicate = self.robot_at
+        effect_2.pddl_objects = [r, d]
         effect_2.time = "at end"
         effect_2.is_negative = False
 

@@ -110,7 +110,7 @@ class MsgDtoParser:
 
         dto = PddlConditionEffectDto(
             self.predicate_msg_to_dto(
-                pddl_condition_efect_msg.pddl_proposition.pddl_predicate)
+                pddl_condition_efect_msg.pddl_predicate)
         )
 
         dto.set_is_negative(pddl_condition_efect_msg.is_negative)
@@ -120,7 +120,7 @@ class MsgDtoParser:
 
         pddl_objects_list = []
 
-        for pddl_object_msg in pddl_condition_efect_msg.pddl_proposition.pddl_objects:
+        for pddl_object_msg in pddl_condition_efect_msg.pddl_objects:
             pddl_objects_list.append(self.object_msg_to_dto(pddl_object_msg))
 
         dto.set_pddl_objects_list(pddl_objects_list)

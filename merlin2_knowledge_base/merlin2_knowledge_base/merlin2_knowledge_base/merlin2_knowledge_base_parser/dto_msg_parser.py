@@ -108,8 +108,13 @@ class DtoMsgParser:
         """
 
         msg = PddlConditionEffect()
-        msg.pddl_proposition = self.proposition_dto_to_msg(
-            pddl_condition_efect_dto)
+
+        msg.pddl_predicate = self.predicate_dto_to_msg(
+            pddl_condition_efect_dto.get_pddl_predicate())
+
+        msg.pddl_objects = []
+        for pddl_object_dto in pddl_condition_efect_dto.get_pddl_objects_list():
+            msg.pddl_objects.append(self.object_dto_to_msg(pddl_object_dto))
 
         if pddl_condition_efect_dto.get_time():
             msg.time = pddl_condition_efect_dto.get_time()

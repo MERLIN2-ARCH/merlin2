@@ -104,42 +104,42 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertEqual("wp", msg.pddl_parameters[2].pddl_type.type_name)
 
         self.assertEqual(
-            "robot_at", msg.pddl_coditions[0].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_coditions[0].pddl_predicate.predicate_name)
         self.assertFalse(msg.pddl_coditions[0].is_negative)
         self.assertEqual(
-            "r", msg.pddl_coditions[0].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_coditions[0].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_coditions[0].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_coditions[0].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "s", msg.pddl_coditions[0].pddl_proposition.pddl_objects[1].object_name)
+            "s", msg.pddl_coditions[0].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_coditions[0].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_coditions[0].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("at start", msg.pddl_coditions[0].time)
 
         self.assertEqual(
-            "robot_at", msg.pddl_effects[0].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_effects[0].pddl_predicate.predicate_name)
         self.assertTrue(msg.pddl_effects[0].is_negative)
         self.assertEqual(
-            "r", msg.pddl_effects[0].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_effects[0].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_effects[0].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_effects[0].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "s", msg.pddl_effects[0].pddl_proposition.pddl_objects[1].object_name)
+            "s", msg.pddl_effects[0].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_effects[0].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_effects[0].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("at start", msg.pddl_effects[0].time)
 
         self.assertEqual(
-            "robot_at", msg.pddl_effects[1].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_effects[1].pddl_predicate.predicate_name)
         self.assertFalse(msg.pddl_effects[1].is_negative)
         self.assertEqual(
-            "r", msg.pddl_effects[1].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_effects[1].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_effects[1].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_effects[1].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "d", msg.pddl_effects[1].pddl_proposition.pddl_objects[1].object_name)
+            "d", msg.pddl_effects[1].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_effects[1].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_effects[1].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("at end", msg.pddl_effects[1].time)
 
     def test_parse_action(self):
@@ -162,40 +162,40 @@ class TestDtoMsgParser(unittest.TestCase):
         self.assertEqual("wp", msg.pddl_parameters[2].pddl_type.type_name)
 
         self.assertEqual(
-            "robot_at", msg.pddl_coditions[0].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_coditions[0].pddl_predicate.predicate_name)
         self.assertFalse(msg.pddl_coditions[0].is_negative)
         self.assertEqual(
-            "r", msg.pddl_coditions[0].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_coditions[0].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_coditions[0].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_coditions[0].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "s", msg.pddl_coditions[0].pddl_proposition.pddl_objects[1].object_name)
+            "s", msg.pddl_coditions[0].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_coditions[0].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_coditions[0].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("", msg.pddl_coditions[0].time)
 
         self.assertEqual(
-            "robot_at", msg.pddl_effects[0].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_effects[0].pddl_predicate.predicate_name)
         self.assertTrue(msg.pddl_effects[0].is_negative)
         self.assertEqual(
-            "r", msg.pddl_effects[0].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_effects[0].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_effects[0].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_effects[0].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "s", msg.pddl_effects[0].pddl_proposition.pddl_objects[1].object_name)
+            "s", msg.pddl_effects[0].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_effects[0].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_effects[0].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("", msg.pddl_effects[0].time)
 
         self.assertEqual(
-            "robot_at", msg.pddl_effects[1].pddl_proposition.pddl_predicate.predicate_name)
+            "robot_at", msg.pddl_effects[1].pddl_predicate.predicate_name)
         self.assertFalse(msg.pddl_effects[1].is_negative)
         self.assertEqual(
-            "r", msg.pddl_effects[1].pddl_proposition.pddl_objects[0].object_name)
+            "r", msg.pddl_effects[1].pddl_objects[0].object_name)
         self.assertEqual(
-            "robot", msg.pddl_effects[1].pddl_proposition.pddl_objects[0].pddl_type.type_name)
+            "robot", msg.pddl_effects[1].pddl_objects[0].pddl_type.type_name)
         self.assertEqual(
-            "d", msg.pddl_effects[1].pddl_proposition.pddl_objects[1].object_name)
+            "d", msg.pddl_effects[1].pddl_objects[1].object_name)
         self.assertEqual(
-            "wp", msg.pddl_effects[1].pddl_proposition.pddl_objects[1].pddl_type.type_name)
+            "wp", msg.pddl_effects[1].pddl_objects[1].pddl_type.type_name)
         self.assertEqual("", msg.pddl_effects[1].time)
