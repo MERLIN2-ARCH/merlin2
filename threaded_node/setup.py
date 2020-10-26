@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'ros1_node'
+package_name = 'threaded_node'
 
 setup(
     name=package_name,

@@ -1,7 +1,7 @@
-# ros1_node
+# threaded_node
 
 ```python
-from ros1_node.node import Node
+from threaded_node.node import Node
 import rclpy
 
 class MyNode(Node):

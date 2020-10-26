@@ -1,7 +1,7 @@
 
 from test_pddl_dao_basic.test_pddl_predicate_dao import TestPddlPredicateDao
 from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
-from ros1_node.node import Node
+from threaded_node.node import Node
 import rclpy
 
 
