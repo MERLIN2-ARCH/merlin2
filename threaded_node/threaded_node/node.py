@@ -19,6 +19,8 @@ class Node(Node2):
         self._spin_thread.start()
 
     def _run_executor(self):
+        """ run an executer with self (node) """
+
         self._executor.add_node(self)
         try:
             self._executor.spin()
