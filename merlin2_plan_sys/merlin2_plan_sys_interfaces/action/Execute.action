@@ -3,7 +3,6 @@
 # Define the result
 bool pddl_generator
 bool planner
-bool plan_parser
 bool plan_dispatcher
 ---
 # Define the feedback
