@@ -1,8 +1,8 @@
 # Define the goal
 ---
 # Define the result
-bool pddl_generator
-bool planner
-bool plan_dispatcher
+bool generate_pddl
+bool generate_plan
+bool dispatch_plan
 ---
 # Define the feedback

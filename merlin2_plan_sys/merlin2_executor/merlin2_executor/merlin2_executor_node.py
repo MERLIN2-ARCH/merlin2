@@ -63,13 +63,13 @@ class Merlin2ExecutorNode(Node):
             pddl_generated = asyncio.run(self.generate_pddl())
             self.get_logger().info(pddl_generated.domain)
             self.get_logger().info(pddl_generated.problem)
-            result.pddl_generator = True
+            result.generate_pddl = True
 
             plan = asyncio.run(
                 self.plan(pddl_generated.domain, pddl_generated.problem))
             self.get_logger().info(str(plan.has_solution))
             self.get_logger().info(str(plan.plan))
-            result.planner = True
+            result.generate_plan = True
 
             goal_handle.succeed()
 
