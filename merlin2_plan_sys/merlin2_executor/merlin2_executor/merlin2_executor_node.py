@@ -12,7 +12,7 @@ from rclpy.action import ActionServer, CancelResponse
 from rclpy.executors import MultiThreadedExecutor
 
 from merlin2_plan_sys_interfaces.srv import (
-    GeneratePddl, Plan, ParsePlan
+    GeneratePddl, GeneratePlan
 )
 from merlin2_plan_sys_interfaces.action import DispatchPlan, Execute
 
@@ -28,7 +28,7 @@ class Merlin2ExecutorNode(Node):
         self.__pddl_generator_client = self.create_client(
             GeneratePddl, "generate_pddl")
         self.__plan_client = self.create_client(
-            Plan, "plan")
+            GeneratePlan, "generate_plan")
 
         # action server
         self._goal_queue = collections.deque()
@@ -67,7 +67,8 @@ class Merlin2ExecutorNode(Node):
 
             plan = asyncio.run(
                 self.plan(pddl_generated.domain, pddl_generated.problem))
-            self.get_logger().info(plan.plan)
+            self.get_logger().info(str(plan.has_solution))
+            self.get_logger().info(str(plan.plan))
             result.planner = True
 
             goal_handle.succeed()
@@ -134,7 +135,7 @@ class Merlin2ExecutorNode(Node):
 
         return future.result()
 
-    async def plan(self, domain: str, problem: str) -> Plan.Response:
+    async def plan(self, domain: str, problem: str) -> GeneratePlan.Response:
         """ asyn plan method
 
         Args:
@@ -142,10 +143,10 @@ class Merlin2ExecutorNode(Node):
             problem (str): str of pddl problem
 
         Returns:
-            Plan.Response: Plan.Response: pddl (plan)
+            GeneratePlan.Response: pddl (plan)
         """
 
-        req = Plan.Request()
+        req = GeneratePlan.Request()
         req.domain = domain
         req.problem = problem
         self.__plan_client.wait_for_service()
