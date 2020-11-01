@@ -37,7 +37,7 @@ class Merlin2PddlGeneratorNode(Node):
 
         # creating pddl generator
         self.pddl_generator = pddl_generator_factory.create_pddl_generator(
-            pddl_dao_family, uri=mongoengine_uri)
+            pddl_dao_family, uri=mongoengine_uri, node=self)
 
         # service servers
         self.__start_server = self.create_service(

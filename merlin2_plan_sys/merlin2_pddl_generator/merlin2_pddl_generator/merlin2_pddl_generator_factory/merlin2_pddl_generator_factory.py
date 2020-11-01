@@ -8,6 +8,9 @@ from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_pddl_generator impor
 from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import (
     MongoengineMerlin2PddlGenerator
 )
+from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_merlin2_pddl_generator import (
+    Merlin2Merlin2PddlGenerator
+)
 from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
 
 
@@ -17,7 +20,8 @@ class Merlin2PddlGeneratorFactory:
     def __init__(self):
         self.pddl_dao_families = PddlDaoFamilies
         self.__families_to_factory = {
-            self.pddl_dao_families.MONGOENGINE: MongoengineMerlin2PddlGenerator
+            self.pddl_dao_families.MONGOENGINE: MongoengineMerlin2PddlGenerator,
+            self.pddl_dao_families.MERLIN2: Merlin2Merlin2PddlGenerator
         }
 
     def create_pddl_generator(self, family: int, **kwargs) -> Type[Merlin2PddlGenerator]:
