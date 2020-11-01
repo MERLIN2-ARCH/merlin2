@@ -36,9 +36,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/GeneratePddl.srv"
-  "srv/Plan.srv"
+  "srv/GeneratePlan.srv"
   "msg/PlanAction.msg"
-  "srv/ParsePlan.srv"
   "action/DispatchPlan.action"
   "action/Execute.action"
  )
