@@ -4,7 +4,7 @@
 import rclpy
 from rclpy.node import Node
 
-from merlin2_plan_sys_interfaces.srv import Plan
+from merlin2_plan_sys_interfaces.srv import GeneratePlan
 
 from merlin2_planner.merlin2_planner_factory.merlin2_planner_factory import Merlin2PlannerFactory
 from merlin2_planner.merlin2_planner_factory.merlin2_planners import Merlin2Planners
@@ -15,7 +15,7 @@ class Merlin2PlannerNode(Node):
 
     def __init__(self):
 
-        super().__init__('merlin2_planner_mode')
+        super().__init__("merlin2_planner_mode")
 
         planner_factory = Merlin2PlannerFactory()
 
@@ -35,22 +35,24 @@ class Merlin2PlannerNode(Node):
 
         # service servers
         self.__start_server = self.create_service(
-            Plan, 'plan', self.__planner_srv)
+            GeneratePlan, "generate_plan", self.__planner_srv)
 
     def __planner_srv(self,
-                      req: Plan.Request,
-                      res: Plan.Response) -> Plan.Response:
+                      req: GeneratePlan.Request,
+                      res: GeneratePlan.Response) -> GeneratePlan.Response:
         """ plan srv callback
 
         Args:
-            req (Plan.Request): request (domain and problem)
-            res (Plan.Response): response (plan)
+            req (GeneratePlan.Request): request (domain and problem)
+            res (GeneratePlan.Response): response (plan)
 
         Returns:
-            Plan.Response: response (plan)
+            GeneratePlan.Response: response (plan)
         """
 
-        res.plan = self.planner.plan(req.domain, req.problem)
+        self.planner.generate_plan(req.domain, req.problem)
+        res.has_solution = self.planner.has_solution()
+        res.plan = self.planner.get_actions_plan()
 
         return res
 
@@ -67,5 +69,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
