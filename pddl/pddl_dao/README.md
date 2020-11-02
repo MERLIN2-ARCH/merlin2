@@ -30,3 +30,15 @@ Shell 2
 cd ~/ros2_foxy/src/merlin2/pddl/pddl_dao/
 pytest --cov=/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao ./test/pddl_dao_tests/*.py
 ```
+
+## Example
+Shell 1 (Optional, for node version)
+```
+sudo service mongod start
+ros2 run merlin2_knowledge_base knowledge_base_node
+```
+
+Shell 2
+```
+ros2 run pddl_dao dao_example_node
+```

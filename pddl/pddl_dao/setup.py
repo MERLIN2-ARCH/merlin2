@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'dao_example_node = pddl_dao.dao_example_node:main',
         ],
     },
 )
