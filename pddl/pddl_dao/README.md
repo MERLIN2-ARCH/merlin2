@@ -32,10 +32,10 @@ pytest --cov=/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages
 ```
 
 ## Example
-Shell 1 (Optional, for node version)
+Shell 1
 ```
 sudo service mongod start
-ros2 run merlin2_knowledge_base knowledge_base_node
+ros2 run merlin2_knowledge_base knowledge_base_node #(Optional, for node version)
 ```
 
 Shell 2
