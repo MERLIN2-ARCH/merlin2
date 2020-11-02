@@ -1,11 +1,11 @@
 
 ## Mongoengine Installation
-```
+```shell
 sudo pip3 install mongoengine
 sudo pip3 install dnspython
 ```
 ## Mongo Installation
-```
+```shell
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
 sudo apt-get install gnupg
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
@@ -20,25 +20,25 @@ https://docs.mongodb.com/compass/master/install/
 
 ## Running Tests
 Shell 1
-```
+```shell
 sudo service mongod start
 ros2 run merlin2_knowledge_base knowledge_base_node
 ```
 
 Shell 2
-```
+```shell
 cd ~/ros2_foxy/src/merlin2/pddl/pddl_dao/
 pytest --cov=/home/miguel/ros2_foxy/install/pddl_dao/lib/python3.8/site-packages/pddl_dao ./test/pddl_dao_tests/*.py
 ```
 
 ## Example
 Shell 1
-```
+```shell
 sudo service mongod start
 ros2 run merlin2_knowledge_base knowledge_base_node #(Optional, for node version)
 ```
 
 Shell 2
-```
+```shell
 ros2 run pddl_dao dao_example_node
 ```
