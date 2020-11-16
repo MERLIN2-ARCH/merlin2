@@ -102,7 +102,7 @@ class PopfMerlin2Planner(Merlin2Planner):
 
         action = PlanAction()
 
-        init_index = action_str.index("(")
+        init_index = action_str.index("(") + 1
         end_index = action_str.index(")")
 
         action_str_cutted = action_str[init_index:end_index]
