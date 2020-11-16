@@ -29,7 +29,14 @@ def generate_launch_description():
         namespace=namespace,
     )
 
-    executor_cmd = Node(
+    plan_dispatcher_node_cmd = Node(
+        package='merlin2_plan_dispatcher',
+        executable='plan_dispatcher_node',
+        name='plan_dispatcher_node',
+        namespace=namespace,
+    )
+
+    executor_node_cmd = Node(
         package="merlin2_executor",
         executable='executor_node',
         name='executor_node',
@@ -42,6 +49,7 @@ def generate_launch_description():
 
     ld.add_action(pddl_generator_node_cmd)
     ld.add_action(planner_node_cmd)
-    ld.add_action(executor_cmd)
+    ld.add_action(plan_dispatcher_node_cmd)
+    ld.add_action(executor_node_cmd)
 
     return ld

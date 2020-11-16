@@ -4,16 +4,19 @@
 import asyncio
 import collections
 import threading
+from typing import List
 
 import rclpy
 from rclpy.node import Node
+from action_msgs.msg import GoalStatus
 
-from rclpy.action import ActionServer, CancelResponse
+from rclpy.action import ActionServer, CancelResponse, ActionClient
 from rclpy.executors import MultiThreadedExecutor
 
 from merlin2_plan_sys_interfaces.srv import (
     GeneratePddl, GeneratePlan
 )
+from merlin2_plan_sys_interfaces.msg import PlanAction
 from merlin2_plan_sys_interfaces.action import DispatchPlan, Execute
 
 
@@ -29,6 +32,10 @@ class Merlin2ExecutorNode(Node):
             GeneratePddl, "generate_pddl")
         self.__plan_client = self.create_client(
             GeneratePlan, "generate_plan")
+
+        # action client
+        self.__plan_dispatcher_client = ActionClient(
+            self, DispatchPlan, "dispatch_plan")
 
         # action server
         self._goal_queue = collections.deque()
@@ -70,6 +77,9 @@ class Merlin2ExecutorNode(Node):
             self.get_logger().info(str(plan.has_solution))
             self.get_logger().info(str(plan.plan))
             result.generate_plan = True
+
+            dispatch_plan_succ = asyncio.run(self.dispatch_plan(plan.plan))
+            result.dispatch_plan = dispatch_plan_succ
 
             goal_handle.succeed()
 
@@ -158,6 +168,43 @@ class Merlin2ExecutorNode(Node):
             self.get_logger().info("Service call failed %r" % (e,))
 
         return future.result()
+
+    async def dispatch_plan(self, plan: List[PlanAction]) -> bool:
+        """ dispatch a plan
+
+        Args:
+            plan (List[PlanAction]): list of actions that compose the plan
+
+        Returns:
+            bool: succeed
+        """
+
+        goal = DispatchPlan.Goal()
+        goal.plan = plan
+        self.__plan_dispatcher_client.wait_for_server()
+        send_goal_future = self.__plan_dispatcher_client.send_goal_async(goal)
+
+        try:
+            await send_goal_future
+            goal_handle = send_goal_future.result()
+
+            if not goal_handle.accepted:
+                return False
+
+            get_result_future = goal_handle.get_result_async()
+            await get_result_future
+
+            result = get_result_future.result().result
+            status = get_result_future.result().status
+
+            if status == GoalStatus.STATUS_SUCCEEDED:
+                return True
+            else:
+                return False
+
+        except Exception as e:
+            self.get_logger().info("Action call failed %r" % (e,))
+            return False
 
 
 def main(args=None):

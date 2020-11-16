@@ -39,6 +39,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/GeneratePlan.srv"
   "msg/PlanAction.msg"
   "action/DispatchPlan.action"
+  "action/DispatchAction.action"
   "action/Execute.action"
  )
 

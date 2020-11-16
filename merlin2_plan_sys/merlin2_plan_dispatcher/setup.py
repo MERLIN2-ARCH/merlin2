@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'plan_dispatcher_node = merlin2_plan_dispatcher.merlin2_plan_dispatcher_node:main',
         ],
     },
 )
