@@ -145,9 +145,9 @@ class TestDtoMsgParser(unittest.TestCase):
     def test_parse_action(self):
 
         self.navigation_action.set_durative(False)
-        self.navigation_action.get_conditions_list()[0].set_time(None)
-        self.navigation_action.get_effects_list()[0].set_time(None)
-        self.navigation_action.get_effects_list()[1].set_time(None)
+        self.navigation_action.get_pddl_conditions_list()[0].set_time(None)
+        self.navigation_action.get_pddl_effects_list()[0].set_time(None)
+        self.navigation_action.get_pddl_effects_list()[1].set_time(None)
 
         msg = self.parser.action_dto_to_msg(self.navigation_action)
         self.assertEqual("navigation", msg.action_name)

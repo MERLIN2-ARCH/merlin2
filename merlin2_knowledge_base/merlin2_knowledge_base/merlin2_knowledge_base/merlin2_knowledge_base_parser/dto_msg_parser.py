@@ -139,16 +139,16 @@ class DtoMsgParser:
         msg.durative = pddl_action_dto.get_durative()
 
         msg.pddl_parameters = []
-        for pddl_object_dto in pddl_action_dto.get_parameters_list():
+        for pddl_object_dto in pddl_action_dto.get_pddl_parameters_list():
             msg.pddl_parameters.append(self.object_dto_to_msg(pddl_object_dto))
 
         msg.pddl_coditions = []
-        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
+        for pddl_condition_dto in pddl_action_dto.get_pddl_conditions_list():
             msg.pddl_coditions.append(
                 self.condition_effect_dto_to_msg(pddl_condition_dto))
 
         msg.pddl_effects = []
-        for pddl_effect_dto in pddl_action_dto.get_effects_list():
+        for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
             msg.pddl_effects.append(
                 self.condition_effect_dto_to_msg(pddl_effect_dto))
 

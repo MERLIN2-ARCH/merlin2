@@ -73,6 +73,6 @@ class PddlActionModel(mongoengine.Document):
 
     pddl_parameters = mongoengine.EmbeddedDocumentListField(PddlParameterModel)
 
-    conditions = mongoengine.EmbeddedDocumentListField(
+    pddl_conditions = mongoengine.EmbeddedDocumentListField(
         PddlConditionEffectModel)
-    effects = mongoengine.EmbeddedDocumentListField(PddlConditionEffectModel)
+    pddl_effects = mongoengine.EmbeddedDocumentListField(PddlConditionEffectModel)

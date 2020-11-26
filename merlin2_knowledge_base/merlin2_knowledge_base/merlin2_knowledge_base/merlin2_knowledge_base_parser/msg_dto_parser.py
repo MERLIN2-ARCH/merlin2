@@ -146,18 +146,18 @@ class MsgDtoParser:
         for pddl_object_msg in pddl_action_msg.pddl_parameters:
             pddl_parameters_list.append(
                 self.object_msg_to_dto(pddl_object_msg))
-        dto.set_parameters_list(pddl_parameters_list)
+        dto.set_pddl_parameters_list(pddl_parameters_list)
 
         pddl_coditions_list = []
         for pddl_condition_msg in pddl_action_msg.pddl_coditions:
             pddl_coditions_list.append(
                 self.condition_effect_msg_to_dto(pddl_condition_msg))
-        dto.set_conditions_list(pddl_coditions_list)
+        dto.set_pddl_conditions_list(pddl_coditions_list)
 
         pddl_effect_list = []
         for pddl_effect_msg in pddl_action_msg.pddl_effects:
             pddl_effect_list.append(
                 self.condition_effect_msg_to_dto(pddl_effect_msg))
-        dto.set_effects_list(pddl_effect_list)
+        dto.set_pddl_effects_list(pddl_effect_list)
 
         return dto

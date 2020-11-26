@@ -101,20 +101,20 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             parameters_list.append(pddl_object_dto)
 
         # ACTION CONDIS
-        for pddl_condition_model in pddl_action_model.conditions:
+        for pddl_condition_model in pddl_action_model.pddl_conditions:
             pddl_dto_condition_effect = self.__condition_effect_model_to_dto(
                 pddl_condition_model, parameter_dict)
             conditions_list.append(pddl_dto_condition_effect)
 
         # ACTION EFFECTS
-        for pddl_effect_model in pddl_action_model.effects:
+        for pddl_effect_model in pddl_action_model.pddl_effects:
             pddl_dto_condition_effect = self.__condition_effect_model_to_dto(
                 pddl_effect_model, parameter_dict)
             effects_list.append(pddl_dto_condition_effect)
 
-        pddl_action_dto.set_parameters_list(parameters_list)
-        pddl_action_dto.set_conditions_list(conditions_list)
-        pddl_action_dto.set_effects_list(effects_list)
+        pddl_action_dto.set_pddl_parameters_list(parameters_list)
+        pddl_action_dto.set_pddl_conditions_list(conditions_list)
+        pddl_action_dto.set_pddl_effects_list(effects_list)
 
         return pddl_action_dto
 
@@ -168,7 +168,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         parameter_dict = {}
 
         # ACTION PARAMS
-        for param in pddl_action_dto.get_parameters_list():
+        for param in pddl_action_dto.get_pddl_parameters_list():
             pddl_type_model = self._me_pddl_type_dao._get_model(
                 param.get_pddl_type())
 
@@ -188,26 +188,26 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             parameter_dict[param_name] = pddl_parameter_model
 
         # ACTION CONDIS
-        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
+        for pddl_condition_dto in pddl_action_dto.get_pddl_conditions_list():
             pddl_condition_model = self.__condition_effect_dto_to_model(
                 pddl_condition_dto, parameter_dict)
 
             if not pddl_condition_model:
                 return None
 
-            pddl_action_model.conditions.append(pddl_condition_model)
+            pddl_action_model.pddl_conditions.append(pddl_condition_model)
             pddl_action_model._pddl_predicates_used.append(
                 pddl_condition_model.pddl_predicate)
 
         # ACTION EFFECTS
-        for pddl_effect_dto in pddl_action_dto.get_effects_list():
+        for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
             pddl_effect_model = self.__condition_effect_dto_to_model(
                 pddl_effect_dto, parameter_dict)
 
             if not pddl_effect_model:
                 return None
 
-            pddl_action_model.effects.append(pddl_effect_model)
+            pddl_action_model.pddl_effects.append(pddl_effect_model)
             pddl_action_model._pddl_predicates_used.append(
                 pddl_effect_model.pddl_predicate)
 
@@ -291,15 +291,15 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             bool: is PddlActionDto correct?
         """
 
-        for pddl_condi_effect_dto in (pddl_action_dto.get_conditions_list() +
-                                      pddl_action_dto.get_effects_list()):
+        for pddl_condi_effect_dto in (pddl_action_dto.get_pddl_conditions_list() +
+                                      pddl_action_dto.get_pddl_effects_list()):
             if(not pddl_action_dto.get_durative() and pddl_condi_effect_dto.get_time()):
                 return False
             elif(pddl_action_dto.get_durative() and not pddl_condi_effect_dto.get_time()):
                 return False
 
             if not self._check_pddl_condition_efect_dto(pddl_condi_effect_dto,
-                                                        pddl_action_dto.get_parameters_list()):
+                                                        pddl_action_dto.get_pddl_parameters_list()):
                 return False
 
         return True
@@ -351,8 +351,8 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             bool: is PddlActionDto correct?
         """
 
-        for pddl_condi_effect_model in (pddl_action_model.conditions +
-                                        pddl_action_model.effects):
+        for pddl_condi_effect_model in (pddl_action_model.pddl_conditions +
+                                        pddl_action_model.pddl_effects):
             if(not pddl_action_model.durative and pddl_condi_effect_model.time):
                 return False
             elif(pddl_action_model.durative and not pddl_condi_effect_model.time):
@@ -424,17 +424,17 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             return False
 
        # propagating saving
-        for pddl_type_dto in pddl_action_dto.get_parameters_list():
+        for pddl_type_dto in pddl_action_dto.get_pddl_parameters_list():
             result = self._me_pddl_type_dao.save(
                 pddl_type_dto.get_pddl_type())
             if not result:
                 return False
-        for pddl_condition_dto in pddl_action_dto.get_conditions_list():
+        for pddl_condition_dto in pddl_action_dto.get_pddl_conditions_list():
             result = self._me_pddl_predicate_dao.save(
                 pddl_condition_dto.get_pddl_predicate())
             if not result:
                 return False
-        for pddl_effect_dto in pddl_action_dto.get_effects_list():
+        for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
             result = self._me_pddl_predicate_dao.save(
                 pddl_effect_dto.get_pddl_predicate())
             if not result:
@@ -478,8 +478,8 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
                 pddl_action_model.durative = new_pddl_action_model.durative
                 pddl_action_model.duration = new_pddl_action_model.duration
                 pddl_action_model.pddl_parameters = new_pddl_action_model.pddl_parameters
-                pddl_action_model.conditions = new_pddl_action_model.conditions
-                pddl_action_model.effects = new_pddl_action_model.effects
+                pddl_action_model.pddl_conditions = new_pddl_action_model.pddl_conditions
+                pddl_action_model.pddl_effects = new_pddl_action_model.pddl_effects
                 pddl_action_model.save()
             else:
                 return False

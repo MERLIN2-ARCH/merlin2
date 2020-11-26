@@ -98,7 +98,7 @@ class Merlin2KnowledgeBase:
                     break
 
         for pddl_action_dto in self.get_all_actions():
-            for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
+            for pddl_parameter_dto in pddl_action_dto.get_pddl_parameters_list():
                 if pddl_parameter_dto.get_pddl_type() == pddl_type_dto:
                     succ = self.delete_action(pddl_action_dto)
 
@@ -304,8 +304,8 @@ class Merlin2KnowledgeBase:
                     return False
 
         for pddl_action_dto in self.get_all_actions():
-            for pddl_condi_effect_dto in (pddl_action_dto.get_conditions_list() +
-                                          pddl_action_dto.get_effects_list()):
+            for pddl_condi_effect_dto in (pddl_action_dto.get_pddl_conditions_list() +
+                                          pddl_action_dto.get_pddl_effects_list()):
                 if pddl_condi_effect_dto.get_pddl_predicate() == pddl_predicate_dto:
                     succ = self.delete_action(pddl_action_dto)
 
@@ -399,7 +399,7 @@ class Merlin2KnowledgeBase:
             if pddl_object_dto.get_pddl_type() != pddl_type_dto:
                 return False
 
-            if not pddl_object_dto in pddl_action_dto.get_parameters_list():
+            if not pddl_object_dto in pddl_action_dto.get_pddl_parameters_list():
                 return False
 
         # propagating saving of condition/effect
@@ -441,7 +441,7 @@ class Merlin2KnowledgeBase:
         """
 
         # propagating saving of parameter
-        for pddl_parameter_dto in pddl_action_dto.get_parameters_list():
+        for pddl_parameter_dto in pddl_action_dto.get_pddl_parameters_list():
             if not pddl_parameter_dto.get_pddl_type().get_type_name() in self.types_dict:
                 succ = self.save_type(pddl_parameter_dto.get_pddl_type())
 
@@ -452,8 +452,8 @@ class Merlin2KnowledgeBase:
                 pddl_parameter_dto.get_pddl_type().get_type_name()))
 
         # conditions and effects
-        for pddl_condi_effect_dto in (pddl_action_dto.get_conditions_list() +
-                                      pddl_action_dto.get_effects_list()):
+        for pddl_condi_effect_dto in (pddl_action_dto.get_pddl_conditions_list() +
+                                      pddl_action_dto.get_pddl_effects_list()):
             succ = self._prepare_condition_effect_to_save(
                 pddl_condi_effect_dto, pddl_action_dto)
 

@@ -53,38 +53,38 @@ class TestPddlActionDao(unittest.TestCase):
         self.assertTrue(result)
 
     def test_pddl_dao_action_save_false_incorrect_condition_types(self):
-        self.pddl_action_dto.get_conditions_list(
+        self.pddl_action_dto.get_pddl_conditions_list(
         )[0].get_pddl_objects_list().reverse()
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_action_save_false_incorrect_condition_len(self):
-        self.pddl_action_dto.get_conditions_list(
+        self.pddl_action_dto.get_pddl_conditions_list(
         )[0].set_pddl_objects_list([])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_action_save_false_durative_condition_no_time(self):
-        self.pddl_action_dto.get_conditions_list()[0].set_time(None)
-        self.pddl_action_dto.set_effects_list([])
+        self.pddl_action_dto.get_pddl_conditions_list()[0].set_time(None)
+        self.pddl_action_dto.set_pddl_effects_list([])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_action_save_false_durative_effect_no_time(self):
-        self.pddl_action_dto.get_effects_list()[1].set_time(None)
-        self.pddl_action_dto.set_conditions_list([])
+        self.pddl_action_dto.get_pddl_effects_list()[1].set_time(None)
+        self.pddl_action_dto.set_pddl_conditions_list([])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_action_save_false_no_durative_condition_time(self):
         self.pddl_action_dto.set_durative(False)
-        self.pddl_action_dto.set_effects_list([])
+        self.pddl_action_dto.set_pddl_effects_list([])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
     def test_pddl_dao_action_save_false_no_durative_effect_time(self):
         self.pddl_action_dto.set_durative(False)
-        self.pddl_action_dto.set_conditions_list([])
+        self.pddl_action_dto.set_pddl_conditions_list([])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
@@ -92,7 +92,7 @@ class TestPddlActionDao(unittest.TestCase):
         r = PddlObjectDto(self._robot_type, "a")
         s = PddlObjectDto(self._wp_type, "s")
         d = PddlObjectDto(self._wp_type, "d")
-        self.pddl_action_dto.set_parameters_list([r, s, d])
+        self.pddl_action_dto.set_pddl_parameters_list([r, s, d])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
@@ -100,7 +100,7 @@ class TestPddlActionDao(unittest.TestCase):
         r = PddlObjectDto(self._robot_type, "r")
         s = PddlObjectDto(self._wp_type, "s")
         d = PddlObjectDto(self._wp_type, "a")
-        self.pddl_action_dto.set_parameters_list([r, s, d])
+        self.pddl_action_dto.set_pddl_parameters_list([r, s, d])
         result = self.pddl_action_dao._save(self.pddl_action_dto)
         self.assertFalse(result)
 
@@ -137,7 +137,7 @@ class TestPddlActionDao(unittest.TestCase):
 
     def test_pddl_dao_action_update_true(self):
         self.pddl_action_dao._save(self.pddl_action_dto)
-        self.pddl_action_dto.get_effects_list()[0].set_time(
+        self.pddl_action_dto.get_pddl_effects_list()[0].set_time(
             PddlConditionEffectDto.AT_END)
         result = self.pddl_action_dao._update(self.pddl_action_dto)
         self.assertTrue(result)

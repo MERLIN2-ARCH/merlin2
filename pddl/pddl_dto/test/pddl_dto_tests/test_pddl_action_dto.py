@@ -72,7 +72,7 @@ class TestPddlActionDto(unittest.TestCase):
 
     def test_pddl_dto_action_str_durative_no_effects(self):
         self.maxDiff = None
-        self.pddl_action_dto.set_effects_list([])
+        self.pddl_action_dto.set_pddl_effects_list([])
         self.assertEqual("""\
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
@@ -87,7 +87,7 @@ class TestPddlActionDto(unittest.TestCase):
 
     def test_pddl_dto_action_str_durative_no_conditions(self):
         self.maxDiff = None
-        self.pddl_action_dto.set_conditions_list([])
+        self.pddl_action_dto.set_pddl_conditions_list([])
         self.assertEqual("""\
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
@@ -103,9 +103,9 @@ class TestPddlActionDto(unittest.TestCase):
 
     def test_pddl_dto_action_str_durative_no_parameters(self):
         self.maxDiff = None
-        self.pddl_action_dto.set_conditions_list([])
-        self.pddl_action_dto.set_effects_list([])
-        self.pddl_action_dto.set_parameters_list([])
+        self.pddl_action_dto.set_pddl_conditions_list([])
+        self.pddl_action_dto.set_pddl_effects_list([])
+        self.pddl_action_dto.set_pddl_parameters_list([])
         self.assertEqual("""\
 (:durative-action navigation
 \t:parameters ()
@@ -121,18 +121,18 @@ class TestPddlActionDto(unittest.TestCase):
         self.assertEqual("navigation", self.pddl_action_dto.get_action_name())
 
     def test_pddl_dto_action_get_prameters_list(self):
-        params_list = self.pddl_action_dto.get_parameters_list()
+        params_list = self.pddl_action_dto.get_pddl_parameters_list()
         self.assertEqual("r - robot", str(params_list[0]))
         self.assertEqual("s - wp", str(params_list[1]))
         self.assertEqual("d - wp", str(params_list[2]))
 
-    def test_pddl_dto_action_get_conditions_list(self):
-        conditions_list = self.pddl_action_dto.get_conditions_list()
+    def test_pddl_dto_action_get_pddl_conditions_list(self):
+        conditions_list = self.pddl_action_dto.get_pddl_conditions_list()
         self.assertEqual("(at start (robot_at ?r ?s))",
                          str(conditions_list[0]))
 
-    def test_pddl_dto_action_get_effects_list(self):
-        effects_list = self.pddl_action_dto.get_effects_list()
+    def test_pddl_dto_action_get_pddl_effects_list(self):
+        effects_list = self.pddl_action_dto.get_pddl_effects_list()
         self.assertEqual("(at start (not (robot_at ?r ?s)))",
                          str(effects_list[0]))
         self.assertEqual("(at end (robot_at ?r ?d))",
