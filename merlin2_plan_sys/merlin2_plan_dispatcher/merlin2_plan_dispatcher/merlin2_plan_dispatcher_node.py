@@ -8,8 +8,9 @@ from merlin2_plan_sys_interfaces.action import (
     DispatchAction
 )
 import rclpy
-from threaded_node.node import Node
 from rclpy.action import ActionServer, CancelResponse
+
+from threaded_node.node import Node
 
 
 class Merlin2PlanDispatcherNode(Node):

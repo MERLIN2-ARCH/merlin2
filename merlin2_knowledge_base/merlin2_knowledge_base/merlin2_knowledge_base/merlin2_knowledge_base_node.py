@@ -2,7 +2,6 @@
 """ Merlin2 Knowledge Base Node"""
 
 import rclpy
-from rclpy.node import Node
 
 from merlin2_knowledge_base_interfaces.msg import UpdateKnowledge
 
@@ -19,6 +18,8 @@ from merlin2_knowledge_base_interfaces.srv import (
     GetPddlProposition
 )
 from std_srvs.srv import Empty
+
+from threaded_node.node import Node
 
 from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
 from merlin2_knowledge_base.merlin2_knowledge_base_parser.msg_dto_parser import MsgDtoParser
@@ -508,7 +509,7 @@ def main(args=None):
 
     node = Merlin2KnowledgeBaseNode()
 
-    rclpy.spin(node)
+    node.join_spin()
 
     node.destroy_node()
 

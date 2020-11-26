@@ -2,12 +2,13 @@
 """ Merlin2 Planner Node """
 
 import rclpy
-from rclpy.node import Node
 
 from merlin2_plan_sys_interfaces.srv import GeneratePlan
 
 from merlin2_planner.merlin2_planner_factory.merlin2_planner_factory import Merlin2PlannerFactory
 from merlin2_planner.merlin2_planner_factory.merlin2_planners import Merlin2Planners
+
+from threaded_node.node import Node
 
 
 class Merlin2PlannerNode(Node):
@@ -62,7 +63,7 @@ def main(args=None):
 
     node = Merlin2PlannerNode()
 
-    rclpy.spin(node)
+    node.join_spin()
 
     node.destroy_node()
 

@@ -7,17 +7,17 @@ import threading
 from typing import List
 
 import rclpy
-from rclpy.node import Node
-from action_msgs.msg import GoalStatus
-
 from rclpy.action import ActionServer, CancelResponse, ActionClient
-from rclpy.executors import MultiThreadedExecutor
+
+from action_msgs.msg import GoalStatus
 
 from merlin2_plan_sys_interfaces.srv import (
     GeneratePddl, GeneratePlan
 )
 from merlin2_plan_sys_interfaces.msg import PlanAction
 from merlin2_plan_sys_interfaces.action import DispatchPlan, Execute
+
+from threaded_node.node import Node
 
 
 class Merlin2ExecutorNode(Node):
@@ -212,9 +212,7 @@ def main(args=None):
 
     node = Merlin2ExecutorNode()
 
-    executor = MultiThreadedExecutor()
-
-    rclpy.spin(node, executor=executor)
+    node.join_spin()
 
     node.destroy()
 

@@ -2,13 +2,14 @@
 """ Merlin2 Pddl Generator Node """
 
 import rclpy
-from rclpy.node import Node
 
 from merlin2_plan_sys_interfaces.srv import GeneratePddl
 from merlin2_pddl_generator.merlin2_pddl_generator_factory.merlin2_pddl_generator_factory import(
     Merlin2PddlGeneratorFactory
 )
 from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
+
+from threaded_node.node import Node
 
 
 class Merlin2PddlGeneratorNode(Node):
@@ -69,7 +70,7 @@ def main(args=None):
 
     node = Merlin2PddlGeneratorNode()
 
-    rclpy.spin(node)
+    node.join_spin()
 
     node.destroy_node()
 
