@@ -42,9 +42,12 @@ class Merlin2PlanDispatcherNode(Node):
         mongoengine_uri = self.get_parameter(
             mongoengine_uri_param_name).get_parameter_value().string_value
 
-        # creating pddl propostion dao
-        self.pddl_proposition_dao = PddlDaoFactoryFactory().create_pddl_dao_factory(
-            pddl_dao_family, uri=mongoengine_uri, node=self).create_pddl_proposition_dao()
+        # creating pddl daos
+        pddl_dao_factory = PddlDaoFactoryFactory().create_pddl_dao_factory(
+            pddl_dao_family, uri=mongoengine_uri, node=self)
+        self.pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
+        self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
+        self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
 
         # action vars
         self._goal_queue = collections.deque()
