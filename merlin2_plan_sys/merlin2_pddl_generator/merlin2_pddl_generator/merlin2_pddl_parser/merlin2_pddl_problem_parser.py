@@ -2,8 +2,10 @@
 """ Pddl Problem Generator """
 
 from typing import List
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
+from pddl_dto import (
+    PddlObjectDto,
+    PddlPropositionDto
+)
 
 
 class Merlin2PddlProblemParser:

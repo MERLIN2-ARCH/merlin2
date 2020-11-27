@@ -4,10 +4,10 @@
 import rclpy
 
 from merlin2_plan_sys_interfaces.srv import GeneratePddl
-from merlin2_pddl_generator.merlin2_pddl_generator_factory.merlin2_pddl_generator_factory import(
+from merlin2_pddl_generator.merlin2_pddl_generator_factory import(
     Merlin2PddlGeneratorFactory
 )
-from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
+from pddl_dao.pddl_dao_factory import PddlDaoFamilies
 
 from threaded_node.node import Node
 

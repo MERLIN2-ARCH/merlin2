@@ -1,17 +1,23 @@
 
 import unittest
 
-from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import(
+from merlin2_pddl_generator.merlin2_pddl_generators import(
     MongoengineMerlin2PddlGenerator
 )
 
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
-from pddl_dto.pddl_action_dto import PddlActionDto
-from pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
+from pddl_dto import (
+    PddlTypeDto,
+    PddlObjectDto,
+    PddlPredicateDto,
+    PddlPropositionDto,
+    PddlConditionEffectDto,
+    PddlActionDto
+)
+
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 
 
 class TestMerlin2PddlProblemParser(unittest.TestCase):
@@ -19,7 +25,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
     def setUp(self):
         pddl_dao_factory_factory = PddlDaoFactoryFactory()
         pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            pddl_dao_factory_factory.pddl_dao_families.MONGOENGINE)
+            PddlDaoFamilies.MONGOENGINE)
 
         pddl_dao_factory.set_uri("mongodb://localhost:27017/merlin2_tests")
         self.pddl_generator = MongoengineMerlin2PddlGenerator(

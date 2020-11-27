@@ -3,14 +3,12 @@
 
 from typing import List
 
-from merlin2_pddl_generator.merlin2_pddl_parser.merlin2_pddl_domain_parser import (
-    Merlin2PddlDomainParser
-)
-from merlin2_pddl_generator.merlin2_pddl_parser.merlin2_pddl_problem_parser import (
+from merlin2_pddl_generator.merlin2_pddl_parser import (
+    Merlin2PddlDomainParser,
     Merlin2PddlProblemParser
 )
 
-from pddl_dto.pddl_dto import PddlDto
+from pddl_dto import PddlDto
 from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 

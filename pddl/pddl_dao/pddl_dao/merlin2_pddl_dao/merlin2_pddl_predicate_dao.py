@@ -5,8 +5,8 @@ from typing import List
 import asyncio
 from rclpy.node import Node
 
-from pddl_dao.pddl_dao_interface.pddl_predicate_dao import PddlPredicateDao
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
+from pddl_dao.pddl_dao_interface import PddlPredicateDao
+from pddl_dto import PddlPredicateDto
 
 from merlin2_knowledge_base_interfaces.srv import (
     UpdatePddlPredicate,
@@ -15,8 +15,10 @@ from merlin2_knowledge_base_interfaces.srv import (
 from merlin2_knowledge_base_interfaces.msg import UpdateKnowledge
 from std_srvs.srv import Empty
 
-from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
-from merlin2_knowledge_base.merlin2_knowledge_base_parser.msg_dto_parser import MsgDtoParser
+from merlin2_knowledge_base.merlin2_knowledge_base_parser import (
+    DtoMsgParser,
+    MsgDtoParser
+)
 
 
 class Merlin2PddlPredicateDao(PddlPredicateDao):

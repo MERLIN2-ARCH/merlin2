@@ -2,15 +2,22 @@
 """ DAO Example Node """
 
 import rclpy
-from threaded_node.node import Node
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
-from pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dto.pddl_action_dto import PddlActionDto
-from pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
+
+from pddl_dto import (
+    PddlTypeDto,
+    PddlObjectDto,
+    PddlPredicateDto,
+    PddlPropositionDto,
+    PddlConditionEffectDto,
+    PddlActionDto
+)
+
+from threaded_node.node import Node
 
 
 class DaoExampleNode(Node):
@@ -23,7 +30,7 @@ class DaoExampleNode(Node):
         factory_factory = PddlDaoFactoryFactory()
 
         uri = "mongodb://localhost:27017/merlin2"
-        pddl_dao_family = factory_factory.pddl_dao_families.MONGOENGINE
+        pddl_dao_family = PddlDaoFamilies.MONGOENGINE
 
         pddl_factory = factory_factory.create_pddl_dao_factory(pddl_dao_family,
                                                                uri=uri,

@@ -1,13 +1,15 @@
 
 import unittest
-from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
+from merlin2_knowledge_base.merlin2_knowledge_base_parser import DtoMsgParser
 
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
-from pddl_dto.pddl_action_dto import PddlActionDto
-from pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
+from pddl_dto import (
+    PddlTypeDto,
+    PddlObjectDto,
+    PddlPredicateDto,
+    PddlPropositionDto,
+    PddlConditionEffectDto,
+    PddlActionDto
+)
 
 
 class TestDtoMsgParser(unittest.TestCase):

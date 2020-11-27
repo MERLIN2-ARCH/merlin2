@@ -1,11 +1,14 @@
 
 """ Mongoengine Merlin2 Pddl Generator """
 
-from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_pddl_generator import (
+from merlin2_pddl_generator.merlin2_pddl_generators import (
     Merlin2PddlGenerator
 )
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 
 
 class MongoengineMerlin2PddlGenerator(Merlin2PddlGenerator):
@@ -15,7 +18,7 @@ class MongoengineMerlin2PddlGenerator(Merlin2PddlGenerator):
 
         factory_factory = PddlDaoFactoryFactory()
         mongoengine_factory = factory_factory.create_pddl_dao_factory(
-            factory_factory.pddl_dao_families.MONGOENGINE)
+            PddlDaoFamilies.MONGOENGINE)
 
         mongoengine_factory.set_uri(uri)
 

@@ -2,8 +2,10 @@
 """ Merlin2 Planner Factory """
 
 from merlin2_planner.merlin2_planner_factory.merlin2_planners import Merlin2Planners
-from merlin2_planner.merlin2_planners.popf_merlin2_planner import PopfMerlin2Planner
-from merlin2_planner.merlin2_planners.merlin2_planner import Merlin2Planner
+from merlin2_planner.merlin2_planners import (
+    PopfMerlin2Planner,
+    Merlin2Planner
+)
 
 
 class Merlin2PlannerFactory:

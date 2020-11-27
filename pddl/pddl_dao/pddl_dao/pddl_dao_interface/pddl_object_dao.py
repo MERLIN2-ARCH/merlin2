@@ -2,8 +2,8 @@
 """ Pddl Object Dao Interface """
 
 from abc import abstractmethod
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
+from pddl_dto import PddlObjectDto
+from pddl_dao.pddl_dao_interface import PddlDao
 
 
 class PddlObjectDao(PddlDao):

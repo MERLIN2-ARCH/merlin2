@@ -1,6 +1,9 @@
 
 from test_pddl_dao_basic.test_pddl_action_dao import TestPddlActionDao
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 
 
 class TestMongoenginePddlActionDao(TestPddlActionDao):
@@ -10,7 +13,7 @@ class TestMongoenginePddlActionDao(TestPddlActionDao):
 
         pddl_dao_factory_factory = PddlDaoFactoryFactory()
         pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            pddl_dao_factory_factory.pddl_dao_families.MONGOENGINE, uri="mongodb://localhost:27017/merlin2_tests")
+            PddlDaoFamilies.MONGOENGINE, uri="mongodb://localhost:27017/merlin2_tests")
 
         self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
         self.pdd_dao_predicate = pddl_dao_factory.create_pddl_predicate_dao()

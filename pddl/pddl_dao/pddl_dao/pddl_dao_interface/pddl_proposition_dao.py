@@ -3,8 +3,8 @@
 
 from abc import abstractmethod
 from typing import List
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
-from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
+from pddl_dto import PddlPropositionDto
+from pddl_dao.pddl_dao_interface import PddlDao
 
 
 class PddlPropositionDao(PddlDao):

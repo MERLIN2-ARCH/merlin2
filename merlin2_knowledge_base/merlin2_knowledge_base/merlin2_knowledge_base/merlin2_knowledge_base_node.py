@@ -21,10 +21,12 @@ from std_srvs.srv import Empty
 
 from threaded_node.node import Node
 
-from merlin2_knowledge_base.merlin2_knowledge_base_parser.dto_msg_parser import DtoMsgParser
-from merlin2_knowledge_base.merlin2_knowledge_base_parser.msg_dto_parser import MsgDtoParser
+from merlin2_knowledge_base.merlin2_knowledge_base_parser import (
+    DtoMsgParser,
+    MsgDtoParser
+)
 
-from merlin2_knowledge_base.merlin2_knowledge_base.merlin2_konwledge_base import (
+from merlin2_knowledge_base.merlin2_knowledge_base import (
     Merlin2KnowledgeBase
 )
 

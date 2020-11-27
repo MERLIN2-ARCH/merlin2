@@ -3,11 +3,14 @@
 
 from rclpy.node import Node
 
-from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_pddl_generator import (
+from merlin2_pddl_generator.merlin2_pddl_generators import (
     Merlin2PddlGenerator
 )
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 
 
 class Merlin2Merlin2PddlGenerator(Merlin2PddlGenerator):
@@ -17,6 +20,6 @@ class Merlin2Merlin2PddlGenerator(Merlin2PddlGenerator):
 
         factory_factory = PddlDaoFactoryFactory()
         merlin2_factory = factory_factory.create_pddl_dao_factory(
-            factory_factory.pddl_dao_families.MERLIN2, node=node)
+            PddlDaoFamilies.MERLIN2, node=node)
 
         super().__init__(merlin2_factory)

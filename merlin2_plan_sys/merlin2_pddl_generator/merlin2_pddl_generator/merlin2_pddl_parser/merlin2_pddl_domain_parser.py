@@ -2,9 +2,12 @@
 """ Pddl Domain Generator """
 
 from typing import List
-from pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
-from pddl_dto.pddl_action_dto import PddlActionDto
+
+from pddl_dto import (
+    PddlTypeDto,
+    PddlPredicateDto,
+    PddlActionDto
+)
 
 
 class Merlin2PddlDomainParser:

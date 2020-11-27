@@ -2,8 +2,8 @@
 """ Pddl Predicate Dao Interface """
 
 from abc import abstractmethod
-from pddl_dto.pddl_predicate_dto import PddlPredicateDto
-from pddl_dao.pddl_dao_interface.pddl_dao import PddlDao
+from pddl_dto import PddlPredicateDto
+from pddl_dao.pddl_dao_interface import PddlDao
 
 
 class PddlPredicateDao(PddlDao):

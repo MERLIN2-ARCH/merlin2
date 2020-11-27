@@ -1,6 +1,9 @@
 
 from test_pddl_dao_basic.test_pddl_action_dao import TestPddlActionDao
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 from threaded_node.node import Node
 import rclpy
 
@@ -14,7 +17,7 @@ class TestMerlin2PddlActionDao(TestPddlActionDao):
         self.node = Node("test_merlin2_pddl_type_dao_node")
         pddl_dao_factory_factory = PddlDaoFactoryFactory()
         pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            pddl_dao_factory_factory.pddl_dao_families.MERLIN2, node=self.node)
+            PddlDaoFamilies.MERLIN2, node=self.node)
 
         self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
         self.pddl_predicate_dao = pddl_dao_factory.create_pddl_predicate_dao()

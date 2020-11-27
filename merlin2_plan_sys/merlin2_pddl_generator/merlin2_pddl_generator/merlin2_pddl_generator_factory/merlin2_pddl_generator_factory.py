@@ -2,16 +2,13 @@
 """ Merlin2 Pddl Generator Factory """
 
 from typing import Type
-from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_pddl_generator import (
-    Merlin2PddlGenerator
-)
-from merlin2_pddl_generator.merlin2_pddl_generators.mongoengine_merlin2_pddl_generator import (
-    MongoengineMerlin2PddlGenerator
-)
-from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_merlin2_pddl_generator import (
+from merlin2_pddl_generator.merlin2_pddl_generators import (
+    Merlin2PddlGenerator,
+    MongoengineMerlin2PddlGenerator,
     Merlin2Merlin2PddlGenerator
 )
-from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
+
+from pddl_dao.pddl_dao_factory import PddlDaoFamilies
 
 
 class Merlin2PddlGeneratorFactory:

@@ -3,7 +3,7 @@
 
 from abc import ABC, abstractmethod
 from typing import List
-from pddl_dto.pddl_dto import PddlDto
+from pddl_dto import PddlDto
 
 
 class PddlDao(ABC):

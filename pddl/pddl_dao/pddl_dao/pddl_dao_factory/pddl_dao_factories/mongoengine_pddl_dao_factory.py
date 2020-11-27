@@ -1,19 +1,11 @@
 
 """ Mongoengine Pddl Dao Facory """
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_type_dao import (
-    MongoenginePddlTypeDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_object_dao import (
-    MongoenginePddlObjectDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import (
-    MongoenginePddlPredicateDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_proposition_dao import (
-    MongoenginePddlPropositionDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_action_dao import (
+from pddl_dao.mongoengine_pddl_dao import (
+    MongoenginePddlTypeDao,
+    MongoenginePddlObjectDao,
+    MongoenginePddlPredicateDao,
+    MongoenginePddlPropositionDao,
     MongoenginePddlActionDao
 )
 

@@ -2,13 +2,12 @@
 """ Pddl Dao Factory of Factories """
 
 from pddl_dao.pddl_dao_factory.pddl_dao_families import PddlDaoFamilies
-from pddl_dao.pddl_dao_factory.pddl_dao_factories.mongoengine_pddl_dao_factory import (
+
+from pddl_dao.pddl_dao_factory.pddl_dao_factories import (
+    PddlDaoFactory,
+    Merlin2PddlDaoFactory,
     MongoenginePddlDaoFactory
 )
-from pddl_dao.pddl_dao_factory.pddl_dao_factories.merlin2_pddl_dao_factory import (
-    Merlin2PddlDaoFactory
-)
-from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 
 class PddlDaoFactoryFactory:
