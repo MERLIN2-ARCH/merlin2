@@ -3,16 +3,19 @@
 
 from typing import List
 
-from pddl_dao.pddl_dao_interface.pddl_proposition_dao import PddlPropositionDao
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
+from pddl_dao.pddl_dao_interface import PddlPropositionDao
+from pddl_dao.mongoengine_pddl_dao import (
+    MongoenginePddlDao,
+    MongoenginePddlPredicateDao,
+    MongoenginePddlObjectDao
+)
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlPropositionModel
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlPredicateModel
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import (
+    PddlPropositionModel,
+    PddlPredicateModel
+)
 
-from pddl_dto.pddl_proposition_dto import PddlPropositionDto
-
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import MongoenginePddlPredicateDao
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_object_dao import MongoenginePddlObjectDao
+from pddl_dto import PddlPropositionDto
 
 
 class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):

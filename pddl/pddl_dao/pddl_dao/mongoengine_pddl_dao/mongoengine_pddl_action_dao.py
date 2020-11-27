@@ -4,26 +4,25 @@
 
 from typing import List
 
-from pddl_dao.pddl_dao_interface.pddl_action_dao import PddlActionDao
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
-
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlActionModel
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlConditionEffectModel
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlParameterModel
-
-from pddl_dto.pddl_type_dto import PddlTypeDto
-from pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_action_dto import PddlActionDto
-
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_proposition_dao import(
-    MongoenginePddlPropositionDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_type_dao import(
-    MongoenginePddlTypeDao
-)
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_predicate_dao import (
+from pddl_dao.pddl_dao_interface import PddlActionDao
+from pddl_dao.mongoengine_pddl_dao import(
+    MongoenginePddlDao,
+    MongoenginePddlTypeDao,
     MongoenginePddlPredicateDao
+)
+
+
+from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import (
+    PddlActionModel,
+    PddlConditionEffectModel,
+    PddlParameterModel
+)
+
+from pddl_dto import (
+    PddlTypeDto,
+    PddlConditionEffectDto,
+    PddlActionDto,
+    PddlObjectDto
 )
 
 

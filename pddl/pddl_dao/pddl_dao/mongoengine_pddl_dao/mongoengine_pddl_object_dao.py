@@ -3,15 +3,19 @@
 
 from typing import List
 
-from pddl_dao.pddl_dao_interface.pddl_object_dao import PddlObjectDao
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_dao import MongoenginePddlDao
+from pddl_dao.pddl_dao_interface import PddlObjectDao
+from pddl_dao.mongoengine_pddl_dao import (
+    MongoenginePddlDao,
+    MongoenginePddlTypeDao
+)
 
 from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_models import PddlObjectModel
 
-from pddl_dto.pddl_object_dto import PddlObjectDto
-from pddl_dto.pddl_type_dto import PddlTypeDto
 
-from pddl_dao.mongoengine_pddl_dao.mongoengine_pddl_type_dao import MongoenginePddlTypeDao
+from pddl_dto import (
+    PddlObjectDto,
+    PddlTypeDto
+)
 
 
 class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):

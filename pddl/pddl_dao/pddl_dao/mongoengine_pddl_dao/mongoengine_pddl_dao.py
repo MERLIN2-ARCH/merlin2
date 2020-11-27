@@ -4,7 +4,7 @@
 from abc import ABC, abstractmethod
 from mongoengine import Document
 from pddl_dao.mongoengine_pddl_dao.mongoengine_connector import MongoengineConnector
-from pddl_dto.pddl_dto import PddlDto
+from pddl_dto import PddlDto
 
 
 class MongoenginePddlDao(ABC):
