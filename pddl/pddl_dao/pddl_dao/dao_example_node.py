@@ -4,7 +4,7 @@
 import rclpy
 from threaded_node.node import Node
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
 from pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dto.pddl_predicate_dto import PddlPredicateDto

@@ -7,7 +7,7 @@ from merlin2_pddl_generator.merlin2_pddl_generators.merlin2_pddl_generator impor
     Merlin2PddlGenerator
 )
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
 
 
 class Merlin2Merlin2PddlGenerator(Merlin2PddlGenerator):

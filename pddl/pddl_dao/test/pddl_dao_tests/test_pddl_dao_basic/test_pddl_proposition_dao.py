@@ -1,5 +1,5 @@
 import unittest
-from pddl_dao.pddl_dao_factory.pddl_dao_factory_facory import PddlDaoFactoryFactory
+from pddl_dao.pddl_dao_factory.pddl_dao_factory_factory import PddlDaoFactoryFactory
 from pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dto.pddl_predicate_dto import PddlPredicateDto
 from pddl_dto.pddl_proposition_dto import PddlPropositionDto
@@ -9,9 +9,9 @@ from pddl_dto.pddl_object_dto import PddlObjectDto
 class TestPddlPropositionDao(unittest.TestCase):
 
     def setUp(self):
-        pddl_dao_factory_facory = PddlDaoFactoryFactory()
-        pddl_dao_factory = pddl_dao_factory_facory.create_pddl_dao_factory(
-            pddl_dao_factory_facory.pddl_dao_families.MONGOENGINE)
+        pddl_dao_factory_factory = PddlDaoFactoryFactory()
+        pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
+            pddl_dao_factory_factory.pddl_dao_families.MONGOENGINE)
 
         self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
         self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
