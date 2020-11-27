@@ -1,4 +1,5 @@
 
+from pddl_dto.pddl_dto import PddlDto
 from pddl_dto.pddl_type_dto import PddlTypeDto
 from pddl_dto.pddl_object_dto import PddlObjectDto
 from pddl_dto.pddl_predicate_dto import PddlPredicateDto
