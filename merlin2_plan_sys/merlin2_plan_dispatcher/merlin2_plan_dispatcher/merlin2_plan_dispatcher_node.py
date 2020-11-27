@@ -3,12 +3,19 @@
 
 import threading
 import collections
+
 from merlin2_plan_sys_interfaces.action import (
     DispatchPlan,
     DispatchAction
 )
+
 import rclpy
 from rclpy.action import ActionServer, CancelResponse
+
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
+)
 
 from threaded_node.node import Node
 
@@ -20,6 +27,26 @@ class Merlin2PlanDispatcherNode(Node):
 
         super().__init__("merlin2_plan_dispatcher_mode")
 
+        # param names
+        pddl_dao_family_param_name = "pddl_dao_family"
+        mongoengine_uri_param_name = "mongoengine_uri"
+
+        # declaring params
+        self.declare_parameter(pddl_dao_family_param_name,
+                               PddlDaoFamilies.MONGOENGINE)
+        self.declare_parameter(mongoengine_uri_param_name, None)
+
+        # getting params
+        pddl_dao_family = self.get_parameter(
+            pddl_dao_family_param_name).get_parameter_value().integer_value
+        mongoengine_uri = self.get_parameter(
+            mongoengine_uri_param_name).get_parameter_value().string_value
+
+        # creating pddl propostion dao
+        self.pddl_proposition_dao = PddlDaoFactoryFactory().create_pddl_dao_factory(
+            pddl_dao_family, uri=mongoengine_uri, node=self).create_pddl_proposition_dao()
+
+        # action vars
         self._goal_queue = collections.deque()
         self._goal_queue_lock = threading.Lock()
         self._current_goal = None
