@@ -59,9 +59,6 @@ class Merlin2PddlDaoFactory(PddlDaoFactory):
     def create_pddl_action_dao(self) -> Merlin2PddlActionDao:
         """ create a merlin2 pddl dao action object
 
-        Args:
-            uri (str, optional): Mongo uri. Defaults to None.
-
         Returns:
             Merlin2PddlActionDao: merlin2 dao for pddl action
         """
@@ -71,9 +68,6 @@ class Merlin2PddlDaoFactory(PddlDaoFactory):
     def create_pddl_object_dao(self) -> Merlin2PddlObjectDao:
         """ create a merlin2 pddl dao object object
 
-        Args:
-            uri (str, optional): Mongo uri. Defaults to None.
-
         Returns:
             Merlin2PddlObjectDao: merlin2 dao for pddl object
         """
@@ -82,9 +76,6 @@ class Merlin2PddlDaoFactory(PddlDaoFactory):
 
     def create_pddl_proposition_dao(self) -> Merlin2PddlPropositionDao:
         """ create a merlin2 pddl dao proposition object
-
-        Args:
-            uri (str, optional): Mongo uri. Defaults to None.
 
         Returns:
             Merlin2PddlPropositionDao: merlin2 dao for pddl proposition
