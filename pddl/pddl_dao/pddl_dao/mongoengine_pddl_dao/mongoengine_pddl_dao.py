@@ -2,19 +2,24 @@
 """ Mongoengine Pddl Dao Interface """
 
 from abc import ABC, abstractmethod
-from mongoengine import Document, disconnect, get_connection
-from pddl_dao.mongoengine_pddl_dao.mongoengine_connector import MongoengineConnector
+from mongoengine import Document, disconnect, connect
 from pddl_dto import PddlDto
 
 
 class MongoenginePddlDao(ABC):
     """ Mongoengine Pddl Dao Abstract Class """
 
-    def __init__(self, uri: str):
+    def __init__(self, uri: str = "mongodb://localhost:27017/merlin2"):
+
+        self.set_uri(uri)
+        self.connect()
+
+    def connect(self):
+        """ connect to current uri
+        """
 
         disconnect()
-        self.set_uri(uri)
-        self.connector.connect()
+        connect(host=self._uri)
 
     def get_uri(self) -> str:
         """ uri getter
@@ -33,11 +38,6 @@ class MongoenginePddlDao(ABC):
         """
 
         self._uri = uri
-
-        if self._uri:
-            self.connector = MongoengineConnector(uri=self._uri)
-        else:
-            self.connector = MongoengineConnector()
 
     @abstractmethod
     def _get_model(self, pddl_dto: PddlDto) -> Document:
