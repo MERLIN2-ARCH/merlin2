@@ -50,9 +50,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             PddlConditionEffectDto: PddlConditionEffectDto
         """
 
-        pddl_predicate_dao = MongoenginePddlPredicateDao(self.get_uri())
-
-        pddl_dto_precicate = pddl_predicate_dao.get(
+        pddl_dto_precicate = self._me_pddl_predicate_dao.get(
             pddl_condition_effect_model.pddl_predicate.predicate_name)
 
         pddl_dto_condition_effect = PddlConditionEffectDto(
