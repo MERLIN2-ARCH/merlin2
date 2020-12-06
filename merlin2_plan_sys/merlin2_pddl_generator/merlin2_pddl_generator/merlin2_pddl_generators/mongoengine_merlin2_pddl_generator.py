@@ -18,8 +18,6 @@ class MongoengineMerlin2PddlGenerator(Merlin2PddlGenerator):
 
         factory_factory = PddlDaoFactoryFactory()
         mongoengine_factory = factory_factory.create_pddl_dao_factory(
-            PddlDaoFamilies.MONGOENGINE)
-
-        mongoengine_factory.set_uri(uri)
+            PddlDaoFamilies.MONGOENGINE, uri=uri)
 
         super().__init__(mongoengine_factory)
