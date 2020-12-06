@@ -1,7 +1,7 @@
 
 """ Mongoengine Connector """
 
-from mongoengine import connect, disconnect
+from mongoengine import connect
 
 
 class MongoengineConnector:
@@ -18,7 +18,6 @@ class MongoengineConnector:
             bool: succeed
         """
 
-        disconnect()
         self.connection = connect(host=self._uri)
         return True
 
@@ -29,5 +28,6 @@ class MongoengineConnector:
             bool: succeed
         """
 
-        self.connection.close()
+        if self.connection:
+            self.connection.close()
         return True

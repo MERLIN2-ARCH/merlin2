@@ -2,7 +2,7 @@
 """ Mongoengine Pddl Dao Interface """
 
 from abc import ABC, abstractmethod
-from mongoengine import Document
+from mongoengine import Document, disconnect, get_connection
 from pddl_dao.mongoengine_pddl_dao.mongoengine_connector import MongoengineConnector
 from pddl_dto import PddlDto
 
@@ -12,6 +12,7 @@ class MongoenginePddlDao(ABC):
 
     def __init__(self, uri: str):
 
+        disconnect()
         self.set_uri(uri)
         self.connector.connect()
 
