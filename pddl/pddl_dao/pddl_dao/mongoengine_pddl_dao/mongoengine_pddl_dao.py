@@ -10,7 +10,6 @@ class MongoenginePddlDao(ABC):
     """ Mongoengine Pddl Dao Abstract Class """
 
     def __init__(self, uri: str = "mongodb://localhost:27017/merlin2"):
-
         self.set_uri(uri)
 
     def connect(self):
