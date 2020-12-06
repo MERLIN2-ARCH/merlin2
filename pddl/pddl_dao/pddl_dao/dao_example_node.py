@@ -97,7 +97,7 @@ def main(args=None):
 
     node = DaoExampleNode()
 
-    node.join_spin()
+    # node.join_spin()
 
     node.destroy_node()
 
