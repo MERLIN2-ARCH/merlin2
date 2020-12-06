@@ -1,6 +1,8 @@
 
 """ Mongoengine Pddl Dao Facory """
 
+from mongoengine import disconnect, connect
+
 from pddl_dao.mongoengine_pddl_dao import (
     MongoenginePddlTypeDao,
     MongoenginePddlObjectDao,
@@ -17,6 +19,14 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
 
     def __init__(self, uri: str = "mongodb://localhost:27017/merlin2"):
         self.set_uri(uri)
+        self.connect()
+
+    def connect(self):
+        """ connect to current uri
+        """
+
+        disconnect()
+        connect(host=self._uri)
 
     def get_uri(self) -> str:
         """ uri getter
@@ -43,7 +53,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlTypeDao: mongoengine dao for pddl type
         """
 
-        return MongoenginePddlTypeDao(uri=self._uri)
+        return MongoenginePddlTypeDao(uri=self._uri, connect=False)
 
     def create_pddl_predicate_dao(self) -> MongoenginePddlPredicateDao:
         """ create a mongoengine pddl dao predicate object
@@ -52,7 +62,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlPredicateDao: mongoengine dao for pddl predicate
         """
 
-        return MongoenginePddlPredicateDao(uri=self._uri)
+        return MongoenginePddlPredicateDao(uri=self._uri, connect=False)
 
     def create_pddl_action_dao(self) -> MongoenginePddlActionDao:
         """ create a mongoengine pddl dao action object
@@ -61,7 +71,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlActionDao: mongoengine dao for pddl action
         """
 
-        return MongoenginePddlActionDao(uri=self._uri)
+        return MongoenginePddlActionDao(uri=self._uri, connect=False)
 
     def create_pddl_object_dao(self) -> MongoenginePddlObjectDao:
         """ create a mongoengine pddl dao object object
@@ -73,7 +83,7 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlObjectDao: mongoengine dao for pddl object
         """
 
-        return MongoenginePddlObjectDao(uri=self._uri)
+        return MongoenginePddlObjectDao(uri=self._uri, connect=False)
 
     def create_pddl_proposition_dao(self) -> MongoenginePddlPropositionDao:
         """ create a mongoengine pddl dao proposition object
@@ -82,4 +92,4 @@ class MongoenginePddlDaoFactory(PddlDaoFactory):
             MongoenginePddlPropositionDao: mongoengine dao for pddl proposition
         """
 
-        return MongoenginePddlPropositionDao(uri=self._uri)
+        return MongoenginePddlPropositionDao(uri=self._uri, connect=False)
