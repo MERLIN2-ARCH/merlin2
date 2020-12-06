@@ -20,12 +20,15 @@ from pddl_dto import (
 class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
     """ Mongoengine Pddl Predicate Dao Class """
 
-    def __init__(self, uri: str = None):
+    def __init__(self, uri: str = None, connect: bool = True):
 
         PddlPredicateDao.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
 
-        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri)
+        if connect:
+            self.connect()
+
+        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri, connect=False)
 
     def _model_to_dto(self,
                       pddl_predicate_model: PddlPredicateModel) -> PddlPredicateDto:

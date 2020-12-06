@@ -21,14 +21,17 @@ from pddl_dto import PddlPropositionDto
 class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
     """ Mongoengine Pddl Proposition Dao Class """
 
-    def __init__(self, uri: str = None):
+    def __init__(self, uri: str = None, connect: bool = True):
 
         PddlPropositionDao.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
 
-        self._me_pddl_object_dao = MongoenginePddlObjectDao(uri)
+        if connect:
+            self.connect()
+
+        self._me_pddl_object_dao = MongoenginePddlObjectDao(uri, connect=False)
         self._me_pddl_predicate_dao = MongoenginePddlPredicateDao(
-            uri)
+            uri, connect=False)
 
     def _check_pddl_proposition_model(self,
                                       pddl_proposition_model: PddlPropositionModel) -> bool:

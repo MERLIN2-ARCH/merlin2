@@ -21,12 +21,15 @@ from pddl_dto import (
 class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
     """ Mongoengine Pddl Object Dao Class """
 
-    def __init__(self, uri: str = None):
+    def __init__(self, uri: str = None, connect: bool = True):
 
         PddlObjectDao.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
 
-        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri)
+        if connect:
+            self.connect()
+
+        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri, connect=False)
 
     def _model_to_dto(self, pddl_object_model: PddlObjectModel) -> PddlObjectDto:
         """ convert a Mongoengine pddl object document into a PddlObjectDto

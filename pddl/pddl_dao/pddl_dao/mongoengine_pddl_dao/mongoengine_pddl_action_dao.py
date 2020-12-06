@@ -29,13 +29,17 @@ from pddl_dto import (
 class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
     """ Mongoengine Pddl Dao Action Class """
 
-    def __init__(self, uri: str = None):
+    def __init__(self, uri: str = None, connect: bool = True):
 
         PddlActionDao.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
 
-        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri)
-        self._me_pddl_predicate_dao = MongoenginePddlPredicateDao(uri)
+        if connect:
+            self.connect()
+
+        self._me_pddl_type_dao = MongoenginePddlTypeDao(uri, connect=False)
+        self._me_pddl_predicate_dao = MongoenginePddlPredicateDao(
+            uri, connect=False)
 
     def __condition_effect_model_to_dto(self,
                                         pddl_condition_effect_model: PddlConditionEffectModel,

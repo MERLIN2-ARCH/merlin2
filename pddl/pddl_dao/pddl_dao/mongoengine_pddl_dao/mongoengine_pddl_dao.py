@@ -12,7 +12,7 @@ class MongoenginePddlDao(ABC):
     def __init__(self, uri: str = "mongodb://localhost:27017/merlin2"):
 
         self.set_uri(uri)
-        self.connect()
+        # self.connect()
 
     def connect(self):
         """ connect to current uri

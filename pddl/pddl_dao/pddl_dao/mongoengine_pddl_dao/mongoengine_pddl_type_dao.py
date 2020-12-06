@@ -14,10 +14,13 @@ from pddl_dto import PddlTypeDto
 class MongoenginePddlTypeDao(PddlTypeDao, MongoenginePddlDao):
     """ Mongoengine Pddl Type Dao Class """
 
-    def __init__(self, uri: str = None):
+    def __init__(self, uri: str = None, connect: bool = True):
 
         PddlTypeDao.__init__(self)
         MongoenginePddlDao.__init__(self, uri)
+
+        if connect:
+            self.connect()
 
     def _model_to_dto(self, pddl_type_model:
                       PddlTypeModel) -> PddlTypeDto:
