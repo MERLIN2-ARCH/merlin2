@@ -28,6 +28,8 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
             PddlDaoFamilies.MONGOENGINE)
 
         pddl_dao_factory.set_uri("mongodb://localhost:27017/merlin2_tests")
+        pddl_dao_factory.connect()
+
         self.pddl_generator = MongoengineMerlin2PddlGenerator(
             "mongodb://localhost:27017/merlin2_tests")
 

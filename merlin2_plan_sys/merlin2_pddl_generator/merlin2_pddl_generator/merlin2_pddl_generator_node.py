@@ -28,7 +28,8 @@ class Merlin2PddlGeneratorNode(Node):
         # declaring params
         self.declare_parameter(pddl_dao_family_param_name,
                                PddlDaoFamilies.MONGOENGINE)
-        self.declare_parameter(mongoengine_uri_param_name, None)
+        self.declare_parameter(mongoengine_uri_param_name,
+                               "mongodb://localhost:27017/merlin2")
 
         # getting params
         pddl_dao_family = self.get_parameter(
