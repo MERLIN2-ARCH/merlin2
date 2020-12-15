@@ -4,10 +4,11 @@
 import rclpy
 
 from merlin2_plan_sys_interfaces.srv import GeneratePddl
-from merlin2_pddl_generator.merlin2_pddl_generator_factory import(
-    Merlin2PddlGeneratorFactory
+from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
+from pddl_dao.pddl_dao_factory import (
+    PddlDaoFactoryFactory,
+    PddlDaoFamilies
 )
-from pddl_dao.pddl_dao_factory import PddlDaoFamilies
 
 from threaded_node.node import Node
 
@@ -18,8 +19,6 @@ class Merlin2PddlGeneratorNode(Node):
     def __init__(self):
 
         super().__init__('merlin2_pddl_generator_mode')
-
-        pddl_generator_factory = Merlin2PddlGeneratorFactory()
 
         # param names
         pddl_dao_family_param_name = "pddl_dao_family"
@@ -38,8 +37,10 @@ class Merlin2PddlGeneratorNode(Node):
             mongoengine_uri_param_name).get_parameter_value().string_value
 
         # creating pddl generator
-        self.pddl_generator = pddl_generator_factory.create_pddl_generator(
+        pddl_dao_factory_factory = PddlDaoFactoryFactory()
+        pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
             pddl_dao_family, uri=mongoengine_uri, node=self)
+        self.pddl_generator = Merlin2PddlGenerator(pddl_dao_factory)
 
         # service servers
         self.__start_server = self.create_service(
