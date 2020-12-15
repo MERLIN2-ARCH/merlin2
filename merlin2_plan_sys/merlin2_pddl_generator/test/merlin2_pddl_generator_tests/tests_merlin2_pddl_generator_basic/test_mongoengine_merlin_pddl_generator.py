@@ -1,8 +1,8 @@
 
 import unittest
 
-from merlin2_pddl_generator.merlin2_pddl_generators import(
-    MongoengineMerlin2PddlGenerator
+from merlin2_pddl_generator.merlin2_pddl_generator import(
+    Merlin2PddlGenerator
 )
 
 from pddl_dto import (
@@ -14,24 +14,14 @@ from pddl_dto import (
     PddlActionDto
 )
 
-from pddl_dao.pddl_dao_factory import (
-    PddlDaoFactoryFactory,
-    PddlDaoFamilies
-)
 
+class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 
-class TestMerlin2PddlProblemParser(unittest.TestCase):
+    pddl_dao_factory = None
 
     def setUp(self):
-        pddl_dao_factory_factory = PddlDaoFactoryFactory()
-        pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            PddlDaoFamilies.MONGOENGINE)
 
-        pddl_dao_factory.set_uri("mongodb://localhost:27017/merlin2_tests")
-        pddl_dao_factory.connect()
-
-        self.pddl_generator = MongoengineMerlin2PddlGenerator(
-            "mongodb://localhost:27017/merlin2_tests")
+        self.pddl_generator = Merlin2PddlGenerator(self.pddl_dao_factory)
 
         # types
         robot_type = PddlTypeDto("robot")
@@ -87,11 +77,11 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
             "check_wp", [r, s], [condition_1], [effect_3])
 
         # saving
-        self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
-        self.pddl_predicate_dao = pddl_dao_factory.create_pddl_predicate_dao()
-        self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
-        self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
-        self.pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
+        self.pddl_type_dao = self.pddl_dao_factory.create_pddl_type_dao()
+        self.pddl_predicate_dao = self.pddl_dao_factory.create_pddl_predicate_dao()
+        self.pddl_action_dao = self.pddl_dao_factory.create_pddl_action_dao()
+        self.pddl_object_dao = self.pddl_dao_factory.create_pddl_object_dao()
+        self.pddl_proposition_dao = self.pddl_dao_factory.create_pddl_proposition_dao()
 
         self.pddl_type_dao.save(robot_type)
         self.pddl_type_dao.save(wp_type)
