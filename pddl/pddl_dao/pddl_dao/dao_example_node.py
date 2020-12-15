@@ -27,21 +27,21 @@ class DaoExampleNode(Node):
 
         super().__init__("dao_example_node")
 
-        factory_factory = PddlDaoFactoryFactory()
+        pddl_dao_factory_factory = PddlDaoFactoryFactory()
 
         uri = "mongodb://localhost:27017/merlin2"
         pddl_dao_family = PddlDaoFamilies.MONGOENGINE
 
-        pddl_factory = factory_factory.create_pddl_dao_factory(pddl_dao_family,
-                                                               uri=uri,
-                                                               node=self)
+        pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(pddl_dao_family,
+                                                                            uri=uri,
+                                                                            node=self)
 
         # creating DAOs
-        pddl_type_dao = pddl_factory.create_pddl_type_dao()
-        pddl_object_dao = pddl_factory.create_pddl_object_dao()
-        pddl_predicate_dao = pddl_factory.create_pddl_predicate_dao()
-        pddl_proposition_dao = pddl_factory.create_pddl_proposition_dao()
-        pddl_action_dao = pddl_factory.create_pddl_action_dao()
+        pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
+        pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
+        pddl_predicate_dao = pddl_dao_factory.create_pddl_predicate_dao()
+        pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
+        pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
 
         # types
         robot_type = PddlTypeDto("robot")
