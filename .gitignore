@@ -4,3 +4,4 @@ assets
 report.html
 __pycache__
 .vscode
+.VSCodeCounter
