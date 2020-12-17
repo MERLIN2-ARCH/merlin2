@@ -98,12 +98,12 @@ class DtoMsgParser:
         return msg
 
     def condition_effect_dto_to_msg(self,
-                                    pddl_condition_efect_dto:
+                                    pddl_condition_effect_dto:
                                         PddlConditionEffectDto) -> PddlConditionEffect:
         """ convert a PddlConditionEffectDto into a PddlConditionEffect msg
 
         Args:
-            pddl_condition_efect_dto (PddlConditionEffectDto): PddlConditionEffectDto
+            pddl_condition_effect_dto (PddlConditionEffectDto): PddlConditionEffectDto
 
         Returns:
             PddlConditionEffect: PddlConditionEffect msg
@@ -112,15 +112,15 @@ class DtoMsgParser:
         msg = PddlConditionEffect()
 
         msg.pddl_predicate = self.predicate_dto_to_msg(
-            pddl_condition_efect_dto.get_pddl_predicate())
+            pddl_condition_effect_dto.get_pddl_predicate())
 
         msg.pddl_objects = []
-        for pddl_object_dto in pddl_condition_efect_dto.get_pddl_objects_list():
+        for pddl_object_dto in pddl_condition_effect_dto.get_pddl_objects_list():
             msg.pddl_objects.append(self.object_dto_to_msg(pddl_object_dto))
 
-        if pddl_condition_efect_dto.get_time():
-            msg.time = pddl_condition_efect_dto.get_time()
-        msg.is_negative = pddl_condition_efect_dto.get_is_negative()
+        if pddl_condition_effect_dto.get_time():
+            msg.time = pddl_condition_effect_dto.get_time()
+        msg.is_negative = pddl_condition_effect_dto.get_is_negative()
 
         return msg
 

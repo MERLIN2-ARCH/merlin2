@@ -3,7 +3,7 @@
 
 from typing import List
 from pddl_dto.pddl_dto import PddlDto
-from pddl_dto.pddl_condition_efect_dto import PddlConditionEffectDto
+from pddl_dto.pddl_condition_effect_dto import PddlConditionEffectDto
 from pddl_dto.pddl_object_dto import PddlObjectDto
 
 
