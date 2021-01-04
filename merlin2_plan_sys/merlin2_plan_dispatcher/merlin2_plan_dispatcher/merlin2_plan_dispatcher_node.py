@@ -4,6 +4,8 @@
 import threading
 import collections
 
+from typing import Dict
+
 from merlin2_plan_sys_interfaces.action import (
     DispatchPlan,
     DispatchAction
@@ -11,6 +13,14 @@ from merlin2_plan_sys_interfaces.action import (
 
 import rclpy
 from rclpy.action import ActionServer, CancelResponse
+from action_msgs.msg import GoalStatus
+
+
+from pddl_dto import (
+    PddlPropositionDto,
+    PddlConditionEffectDto,
+    PddlObjectDto
+)
 
 from pddl_dao.pddl_dao_factory import (
     PddlDaoFactoryFactory,
@@ -34,7 +44,8 @@ class Merlin2PlanDispatcherNode(Node):
         # declaring params
         self.declare_parameter(pddl_dao_family_param_name,
                                PddlDaoFamilies.MONGOENGINE)
-        self.declare_parameter(mongoengine_uri_param_name, None)
+        self.declare_parameter(mongoengine_uri_param_name,
+                               "mongodb://localhost:27017/merlin2")
 
         # getting params
         pddl_dao_family = self.get_parameter(
@@ -107,11 +118,115 @@ class Merlin2PlanDispatcherNode(Node):
 
             result = DispatchPlan.Result()
 
+            succeed = True
+
             for action in goal_handle.request.plan:
-                self.get_logger().info("Executin action " + str(action.action_name) +
+                self.get_logger().info("Executing action " + str(action.action_name) +
                                        " with objects " + str(action.objects))
 
-            goal_handle.succeed()
+                pddl_action_dto = self.pddl_action_dao.get(action.action_name)
+                pddl_parameter_dto_list = pddl_action_dto.get_pddl_parameters_list()
+                pddl_efect_dto_list = pddl_action_dto.get_pddl_effects_list()
+                pddl_objects_dto_dict = {}
+
+                for object_name, pddl_parameter_dto in zip(action.objects, pddl_parameter_dto_list):
+                    pddl_object_dto = self.pddl_object_dao.get(object_name)
+                    pddl_objects_dto_dict[pddl_parameter_dto.get_object_name(
+                    )] = pddl_object_dto
+
+                # checking durative
+                if pddl_action_dto.get_durative():
+                    pddl_effect_dict = {}
+
+                    for pddl_effect_dto in pddl_efect_dto_list:
+
+                        if pddl_effect_dto.get_time() not in pddl_effect_dict:
+                            pddl_effect_dict[pddl_effect_dto.get_time()] = []
+
+                        pddl_effect_dict[pddl_effect_dto.get_time()
+                                         ].append(pddl_effect_dto)
+
+                    # before calling action
+                    at_start = PddlConditionEffectDto.AT_START
+                    if at_start in pddl_effect_dict:
+                        for pddl_effect_dto in pddl_effect_dict[at_start]:
+                            pddl_proposition_dto = self.__build_proposition(
+                                pddl_effect_dto, pddl_objects_dto_dict)
+                            succeed = self.__update_knowledge(
+                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
+
+                    over_all = PddlConditionEffectDto.OVER_ALL
+                    if over_all in pddl_effect_dict:
+                        for pddl_effect_dto in pddl_effect_dict[over_all]:
+                            pddl_proposition_dto = self.__build_proposition(
+                                pddl_effect_dto, pddl_objects_dto_dict)
+                            succeed = self.__update_knowledge(
+                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
+
+                    #############################
+
+                    # TO DO
+                    # Call action
+
+                    #############################
+
+                    # after calling action
+                    if over_all in pddl_effect_dict:
+                        for pddl_effect_dto in pddl_effect_dict[over_all]:
+                            pddl_proposition_dto = self.__build_proposition(
+                                pddl_effect_dto, pddl_objects_dto_dict)
+                            succeed = self.__update_knowledge(
+                                pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
+
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
+
+                    at_end = PddlConditionEffectDto.AT_END
+                    if at_end in pddl_effect_dict:
+                        for pddl_effect_dto in pddl_effect_dict[at_end]:
+                            pddl_proposition_dto = self.__build_proposition(
+                                pddl_effect_dto, pddl_objects_dto_dict)
+                            succeed = self.__update_knowledge(
+                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
+
+                else:
+
+                    #############################
+
+                    # TO DO
+                    # Call action
+
+                    #############################
+
+                    for pddl_effect_dto in pddl_efect_dto_list:
+                        pddl_proposition_dto = self.__build_proposition(
+                            pddl_effect_dto, pddl_objects_dto_dict)
+                        succeed = self.__update_knowledge(
+                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
+
+            if(goal_handle.status == GoalStatus.STATUS_CANCELED and
+               goal_handle.status == GoalStatus.STATUS_CANCELING):
+                goal_handle.canceled()
+
+            else:
+                goal_handle.succeed()
 
             return result
 
@@ -126,6 +241,54 @@ class Merlin2PlanDispatcherNode(Node):
                 except IndexError:
                     # No goal in the queue.
                     self._current_goal = None
+
+    def __build_proposition(self,
+                            pddl_effect_dto: PddlPropositionDto,
+                            pddl_objects_dto_dict: Dict[str, PddlObjectDto],
+                            ) -> PddlPropositionDto:
+        """ create a pddl proposition from am action effect
+
+        Args:
+            pddl_effect_dto (PddlPropositionDto): action effect
+            pddl_objects_dto_dict (Dict[str, PddlObjectDto]): dict of objects used by the action
+
+        Returns:
+            PddlPropositionDto: proposition created
+        """
+
+        proposition_objects_dto_list = []
+
+        for pdll_parameter_dto in pddl_effect_dto.get_pddl_objects_list():
+            proposition_objects_dto_list.append(
+                pddl_objects_dto_dict[pdll_parameter_dto.get_object_name()])
+
+        pddl_proposition_dto = PddlPropositionDto(
+            pddl_effect_dto.get_pddl_predicate(), proposition_objects_dto_list)
+
+        return pddl_proposition_dto
+
+    def __update_knowledge(self,
+                           pddl_proposition_dto: PddlPropositionDto,
+                           deleted: bool) -> bool:
+        """ update knowledge using a ppdl proposition
+
+        Args:
+            pddl_proposition_dto (PddlPropositionDto): proposition to update
+            deleted (bool): check if proposition must be deleted
+
+        Returns:
+            bool: succeed if dao succeed
+        """
+        succeed = True
+
+        if deleted:
+            succeed = self.pddl_proposition_dao.delete(
+                pddl_proposition_dto)
+        else:
+            succeed = self.pddl_proposition_dao.save(
+                pddl_proposition_dto)
+
+        return succeed
 
 
 def main(args=None):
