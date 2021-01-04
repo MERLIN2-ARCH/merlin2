@@ -2,12 +2,10 @@
 """ Merlin2 Executor Node """
 
 import asyncio
-import collections
-import threading
 from typing import List
 
 import rclpy
-from rclpy.action import ActionServer, CancelResponse, ActionClient
+from rclpy.action import ActionClient
 
 from action_msgs.msg import GoalStatus
 
@@ -17,7 +15,8 @@ from merlin2_plan_sys_interfaces.srv import (
 from merlin2_plan_sys_interfaces.msg import PlanAction
 from merlin2_plan_sys_interfaces.action import DispatchPlan, Execute
 
-from threaded_node.node import Node
+from custom_ros2 import Node
+from custom_ros2 import ActionSingleServer
 
 
 class Merlin2ExecutorNode(Node):
@@ -38,17 +37,11 @@ class Merlin2ExecutorNode(Node):
             self, DispatchPlan, "dispatch_plan")
 
         # action server
-        self._goal_queue = collections.deque()
-        self._goal_queue_lock = threading.Lock()
-        self._current_goal = None
-
-        self._action_server = ActionServer(self,
-                                           Execute,
-                                           "execute",
-                                           execute_callback=self.__execute_server,
-                                           cancel_callback=self.__cancel_server,
-                                           handle_accepted_callback=self.__accepted_callback,
-                                           )
+        self._action_server = ActionSingleServer(self,
+                                                 Execute,
+                                                 "execute",
+                                                 execute_callback=self.__execute_server
+                                                 )
 
     def destroy(self):
         """ destroy node method
@@ -64,68 +57,25 @@ class Merlin2ExecutorNode(Node):
             goal_handle ([type]): goal_handle
         """
 
-        try:
-            result = Execute.Result()
+        result = Execute.Result()
 
-            pddl_generated = asyncio.run(self.generate_pddl())
-            self.get_logger().info(pddl_generated.domain)
-            self.get_logger().info(pddl_generated.problem)
-            result.generate_pddl = True
+        pddl_generated = asyncio.run(self.generate_pddl())
+        self.get_logger().info(pddl_generated.domain)
+        self.get_logger().info(pddl_generated.problem)
+        result.generate_pddl = True
 
-            plan = asyncio.run(
-                self.plan(pddl_generated.domain, pddl_generated.problem))
-            self.get_logger().info(str(plan.has_solution))
-            self.get_logger().info(str(plan.plan))
-            result.generate_plan = True
+        plan = asyncio.run(
+            self.plan(pddl_generated.domain, pddl_generated.problem))
+        self.get_logger().info(str(plan.has_solution))
+        self.get_logger().info(str(plan.plan))
+        result.generate_plan = True
 
-            dispatch_plan_succ = asyncio.run(self.dispatch_plan(plan.plan))
-            result.dispatch_plan = dispatch_plan_succ
+        dispatch_plan_succ = asyncio.run(self.dispatch_plan(plan.plan))
+        result.dispatch_plan = dispatch_plan_succ
 
-            goal_handle.succeed()
+        goal_handle.succeed()
 
-            return result
-
-        finally:
-            with self._goal_queue_lock:
-                try:
-                    # Start execution of the next goal in the queue.
-                    self._current_goal = self._goal_queue.popleft()
-                    self.get_logger().info("Next goal pulled from the queue")
-                    self._current_goal.execute()
-
-                except IndexError:
-                    # No goal in the queue.
-                    self._current_goal = None
-
-    def __accepted_callback(self, goal_handle):
-        """ action server accepted callback or defer execution of an already accepted goal
-
-        Args:
-            goal_handle ([type]): goal habdle
-        """
-
-        with self._goal_queue_lock:
-            if self._current_goal is not None:
-                # Put incoming goal in the queue
-                self._goal_queue.append(goal_handle)
-                self.get_logger().info("Goal put in the queue")
-            else:
-                # Start goal execution right away
-                self._current_goal = goal_handle
-                self._current_goal.execute()
-
-    def __cancel_server(self, goal_handle):
-        """ cancelling action server
-
-        Args:
-            goal_handle ([type]): goal_handle
-
-        Returns:
-            [type]: CancelResponse
-        """
-
-        self.get_logger().info("cancelling action server")
-        return CancelResponse.ACCEPT
+        return result
 
     async def generate_pddl(self) -> GeneratePddl.Response:
         """ asyn generate pddl method

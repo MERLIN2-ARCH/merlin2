@@ -1,9 +1,6 @@
 
 """ Merlin2 Plan Dispatcher Node """
 
-import threading
-import collections
-
 from typing import Dict
 
 from merlin2_plan_sys_interfaces.action import (
@@ -12,7 +9,6 @@ from merlin2_plan_sys_interfaces.action import (
 )
 
 import rclpy
-from rclpy.action import ActionServer, CancelResponse
 from action_msgs.msg import GoalStatus
 
 
@@ -27,7 +23,8 @@ from pddl_dao.pddl_dao_factory import (
     PddlDaoFamilies
 )
 
-from threaded_node.node import Node
+from custom_ros2 import Node
+from custom_ros2 import ActionSingleServer
 
 
 class Merlin2PlanDispatcherNode(Node):
@@ -60,19 +57,12 @@ class Merlin2PlanDispatcherNode(Node):
         self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
         self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
 
-        # action vars
-        self._goal_queue = collections.deque()
-        self._goal_queue_lock = threading.Lock()
-        self._current_goal = None
-
         # action server
-        self._action_server = ActionServer(self,
-                                           DispatchPlan,
-                                           "dispatch_plan",
-                                           execute_callback=self.__execute_server,
-                                           cancel_callback=self.__cancel_server,
-                                           handle_accepted_callback=self.__accepted_callback,
-                                           )
+        self._action_server = ActionSingleServer(self,
+                                                 DispatchPlan,
+                                                 "dispatch_plan",
+                                                 execute_callback=self.__execute_server
+                                                 )
 
     def destroy(self):
         """ destroy node method
@@ -81,166 +71,122 @@ class Merlin2PlanDispatcherNode(Node):
         self._action_server.destroy()
         super().destroy_node()
 
-    def __accepted_callback(self, goal_handle):
-        """ action server accepted callback or defer execution of an already accepted goal
-
-        Args:
-            goal_handle: goal handle
-        """
-
-        with self._goal_queue_lock:
-            if self._current_goal is not None:
-                # Put incoming goal in the queue
-                self._goal_queue.append(goal_handle)
-                self.get_logger().info("Goal put in the queue")
-            else:
-                # Start goal execution right away
-                self._current_goal = goal_handle
-                self._current_goal.execute()
-
-    def __cancel_server(self, goal_handle):
-        """ action server cancel callback
-
-        Args:
-            goal_handle: goal handle
-
-        Returns:
-            CancelResponse: cancel response
-        """
-
-        self.get_logger().info("Cancelling Plan Dispatcher")
-        return CancelResponse.ACCEPT
-
     def __execute_server(self, goal_handle):
         """action server execute callback"""
 
-        try:
+        result = DispatchPlan.Result()
 
-            result = DispatchPlan.Result()
+        succeed = True
 
-            succeed = True
+        for action in goal_handle.request.plan:
+            self.get_logger().info("Executing action " + str(action.action_name) +
+                                   " with objects " + str(action.objects))
 
-            for action in goal_handle.request.plan:
-                self.get_logger().info("Executing action " + str(action.action_name) +
-                                       " with objects " + str(action.objects))
+            pddl_action_dto = self.pddl_action_dao.get(action.action_name)
+            pddl_parameter_dto_list = pddl_action_dto.get_pddl_parameters_list()
+            pddl_efect_dto_list = pddl_action_dto.get_pddl_effects_list()
+            pddl_objects_dto_dict = {}
 
-                pddl_action_dto = self.pddl_action_dao.get(action.action_name)
-                pddl_parameter_dto_list = pddl_action_dto.get_pddl_parameters_list()
-                pddl_efect_dto_list = pddl_action_dto.get_pddl_effects_list()
-                pddl_objects_dto_dict = {}
+            for object_name, pddl_parameter_dto in zip(action.objects, pddl_parameter_dto_list):
+                pddl_object_dto = self.pddl_object_dao.get(object_name)
+                pddl_objects_dto_dict[pddl_parameter_dto.get_object_name(
+                )] = pddl_object_dto
 
-                for object_name, pddl_parameter_dto in zip(action.objects, pddl_parameter_dto_list):
-                    pddl_object_dto = self.pddl_object_dao.get(object_name)
-                    pddl_objects_dto_dict[pddl_parameter_dto.get_object_name(
-                    )] = pddl_object_dto
+            # checking durative
+            if pddl_action_dto.get_durative():
+                pddl_effect_dict = {}
 
-                # checking durative
-                if pddl_action_dto.get_durative():
-                    pddl_effect_dict = {}
-
-                    for pddl_effect_dto in pddl_efect_dto_list:
-
-                        if pddl_effect_dto.get_time() not in pddl_effect_dict:
-                            pddl_effect_dict[pddl_effect_dto.get_time()] = []
+                # clasifaying effects by time
+                for pddl_effect_dto in pddl_efect_dto_list:
+                    if pddl_effect_dto.get_time() not in pddl_effect_dict:
+                        pddl_effect_dict[pddl_effect_dto.get_time()] = []
 
                         pddl_effect_dict[pddl_effect_dto.get_time()
                                          ].append(pddl_effect_dto)
 
-                    # before calling action
-                    at_start = PddlConditionEffectDto.AT_START
-                    if at_start in pddl_effect_dict:
-                        for pddl_effect_dto in pddl_effect_dict[at_start]:
-                            pddl_proposition_dto = self.__build_proposition(
-                                pddl_effect_dto, pddl_objects_dto_dict)
-                            succeed = self.__update_knowledge(
-                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
-                            goal_handle.abort()
-                            return result
-
-                    over_all = PddlConditionEffectDto.OVER_ALL
-                    if over_all in pddl_effect_dict:
-                        for pddl_effect_dto in pddl_effect_dict[over_all]:
-                            pddl_proposition_dto = self.__build_proposition(
-                                pddl_effect_dto, pddl_objects_dto_dict)
-                            succeed = self.__update_knowledge(
-                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
-                            goal_handle.abort()
-                            return result
-
-                    #############################
-
-                    # TO DO
-                    # Call action
-
-                    #############################
-
-                    # after calling action
-                    if over_all in pddl_effect_dict:
-                        for pddl_effect_dto in pddl_effect_dict[over_all]:
-                            pddl_proposition_dto = self.__build_proposition(
-                                pddl_effect_dto, pddl_objects_dto_dict)
-                            succeed = self.__update_knowledge(
-                                pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
-                            goal_handle.abort()
-                            return result
-
-                    at_end = PddlConditionEffectDto.AT_END
-                    if at_end in pddl_effect_dict:
-                        for pddl_effect_dto in pddl_effect_dict[at_end]:
-                            pddl_proposition_dto = self.__build_proposition(
-                                pddl_effect_dto, pddl_objects_dto_dict)
-                            succeed = self.__update_knowledge(
-                                pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
-                            goal_handle.abort()
-                            return result
-
-                else:
-
-                    #############################
-
-                    # TO DO
-                    # Call action
-
-                    #############################
-
-                    for pddl_effect_dto in pddl_efect_dto_list:
+                # before calling action
+                at_start = PddlConditionEffectDto.AT_START
+                if at_start in pddl_effect_dict:
+                    for pddl_effect_dto in pddl_effect_dict[at_start]:
                         pddl_proposition_dto = self.__build_proposition(
                             pddl_effect_dto, pddl_objects_dto_dict)
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
-                        if not succeed:
-                            goal_handle.abort()
-                            return result
+                    if not succeed:
+                        goal_handle.abort()
+                        return result
 
-            if(goal_handle.status == GoalStatus.STATUS_CANCELED and
-               goal_handle.status == GoalStatus.STATUS_CANCELING):
-                goal_handle.canceled()
+                over_all = PddlConditionEffectDto.OVER_ALL
+                if over_all in pddl_effect_dict:
+                    for pddl_effect_dto in pddl_effect_dict[over_all]:
+                        pddl_proposition_dto = self.__build_proposition(
+                            pddl_effect_dto, pddl_objects_dto_dict)
+                        succeed = self.__update_knowledge(
+                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                    if not succeed:
+                        goal_handle.abort()
+                        return result
+
+                #############################
+
+                # TO DO
+                # Call action
+
+                #############################
+
+                # after calling action
+                if over_all in pddl_effect_dict:
+                    for pddl_effect_dto in pddl_effect_dict[over_all]:
+                        pddl_proposition_dto = self.__build_proposition(
+                            pddl_effect_dto, pddl_objects_dto_dict)
+                        succeed = self.__update_knowledge(
+                            pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
+
+                    if not succeed:
+                        goal_handle.abort()
+                        return result
+
+                at_end = PddlConditionEffectDto.AT_END
+                if at_end in pddl_effect_dict:
+                    for pddl_effect_dto in pddl_effect_dict[at_end]:
+                        pddl_proposition_dto = self.__build_proposition(
+                            pddl_effect_dto, pddl_objects_dto_dict)
+                        succeed = self.__update_knowledge(
+                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                    if not succeed:
+                        goal_handle.abort()
+                        return result
 
             else:
-                goal_handle.succeed()
 
-            return result
+                #############################
 
-        finally:
-            with self._goal_queue_lock:
-                try:
-                    # Start execution of the next goal in the queue.
-                    self._current_goal = self._goal_queue.popleft()
-                    self.get_logger().info("Next goal pulled from the queue")
-                    self._current_goal.execute()
+                # TO DO
+                # Call action
 
-                except IndexError:
-                    # No goal in the queue.
-                    self._current_goal = None
+                #############################
+
+                for pddl_effect_dto in pddl_efect_dto_list:
+                    pddl_proposition_dto = self.__build_proposition(
+                        pddl_effect_dto, pddl_objects_dto_dict)
+                    succeed = self.__update_knowledge(
+                        pddl_proposition_dto, pddl_effect_dto.get_is_negative())
+
+                    if not succeed:
+                        goal_handle.abort()
+                        return result
+
+        if(goal_handle.status == GoalStatus.STATUS_CANCELED and
+           goal_handle.status == GoalStatus.STATUS_CANCELING):
+            goal_handle.canceled()
+
+        else:
+            goal_handle.succeed()
+
+        return result
 
     def __build_proposition(self,
                             pddl_effect_dto: PddlPropositionDto,
