@@ -17,7 +17,7 @@ from pddl_dto import (
     PddlActionDto
 )
 
-from threaded_node.node import Node
+from custom_ros2 import Node
 
 
 class DaoExampleNode(Node):

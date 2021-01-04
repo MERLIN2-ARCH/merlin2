@@ -6,7 +6,7 @@ from pddl_dao.pddl_dao_factory import (
     PddlDaoFamilies
 )
 
-from threaded_node.node import Node
+from custom_ros2 import Node
 import rclpy
 
 

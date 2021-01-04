@@ -19,7 +19,7 @@ from merlin2_knowledge_base_interfaces.srv import (
 )
 from std_srvs.srv import Empty
 
-from threaded_node.node import Node
+from custom_ros2 import Node
 
 from merlin2_knowledge_base.merlin2_knowledge_base_parser import (
     DtoMsgParser,

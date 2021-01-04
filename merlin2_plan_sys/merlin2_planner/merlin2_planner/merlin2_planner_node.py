@@ -10,7 +10,7 @@ from merlin2_planner.merlin2_planner_factory import (
     Merlin2Planners
 )
 
-from threaded_node.node import Node
+from custom_ros2 import Node
 
 
 class Merlin2PlannerNode(Node):
