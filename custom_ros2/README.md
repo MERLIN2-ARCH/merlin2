@@ -1,7 +1,7 @@
-# threaded_node
+# custom_ros2
 
 ```python
-from threaded_node.node import Node
+from custom_ros2 import Node
 import rclpy
 
 class MyNode(Node):
