@@ -10,9 +10,7 @@ class ActionQueueServer(ActionServer):
     def __init__(self, node, s_type, s_name, execute_callback, cancel_callback=None):
 
         self.__user_execute_callback = execute_callback
-
-        if cancel_callback is None:
-            cancel_callback = self.__cancel_callback
+        self.__user_cancel_callback = cancel_callback
 
         self._goal_queue = collections.deque()
         self._goal_queue_lock = threading.Lock()
@@ -36,6 +34,10 @@ class ActionQueueServer(ActionServer):
         return GoalResponse.ACCEPT
 
     def __cancel_callback(self, goal_handle):
+
+        if self.__user_cancel_callback is not None:
+            self.__user_cancel_callback()
+
         return CancelResponse.ACCEPT
 
     def __execute_callback(self, goal_handle):
