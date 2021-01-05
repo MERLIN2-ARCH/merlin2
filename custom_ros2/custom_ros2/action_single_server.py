@@ -1,9 +1,12 @@
 
+""" Custom action server that treats only one goals at the same time """
+
 import threading
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
 
 
 class ActionSingleServer(ActionServer):
+    """ Action Single Goal Server Class """
 
     def __init__(self, node, s_type, s_name, execute_callback, cancel_callback=None):
 
@@ -19,9 +22,17 @@ class ActionSingleServer(ActionServer):
                          cancel_callback=self.__cancel_callback)
 
     def __goal_callback(self, goal_request):
+        """ goal callback for a single goal server """
+
         return GoalResponse.ACCEPT
 
     def __handle_accepted_callback(self, goal_handle):
+        """
+            handle accepted calback for a single goal server
+            only one goal can be treated
+            if other goal is send, old goal is aborted and replaced with the new one
+        """
+
         with self._goal_lock:
             if self._goal_handle is not None and self._goal_handle.is_active:
                 self._goal_handle.abort()
@@ -30,6 +41,7 @@ class ActionSingleServer(ActionServer):
         goal_handle.execute()
 
     def __cancel_callback(self, goal):
+        """ cancel calback for a single goal server """
 
         if self.__user_cancel_callback is not None:
             self.__user_cancel_callback()

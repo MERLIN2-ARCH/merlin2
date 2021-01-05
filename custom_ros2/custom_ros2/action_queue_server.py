@@ -1,4 +1,6 @@
 
+""" Custom action server that add goals to a queue """
+
 import collections
 import threading
 
@@ -6,6 +8,7 @@ from rclpy.action import ActionServer, CancelResponse, GoalResponse
 
 
 class ActionQueueServer(ActionServer):
+    """ Action Queue Goal Server Class """
 
     def __init__(self, node, s_type, s_name, execute_callback, cancel_callback=None):
 
@@ -23,6 +26,11 @@ class ActionQueueServer(ActionServer):
                          cancel_callback=cancel_callback)
 
     def __handle_accepted_callback(self, goal_handle):
+        """
+            handle accepted calback for a queue goal server
+            goals are added to a queue
+        """
+
         with self._goal_queue_lock:
             if self._current_goal is not None:
                 self._goal_queue.append(goal_handle)
@@ -31,9 +39,12 @@ class ActionQueueServer(ActionServer):
                 self._current_goal.execute()
 
     def __goal_callback(self, goal_request):
+        """ goal callback for a queue goal server """
+
         return GoalResponse.ACCEPT
 
     def __cancel_callback(self, goal_handle):
+        """ cancel calback for a queue goal server """
 
         if self.__user_cancel_callback is not None:
             self.__user_cancel_callback()
@@ -41,6 +52,11 @@ class ActionQueueServer(ActionServer):
         return CancelResponse.ACCEPT
 
     def __execute_callback(self, goal_handle):
+        """ 
+            execute callback for a queue goal server
+            when a goals ends, next goal is got from the queue
+        """
+
         try:
             return self.__user_execute_callback(goal_handle)
 
