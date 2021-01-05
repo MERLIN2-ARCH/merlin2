@@ -3,6 +3,7 @@
 
 import threading
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
 
 
 class ActionSingleServer(ActionServer):
@@ -19,7 +20,8 @@ class ActionSingleServer(ActionServer):
                          execute_callback=execute_callback,
                          goal_callback=self.__goal_callback,
                          handle_accepted_callback=self.__handle_accepted_callback,
-                         cancel_callback=self.__cancel_callback)
+                         cancel_callback=self.__cancel_callback,
+                         callback_group=ReentrantCallbackGroup())
 
     def __goal_callback(self, goal_request):
         """ goal callback for a single goal server """

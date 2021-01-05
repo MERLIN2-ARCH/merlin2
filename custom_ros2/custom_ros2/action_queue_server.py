@@ -5,6 +5,7 @@ import collections
 import threading
 
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
 
 
 class ActionQueueServer(ActionServer):
@@ -23,7 +24,8 @@ class ActionQueueServer(ActionServer):
                          execute_callback=self.__execute_callback,
                          goal_callback=self.__goal_callback,
                          handle_accepted_callback=self.__handle_accepted_callback,
-                         cancel_callback=cancel_callback)
+                         cancel_callback=cancel_callback,
+                         callback_group=ReentrantCallbackGroup())
 
     def __handle_accepted_callback(self, goal_handle):
         """
