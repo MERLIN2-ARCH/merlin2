@@ -23,8 +23,10 @@ from pddl_dao.pddl_dao_factory import (
     PddlDaoFamilies
 )
 
-from custom_ros2 import Node
-from custom_ros2 import ActionSingleServer
+from custom_ros2 import (
+    Node,
+    ActionSingleServer
+)
 
 
 class Merlin2PlanDispatcherNode(Node):
@@ -58,17 +60,17 @@ class Merlin2PlanDispatcherNode(Node):
         self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
 
         # action server
-        self._action_server = ActionSingleServer(self,
-                                                 DispatchPlan,
-                                                 "dispatch_plan",
-                                                 execute_callback=self.__execute_server
-                                                 )
+        self.__action_server = ActionSingleServer(self,
+                                                  DispatchPlan,
+                                                  "dispatch_plan",
+                                                  execute_callback=self.__execute_server
+                                                  )
 
     def destroy(self):
         """ destroy node method
         """
 
-        self._action_server.destroy()
+        self.__action_server.destroy()
         super().destroy_node()
 
     def __execute_server(self, goal_handle):

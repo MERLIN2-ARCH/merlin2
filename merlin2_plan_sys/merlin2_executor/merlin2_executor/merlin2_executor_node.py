@@ -15,8 +15,10 @@ from merlin2_plan_sys_interfaces.srv import (
 from merlin2_plan_sys_interfaces.msg import PlanAction
 from merlin2_plan_sys_interfaces.action import DispatchPlan, Execute
 
-from custom_ros2 import Node
-from custom_ros2 import ActionSingleServer
+from custom_ros2 import (
+    Node,
+    ActionSingleServer
+)
 
 
 class Merlin2ExecutorNode(Node):
@@ -37,17 +39,17 @@ class Merlin2ExecutorNode(Node):
             self, DispatchPlan, "dispatch_plan")
 
         # action server
-        self._action_server = ActionSingleServer(self,
-                                                 Execute,
-                                                 "execute",
-                                                 execute_callback=self.__execute_server
-                                                 )
+        self.__action_server = ActionSingleServer(self,
+                                                  Execute,
+                                                  "execute",
+                                                  execute_callback=self.__execute_server
+                                                  )
 
     def destroy(self):
         """ destroy node method
         """
 
-        self._action_server.destroy()
+        self.__action_server.destroy()
         super().destroy_node()
 
     def __execute_server(self, goal_handle):
