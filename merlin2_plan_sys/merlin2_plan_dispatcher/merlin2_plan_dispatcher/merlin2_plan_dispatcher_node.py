@@ -2,7 +2,7 @@
 """ Merlin2 Plan Dispatcher Node """
 
 from typing import Dict
-
+import time
 from merlin2_plan_sys_interfaces.action import (
     DispatchPlan,
     DispatchAction
@@ -25,7 +25,8 @@ from pddl_dao.pddl_dao_factory import (
 
 from custom_ros2 import (
     Node,
-    ActionSingleServer
+    ActionSingleServer,
+    ActionClient
 )
 
 
@@ -59,22 +60,35 @@ class Merlin2PlanDispatcherNode(Node):
         self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
         self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
 
-        # action server
+        # action server/client
+        self.__action_client = None
         self.__action_server = ActionSingleServer(self,
                                                   DispatchPlan,
                                                   "dispatch_plan",
-                                                  execute_callback=self.__execute_server
-                                                  )
+                                                  execute_callback=self.__execute_server,
+                                                  cancel_callback=self.__cancel_callback)
 
     def destroy(self):
-        """ destroy node method
-        """
+        """ destroy node method """
 
-        self.__action_server.destroy()
+        if self.__action_client:
+            self.__action_server.destroy()
         super().destroy_node()
 
+    def __cancel_callback(self):
+        if self.__action_client:
+            if self.__action_client.is_working():
+                self.__action_client.cancel_goal()
+
+    def _call_action(self, goal):
+        self.__action_client = ActionClient(
+            self, DispatchAction, goal.action.action_name)
+        self.__action_client.wait_for_server()
+        self.__action_client.send_goal(goal)
+        self.__action_client.wait_for_result()
+
     def __execute_server(self, goal_handle):
-        """action server execute callback"""
+        """ action server execute callback """
 
         result = DispatchPlan.Result()
 
@@ -93,6 +107,10 @@ class Merlin2PlanDispatcherNode(Node):
                 pddl_object_dto = self.pddl_object_dao.get(object_name)
                 pddl_objects_dto_dict[pddl_parameter_dto.get_object_name(
                 )] = pddl_object_dto
+
+            # creating action goal
+            goal = DispatchAction.Goal()
+            goal.action = action
 
             # checking durative
             if pddl_action_dto.get_durative():
@@ -131,12 +149,8 @@ class Merlin2PlanDispatcherNode(Node):
                         goal_handle.abort()
                         return result
 
-                #############################
-
-                # TO DO
-                # Call action
-
-                #############################
+                # calling action
+                self._call_action(goal)
 
                 # after calling action
                 if over_all in pddl_effect_dict:
@@ -164,12 +178,8 @@ class Merlin2PlanDispatcherNode(Node):
 
             else:
 
-                #############################
-
-                # TO DO
-                # Call action
-
-                #############################
+                # calling action
+                self._call_action(goal)
 
                 for pddl_effect_dto in pddl_efect_dto_list:
                     pddl_proposition_dto = self.__build_proposition(
@@ -186,7 +196,15 @@ class Merlin2PlanDispatcherNode(Node):
             goal_handle.canceled()
 
         else:
-            goal_handle.succeed()
+            if not self.__action_client:
+                goal_handle.succeed()
+            elif self.__action_client.is_succeeded():
+                goal_handle.succeed()
+            else:
+                goal_handle.abort()
+
+        # reset action client
+        self.__action_client = None
 
         return result
 
