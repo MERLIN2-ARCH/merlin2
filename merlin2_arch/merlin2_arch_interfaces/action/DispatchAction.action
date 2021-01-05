@@ -1,0 +1,6 @@
+# Define the goal
+merlin2_arch_interfaces/PlanAction action
+---
+# Define the result
+---
+# Define the feedback

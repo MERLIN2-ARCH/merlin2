@@ -1,0 +1,5 @@
+string domain
+string problem
+---
+merlin2_arch_interfaces/PlanAction[] plan
+bool has_solution
