@@ -1,3 +1,3 @@
 # MERLIN2 Planning Layer
 
-![](./merlin2_plan_sys.png)
+![](./merlin2_planning_layer.png)
