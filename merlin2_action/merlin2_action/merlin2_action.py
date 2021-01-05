@@ -24,8 +24,7 @@ class Merlin2Action(Node):
                                                   cancel_callback=self.__cancel_callback)
 
     def destroy(self):
-        """ destroy node method
-        """
+        """ destroy node method """
 
         self.__action_server.destroy()
         super().destroy_node()
@@ -57,7 +56,7 @@ class Merlin2Action(Node):
 
         succeed = self.run_action()
 
-        if not self._is_canceled:
+        if self._is_canceled:
             goal_handle.canceled()
 
         else:
