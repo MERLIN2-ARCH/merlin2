@@ -1,0 +1,4 @@
+[submodule "merlin2_arch/merlin2_reactive_layer/ros2_speech_recognition"]
+	path = merlin2_arch/merlin2_reactive_layer/ros2_speech_recognition
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/ros2_speech_recognition.git
+	branch = master
