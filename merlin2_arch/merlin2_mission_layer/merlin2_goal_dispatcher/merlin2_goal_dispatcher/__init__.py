@@ -1,0 +1,2 @@
+
+from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
