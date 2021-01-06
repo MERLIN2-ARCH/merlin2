@@ -17,7 +17,8 @@ docker image push niebla.unileon.es:5000/mgonzs/merlin2:v1
 docker pull mongo
 docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2 --net=guacamole_guacnetwork_compose niebla.unileon.es:5000/mgonzs/merlin2:v1
 docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2_kb --net=guacamole_guacnetwork_compose niebla.unileon.es:5000/mgonzs/merlin2:v1
-docker run --shm-size=2g  -p 27017:27017 -e VNC_PASSWORD=vncpasswd -d --name=mmongodb --net=guacamole_guacnetwork_compose mongo
+docker run --shm-size=2g  -p 27017:27017 -e VNC_PASSWORD=vncpasswd -d --name=mmongodb1 --net=guacamole_guacnetwork_compose -e MONGO_INITDB_ROOT_USERNAME=<user> -e MONGO_INITDB_ROOT_PASSWORD=<passwd> mongo --auth
+mongodb://root:Emos1d0hK@185.179.104.19:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false
 ```
 
 
