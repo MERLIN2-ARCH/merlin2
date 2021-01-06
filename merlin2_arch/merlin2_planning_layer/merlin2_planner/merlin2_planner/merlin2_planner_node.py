@@ -18,7 +18,7 @@ class Merlin2PlannerNode(Node):
 
     def __init__(self):
 
-        super().__init__("merlin2_planner_mode")
+        super().__init__("merlin2_planner_node")
 
         planner_factory = Merlin2PlannerFactory()
 

@@ -35,7 +35,7 @@ class Merlin2PlanDispatcherNode(Node):
 
     def __init__(self):
 
-        super().__init__("merlin2_plan_dispatcher_mode")
+        super().__init__("merlin2_plan_dispatcher_node")
 
         # param names
         pddl_dao_family_param_name = "pddl_dao_family"
