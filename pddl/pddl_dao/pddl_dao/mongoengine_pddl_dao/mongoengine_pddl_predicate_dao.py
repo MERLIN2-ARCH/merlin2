@@ -163,14 +163,12 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_predicate_dto):
             return False
 
-        # propagating saving
-        for pddl_type_dto in pddl_predicate_dto.get_pddl_types_list():
-            result = self._me_pddl_type_dao.save(pddl_type_dto)
-            if not result:
-                return False
-
         pddl_predicate_model = self._dto_to_model(
             pddl_predicate_dto)
+
+        # propagating saving
+        for pddl_type_model in pddl_predicate_model.pddl_types:
+            pddl_type_model.save()
 
         if pddl_predicate_model:
             pddl_predicate_model.save(cascade=True)
