@@ -59,11 +59,8 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
             Document: Mongoengine pddl object document
         """
 
-        pddl_type_model = self._me_pddl_type_dao._get_model(
+        pddl_type_model = self._me_pddl_type_dao._dto_to_model(
             pddl_object_dto.get_pddl_type())
-
-        if not pddl_object_dto:
-            return None
 
         pddl_object_model = PddlObjectModel()
 
@@ -158,18 +155,11 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
         if self._exist_in_mongo(pddl_object_dto):
             return False
 
-        # propagating saving
-        result = self._me_pddl_type_dao.save(
-            pddl_object_dto.get_pddl_type())
-
-        if not result:
-            return False
-
         pddl_object_model = self._dto_to_model(
             pddl_object_dto)
 
         if pddl_object_model:
-            pddl_object_model.save()
+            pddl_object_model.save(cascade=True)
             return True
 
         return False
@@ -192,12 +182,9 @@ class MongoenginePddlObjectDao(PddlObjectDao, MongoenginePddlDao):
             new_pddl_object_model = self._dto_to_model(
                 pddl_object_dto)
 
-            if new_pddl_object_model:
-                pddl_object_model.object_name = new_pddl_object_model.object_name
-                pddl_object_model.pddl_type = new_pddl_object_model.pddl_type
-                pddl_object_model.save()
-            else:
-                return False
+            pddl_object_model.object_name = new_pddl_object_model.object_name
+            pddl_object_model.pddl_type = new_pddl_object_model.pddl_type
+            pddl_object_model.save()
 
             return True
 

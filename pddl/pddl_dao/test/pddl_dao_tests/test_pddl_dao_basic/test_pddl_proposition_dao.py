@@ -42,6 +42,14 @@ class TestPddlPropositionDao(unittest.TestCase):
     def test_pddl_dao_proposition_save_true(self):
         result = self.pddl_proposition_dao._save(self.pddl_proposition_dto)
         self.assertTrue(result)
+        self.assertEqual(1, len(self.pddl_proposition_dao.get_all()))
+
+    def test_pddl_dao_proposition_save_true_no_objects(self):
+        self._robot_at = PddlPredicateDto("robot_at")
+        self.pddl_proposition_dto = PddlPropositionDto(self._robot_at)
+        result = self.pddl_proposition_dao._save(self.pddl_proposition_dto)
+        self.assertTrue(result)
+        self.assertEqual(1, len(self.pddl_proposition_dao.get_all()))
 
     def test_pddl_dao_proposition_save_false_incorrect_proposition_types(self):
         self.pddl_proposition_dto.get_pddl_objects_list().reverse()

@@ -123,7 +123,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         return True
 
-    def _dto_to_model(self, pddl_proposition_dto: PddlPropositionDto) -> bool:
+    def _dto_to_model(self, pddl_proposition_dto: PddlPropositionDto) -> PddlPropositionModel:
         """ convert a PddlPropositionDto into a Mongoengine pddl propostion document
 
         Args:
@@ -135,7 +135,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         pddl_proposition_model = PddlPropositionModel()
 
-        pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
+        pddl_predicate_model = self._me_pddl_predicate_dao._dto_to_model(
             pddl_proposition_dto.get_pddl_predicate())
 
         # check if predicate exist
@@ -148,7 +148,7 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
 
-            pddl_object_model = self._me_pddl_object_dao._get_model(
+            pddl_object_model = self._me_pddl_object_dao._dto_to_model(
                 pddl_object_dto)
 
             # check if object exist
@@ -186,13 +186,14 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         pddl_dto_objects_list = pddl_proposition_dto.get_pddl_objects_list()
 
+        # check if predicate exists
         pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
             pddl_proposition_dto.get_pddl_predicate())
 
-        # check if predicate exist
         if not pddl_predicate_model:
             return None
 
+        # check if objects exist
         pddl_objects_list = []
         for pddl_object_dto in pddl_dto_objects_list:
             pddl_object_model = self._me_pddl_object_dao._get_model(
@@ -314,20 +315,17 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
             return False
 
        # propagating saving
-        result = self._me_pddl_predicate_dao.save(
-            pddl_proposition_dto.get_pddl_predicate())
-        if not result:
-            return False
         for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
             result = self._me_pddl_object_dao.save(pddl_object_dto)
             if not result:
                 return False
 
+        # saving
         pddl_proposition_model = self._dto_to_model(
             pddl_proposition_dto)
 
         if pddl_proposition_model:
-            pddl_proposition_model.save()
+            pddl_proposition_model.save(cascade=True)
             return True
 
         return False

@@ -31,6 +31,13 @@ class TestPddlPredicateDao(unittest.TestCase):
     def test_pddl_dao_predicate_save_true(self):
         result = self.pddl_predicate_dao._save(self.pddl_predicate_dto)
         self.assertTrue(result)
+        self.assertEqual(1, len(self.pddl_predicate_dao.get_all()))
+
+    def test_pddl_dao_predicate_save_true_no_types(self):
+        self.pddl_predicate_dto = PddlPredicateDto("robot_at")
+        result = self.pddl_predicate_dao._save(self.pddl_predicate_dto)
+        self.assertTrue(result)
+        self.assertEqual(1, len(self.pddl_predicate_dao.get_all()))
 
     def test_pddl_dao_predicate_save_false_predicate_already_exist(self):
         result = self.pddl_predicate_dao._save(self.pddl_predicate_dto)

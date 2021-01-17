@@ -68,7 +68,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
 
         for pddl_type_dto in pddl_predicate_dto.get_pddl_types_list():
 
-            pddl_type_model = self._me_pddl_type_dao._get_model(
+            pddl_type_model = self._me_pddl_type_dao._dto_to_model(
                 pddl_type_dto)
 
             # check if type exist
@@ -173,7 +173,7 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
             pddl_predicate_dto)
 
         if pddl_predicate_model:
-            pddl_predicate_model.save()
+            pddl_predicate_model.save(cascade=True)
             return True
 
         return False

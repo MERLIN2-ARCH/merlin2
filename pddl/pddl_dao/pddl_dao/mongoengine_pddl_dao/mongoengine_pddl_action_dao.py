@@ -131,7 +131,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             Document: Mongoengine pddl condition/effect document
         """
 
-        pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
+        pddl_predicate_model = self._me_pddl_predicate_dao._dto_to_model(
             pddl_dto_condition_effect.get_pddl_predicate())
 
         # check if predicate exists
@@ -170,7 +170,7 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
         # ACTION PARAMS
         for param in pddl_action_dto.get_pddl_parameters_list():
-            pddl_type_model = self._me_pddl_type_dao._get_model(
+            pddl_type_model = self._me_pddl_type_dao._dto_to_model(
                 param.get_pddl_type())
 
             # check if type exists
@@ -424,29 +424,20 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         if not self._check_pddl_action_dto(pddl_action_dto):
             return False
 
-       # propagating saving
-        for pddl_type_dto in pddl_action_dto.get_pddl_parameters_list():
-            result = self._me_pddl_type_dao.save(
-                pddl_type_dto.get_pddl_type())
-            if not result:
-                return False
-        for pddl_condition_dto in pddl_action_dto.get_pddl_conditions_list():
-            result = self._me_pddl_predicate_dao.save(
-                pddl_condition_dto.get_pddl_predicate())
-            if not result:
-                return False
-        for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
-            result = self._me_pddl_predicate_dao.save(
-                pddl_effect_dto.get_pddl_predicate())
-            if not result:
-                return False
-
         if self._exist_in_mongo(pddl_action_dto):
             return False
 
         pddl_action_model = self._dto_to_model(
             pddl_action_dto)
 
+        # propagate saving
+        for pddl_parameter_model in pddl_action_model.pddl_parameters:
+            pddl_parameter_model.pddl_type.save()
+
+        for pddl_predicate_model in pddl_action_model._pddl_predicates_used:
+            pddl_predicate_model.save()
+
+        # saving
         if pddl_action_model:
             pddl_action_model.save()
             return True
