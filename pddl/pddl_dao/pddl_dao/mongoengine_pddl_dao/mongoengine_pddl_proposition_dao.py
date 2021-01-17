@@ -330,14 +330,10 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
         if pddl_proposition_model:
             new_pddl_proposition_model = self._dto_to_model(
                 pddl_proposition_dto)
-
-            if new_pddl_proposition_model:
-                pddl_proposition_model.pddl_predicate = new_pddl_proposition_model.pddl_predicate
-                pddl_proposition_model.pddl_objects = new_pddl_proposition_model.pddl_objects
-                pddl_proposition_model.is_goal = new_pddl_proposition_model.is_goal
-                pddl_proposition_model.save()
-            else:
-                return False
+            pddl_proposition_model.pddl_predicate = new_pddl_proposition_model.pddl_predicate
+            pddl_proposition_model.pddl_objects = new_pddl_proposition_model.pddl_objects
+            pddl_proposition_model.is_goal = new_pddl_proposition_model.is_goal
+            pddl_proposition_model.save()
 
             return True
 

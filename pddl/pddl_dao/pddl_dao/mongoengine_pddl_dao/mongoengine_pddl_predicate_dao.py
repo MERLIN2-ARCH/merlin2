@@ -193,13 +193,9 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
         if pddl_predicate_model:
             new_pddl_predicate_model = self._dto_to_model(
                 pddl_predicate_dto)
-
-            if new_pddl_predicate_model:
-                pddl_predicate_model.predicate_name = new_pddl_predicate_model.predicate_name
-                pddl_predicate_model.pddl_types = new_pddl_predicate_model.pddl_types
-                pddl_predicate_model.save()
-            else:
-                return False
+            pddl_predicate_model.predicate_name = new_pddl_predicate_model.predicate_name
+            pddl_predicate_model.pddl_types = new_pddl_predicate_model.pddl_types
+            pddl_predicate_model.save()
 
             return True
 

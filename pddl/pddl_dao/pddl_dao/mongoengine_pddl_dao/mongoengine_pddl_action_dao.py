@@ -464,17 +464,13 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         if pddl_action_model:
             new_pddl_action_model = self._dto_to_model(
                 pddl_action_dto)
-
-            if new_pddl_action_model:
-                pddl_action_model.action_name = new_pddl_action_model.action_name
-                pddl_action_model.durative = new_pddl_action_model.durative
-                pddl_action_model.duration = new_pddl_action_model.duration
-                pddl_action_model.pddl_parameters = new_pddl_action_model.pddl_parameters
-                pddl_action_model.pddl_conditions = new_pddl_action_model.pddl_conditions
-                pddl_action_model.pddl_effects = new_pddl_action_model.pddl_effects
-                pddl_action_model.save()
-            else:
-                return False
+            pddl_action_model.action_name = new_pddl_action_model.action_name
+            pddl_action_model.durative = new_pddl_action_model.durative
+            pddl_action_model.duration = new_pddl_action_model.duration
+            pddl_action_model.pddl_parameters = new_pddl_action_model.pddl_parameters
+            pddl_action_model.pddl_conditions = new_pddl_action_model.pddl_conditions
+            pddl_action_model.pddl_effects = new_pddl_action_model.pddl_effects
+            pddl_action_model.save()
 
             return True
 
