@@ -184,29 +184,16 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
             Document: Mongoengine pddl proposition document
         """
 
-        pddl_dto_objects_list = pddl_proposition_dto.get_pddl_objects_list()
+        pddl_objects_dto_list = pddl_proposition_dto.get_pddl_objects_list()
 
-        # check if predicate exists
-        pddl_predicate_model = self._me_pddl_predicate_dao._get_model(
-            pddl_proposition_dto.get_pddl_predicate())
-
-        if not pddl_predicate_model:
-            return None
-
-        # check if objects exist
         pddl_objects_list = []
-        for pddl_object_dto in pddl_dto_objects_list:
-            pddl_object_model = self._me_pddl_object_dao._get_model(
-                pddl_object_dto)
-
-            # check if object exist
-            if not pddl_object_model:
-                return None
-            pddl_objects_list.append(pddl_object_model)
+        for pddl_object_dto in pddl_objects_dto_list:
+            pddl_objects_list.append(pddl_object_dto.get_object_name())
 
         # getting proposition
         pddl_proposition_model = PddlPropositionModel.objects(
-            pddl_predicate=pddl_predicate_model, pddl_objects=pddl_objects_list)
+            pddl_predicate=pddl_proposition_dto.get_pddl_predicate().get_predicate_name(),
+            pddl_objects=pddl_objects_list)
 
         # check if proposition exist
         if not pddl_proposition_model:
@@ -224,16 +211,8 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
             List[PddlPropositionDto]: list of PddlPropositionDto
         """
 
-        pddl_predicate_model = PddlPredicateModel.objects(
-            predicate_name=predicate_name)
-
-        # check if predicate exist
-        if not pddl_predicate_model:
-            return []
-        pddl_predicate_model = pddl_predicate_model[0]
-
         pddl_proposition_model = PddlPropositionModel.objects(
-            pddl_predicate=pddl_predicate_model)
+            pddl_predicate=predicate_name)
 
         pddl_dto_proposition_list = []
 
