@@ -462,8 +462,8 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
 
         # check if action exists
         if pddl_action_model:
-            new_pddl_action_model = self._dto_to_model(
-                pddl_action_dto)
+            new_pddl_action_model = self._dto_to_model(pddl_action_dto)
+
             pddl_action_model.action_name = new_pddl_action_model.action_name
             pddl_action_model.durative = new_pddl_action_model.durative
             pddl_action_model.duration = new_pddl_action_model.duration
