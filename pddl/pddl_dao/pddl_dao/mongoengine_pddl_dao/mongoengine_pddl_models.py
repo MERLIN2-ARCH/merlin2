@@ -8,14 +8,15 @@ class PddlTypeModel(mongoengine.Document):
     """ pddl type model """
 
     meta = {"collection": "pddl_type"}
-    type_name = mongoengine.StringField(unique=True)
+    type_name = mongoengine.StringField(primary_key=True)
+    _aux = mongoengine.StringField(default="AUX")
 
 
 class PddlObjectModel(mongoengine.Document):
     """ pddl object model """
 
     meta = {"collection": "pddl_object"}
-    object_name = mongoengine.StringField(unique=True)
+    object_name = mongoengine.StringField(primary_key=True)
     pddl_type = mongoengine.ReferenceField(
         PddlTypeModel, reverse_delete_rule=mongoengine.CASCADE)
 
@@ -24,7 +25,7 @@ class PddlPredicateModel(mongoengine.Document):
     """ pddl predicate model """
 
     meta = {"collection": "pddl_predicate"}
-    predicate_name = mongoengine.StringField(unique=True)
+    predicate_name = mongoengine.StringField(primary_key=True)
     pddl_types = mongoengine.ListField(
         mongoengine.ReferenceField(PddlTypeModel,
                                    reverse_delete_rule=mongoengine.CASCADE))
@@ -66,7 +67,7 @@ class PddlActionModel(mongoengine.Document):
 
     meta = {"collection": "pddl_action"}
 
-    action_name = mongoengine.StringField(unique=True)
+    action_name = mongoengine.StringField(primary_key=True)
     duration = mongoengine.IntField(default=10)
     durative = mongoengine.BooleanField(default=True)
 
