@@ -39,8 +39,7 @@ class PddlPropositionModel(mongoengine.Document):
         PddlPredicateModel, reverse_delete_rule=mongoengine.CASCADE)
     pddl_objects = mongoengine.ListField(
         mongoengine.ReferenceField(
-            PddlObjectModel, reverse_delete_rule=mongoengine.CASCADE),
-        unique_with="pddl_predicate")
+            PddlObjectModel, reverse_delete_rule=mongoengine.CASCADE))
     is_goal = mongoengine.BooleanField()
 
 
