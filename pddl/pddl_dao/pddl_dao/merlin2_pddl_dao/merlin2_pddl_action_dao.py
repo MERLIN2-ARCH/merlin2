@@ -2,7 +2,6 @@
 """ Merlin2 Pddl Action Dao """
 
 from typing import List
-import asyncio
 from rclpy.node import Node
 
 from pddl_dao.pddl_dao_interface import PddlActionDao
@@ -44,8 +43,8 @@ class Merlin2PddlActionDao(PddlActionDao):
         self._delete_all_client = self.node.create_client(
             Empty, "delete_all_actions")
 
-    async def _merlin2_get(self, action_name: str = "") -> List[PddlActionDto]:
-        """ asyn merlin2_get method
+    def _merlin2_get(self, action_name: str = "") -> List[PddlActionDto]:
+        """ merlin2_get method
 
         Args:
             action_name (str): action name
@@ -59,15 +58,8 @@ class Merlin2PddlActionDao(PddlActionDao):
         req.action_name = action_name
 
         self._get_client.wait_for_service()
-        future = self._get_client.call_async(req)
+        result = self._get_client.call(req)
 
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return None
-
-        result = future.result()
         pddl_action_dto_list = []
 
         for pddl_action_msg in result.pddl_actions:
@@ -77,16 +69,16 @@ class Merlin2PddlActionDao(PddlActionDao):
 
         return pddl_action_dto_list
 
-    async def _merlin2_update(self,
-                              pddl_action_dto: PddlActionDto,
-                              update_type: int) -> bool:
-        """ asyn merlin2_delete_all method
+    def _merlin2_update(self,
+                        pddl_action_dto: PddlActionDto,
+                        update_type: int) -> bool:
+        """ merlin2_delete_all method
 
         Args:
             pddl_action_dto (PddlActionDto): PddlActionDto to update
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = UpdatePddlAction.Request()
@@ -96,34 +88,21 @@ class Merlin2PddlActionDao(PddlActionDao):
         req.update_konwledge.update_type = update_type
 
         self._update_client.wait_for_service()
-        future = self._update_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return False
-
-        result = future.result()
+        result = self._update_client.call(req)
 
         return result.success
 
-    async def _merlin2_delete_all(self):
+    def _merlin2_delete_all(self):
         """ asyn delete_all method
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = Empty.Request()
 
         self._delete_all_client.wait_for_service()
-        future = self._delete_all_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
+        self._delete_all_client.call(req)
 
     def get(self, action_name: str) -> PddlActionDto:
         """ get a PddlActionDto with a given action name
@@ -136,7 +115,7 @@ class Merlin2PddlActionDao(PddlActionDao):
             PddlActionDto: PddlActionDto of the pddl action name
         """
 
-        pddl_action_dto_list = asyncio.run(self._merlin2_get(action_name))
+        pddl_action_dto_list = self._merlin2_get(action_name)
 
         if len(pddl_action_dto_list) == 1:
             return pddl_action_dto_list[0]
@@ -150,7 +129,7 @@ class Merlin2PddlActionDao(PddlActionDao):
             List[PddlActionDto]: list of all PddlActionDto
         """
 
-        pddl_action_dto_list = asyncio.run(self._merlin2_get())
+        pddl_action_dto_list = self._merlin2_get()
 
         return pddl_action_dto_list
 
@@ -166,8 +145,8 @@ class Merlin2PddlActionDao(PddlActionDao):
         """
 
         if not self.get(pddl_action_dto.get_action_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_action_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_action_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -184,8 +163,8 @@ class Merlin2PddlActionDao(PddlActionDao):
         """
 
         if self.get(pddl_action_dto.get_action_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_action_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_action_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -219,8 +198,8 @@ class Merlin2PddlActionDao(PddlActionDao):
             bool: succeed
         """
 
-        succ = asyncio.run(self._merlin2_update(
-            pddl_action_dto, UpdateKnowledge.DELETE))
+        succ = self._merlin2_update(
+            pddl_action_dto, UpdateKnowledge.DELETE)
         return succ
 
     def delete_all(self) -> bool:
@@ -230,6 +209,6 @@ class Merlin2PddlActionDao(PddlActionDao):
             bool: succeed
         """
 
-        asyncio.run(self._merlin2_delete_all())
+        self._merlin2_delete_all()
 
         return True

@@ -2,7 +2,6 @@
 """ Merlin2 Pddl Predicate Dao """
 
 from typing import List
-import asyncio
 from rclpy.node import Node
 
 from pddl_dao.pddl_dao_interface import PddlPredicateDao
@@ -44,8 +43,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         self._delete_all_client = self.node.create_client(
             Empty, "delete_all_predicates")
 
-    async def _merlin2_get(self, predicate_name: str = "") -> List[PddlPredicateDto]:
-        """ asyn merlin2_get method
+    def _merlin2_get(self, predicate_name: str = "") -> List[PddlPredicateDto]:
+        """ merlin2_get method
 
         Args:
             predicate_name (str): predicate name
@@ -59,15 +58,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         req.predicate_name = predicate_name
 
         self._get_client.wait_for_service()
-        future = self._get_client.call_async(req)
+        result = self._get_client.call(req)
 
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return None
-
-        result = future.result()
         pddl_predicate_dto_list = []
 
         for pddl_predicate_msg in result.pddl_predicates:
@@ -77,16 +69,16 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
 
         return pddl_predicate_dto_list
 
-    async def _merlin2_update(self,
-                              pddl_predicate_dto: PddlPredicateDto,
-                              update_type: int) -> bool:
-        """ asyn merlin2_update method
+    def _merlin2_update(self,
+                        pddl_predicate_dto: PddlPredicateDto,
+                        update_type: int) -> bool:
+        """ merlin2_update method
 
         Args:
             pddl_predicate_dto (PddlPredicateDto): PddlPredicateDto to update
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = UpdatePddlPredicate.Request()
@@ -96,34 +88,21 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         req.update_konwledge.update_type = update_type
 
         self._update_client.wait_for_service()
-        future = self._update_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return False
-
-        result = future.result()
+        result = self._update_client.call(req)
 
         return result.success
 
-    async def _merlin2_delete_all(self):
-        """ asyn merlin2_delete_all method
+    def _merlin2_delete_all(self):
+        """ merlin2_delete_all method
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = Empty.Request()
 
         self._delete_all_client.wait_for_service()
-        future = self._delete_all_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
+        self._delete_all_client.call(req)
 
     def get(self, predicate_name: str) -> PddlPredicateDto:
         """ get a PddlPredicateDto with a given predicate name
@@ -136,8 +115,7 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             PddlPredicateDto: PddlPredicateDto of the pddl predicate name
         """
 
-        pddl_predicate_dto_list = asyncio.run(
-            self._merlin2_get(predicate_name))
+        pddl_predicate_dto_list = self._merlin2_get(predicate_name)
 
         if len(pddl_predicate_dto_list) == 1:
             return pddl_predicate_dto_list[0]
@@ -151,7 +129,7 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             List[PddlPredicateDto]: list of all PddlPredicateDto
         """
 
-        pddl_predicate_dto_list = asyncio.run(self._merlin2_get())
+        pddl_predicate_dto_list = self._merlin2_get()
 
         return pddl_predicate_dto_list
 
@@ -167,8 +145,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         """
 
         if not self.get(pddl_predicate_dto.get_predicate_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_predicate_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_predicate_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -185,8 +163,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
         """
 
         if self.get(pddl_predicate_dto.get_predicate_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_predicate_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_predicate_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -220,8 +198,8 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             bool: succeed
         """
 
-        succ = asyncio.run(self._merlin2_update(
-            pddl_predicate_dto, UpdateKnowledge.DELETE))
+        succ = self._merlin2_update(
+            pddl_predicate_dto, UpdateKnowledge.DELETE)
         return succ
 
     def delete_all(self) -> bool:
@@ -231,6 +209,6 @@ class Merlin2PddlPredicateDao(PddlPredicateDao):
             bool: succeed
         """
 
-        asyncio.run(self._merlin2_delete_all())
+        self._merlin2_delete_all()
 
         return True

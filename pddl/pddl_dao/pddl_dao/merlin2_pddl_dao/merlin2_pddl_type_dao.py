@@ -2,7 +2,6 @@
 """ Merlin2 Pddl Type Dao """
 
 from typing import List
-import asyncio
 from rclpy.node import Node
 
 from pddl_dao.pddl_dao_interface import PddlTypeDao
@@ -44,8 +43,8 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         self._delete_all_client = self.node.create_client(
             Empty, "delete_all_types")
 
-    async def _merlin2_get(self, type_name: str = "") -> List[PddlTypeDto]:
-        """ asyn merlin2_get method
+    def _merlin2_get(self, type_name: str = "") -> List[PddlTypeDto]:
+        """ merlin2_get method
 
         Args:
             type_name (str): type name
@@ -59,15 +58,8 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         req.type_name = type_name
 
         self._get_client.wait_for_service()
-        future = self._get_client.call_async(req)
+        result = self._get_client.call(req)
 
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return None
-
-        result = future.result()
         pddl_type_dto_list = []
 
         for pddl_type_msg in result.pddl_types:
@@ -76,16 +68,16 @@ class Merlin2PddlTypeDao(PddlTypeDao):
 
         return pddl_type_dto_list
 
-    async def _merlin2_update(self,
-                              pddl_type_dto: PddlTypeDto,
-                              update_type: int) -> bool:
-        """ asyn merlin2_update method
+    def _merlin2_update(self,
+                        pddl_type_dto: PddlTypeDto,
+                        update_type: int) -> bool:
+        """  merlin2_update method
 
         Args:
             pddl_type_dto (PddlTypeDto): PddlTypeDto to update
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = UpdatePddlType.Request()
@@ -94,34 +86,21 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         req.update_konwledge.update_type = update_type
 
         self._update_client.wait_for_service()
-        future = self._update_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
-            return False
-
-        result = future.result()
+        result = self._update_client.call(req)
 
         return result.success
 
-    async def _merlin2_delete_all(self):
-        """ asyn merlin2_delete_all method
+    def _merlin2_delete_all(self):
+        """  merlin2_delete_all method
 
         Returns:
-            boo: succeed
+            bool: succeed
         """
 
         req = Empty.Request()
 
         self._delete_all_client.wait_for_service()
-        future = self._delete_all_client.call_async(req)
-
-        try:
-            await future
-        except Exception as e:
-            self.node.get_logger().info("Service call failed %r" % (e,))
+        self._delete_all_client.call(req)
 
     def get(self, type_name: str) -> PddlTypeDto:
         """ get a PddlTypeDto with a given type name
@@ -134,7 +113,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
             PddlTypeDto: PddlTypeDto of the pddl type name
         """
 
-        pddl_type_dto_list = asyncio.run(self._merlin2_get(type_name))
+        pddl_type_dto_list = self._merlin2_get(type_name)
 
         if len(pddl_type_dto_list) == 1:
             return pddl_type_dto_list[0]
@@ -148,7 +127,7 @@ class Merlin2PddlTypeDao(PddlTypeDao):
             List[PddlTypeDto]: list of all PddlTypeDto
         """
 
-        pddl_type_dto_list = asyncio.run(self._merlin2_get())
+        pddl_type_dto_list = self._merlin2_get()
 
         return pddl_type_dto_list
 
@@ -164,8 +143,8 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         """
 
         if not self.get(pddl_type_dto.get_type_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_type_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_type_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -182,8 +161,8 @@ class Merlin2PddlTypeDao(PddlTypeDao):
         """
 
         if self.get(pddl_type_dto.get_type_name()):
-            succ = asyncio.run(self._merlin2_update(
-                pddl_type_dto, UpdateKnowledge.SAVE))
+            succ = self._merlin2_update(
+                pddl_type_dto, UpdateKnowledge.SAVE)
             return succ
 
         return False
@@ -217,8 +196,8 @@ class Merlin2PddlTypeDao(PddlTypeDao):
             bool: succeed
         """
 
-        succ = asyncio.run(self._merlin2_update(
-            pddl_type_dto, UpdateKnowledge.DELETE))
+        succ = self._merlin2_update(
+            pddl_type_dto, UpdateKnowledge.DELETE)
         return succ
 
     def delete_all(self) -> bool:
@@ -228,6 +207,6 @@ class Merlin2PddlTypeDao(PddlTypeDao):
             bool: succeed
         """
 
-        asyncio.run(self._merlin2_delete_all())
+        self._merlin2_delete_all()
 
         return True
