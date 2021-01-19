@@ -134,10 +134,6 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         pddl_predicate_model = self._me_pddl_predicate_dao._dto_to_model(
             pddl_dto_condition_effect.get_pddl_predicate())
 
-        # check if predicate exists
-        if not pddl_predicate_model:
-            return None
-
         pddl_condition_model = PddlConditionEffectModel()
         pddl_condition_model.pddl_predicate = pddl_predicate_model
         pddl_condition_model.time = pddl_dto_condition_effect.get_time()
@@ -173,10 +169,6 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             pddl_type_model = self._me_pddl_type_dao._dto_to_model(
                 param.get_pddl_type())
 
-            # check if type exists
-            if not pddl_type_model:
-                return None
-
             param_name = param.get_object_name()
 
             pddl_parameter_model = PddlParameterModel()
@@ -193,9 +185,6 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
             pddl_condition_model = self.__condition_effect_dto_to_model(
                 pddl_condition_dto, parameter_dict)
 
-            if not pddl_condition_model:
-                return None
-
             pddl_action_model.pddl_conditions.append(pddl_condition_model)
             pddl_action_model._pddl_predicates_used.append(
                 pddl_condition_model.pddl_predicate)
@@ -204,9 +193,6 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
         for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
             pddl_effect_model = self.__condition_effect_dto_to_model(
                 pddl_effect_dto, parameter_dict)
-
-            if not pddl_effect_model:
-                return None
 
             pddl_action_model.pddl_effects.append(pddl_effect_model)
             pddl_action_model._pddl_predicates_used.append(

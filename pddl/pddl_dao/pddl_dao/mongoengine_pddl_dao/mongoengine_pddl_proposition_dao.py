@@ -135,25 +135,20 @@ class MongoenginePddlPropositionDao(PddlPropositionDao, MongoenginePddlDao):
 
         pddl_proposition_model = PddlPropositionModel()
 
+        # predicate model
         pddl_predicate_model = self._me_pddl_predicate_dao._dto_to_model(
             pddl_proposition_dto.get_pddl_predicate())
 
-        # check if predicate exist
-        if not pddl_predicate_model:
-            return None
-
         pddl_proposition_model.pddl_predicate = pddl_predicate_model
 
+        # is goal
         pddl_proposition_model.is_goal = pddl_proposition_dto.get_is_goal()
 
+        # objects models
         for pddl_object_dto in pddl_proposition_dto.get_pddl_objects_list():
 
             pddl_object_model = self._me_pddl_object_dao._dto_to_model(
                 pddl_object_dto)
-
-            # check if object exist
-            if not pddl_object_model:
-                return None
 
             pddl_proposition_model.pddl_objects.append(
                 pddl_object_model)

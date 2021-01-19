@@ -71,10 +71,6 @@ class MongoenginePddlPredicateDao(PddlPredicateDao, MongoenginePddlDao):
             pddl_type_model = self._me_pddl_type_dao._dto_to_model(
                 pddl_type_dto)
 
-            # check if type exist
-            if not pddl_type_model:
-                return None
-
             pddl_predicate_model.pddl_types.append(pddl_type_model)
 
         return pddl_predicate_model
