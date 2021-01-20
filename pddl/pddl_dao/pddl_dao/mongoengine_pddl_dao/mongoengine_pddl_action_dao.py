@@ -186,8 +186,10 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
                 pddl_condition_dto, parameter_dict)
 
             pddl_action_model.pddl_conditions.append(pddl_condition_model)
-            pddl_action_model._pddl_predicates_used.append(
-                pddl_condition_model.pddl_predicate)
+
+            if pddl_condition_model.pddl_predicate not in pddl_action_model._pddl_predicates_used:
+                pddl_action_model._pddl_predicates_used.append(
+                    pddl_condition_model.pddl_predicate)
 
         # ACTION EFFECTS
         for pddl_effect_dto in pddl_action_dto.get_pddl_effects_list():
@@ -195,8 +197,10 @@ class MongoenginePddlActionDao(PddlActionDao, MongoenginePddlDao):
                 pddl_effect_dto, parameter_dict)
 
             pddl_action_model.pddl_effects.append(pddl_effect_model)
-            pddl_action_model._pddl_predicates_used.append(
-                pddl_effect_model.pddl_predicate)
+
+            if pddl_condition_model.pddl_predicate not in pddl_action_model._pddl_predicates_used:
+                pddl_action_model._pddl_predicates_used.append(
+                    pddl_effect_model.pddl_predicate)
 
         return pddl_action_model
 
