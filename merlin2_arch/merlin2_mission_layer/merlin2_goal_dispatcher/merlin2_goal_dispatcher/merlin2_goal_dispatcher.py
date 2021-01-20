@@ -12,6 +12,8 @@ from pddl_dao.pddl_dao_factory import (
     PddlDaoFamilies
 )
 
+from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
+
 from merlin2_arch_interfaces.action import Execute
 
 from custom_ros2 import (
@@ -52,6 +54,15 @@ class Merlin2GoalDispatcher:
         # action client
         self.__action_client = ActionClient(self.__node, Execute, "execute")
 
+    def get_pddl_factory(self) -> PddlDaoFactory:
+        """ get pddl dao factory of the goal dispatcher
+
+        Returns:
+            PddlDaoFactory: pddl dao factory
+        """
+
+        return self.__pddl_dao_factory
+
     def execute_goals(self, pddl_proposition_dto_list: List[PddlPropositionDto]) -> bool:
         """ add goals to knowledge base and call executor
 
@@ -74,11 +85,18 @@ class Merlin2GoalDispatcher:
 
         # call executor
         goal = Execute.Goal()
+        self.__action_client.wait_for_server()
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()
 
+        results = self.__action_client.get_result()
+
         # results
-        succeed = self.__action_client.is_succeeded()
+        succeed = (self.__action_client.is_succeeded() and
+                   results.dispatch_plan and
+                   results.generate_pddl and
+                   results.dispatch_plan)
+
         return succeed
 
     def cancel_goals(self):
