@@ -6,10 +6,11 @@ import rclpy
 
 from pddl_dto import (
     PddlObjectDto,
-    PddlPredicateDto,
     PddlConditionEffectDto,
-    PddlTypeDto
 )
+
+from merlin2_basic_actions.merlin2_basic_types import wp_type
+from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 
 from merlin2_action.merlin2_action import Merlin2Action
 
@@ -23,11 +24,8 @@ class Merlin2NavigationAction(Merlin2Action):
 
     def __init__(self):
 
-        self.__wp_type = PddlTypeDto("wp")
-        self.__robot_at = PddlPredicateDto("robot_at", [self.__wp_type])
-
-        self.__org = PddlObjectDto(self.__wp_type, "o")
-        self.__dst = PddlObjectDto(self.__wp_type, "d")
+        self.__org = PddlObjectDto(wp_type, "o")
+        self.__dst = PddlObjectDto(wp_type, "d")
 
         super().__init__("navigation_action")
 
@@ -56,17 +54,17 @@ class Merlin2NavigationAction(Merlin2Action):
         return [self.__org, self.__dst]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(self.__robot_at,
+        condition_1 = PddlConditionEffectDto(robot_at,
                                              [self.__org],
                                              time=PddlConditionEffectDto.AT_START)
         return [condition_1]
 
     def create_efects(self) -> List[PddlConditionEffectDto]:
-        effect_1 = PddlConditionEffectDto(self.__robot_at,
+        effect_1 = PddlConditionEffectDto(robot_at,
                                           [self.__dst],
                                           time=PddlConditionEffectDto.AT_END)
 
-        effect_2 = PddlConditionEffectDto(self.__robot_at,
+        effect_2 = PddlConditionEffectDto(robot_at,
                                           [self.__org],
                                           is_negative=True,
                                           time=PddlConditionEffectDto.AT_START)
