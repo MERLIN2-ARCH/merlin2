@@ -29,7 +29,8 @@ class Merlin2NavigationAction(Merlin2Action):
 
         super().__init__("navigation_action")
 
-        self.__action_client = ActionClient(self, TopoNav, "topo_nav")
+        self.__action_client = ActionClient(
+            self, TopoNav, "/topo_nav/navigation")
 
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = TopoNav.Goal()
