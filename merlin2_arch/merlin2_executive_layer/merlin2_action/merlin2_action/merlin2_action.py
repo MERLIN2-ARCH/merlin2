@@ -137,7 +137,7 @@ class Merlin2Action(Node, PddlActionDto):
         self.cancel_action()
 
     def __execute_server(self, goal_handle):
-        self._is_canceled = True
+        self._is_canceled = False
         result = DispatchAction.Result()
 
         succeed = self.run_action(goal_handle.request.action)

@@ -40,7 +40,7 @@ class Merlin2NavigationAction(Merlin2Action):
         nav_goal.point = dst
 
         self.__action_client.wait_for_server()
-        self.__action_client.send_goal(goal)
+        self.__action_client.send_goal(nav_goal)
         self.__action_client.wait_for_result()
 
         if self.__action_client.is_succeeded():
