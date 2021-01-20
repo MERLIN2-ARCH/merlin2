@@ -59,7 +59,7 @@ class Merlin2Action(Node, PddlActionDto):
         # action
         self._is_canceled = False
         self.__action_server = ActionSingleServer(self, DispatchAction,
-                                                  "merlin2_action/" + a_name,
+                                                  "merlin2/" + a_name,
                                                   self.__execute_server,
                                                   cancel_callback=self.__cancel_callback)
 
