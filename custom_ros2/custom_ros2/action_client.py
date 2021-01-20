@@ -25,6 +25,9 @@ class ActionClient(ActionClient2):
         with self.__status_lock:
             self._status = status
 
+    def is_aborted(self):
+        return self.get_status() == GoalStatus.STATUS_ABORTED
+
     def is_succeeded(self):
         return self.get_status() == GoalStatus.STATUS_SUCCEEDED
 
@@ -88,8 +91,8 @@ class ActionClient(ActionClient2):
         self.__working = False
 
     def send_goal(self, goal):
-        self.__goal_thread = Thread(target=self.__send_goal, args=(goal,))
         self.__working = True
+        self.__goal_thread = Thread(target=self.__send_goal, args=(goal,))
         self._set_status(GoalStatus.STATUS_UNKNOWN)
         self.__goal_thread.start()
 
