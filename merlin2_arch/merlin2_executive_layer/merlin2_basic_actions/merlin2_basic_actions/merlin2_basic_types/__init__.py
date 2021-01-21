@@ -4,3 +4,5 @@ from pddl_dto import (
 )
 
 wp_type = PddlTypeDto("wp")
+person_type = PddlTypeDto("person")
+object_type = PddlTypeDto("object")
