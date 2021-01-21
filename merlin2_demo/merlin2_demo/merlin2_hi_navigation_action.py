@@ -35,7 +35,6 @@ class Merlin2HiNavigationAction(Merlin2Action):
     def __init__(self):
 
         self.__source_p = PddlObjectDto(wp_type, "source_p")
-        self.__source_r = PddlObjectDto(wp_type, "source_r")
         self.__per = PddlObjectDto(person_type, "per")
 
         super().__init__("hi_navigation_action")
@@ -87,7 +86,7 @@ class Merlin2HiNavigationAction(Merlin2Action):
         self.__topo_nav_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:
-        return [self.__source_p, self.__source_r, self.__per]
+        return [self.__source_p, self.__per]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(robot_at,
