@@ -24,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'merlin2_demo_node = merlin2_demo.merlin2_demo_node:main',
+            'merlin2_hi_navigation_action = merlin2_demo.merlin2_hi_navigation_action:main'
         ],
     },
 )
