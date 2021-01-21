@@ -2,14 +2,24 @@
 import rclpy
 
 from merlin2_goal_dispatcher import Merlin2GoalDispatcher
-from custom_ros2 import Node
-from merlin2_basic_actions.merlin2_basic_types import wp_type
-from merlin2_basic_actions.merlin2_basic_predicates import robot_at
+
+from merlin2_basic_actions.merlin2_basic_types import (
+    wp_type,
+    person_type
+)
+from merlin2_basic_actions.merlin2_basic_predicates import (
+    robot_at,
+    person_at
+)
 
 from pddl_dto import (
     PddlObjectDto,
     PddlPropositionDto
 )
+
+from .pddl import person_attended
+
+from custom_ros2 import Node
 
 
 class Merlin2DemoNode(Node):
@@ -29,11 +39,14 @@ class Merlin2DemoNode(Node):
         livingroom = PddlObjectDto(wp_type, "livingroom")
         entrance = PddlObjectDto(wp_type, "entrance")
         bathroom = PddlObjectDto(wp_type, "bathroom")
-        objects = [kitchen, bedroom, livingroom, entrance, bathroom]
+        miguel = PddlObjectDto(person_type, "Miguel")
+        objects = [kitchen, bedroom, livingroom, entrance, bathroom, miguel]
 
         robot_at_prop = PddlPropositionDto(robot_at, [entrance])
-        self.robot_at_goal = PddlPropositionDto(
-            robot_at, [kitchen], is_goal=True)
+        miguel_at_prop = PddlPropositionDto(person_at, [miguel, livingroom])
+        self.person_attended_goal = PddlPropositionDto(
+            person_attended, [miguel], is_goal=True)
+        propositions = [robot_at_prop, miguel_at_prop]
 
         pddl_object_dao.delete_all()
         pddl_proposition_dao.delete_all()
@@ -41,11 +54,13 @@ class Merlin2DemoNode(Node):
         for pddl_object_dto in objects:
             pddl_object_dao.save(pddl_object_dto)
 
-        pddl_proposition_dao.save(robot_at_prop)
+        for pddl_proposition_dto in propositions:
+            pddl_proposition_dao.save(pddl_proposition_dto)
 
     def execute(self):
 
-        succeed = self.goal_dispatcher.execute_goals([self.robot_at_goal])
+        succeed = self.goal_dispatcher.execute_goals(
+            [self.person_attended_goal])
         self.get_logger().info(str(succeed))
 
 
