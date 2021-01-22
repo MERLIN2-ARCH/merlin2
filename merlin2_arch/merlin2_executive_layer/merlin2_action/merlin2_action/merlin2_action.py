@@ -2,6 +2,7 @@
 """ Merlin2 Action Base """
 
 from typing import List
+import time
 from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
 from pddl_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
@@ -126,6 +127,8 @@ class Merlin2Action(Node, PddlActionDto):
         succeed = self.run_action(goal_handle.request.action)
 
         if self._is_canceled:
+            while not goal_handle.is_cancel_requested:
+                time.sleep(0.05)
             goal_handle.canceled()
 
         else:

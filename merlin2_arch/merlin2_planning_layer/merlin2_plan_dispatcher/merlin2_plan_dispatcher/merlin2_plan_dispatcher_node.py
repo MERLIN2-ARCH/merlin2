@@ -2,6 +2,7 @@
 """ Merlin2 Plan Dispatcher Node """
 
 from typing import Dict
+import time
 
 from merlin2_arch_interfaces.action import (
     DispatchPlan,
@@ -9,8 +10,6 @@ from merlin2_arch_interfaces.action import (
 )
 
 import rclpy
-from action_msgs.msg import GoalStatus
-
 
 from pddl_dto import (
     PddlPropositionDto,
@@ -175,6 +174,8 @@ class Merlin2PlanDispatcherNode(Node):
                         return result
 
             if self.__server_canceled:
+                while not goal_handle.is_cancel_requested:
+                    time.sleep(0.05)
                 goal_handle.canceled()
                 self.__action_client = None
                 return result
