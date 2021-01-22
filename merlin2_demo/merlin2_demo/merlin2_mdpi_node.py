@@ -141,7 +141,8 @@ class Merlin2MdpiNode(Node):
         # results
         end_t = time.time()
         total_t = end_t - start_t
-        self.get_logger().info("TIME: " + str(total_t))
+        self.get_logger().info("TIME: " + str(total_t) +
+                               " ------------------------------------")
 
     def _check_wp(self, goal):
         self.goal_dispatcher.execute_goals([goal])
