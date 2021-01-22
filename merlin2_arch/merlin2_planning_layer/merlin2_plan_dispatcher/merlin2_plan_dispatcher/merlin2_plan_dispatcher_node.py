@@ -34,6 +34,8 @@ class Merlin2PlanDispatcherNode(Node):
 
         super().__init__("merlin2_plan_dispatcher_node")
 
+        self.__server_canceled = False
+
         # loading parameters
         pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
         pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
@@ -57,9 +59,9 @@ class Merlin2PlanDispatcherNode(Node):
         super().destroy_node()
 
     def __cancel_callback(self):
+        self.__server_canceled = True
         if self.__action_client:
-            if self.__action_client.is_working():
-                self.__action_client.cancel_goal()
+            self.__action_client.cancel_goal()
 
     def _call_action(self, goal):
         self.__action_client = ActionClient(
@@ -72,7 +74,7 @@ class Merlin2PlanDispatcherNode(Node):
         """ action server execute callback """
 
         result = DispatchPlan.Result()
-
+        self.__server_canceled = False
         succeed = True
 
         for action in goal_handle.request.plan:
@@ -172,19 +174,18 @@ class Merlin2PlanDispatcherNode(Node):
                         goal_handle.abort()
                         return result
 
-        if(goal_handle.status == GoalStatus.STATUS_CANCELED and
-           goal_handle.status == GoalStatus.STATUS_CANCELING):
-            goal_handle.canceled()
+            if self.__server_canceled:
+                goal_handle.canceled()
+                self.__action_client = None
+                return result
 
-        else:
-            if not self.__action_client:
-                goal_handle.succeed()
-            elif self.__action_client.is_succeeded():
-                goal_handle.succeed()
-            else:
+            elif not self.__action_client.is_succeeded():
                 goal_handle.abort()
+                self.__action_client = None
+                return result
 
         # reset action client
+        goal_handle.succeed()
         self.__action_client = None
 
         return result
