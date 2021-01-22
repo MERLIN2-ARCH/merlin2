@@ -5,10 +5,8 @@ import rclpy
 
 from merlin2_arch_interfaces.srv import GeneratePddl
 from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
-from pddl_dao.pddl_dao_factory import (
-    PddlDaoFactoryFactory,
-    PddlDaoFamilies
-)
+
+from pddl_dao import PddlDaoParameterLoader
 
 from custom_ros2 import Node
 
@@ -20,26 +18,9 @@ class Merlin2PddlGeneratorNode(Node):
 
         super().__init__('merlin2_pddl_generator_mode')
 
-        # param names
-        pddl_dao_family_param_name = "pddl_dao_family"
-        mongoengine_uri_param_name = "mongoengine_uri"
-
-        # declaring params
-        self.declare_parameter(pddl_dao_family_param_name,
-                               PddlDaoFamilies.MONGOENGINE)
-        self.declare_parameter(mongoengine_uri_param_name,
-                               "mongodb://localhost:27017/merlin2")
-
-        # getting params
-        pddl_dao_family = self.get_parameter(
-            pddl_dao_family_param_name).get_parameter_value().integer_value
-        mongoengine_uri = self.get_parameter(
-            mongoengine_uri_param_name).get_parameter_value().string_value
-
-        # creating pddl generator
-        pddl_dao_factory_factory = PddlDaoFactoryFactory()
-        pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            pddl_dao_family, uri=mongoengine_uri, node=self)
+        # loading parameters
+        pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
+        pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
         self.pddl_generator = Merlin2PddlGenerator(pddl_dao_factory)
 
         # service servers

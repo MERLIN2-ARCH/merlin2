@@ -2,7 +2,7 @@
 """ Merlin2 Plan Dispatcher Node """
 
 from typing import Dict
-import time
+
 from merlin2_arch_interfaces.action import (
     DispatchPlan,
     DispatchAction
@@ -18,10 +18,7 @@ from pddl_dto import (
     PddlObjectDto
 )
 
-from pddl_dao.pddl_dao_factory import (
-    PddlDaoFactoryFactory,
-    PddlDaoFamilies
-)
+from pddl_dao import PddlDaoParameterLoader
 
 from custom_ros2 import (
     Node,
@@ -37,25 +34,9 @@ class Merlin2PlanDispatcherNode(Node):
 
         super().__init__("merlin2_plan_dispatcher_node")
 
-        # param names
-        pddl_dao_family_param_name = "pddl_dao_family"
-        mongoengine_uri_param_name = "mongoengine_uri"
-
-        # declaring params
-        self.declare_parameter(pddl_dao_family_param_name,
-                               PddlDaoFamilies.MONGOENGINE)
-        self.declare_parameter(mongoengine_uri_param_name,
-                               "mongodb://localhost:27017/merlin2")
-
-        # getting params
-        pddl_dao_family = self.get_parameter(
-            pddl_dao_family_param_name).get_parameter_value().integer_value
-        mongoengine_uri = self.get_parameter(
-            mongoengine_uri_param_name).get_parameter_value().string_value
-
-        # creating pddl daos
-        pddl_dao_factory = PddlDaoFactoryFactory().create_pddl_dao_factory(
-            pddl_dao_family, uri=mongoengine_uri, node=self)
+        # loading parameters
+        pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
+        pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
         self.pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
         self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
         self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
@@ -133,9 +114,9 @@ class Merlin2PlanDispatcherNode(Node):
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
-                    if not succeed:
-                        goal_handle.abort()
-                        return result
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
 
                 over_all = PddlConditionEffectDto.OVER_ALL
                 if over_all in pddl_effect_dict:
@@ -145,9 +126,9 @@ class Merlin2PlanDispatcherNode(Node):
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
-                    if not succeed:
-                        goal_handle.abort()
-                        return result
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
 
                 # calling action
                 self._call_action(goal)
@@ -160,9 +141,9 @@ class Merlin2PlanDispatcherNode(Node):
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
 
-                    if not succeed:
-                        goal_handle.abort()
-                        return result
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
 
                 at_end = PddlConditionEffectDto.AT_END
                 if at_end in pddl_effect_dict:
@@ -172,9 +153,9 @@ class Merlin2PlanDispatcherNode(Node):
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
-                    if not succeed:
-                        goal_handle.abort()
-                        return result
+                        if not succeed:
+                            goal_handle.abort()
+                            return result
 
             else:
 
@@ -212,7 +193,7 @@ class Merlin2PlanDispatcherNode(Node):
                             pddl_effect_dto: PddlPropositionDto,
                             pddl_objects_dto_dict: Dict[str, PddlObjectDto],
                             ) -> PddlPropositionDto:
-        """ create a pddl proposition from am action effect
+        """ create a pddl proposition from an action effect
 
         Args:
             pddl_effect_dto (PddlPropositionDto): action effect
