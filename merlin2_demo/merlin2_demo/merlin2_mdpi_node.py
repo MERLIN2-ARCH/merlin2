@@ -125,18 +125,19 @@ class Merlin2MdpiNode(Node):
                 while i < self.time_to_cancel and thread.is_alive():
                     time.sleep(1)
                     i += 1
-                    self.goal_dispatcher.cancel_goals()
-
-            robot_at_prop = pddl_proposition_dao.get_by_predicate(
-                robot_at.get_predicate_name())
-
-            if not robot_at_prop:
-                robot_at_prop = PddlPropositionDto(robot_at, [self.anywhere])
-                pddl_proposition_dao.save(robot_at_prop)
+                self.goal_dispatcher.cancel_goals()
 
             # wait for thread
             thread.join()
             pddl_proposition_dao.delete(goal)
+
+            # check robot_at props
+            # robot_at_prop = pddl_proposition_dao.get_by_predicate(
+            #    robot_at.get_predicate_name())
+
+            # if not robot_at_prop:
+            #    robot_at_prop = PddlPropositionDto(robot_at, [self.anywhere])
+            #    pddl_proposition_dao.save(robot_at_prop)
 
         # results
         end_t = time.time()
