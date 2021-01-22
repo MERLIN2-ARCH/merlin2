@@ -66,13 +66,19 @@ class Merlin2HiNavigationAction(Merlin2Action):
         self.__speech_rec_client.wait_for_server()
         self.__speech_rec_client.send_goal(speech_recog_goal)
         self.__speech_rec_client.wait_for_result()
-        results = self.__speech_rec_client.get_result()
+        results = self.__speech_rec_client.get_result().stt_strings
+
+        while len(results) != 2 or results[0] != "go":
+            self.__speech_rec_client.wait_for_server()
+            self.__speech_rec_client.send_goal(speech_recog_goal)
+            self.__speech_rec_client.wait_for_result()
+            results = self.__speech_rec_client.get_result()
 
         if not self.__speech_rec_client.is_succeeded():
             return False
 
         # navigation
-        nav_goal.point = results.stt_strings[1]
+        nav_goal.point = results[1]
         self.__topo_nav_client.wait_for_server()
         self.__topo_nav_client.send_goal(nav_goal)
         self.__topo_nav_client.wait_for_result()
