@@ -48,4 +48,6 @@ class ActionSingleServer(ActionServer):
         if self.__user_cancel_callback is not None:
             self.__user_cancel_callback()
 
+        self._goal_handle = None
+
         return CancelResponse.ACCEPT
