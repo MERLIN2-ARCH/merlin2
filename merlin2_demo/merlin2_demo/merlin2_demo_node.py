@@ -39,7 +39,7 @@ class Merlin2DemoNode(Node):
         livingroom = PddlObjectDto(wp_type, "livingroom")
         entrance = PddlObjectDto(wp_type, "entrance")
         bathroom = PddlObjectDto(wp_type, "bathroom")
-        miguel = PddlObjectDto(person_type, "Miguel")
+        miguel = PddlObjectDto(person_type, "miguel")
         objects = [kitchen, bedroom, livingroom, entrance, bathroom, miguel]
 
         robot_at_prop = PddlPropositionDto(robot_at, [entrance])
