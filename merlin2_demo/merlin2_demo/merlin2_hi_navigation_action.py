@@ -1,5 +1,5 @@
 
-""" MERLIN2 action that uses the topological navigation """
+""" MERLIN2 action that asks for a wp to move to """
 
 from typing import List
 import rclpy
@@ -30,7 +30,7 @@ from .pddl import person_attended
 
 
 class Merlin2HiNavigationAction(Merlin2Action):
-    """ Merlin2 Navigation Action Class """
+    """ Merlin2 HI Navigation Action Class """
 
     def __init__(self):
 
@@ -89,6 +89,8 @@ class Merlin2HiNavigationAction(Merlin2Action):
         return True
 
     def cancel_action(self):
+        self.__tts_client.cancel_goal()
+        self.__speech_rec_client.cancel_goal()
         self.__topo_nav_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:

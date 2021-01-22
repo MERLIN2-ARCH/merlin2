@@ -26,7 +26,7 @@ class Merlin2DemoNode(Node):
 
     def __init__(self):
 
-        super().__init__("mission_layer_node")
+        super().__init__("demo_node")
 
         self.goal_dispatcher = Merlin2GoalDispatcher(self)
         self.pddl_dao_factory = self.goal_dispatcher.get_pddl_factory()
