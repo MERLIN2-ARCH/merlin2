@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'merlin2_goal_dispatcher'
+package_name = 'merlin2_mission'
 
 setup(
     name=package_name,

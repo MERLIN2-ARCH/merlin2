@@ -1,2 +1,3 @@
 
+from .merlin2_mission_node import Merlin2MissionNode
 from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
