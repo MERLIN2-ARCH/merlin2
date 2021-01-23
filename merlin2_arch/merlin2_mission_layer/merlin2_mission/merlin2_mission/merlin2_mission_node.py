@@ -73,6 +73,11 @@ class Merlin2MissionNode(Node, ABC):
 
         return self.goal_dispatcher.execute_goals([goal])
 
+    def cancel_goals(self):
+        """ cancel executor goals """
+
+        self.goal_dispatcher.cancel_goals()
+
     def __hash__(self):
         return Node.__hash__(self)
 
