@@ -39,7 +39,10 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         self.set_pddl_effects_list(pddl_effect_dto_list)
         self.set_pddl_conditions_list(pddl_condition_dto_list)
 
-        self.save_action()
+        succeed = self.save_action()
+
+        if not succeed:
+            raise Exception("Wrong Action: " + str(self))
 
         # action
         self.__action_server = ActionSingleServer(self, DispatchAction,
