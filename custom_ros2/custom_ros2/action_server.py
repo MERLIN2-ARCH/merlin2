@@ -29,7 +29,7 @@ class ActionServer(ActionServer2):
                          execute_callback=self.__execute_callback,
                          goal_callback=self.__goal_callback,
                          handle_accepted_callback=self.__handle_accepted_callback,
-                         cancel_callback=cancel_callback,
+                         cancel_callback=self.__cancel_callback,
                          callback_group=ReentrantCallbackGroup())
 
     def is_canceled(self) -> bool:
@@ -63,8 +63,6 @@ class ActionServer(ActionServer2):
         if self.__user_cancel_callback is not None:
             self.__user_cancel_callback()
 
-        self._goal_handle = None
-
         return CancelResponse.ACCEPT
 
     def __execute_callback(self, goal_handle):
@@ -72,8 +70,11 @@ class ActionServer(ActionServer2):
             execute callback
         """
 
+        self._goal_handle = goal_handle
         self.__server_canceled = False
-        return self.__user_execute_callback(goal_handle)
+        results = self.__user_execute_callback(goal_handle)
+        self._goal_handle = None
+        return results
 
     def __handle_accepted_callback(self, goal_handle):
         if self.__user_handle_accepted_callback:
