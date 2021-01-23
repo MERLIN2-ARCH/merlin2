@@ -2,7 +2,8 @@
 """ Merlin2 Action Base """
 
 from typing import List
-import time
+from abc import ABC, abstractmethod
+
 from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
 from pddl_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
@@ -13,7 +14,7 @@ from custom_ros2 import (
 )
 
 
-class Merlin2Action(Node, PddlActionDto):
+class Merlin2Action(Node, PddlActionDto, ABC):
     """ Merlin2 Action Class """
 
     def __init__(self, a_name, durative: bool = True, duration: int = 10):
@@ -41,7 +42,6 @@ class Merlin2Action(Node, PddlActionDto):
         self.save_action()
 
         # action
-        self._is_canceled = False
         self.__action_server = ActionSingleServer(self, DispatchAction,
                                                   "merlin2/" + a_name,
                                                   self.__execute_server,
@@ -56,6 +56,7 @@ class Merlin2Action(Node, PddlActionDto):
         self.__action_server.destroy()
         super().destroy_node()
 
+    @abstractmethod
     def run_action(self, goal: PlanAction) -> bool:
         """ Code of the action. Must be implemented.
 
@@ -63,13 +64,11 @@ class Merlin2Action(Node, PddlActionDto):
             bool: action succeed
         """
 
-        return NotImplementedError()
-
+    @abstractmethod
     def cancel_action(self):
         """ Code to cancel the action. Must be implemented. """
 
-        return NotImplementedError()
-
+    @abstractmethod
     def create_parameters(self) -> List[PddlObjectDto]:
         """ Code to the parameters of the action. Must be implemented.
 
@@ -77,8 +76,7 @@ class Merlin2Action(Node, PddlActionDto):
             List[PddlObjectDto]: list of parameters
         """
 
-        return NotImplementedError()
-
+    @abstractmethod
     def create_efects(self) -> List[PddlConditionEffectDto]:
         """ Code to the efects of the action. Must be implemented.
 
@@ -86,16 +84,13 @@ class Merlin2Action(Node, PddlActionDto):
             List[PddlObjectDto]: list of parameters
         """
 
-        return NotImplementedError()
-
+    @abstractmethod
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         """ Code to the conditions of the action. Must be implemented.
 
         Returns:
             List[PddlObjectDto]: list of parameters
         """
-
-        return NotImplementedError()
 
     def save_action(self) -> bool:
         """ save/update action
@@ -107,28 +102,16 @@ class Merlin2Action(Node, PddlActionDto):
         succeed = self.__pddl_action_dao.save(self)
         return succeed
 
-    def get_is_canceled(self) -> bool:
-        """ get if action is canceled
-
-        Returns:
-            bool: action is canceled?
-        """
-
-        return self._is_canceled
-
     def __cancel_callback(self):
-        self._is_canceled = True
         self.cancel_action()
 
     def __execute_server(self, goal_handle):
-        self._is_canceled = False
         result = DispatchAction.Result()
 
         succeed = self.run_action(goal_handle.request.action)
 
-        if self._is_canceled:
-            while not goal_handle.is_cancel_requested:
-                time.sleep(0.05)
+        if self.__action_server.is_canceled():
+            self.__action_server.wait_for_canceling()
             goal_handle.canceled()
 
         else:
