@@ -2,7 +2,6 @@
 """ Merlin2 Plan Dispatcher Node """
 
 from typing import Dict
-import time
 
 from merlin2_arch_interfaces.action import (
     DispatchPlan,
@@ -33,8 +32,6 @@ class Merlin2PlanDispatcherNode(Node):
 
         super().__init__("merlin2_plan_dispatcher_node")
 
-        self.__server_canceled = False
-
         # loading parameters
         pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
         pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
@@ -58,7 +55,6 @@ class Merlin2PlanDispatcherNode(Node):
         super().destroy_node()
 
     def __cancel_callback(self):
-        self.__server_canceled = True
         if self.__action_client:
             self.__action_client.cancel_goal()
 
@@ -73,7 +69,6 @@ class Merlin2PlanDispatcherNode(Node):
         """ action server execute callback """
 
         result = DispatchPlan.Result()
-        self.__server_canceled = False
         succeed = True
 
         for action in goal_handle.request.plan:
@@ -173,9 +168,8 @@ class Merlin2PlanDispatcherNode(Node):
                         goal_handle.abort()
                         return result
 
-            if self.__server_canceled:
-                while not goal_handle.is_cancel_requested:
-                    time.sleep(0.05)
+            if self.__action_server.is_canceled():
+                self.__action_server.wait_for_canceling()
                 goal_handle.canceled()
                 self.__action_client = None
                 return result
