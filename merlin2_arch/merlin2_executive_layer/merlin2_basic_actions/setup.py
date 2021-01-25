@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'merlin2_navigation_action = merlin2_basic_actions.merlin2_navigation_action:main',
+            'merlin2_navigation_fsm_action = merlin2_basic_actions.merlin2_navigation_fsm_action:main'
         ],
     },
 )
