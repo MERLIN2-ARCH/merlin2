@@ -35,3 +35,6 @@ class State(ABC):
 
     def is_canceled(self):
         return self._canceled
+
+    def get_outcomes(self) -> List[str]:
+        return self._outcomes

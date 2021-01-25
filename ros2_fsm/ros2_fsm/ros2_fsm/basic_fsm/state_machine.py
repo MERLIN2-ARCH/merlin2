@@ -71,5 +71,8 @@ class StateMachine(State):
     def get_states(self) -> Dict[str, str]:
         return self._states
 
+    def get_current_state(self) -> str:
+        return self._current_state
+
     def __str__(self):
         return str(self._states)
