@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'ros2_fsm_viewer = ros2_fsm_viewer.ros2_fsm_viewer:main',
         ],
     },
 )
