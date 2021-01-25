@@ -3,6 +3,7 @@
 
 from merlin2_arch_interfaces.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
+from ros2_fsm_viewer import Ros2FsmViewerClient
 from ros2_fsm.basic_fsm import StateMachine
 from ros2_fsm.basic_fsm.shared_data import SharedData
 from ros2_fsm.ros2_states import BasicOutomes
@@ -11,12 +12,14 @@ from ros2_fsm.ros2_states import BasicOutomes
 class Merlin2FsmAction(Merlin2Action, StateMachine):
     """ Merlin2 FSM Action Class """
 
-    def __init__(self, action_name):
+    def __init__(self, action_name: str):
 
         Merlin2Action.__init__(self, action_name)
         StateMachine.__init__(self, [BasicOutomes.SUCC,
                                      BasicOutomes.ABOR,
                                      BasicOutomes.CANC])
+
+        Ros2FsmViewerClient(self, action_name.upper(), self)
 
     def __hash__(self):
         return Merlin2Action.__hash__(self)
