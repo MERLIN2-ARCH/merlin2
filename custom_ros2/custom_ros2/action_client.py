@@ -8,14 +8,14 @@ from rclpy.action import CancelResponse
 
 class ActionClient(ActionClient2):
 
-    def __init__(self, node, a_type, a_name):
+    def __init__(self, node, action_type, action_name):
         self._status = GoalStatus.STATUS_UNKNOWN
         self.__status_lock = Lock()
         self.__goal_handle = None
         self.__goal_thread = None
         self.__result = None
         self.__working = False
-        super().__init__(node, a_type, a_name)
+        super().__init__(node, action_type, action_name)
 
     def get_status(self):
         with self.__status_lock:
@@ -31,7 +31,7 @@ class ActionClient(ActionClient2):
     def is_succeeded(self):
         return self.get_status() == GoalStatus.STATUS_SUCCEEDED
 
-    def is_cancelled(self):
+    def is_canceled(self):
         return self.get_status() == GoalStatus.STATUS_CANCELED
 
     def is_working(self):
@@ -50,7 +50,7 @@ class ActionClient(ActionClient2):
         send_goal_future = self.send_goal_async(goal)
 
         # wait for acceptance
-        while not send_goal_future.done() and not self.is_cancelled():
+        while not send_goal_future.done() and not self.is_canceled():
             time.sleep(1)
 
         # check acceptance
@@ -58,14 +58,14 @@ class ActionClient(ActionClient2):
         if not self.__goal_handle.accepted:
 
             # change status
-            if self.is_cancelled():
+            if self.is_canceled():
                 return
             self._set_status(GoalStatus.STATUS_ABORTED)
             self.__working = False
             return
 
         # change status
-        if self.is_cancelled():
+        if self.is_canceled():
             return
         self._set_status(GoalStatus.STATUS_ACCEPTED)
 
@@ -73,16 +73,16 @@ class ActionClient(ActionClient2):
         get_result_future = self.__goal_handle.get_result_async()
 
         # change status
-        if self.is_cancelled():
+        if self.is_canceled():
             return
         self._set_status(GoalStatus.STATUS_EXECUTING)
 
         # wait for result
-        while not get_result_future.done() and not self.is_cancelled():
+        while not get_result_future.done() and not self.is_canceled():
             time.sleep(1)
 
         # change status
-        if self.is_cancelled():
+        if self.is_canceled():
             return
         self._set_status(get_result_future.result().status)
 
