@@ -31,8 +31,8 @@ from PyQt5.QtWidgets import (
 )
 import sys
 import time
-from custom_ros2 import Node
 import rclpy
+from rclpy.node import Node
 from threading import Thread
 from ros2_fsm_interfaces.msg import Status
 

@@ -57,6 +57,8 @@ class Ros2FsmViewerClient:
                 for state in structure_msg.states:
                     state_msg.states.append(state.state)
 
+                state_msg.current_state = state_o.get_current_state()
+
             else:
                 state_info = self.parse_state_info(
                     state_n, state)
