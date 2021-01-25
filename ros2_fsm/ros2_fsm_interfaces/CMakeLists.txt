@@ -37,6 +37,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/State.msg"
   "msg/Transition.msg"
+  "msg/StateInfo.msg"
   "msg/Structure.msg"
   "msg/Status.msg"
   )

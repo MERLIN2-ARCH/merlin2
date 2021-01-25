@@ -1,8 +1,7 @@
 
 
-string state_name
-ros2_fsm_interfaces/Transition[] transitions
+ros2_fsm_interfaces/StateInfo state
 
 bool is_fsm
-ros2_fsm_interfaces/Structure fsm_structure
+ros2_fsm_interfaces/StateInfo[] states
 
