@@ -1,0 +1,4 @@
+
+string fsm_name
+string current_state
+ros2_fsm_interfaces/Structure fsm_structure

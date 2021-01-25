@@ -32,4 +32,13 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/State.msg"
+  "msg/Transition.msg"
+  "msg/Structure.msg"
+  "msg/Status.msg"
+  )
+
+ ament_package()
