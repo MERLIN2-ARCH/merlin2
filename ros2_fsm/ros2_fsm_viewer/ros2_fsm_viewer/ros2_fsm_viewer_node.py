@@ -1,40 +1,17 @@
 
-from PyQt5.QtGui import (
-    QFontMetrics,
-    QFont,
-    QImage
-)
-
-from QGraphViz.Engines import Dot
-from QGraphViz.DotParser import (
-    Graph,
-    GraphType
-)
-from QGraphViz.QGraphViz import (
-    QGraphViz,
-    QGraphVizManipulationMode
-)
-from PyQt5.QtWidgets import (
-    QFileDialog,
-    QDialog,
-    QApplication,
-    QWidget,
-    QMainWindow,
-    QVBoxLayout,
-    QHBoxLayout,
-    QFormLayout,
-    QComboBox,
-    QPushButton,
-    QInputDialog,
-    QLineEdit,
-    QLabel
-)
-import sys
+from typing import List
 import time
+from threading import Thread
 import rclpy
 from rclpy.node import Node
-from threading import Thread
-from ros2_fsm_interfaces.msg import Status
+from ros2_fsm_interfaces.msg import (
+    Status,
+    StateInfo,
+    State,
+    Transition
+)
+from flask import Flask
+import json
 
 
 class Ros2FsmViewer(Node):
@@ -44,59 +21,105 @@ class Ros2FsmViewer(Node):
         super().__init__("ros2_fsm_viewer")
 
         self.__started = False
+        self.__fsm_dict = {}
 
-        thread = Thread(target=self.start_app)
+        thread = Thread(target=self.start_subscriber)
         thread.start()
 
+        self.start_server()
+
+    def start_server(self):
+        app = Flask("ros2_fsm_viewer")
+
+        @app.route("/get_fsms", methods=["GET"])
+        def get_fsms():
+            return json.dumps(self.__fsm_dict)
+
+        @app.route("/get_fsm/<fsm_name>",  methods=["GET"])
+        def get_fsm(fsm_name):
+
+            fsm_name = fsm_name.upper()
+
+            if fsm_name in self.__fsm_dict:
+                return json.dumps(self.__fsm_dict[fsm_name])
+
+            return json.dumps({})
+
+        self.__started = True
+        app.run(host="localhost", port=5000)
+
+    def start_subscriber(self):
         self.create_subscription(Status,
                                  "fsm_viewer",
                                  self.fsm_viewer_cb,
                                  10)
 
-    def start_app(self):
+        rclpy.spin(self)
 
-        app = QApplication(sys.argv)
-        show_subgraphs = True
-        self.qgv = QGraphViz(
-            show_subgraphs=show_subgraphs,
-            auto_freeze=True,
+    def transition_msg_to_dict(self, tansitions: List[Transition]):
+        transition_dict = {}
 
-            hilight_Nodes=True,
-            hilight_Edges=True
-        )
-        self.qgv.setStyleSheet("background-color:white;")
-        # Create A new Graph using Dot layout engine
-        self.qgv.new(Dot(Graph("Main_Graph"), show_subgraphs=show_subgraphs,
-                         font=QFont("Arial", 12), margins=[20, 20]))
-        self.qgv.build()
+        for transition in tansitions:
+            transition_dict[transition.outcome] = transition.state
 
-        w = QMainWindow()
-        w.setWindowTitle('ROS2 FSM Viewer')
+        return transition_dict
 
-        wi = QWidget()
-        wi.setLayout(QVBoxLayout())
-        w.setCentralWidget(wi)
-        wi.layout().addWidget(self.qgv)
+    def state_info_msg_to_dict(self, msg: StateInfo):
+        state_info_dict = {
+            "state_name": msg.state_name,
+            "transitions": self.transition_msg_to_dict(msg.transitions),
+            "outcomes": msg.outcomes,
+            "is_fsm": False
+        }
+        return state_info_dict
 
-        hpanel = QHBoxLayout()
-        wi.layout().addLayout(hpanel)
+    def state_msg_to_dict(self, msg: State):
+        if msg.is_fsm:
+            fsm_dict = self.state_info_msg_to_dict(msg.state)
+            fsm_dict["is_fsm"] = True
+            fsm_dict["states"] = []
+            fsm_dict["current_state"] = msg.current_state
 
-        self.__started = w.showNormal() is None
+            for state in msg.states:
+                fsm_dict["states"].append(self.state_info_msg_to_dict(state))
 
-    def fsm_viewer_cb(self, msg):
+            return fsm_dict
+
+        else:
+            return self.state_info_msg_to_dict(msg.state)
+
+    def msg_to_dict(self, msg: Status):
+        msg_dict = {
+            "fsm_name": msg.fsm_name,
+            "current_state": msg.current_state,
+            "fsm_structure": {
+                "final_outcomes": msg.fsm_structure.final_outcomes,
+                "states": [
+
+                ]
+            }
+        }
+
+        for state in msg.fsm_structure.states:
+            msg_dict["fsm_structure"]["states"].append(
+                self.state_msg_to_dict(state))
+
+        return msg_dict
+
+    def fsm_viewer_cb(self, msg: Status):
 
         while not self.__started:
             time.sleep(0.05)
 
-        self.get_logger().info(str(msg))
+        # self.get_logger().info(str(msg))
+        self.__fsm_dict[msg.fsm_name.upper()] = self.msg_to_dict(msg)
+        # self.get_logger().info(str(self.__fsm_dict[msg.fsm_name]))
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = Ros2FsmViewer()
-
-    rclpy.spin(node)
+    Ros2FsmViewer()
 
     rclpy.shutdown()
 
