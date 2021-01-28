@@ -31,7 +31,7 @@ class Ros2FsmViewerClient:
             transition = Transition()
             transition.outcome = key
             transition.state = state["transitions"][key]
-            msg.transitions.append()
+            msg.transitions.append(transition)
 
         for key in state["state"].get_outcomes():
             msg.outcomes.append(key)
@@ -48,9 +48,14 @@ class Ros2FsmViewerClient:
 
             state = states[state_n]
             state_o = state["state"]
+
             state_msg = StateMsg()
+            state_info = self.parse_state_info(
+                state_n, state)
+            state_msg.state = state_info
 
             if isinstance(state_o, StateMachine):
+
                 structure_msg = self.parse_states(state_o.get_states())
                 state_msg.is_fsm = True
 
@@ -58,11 +63,6 @@ class Ros2FsmViewerClient:
                     state_msg.states.append(state.state)
 
                 state_msg.current_state = state_o.get_current_state()
-
-            else:
-                state_info = self.parse_state_info(
-                    state_n, state)
-                state_msg.state = state_info
 
             fsm_structure.states.append(state_msg)
 
@@ -77,17 +77,17 @@ class Ros2FsmViewerClient:
         structure_msg.final_outcomes = fsm.get_outcomes()
 
         status_msg.fsm_structure = structure_msg
-
-        current_state = fsm.get_current_state()
-        if current_state:
-            status_msg.current_state = current_state
+        status_msg.current_state = fsm.get_current_state()
 
         return status_msg
 
     def start_client(self):
         publisher = self.__node.create_publisher(Status, "fsm_viewer", 10)
 
+        rate = self.__node.create_rate(3)
+
         while rclpy.ok():
             status_msg = self.parse_status(self.__fsm)
             status_msg.fsm_name = self.__fsm_name
             publisher.publish(status_msg)
+            rate.sleep()

@@ -72,7 +72,10 @@ class StateMachine(State):
         return self._states
 
     def get_current_state(self) -> str:
-        return self._current_state
+        if self._current_state:
+            return self._current_state
+
+        return ""
 
     def __str__(self):
         return str(self._states)
