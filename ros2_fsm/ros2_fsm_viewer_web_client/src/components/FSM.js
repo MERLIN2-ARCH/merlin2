@@ -83,12 +83,12 @@ class FSM extends React.Component {
             //console.log(state.is_fsm)
 
 
-            if (height < state.state_name.length * 12) {
-                height = state.state_name.length * 12;
+            if (height < state.state_name.length * 6) {
+                height = state.state_name.length * 6;
             }
 
-            if (width < state.state_name.length * 6) {
-                width = state.state_name.length * 6;
+            if (width < state.state_name.length * 12) {
+                width = state.state_name.length * 12;
             }
 
             nodes.push({
