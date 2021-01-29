@@ -43,7 +43,7 @@ class Viewer extends React.Component {
             } else {
                 this.get_fsm()
             }
-        }, 333);
+        }, 250);
     }
 
     componentWillUnmount() {
@@ -60,6 +60,7 @@ class Viewer extends React.Component {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            overflowY: "scroll"
         }}>
 
 

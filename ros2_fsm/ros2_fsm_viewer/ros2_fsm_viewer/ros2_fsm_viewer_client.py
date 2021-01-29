@@ -84,7 +84,7 @@ class Ros2FsmViewerClient:
     def start_client(self):
         publisher = self.__node.create_publisher(Status, "fsm_viewer", 10)
 
-        rate = self.__node.create_rate(3)
+        rate = self.__node.create_rate(4)
 
         while rclpy.ok():
             status_msg = self.parse_status(self.__fsm)
