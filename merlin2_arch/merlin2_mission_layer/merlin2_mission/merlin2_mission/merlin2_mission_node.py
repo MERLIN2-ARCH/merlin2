@@ -19,7 +19,7 @@ class Merlin2MissionNode(Node, ABC):
 
     def __init__(self, node_name, reset_problem=True, run_mission=True):
 
-        super().__init__(node_name)
+        super().__init__(node_name, namespace="merlin2")
 
         self.goal_dispatcher = Merlin2GoalDispatcher(self)
         self.pddl_dao_factory = self.goal_dispatcher.get_pddl_factory()

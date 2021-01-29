@@ -40,8 +40,7 @@ def generate_launch_description():
     merlin2_demo_node_cmd = Node(
         package='merlin2_demo',
         executable='merlin2_demo_node',
-        name='merlin2_demo_node',
-        namespace='merlin2'
+        name='merlin2_demo_node'
     )
 
     #

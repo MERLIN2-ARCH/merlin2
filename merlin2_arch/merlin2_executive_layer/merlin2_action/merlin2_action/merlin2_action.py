@@ -19,7 +19,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
     def __init__(self, a_name, durative: bool = True, duration: int = 10):
 
-        Node.__init__(self, a_name)
+        Node.__init__(self, a_name, namespace="merlin2")
         PddlActionDto.__init__(self,
                                a_name,
                                durative=durative,
@@ -46,7 +46,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
         # action
         self.__action_server = ActionSingleServer(self, DispatchAction,
-                                                  "merlin2/" + a_name,
+                                                  a_name,
                                                   self.__execute_server,
                                                   cancel_callback=self.__cancel_callback)
 

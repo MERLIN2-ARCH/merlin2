@@ -39,8 +39,7 @@ def generate_launch_description():
     merlin2_mdpi_node_cmd = Node(
         package='merlin2_demo',
         executable='merlin2_mdpi_node',
-        name='merlin2_mdpi_node',
-        namespace='merlin2'
+        name='merlin2_mdpi_node'
     )
 
     #
