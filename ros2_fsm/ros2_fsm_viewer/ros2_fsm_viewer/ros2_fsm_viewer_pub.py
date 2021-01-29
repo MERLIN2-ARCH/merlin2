@@ -14,7 +14,7 @@ from ros2_fsm_interfaces.msg import (
 from ros2_fsm.basic_fsm import StateMachine, State
 
 
-class Ros2FsmViewerClient:
+class Ros2FsmViewerPub:
 
     def __init__(self, node: Node, fsm_name: str, fsm: StateMachine):
         self.__fsm = fsm

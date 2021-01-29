@@ -1,3 +1,3 @@
 
 
-from .ros2_fsm_viewer_client import Ros2FsmViewerClient
+from .ros2_fsm_viewer_pub import Ros2FsmViewerPub
