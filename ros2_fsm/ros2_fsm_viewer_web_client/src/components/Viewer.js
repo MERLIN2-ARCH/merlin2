@@ -60,7 +60,6 @@ class Viewer extends React.Component {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            overflowY: "scroll"
         }}>
 
 

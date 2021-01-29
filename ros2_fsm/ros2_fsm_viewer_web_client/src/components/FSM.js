@@ -208,24 +208,6 @@ class FSM extends React.Component {
         nodes = graph[0];
         edges = graph[1];
 
-
-        /*const nodes = [
-            { data: { id: 'a', parent: 'b', label: "Aasñkajsndasbd", width: 100, height: 50 } },
-            { data: { id: 'x', parent: '', label: "X" } },
-            { data: { id: 'b', label: "B", type: 'fsm' } },
-            { data: { id: 'c', parent: 'b', label: "C" } },
-            { data: { id: 'd', label: "D", type: 'outcome' } },
-            { data: { id: 'e', label: "E", type: 'current_fsm' } },
-            { data: { id: 'f', parent: 'e', label: "F", type: 'current_state' } }
-        ]
-
-        const edges = [
-            { data: { id: 'bd', source: 'b', target: 'd', label: "BD" } },
-            { data: { id: 'xb', source: 'x', target: 'b', label: "XB" } },
-            { data: { id: 'ac', source: 'a', target: 'c', label: "AC" } },
-            { data: { id: 'ax', source: 'e', target: 'x', label: "EX" } }
-        ]*/
-
         return (
             <div style={{
                 display: "flex",
@@ -308,7 +290,9 @@ class FSM extends React.Component {
                                 zoomingEnabled={true}
                                 boxSelectionEnabled={false}
                                 autoungrabify={true}
-                                panningEnabled={true} />
+                                panningEnabled={true}
+                                userZoomingEnabled={false}
+                                userPanningEnabled={false} />
                         </Box >
                     </Grid>
                 </Grid>
