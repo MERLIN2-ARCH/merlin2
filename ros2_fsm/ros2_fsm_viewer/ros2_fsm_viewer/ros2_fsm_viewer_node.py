@@ -1,17 +1,25 @@
 
 from typing import List
+
 import time
 from threading import Thread
+import subprocess
+
+import json
+
 import rclpy
 from rclpy.node import Node
+import ament_index_python
+
 from ros2_fsm_interfaces.msg import (
     Status,
     StateInfo,
     State,
     Transition
 )
+
 from flask import Flask
-import json
+from waitress import serve
 
 
 class Ros2FsmViewer(Node):
@@ -23,13 +31,24 @@ class Ros2FsmViewer(Node):
         self.__started = False
         self.__fsm_dict = {}
 
-        thread = Thread(target=self.start_subscriber)
-        thread.start()
+        thread_subscriber = Thread(target=self.start_subscriber)
+        thread_subscriber.start()
 
-        self.start_server()
+        thread_frontend = Thread(target=self.start_frontend_server)
+        thread_frontend.start()
 
-    def start_server(self):
+        self.start_backend_server()
+
+    def start_frontend_server(self):
+        pkg_path = ament_index_python.get_package_share_directory(
+            "ros2_fsm_viewer")
+
+        subprocess.call(
+            "cd " + pkg_path + "/ros2_fsm_viewer_web_client && npm start > /dev/null", shell=True)
+
+    def start_backend_server(self):
         app = Flask("ros2_fsm_viewer")
+        #app.config["ENV"] = "development"
 
         @app.route("/get_fsms", methods=["GET"])
         def get_fsms():
@@ -46,11 +65,13 @@ class Ros2FsmViewer(Node):
             return json.dumps({})
 
         self.__started = True
-        app.run(host="localhost", port=5000)
+
+        #app.run(host="localhost", port=5000)
+        serve(app, host="localhost", port=5000)
 
     def start_subscriber(self):
         self.create_subscription(Status,
-                                 "fsm_viewer",
+                                 "/fsm_viewer",
                                  self.fsm_viewer_cb,
                                  10)
 
