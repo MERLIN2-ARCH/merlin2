@@ -9,9 +9,9 @@ from rclpy.executors import MultiThreadedExecutor, Executor
 class Node(Node2):
     """ Node Class """
 
-    def __init__(self, node_name, executor: Executor = None):
+    def __init__(self, node_name, namespace: str = "", executor: Executor = None):
 
-        super().__init__(node_name)
+        super().__init__(node_name, namespace=namespace)
 
         if not executor:
             self._executor = MultiThreadedExecutor()
