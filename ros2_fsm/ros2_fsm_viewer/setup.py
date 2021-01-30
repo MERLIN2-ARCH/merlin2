@@ -1,3 +1,5 @@
+from glob import glob
+import os
 from setuptools import setup
 
 package_name = 'ros2_fsm_viewer'
@@ -10,6 +12,13 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name), glob('launch/*_launch.py')),
+        (os.path.join('share', package_name, 'ros2_fsm_viewer_web_client'),
+         glob('ros2_fsm_viewer_web_client/build/*.*')),
+        (os.path.join('share', package_name, 'ros2_fsm_viewer_web_client/static/css'),
+         glob('ros2_fsm_viewer_web_client/build/static/css/*.*')),
+        (os.path.join('share', package_name, 'ros2_fsm_viewer_web_client/static/js'),
+         glob('ros2_fsm_viewer_web_client/build/static/js/*.*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
