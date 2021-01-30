@@ -18,16 +18,16 @@ class AcionState(State):
                           BasicOutomes.ABOR,
                           BasicOutomes.CANC])
 
-    def _create_goal(self, shared_data):
-        return self.__create_goal_handler(shared_data)
+    def _create_goal(self, blackboard):
+        return self.__create_goal_handler(blackboard)
 
     def cancel_state(self):
         super().cancel_state()
         self.__action_client.cancel_goal()
 
-    def execute(self, shared_data):
+    def execute(self, blackboard):
 
-        goal = self._create_goal(shared_data)
+        goal = self._create_goal(blackboard)
         self.__action_client.wait_for_server()
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()
@@ -40,6 +40,6 @@ class AcionState(State):
 
             if self.__resutl_handler:
                 result = self.__action_client.get_result()
-                self.__resutl_handler(shared_data, result)
+                self.__resutl_handler(blackboard, result)
 
             return BasicOutomes.SUCC

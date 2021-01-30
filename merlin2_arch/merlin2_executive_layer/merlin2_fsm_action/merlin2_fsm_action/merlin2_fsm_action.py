@@ -5,7 +5,7 @@ from merlin2_arch_interfaces.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
 from ros2_fsm_viewer import Ros2FsmViewerPub
 from ros2_fsm.basic_fsm import StateMachine
-from ros2_fsm.basic_fsm.shared_data import SharedData
+from ros2_fsm.basic_fsm.blackboard import Blackboard
 from ros2_fsm.ros2_states import BasicOutomes
 
 
@@ -28,10 +28,10 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
     def run_action(self, goal: PlanAction) -> bool:
 
-        shared_data = SharedData()
-        shared_data.merlin2_action_goal = goal
+        blackboard = Blackboard()
+        blackboard.merlin2_action_goal = goal
 
-        outcome = self(shared_data)
+        outcome = self(blackboard)
 
         if outcome == BasicOutomes.SUCC:
             return True

@@ -15,19 +15,19 @@ class ServiceState(State):
 
         super().__init__([BasicOutomes.SUCC, BasicOutomes.ABOR])
 
-    def _create_request(self, shared_data):
-        return self.__create_request_handler(shared_data)
+    def _create_request(self, blackboard):
+        return self.__create_request_handler(blackboard)
 
-    def execute(self, shared_data):
+    def execute(self, blackboard):
 
-        request = self._create_request(shared_data)
+        request = self._create_request(blackboard)
         self.__service_client.wait_for_service()
 
         try:
             response = self.__service_client.call(request)
 
             if self.__response_handler:
-                self.__response_handler(shared_data, response)
+                self.__response_handler(blackboard, response)
 
             return BasicOutomes.SUCC
         except:

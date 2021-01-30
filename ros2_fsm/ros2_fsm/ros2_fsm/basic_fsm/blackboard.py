@@ -1,6 +1,6 @@
 
 
-class SharedData(object):
+class Blackboard(object):
     def __init__(self, init=None):
         if init is not None:
             self.__dict__.update(init)

@@ -2,7 +2,7 @@
 
 from typing import List
 from abc import ABC, abstractmethod
-from .shared_data import SharedData
+from .blackboard import Blackboard
 
 
 class State(ABC):
@@ -16,12 +16,12 @@ class State(ABC):
         else:
             raise Exception("There mmust be at least one outcome")
 
-    def __call__(self, shared_data: SharedData):
+    def __call__(self, blackboard: Blackboard):
         self._canceled = False
-        return self.execute(shared_data)
+        return self.execute(blackboard)
 
     @abstractmethod
-    def execute(self, shared_data: SharedData) -> str:
+    def execute(self, blackboard: Blackboard) -> str:
         """ state execution """
 
     def __str__(self):

@@ -2,7 +2,7 @@
 
 from typing import Dict, List
 from .state import State
-from .shared_data import SharedData
+from .blackboard import Blackboard
 
 
 class StateMachine(State):
@@ -13,7 +13,7 @@ class StateMachine(State):
         self._states = {}
         self._start_state = None
         self._current_state = None
-        self._shared_data = None
+        self._blackboard = None
 
     def add_state(self,
                   name: str,
@@ -41,19 +41,19 @@ class StateMachine(State):
         if self._current_state:
             self._states[self._current_state]["state"].cancel_state()
 
-    def execute(self, shared_data: SharedData = None):
+    def execute(self, blackboard: Blackboard = None):
 
-        if not shared_data:
-            self._shared_data = SharedData()
+        if not blackboard:
+            self._blackboard = Blackboard()
         else:
-            self._shared_data = shared_data
+            self._blackboard = blackboard
 
         self._current_state = self._start_state
 
         state = self._states[self._start_state]
 
         while True:
-            outcome = state["state"](self._shared_data)
+            outcome = state["state"](self._blackboard)
 
             if outcome in state["transitions"]:
                 self._current_state = state["transitions"][outcome]
@@ -61,7 +61,7 @@ class StateMachine(State):
 
             elif outcome in self._outcomes:
                 self._current_state = None
-                self._shared_data = None
+                self._blackboard = None
 
                 return outcome
 

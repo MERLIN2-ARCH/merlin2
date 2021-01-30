@@ -34,8 +34,8 @@ class Merlin2NavigationAction(Merlin2FsmAction):
             "NAV_STATE",
             navigation_state)
 
-    def create_nav_goal(self, shared_data):
-        dst = shared_data.merlin2_action_goal.objects[1]
+    def create_nav_goal(self, blackboard):
+        dst = blackboard.merlin2_action_goal.objects[1]
         goal = TopoNav.Goal()
         goal.point = dst
         return goal

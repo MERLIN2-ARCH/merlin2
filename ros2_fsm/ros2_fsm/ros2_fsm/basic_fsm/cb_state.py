@@ -11,5 +11,5 @@ class CbState(State):
         super().__init__(outcomes)
         self._cb = cb
 
-    def execute(self, shared_data):
-        return self._cb(shared_data)
+    def execute(self, blackboard):
+        return self._cb(blackboard)
