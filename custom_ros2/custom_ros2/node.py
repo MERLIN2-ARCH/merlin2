@@ -33,4 +33,8 @@ class Node(Node2):
     def join_spin(self):
         """ wait for spin thread """
 
-        self._spin_thread.join()
+        try:
+            self._spin_thread.join()
+        finally:
+            self.get_logger().info("Destroying node " + self.get_name())
+            self.destroy_node()

@@ -48,6 +48,12 @@ class Merlin2HiNavigationAction(Merlin2Action):
         self.__speech_rec_client = ActionClient(
             self, ListenOnce, "/speech_recognition/listen_once")
 
+    def destroy(self):
+
+        self.__topo_nav_client.destroy()
+        self.__tts_client.destroy()
+        self.__speech_rec_client.destroy()
+
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = TopoNav.Goal()
         tts_goal = TTS.Goal()
@@ -127,8 +133,6 @@ def main(args=None):
     node = Merlin2HiNavigationAction()
 
     node.join_spin()
-
-    node.destroy_node()
 
     rclpy.shutdown()
 

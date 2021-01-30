@@ -15,8 +15,6 @@ def main(args=None):
 
     node.join_spin()
 
-    node.destroy_node()
-
     rclpy.shutdown()
 
 

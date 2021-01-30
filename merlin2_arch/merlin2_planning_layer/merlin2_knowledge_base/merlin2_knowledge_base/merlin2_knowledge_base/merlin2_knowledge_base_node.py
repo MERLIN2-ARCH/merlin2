@@ -19,8 +19,6 @@ from merlin2_knowledge_base_interfaces.srv import (
 )
 from std_srvs.srv import Empty
 
-from custom_ros2 import Node
-
 from merlin2_knowledge_base.merlin2_knowledge_base_parser import (
     DtoMsgParser,
     MsgDtoParser
@@ -29,6 +27,8 @@ from merlin2_knowledge_base.merlin2_knowledge_base_parser import (
 from merlin2_knowledge_base.merlin2_knowledge_base import (
     Merlin2KnowledgeBase
 )
+
+from custom_ros2 import Node
 
 
 class Merlin2KnowledgeBaseNode(Node):
@@ -512,8 +512,6 @@ def main(args=None):
     node = Merlin2KnowledgeBaseNode()
 
     node.join_spin()
-
-    node.destroy_node()
 
     rclpy.shutdown()
 

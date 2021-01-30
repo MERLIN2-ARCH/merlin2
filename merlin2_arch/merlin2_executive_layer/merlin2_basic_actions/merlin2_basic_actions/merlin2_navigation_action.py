@@ -32,6 +32,10 @@ class Merlin2NavigationAction(Merlin2Action):
         self.__action_client = ActionClient(
             self, TopoNav, "/topo_nav/navigation")
 
+    def destroy(self):
+        self.__action_client.destroy()
+        super().destroy()
+
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = TopoNav.Goal()
 
@@ -79,8 +83,6 @@ def main(args=None):
     node = Merlin2NavigationAction()
 
     node.join_spin()
-
-    node.destroy_node()
 
     rclpy.shutdown()
 

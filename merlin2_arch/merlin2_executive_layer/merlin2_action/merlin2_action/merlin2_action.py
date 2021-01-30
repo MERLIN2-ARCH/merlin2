@@ -54,9 +54,15 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         return Node.__hash__(self)
 
     def destroy(self):
-        """ destroy node method """
+        """ destroy method """
 
         self.__action_server.destroy()
+
+    def destroy_node(self):
+        """ destroy node method """
+
+        self.__pddl_action_dao.delete(self)
+        self.destroy()
         super().destroy_node()
 
     @abstractmethod

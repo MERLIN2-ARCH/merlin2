@@ -41,9 +41,10 @@ class Merlin2ExecutorNode(Node):
                                                   cancel_callback=self.__cancel_callback
                                                   )
 
-    def destroy(self):
+    def destroy_node(self):
         """ destroy node method """
 
+        self.__plan_dispatcher_client.destroy()
         self.__action_server.destroy()
         super().destroy_node()
 
@@ -103,8 +104,6 @@ def main(args=None):
     node = Merlin2ExecutorNode()
 
     node.join_spin()
-
-    node.destroy()
 
     rclpy.shutdown()
 
