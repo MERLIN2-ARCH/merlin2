@@ -39,10 +39,6 @@ class Merlin2CheckWpAction(Merlin2Action):
         self.__tts_client = ActionClient(
             self, TTS, "/text_to_speech/tts")
 
-    def destroy(self):
-        self.__tts_client.destroy()
-        super().destroy()
-
     def run_action(self, goal: PlanAction) -> bool:
         tts_goal = TTS.Goal()
 

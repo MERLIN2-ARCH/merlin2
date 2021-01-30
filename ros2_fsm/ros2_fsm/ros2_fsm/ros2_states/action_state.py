@@ -18,9 +18,6 @@ class AcionState(State):
                           BasicOutomes.ABOR,
                           BasicOutomes.CANC])
 
-    def destroy(self):
-        self.__action_client.destroy()
-
     def _create_goal(self, shared_data):
         return self.__create_goal_handler(shared_data)
 
