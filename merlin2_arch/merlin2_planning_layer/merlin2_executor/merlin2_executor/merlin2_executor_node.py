@@ -21,7 +21,7 @@ class Merlin2ExecutorNode(Node):
 
     def __init__(self):
 
-        super().__init__('merlin2_executor_mode')
+        super().__init__("merlin2_executor_node")
 
         # service clients
         self.__pddl_generator_client = self.create_client(

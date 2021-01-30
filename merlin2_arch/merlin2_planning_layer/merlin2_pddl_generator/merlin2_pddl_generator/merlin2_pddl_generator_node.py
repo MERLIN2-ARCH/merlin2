@@ -16,7 +16,7 @@ class Merlin2PddlGeneratorNode(Node):
 
     def __init__(self):
 
-        super().__init__('merlin2_pddl_generator_mode')
+        super().__init__("merlin2_pddl_generator_node")
 
         # loading parameters
         pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
@@ -25,7 +25,7 @@ class Merlin2PddlGeneratorNode(Node):
 
         # service servers
         self.__start_server = self.create_service(
-            GeneratePddl, 'generate_pddl', self.__generate_pddl_srv)
+            GeneratePddl, "generate_pddl", self.__generate_pddl_srv)
 
     def __generate_pddl_srv(self,
                             req: GeneratePddl.Request,
