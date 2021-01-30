@@ -37,7 +37,7 @@ class Merlin2HiNavigationAction(Merlin2Action):
         self.__source_p = PddlObjectDto(wp_type, "source_p")
         self.__per = PddlObjectDto(person_type, "per")
 
-        super().__init__("hi_navigation_action")
+        super().__init__("hi_navigation")
 
         self.__topo_nav_client = ActionClient(
             self, TopoNav, "/topo_nav/navigation")

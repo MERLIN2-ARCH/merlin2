@@ -27,13 +27,13 @@ def generate_launch_description():
     merlin2_navigation_action_cmd = Node(
         package='merlin2_basic_actions',
         executable='merlin2_navigation_action',
-        name='merlin2_navigation_action'
+        name='navigation'
     )
 
     merlin2_check_wp_action_cmd = Node(
         package='merlin2_demo',
         executable='merlin2_check_wp_action',
-        name='merlin2_check_wp_action'
+        name='check_wp'
     )
 
     merlin2_mdpi_node_cmd = Node(

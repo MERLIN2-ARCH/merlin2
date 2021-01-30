@@ -34,7 +34,7 @@ class Merlin2CheckWpAction(Merlin2Action):
 
         self.__wp = PddlObjectDto(wp_type, "wp")
 
-        super().__init__("merlin2_check_wp_action")
+        super().__init__("check_wp")
 
         self.__tts_client = ActionClient(
             self, TTS, "/text_to_speech/tts")
