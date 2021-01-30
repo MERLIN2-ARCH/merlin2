@@ -34,21 +34,18 @@ class Ros2FsmViewer(Node):
         thread_subscriber = Thread(target=self.start_subscriber)
         thread_subscriber.start()
 
-        thread_frontend = Thread(target=self.start_frontend_server)
-        thread_frontend.start()
-
         self.start_backend_server()
 
-    def start_frontend_server(self):
-        pkg_path = ament_index_python.get_package_share_directory(
-            "ros2_fsm_viewer")
-
-        subprocess.call(
-            "cd " + pkg_path + "/ros2_fsm_viewer_web_client && npm start > /dev/null", shell=True)
-
     def start_backend_server(self):
-        app = Flask("ros2_fsm_viewer")
+        app = Flask("ros2_fsm_viewer",
+                    static_folder=ament_index_python.get_package_share_directory(
+                        "ros2_fsm_viewer") + "/ros2_fsm_viewer_web_client",
+                    static_url_path="/")
         #app.config["ENV"] = "development"
+
+        @app.route('/')
+        def index():
+            return app.send_static_file('index.html')
 
         @app.route("/get_fsms", methods=["GET"])
         def get_fsms():
