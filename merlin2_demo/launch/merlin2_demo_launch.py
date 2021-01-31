@@ -27,13 +27,13 @@ def generate_launch_description():
 
     merlin2_navigation_action_cmd = Node(
         package='merlin2_basic_actions',
-        executable='merlin2_navigation_action',
+        executable='merlin2_navigation_fsm_action',
         name='navigation'
     )
 
     merlin2_hi_navigation_action_cmd = Node(
         package='merlin2_demo',
-        executable='merlin2_hi_navigation_action',
+        executable='merlin2_hi_navigation_fsm_action',
         name='hi_navigation'
     )
 

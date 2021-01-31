@@ -12,9 +12,11 @@ from pddl_dto import (
 from merlin2_basic_actions.merlin2_basic_types import wp_type
 from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 
-from ros2_topological_nav_interfaces.action import TopoNav
-from merlin2_fsm_action import Merlin2FsmAction
-from ros2_fsm.ros2_states import AcionState
+from merlin2_fsm_action import (
+    Merlin2FsmAction,
+    Merlin2BasicStates
+)
+from ros2_fsm.basic_fsm import CbState
 
 
 class Merlin2NavigationAction(Merlin2FsmAction):
@@ -27,18 +29,24 @@ class Merlin2NavigationAction(Merlin2FsmAction):
 
         super().__init__("navigation")
 
-        navigation_state = AcionState(
-            self, TopoNav, "/topo_nav/navigation", self.create_nav_goal)
+        prepare_goal_state = CbState(["valid"], self.prepapre_goal)
+
+        navigation_state = self.create_state(Merlin2BasicStates.NAVIGATION)
+
+        self.add_state(
+            "PREPARING_GOAL",
+            prepare_goal_state,
+            {"valid": "NAV_STATE"}
+        )
 
         self.add_state(
             "NAV_STATE",
-            navigation_state)
+            navigation_state
+        )
 
-    def create_nav_goal(self, blackboard):
-        dst = blackboard.merlin2_action_goal.objects[1]
-        goal = TopoNav.Goal()
-        goal.point = dst
-        return goal
+    def prepapre_goal(self, blackboard):
+        blackboard.destination = blackboard.merlin2_action_goal.objects[1]
+        return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:
         return [self.__org, self.__dst]
