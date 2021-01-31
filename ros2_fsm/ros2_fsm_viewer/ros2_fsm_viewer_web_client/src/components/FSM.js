@@ -21,14 +21,13 @@ class FSM extends React.Component {
         var fsms_stack = [];
         var fsm_outcomes_stack = [];
         var state_amount_stack = [];
-        var current_state_stack = [];
+        var current_state_path = fsm_data.fsm_name + fsm_data.current_state;
 
         var fsm_structure = fsm_data.fsm_structure;
         var states = Array.from(fsm_structure.states);
 
         fsms_stack.push(fsm_data.fsm_name);
         state_amount_stack.push(states.length);
-        current_state_stack.push(fsm_data.current_state);
 
         var aux_outcomes = []
         var outcomes = fsm_structure.final_outcomes;
@@ -65,17 +64,13 @@ class FSM extends React.Component {
                 parent = fsms_stack[fsms_stack.length - 1];
             }
 
-            if (fsm_data.current_state == state.state_name) {
-                type = "current_state";
-
-                if (state.is_fsm) {
+            if (current_state_path == fsms_stack[fsms_stack.length - 1] + state.state_name) {
+                if (!state.is_fsm) {
+                    type = "current_state";
+                } else {
+                    current_state_path = current_state_path + state.state_name
                     type = "current_fsm";
                 }
-            }
-
-            if (current_state_stack[current_state_stack.length - 1] == state.state_name &&
-                !state.is_fsm) {
-                type = "current_state";
             }
 
             if (height < state.state_name.length * 6) {
@@ -162,7 +157,6 @@ class FSM extends React.Component {
                 fsms_stack.push(fsms_stack[fsms_stack.length - 1] + state.state_name);
                 fsm_outcomes_stack.push(aux_outcomes);
                 state_amount_stack.push(state.states.length)
-                current_state_stack.push(state.current_state)
 
                 for (var key in state.states) {
                     states.push(state.states[key]);
@@ -174,7 +168,6 @@ class FSM extends React.Component {
                 state_amount_stack.pop()
                 fsms_stack.pop()
                 fsm_outcomes_stack.pop()
-                current_state_stack.pop()
             }
 
         }
@@ -184,20 +177,27 @@ class FSM extends React.Component {
 
     render() {
 
-        const layout = {
-            name: 'dagre', rankDir: 'TB', ranker: 'longest-path' //tight-tree
-        }
-        //const layout = { name: 'breadthfirst'};
-        //const layout = { name: 'circle' }
         /*const layout = {
-            name: 'klay', klay: {
-                spacing: 100
-            }
+            name: 'dagre',
+            animate: true,
+            rankDir: 'TB',
+            ranker: 'longest-path' //tight-tree
         }*/
+        //const layout = { name: 'breadthfirst' };
+        //const layout = { name: 'circle' }
+        const layout = {
+            name: 'klay', klay: {
+                spacing: 50,
+                direction: 'DOWN',
+                nodePlacement: 'BRANDES_KOEPF',
+                nodeLayering: 'INTERACTIVE',
+                fixedAlignment: 'BALANCED',
+            }
+        }
 
         cytoscape.use(klay);
-        cytoscape.use(cola);
-        cytoscape.use(dagre);
+        //cytoscape.use(cola);
+        //cytoscape.use(dagre);
 
 
 
