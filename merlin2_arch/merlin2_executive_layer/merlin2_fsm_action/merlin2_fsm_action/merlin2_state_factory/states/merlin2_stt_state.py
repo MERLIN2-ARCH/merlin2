@@ -3,8 +3,9 @@
 
 from ros2_text_to_speech_interfaces.action import TTS
 from ros2_speech_recognition_interfaces.action import ListenOnce
-from ros2_fsm.ros2_states import AcionState, BasicOutomes
-from ros2_fsm.basic_fsm import StateMachine
+from std_srvs.srv import Empty
+from ros2_fsm.ros2_states import AcionState, ServiceState, BasicOutomes
+from ros2_fsm.basic_fsm import StateMachine, CbState
 from ros2_fsm.basic_fsm.blackboard import Blackboard
 
 
@@ -13,26 +14,44 @@ class Merlin2SttState(StateMachine):
 
     def __init__(self, node):
 
+        self.node = node
+
         super().__init__(
             [BasicOutomes.SUCC, BasicOutomes.ABOR, BasicOutomes.CANC])
+
+        checking_speech_state = CbState(
+            ["valid", "repeat"], self.checking_speech)
+
+        calibrating_state = ServiceState(
+            node, Empty, "/speech_recognition/calibrate_listening", self.crate_calibrate_rquest)
 
         tts_state = AcionState(
             node, TTS, "/text_to_speech/tts", self.create_tts_goal)
 
         stt_state = AcionState(
             node, ListenOnce, "/speech_recognition/listen_once", self.create_stt_goal,
-            outcomes=["repeat"],
             resutl_handler=self.result_stt_handler)
 
         self.add_state(
-            "STT",
-            stt_state,
-            {"repeat": "TTS"})
+            "CALIBRATING",
+            calibrating_state,
+            {BasicOutomes.SUCC: "LISTENING"})
 
         self.add_state(
-            "TTS",
+            "LISTENING",
+            stt_state,
+            {BasicOutomes.SUCC: "CHECKING_SPEECH"})
+
+        self.add_state(
+            "CHECKING_SPEECH",
+            checking_speech_state,
+            {"repeat": "COMPLAINING",
+             "valid": BasicOutomes.SUCC})
+
+        self.add_state(
+            "COMPLAINING",
             tts_state,
-            {BasicOutomes.SUCC: "STT"})
+            {BasicOutomes.SUCC: "CALIBRATING"})
 
     def create_tts_goal(self, blackboard: Blackboard) -> TTS.Goal:
         """ create a goal for the tts system
@@ -59,7 +78,36 @@ class Merlin2SttState(StateMachine):
         """
 
         goal = ListenOnce.Goal()
+        goal.calibrate = False
         return goal
+
+    def checking_speech(self, blackboard: Blackboard) -> str:
+        """ check STT results
+
+        Args:
+            blackboard (Blackboard): blackboard of the fsm
+
+        Returns:
+            str: outcome
+        """
+
+        if len(blackboard.speech) != 0:
+            return "valid"
+
+        else:
+            return "repeat"
+
+    def crate_calibrate_rquest(self, blackboard: Blackboard) -> Empty.Request:
+        """ create a calibreate request
+
+        Args:
+            blackboard (Blackboard): blackboard of the fsm
+
+        Returns:
+            Empty.Request: empty request
+        """
+
+        return Empty.Request()
 
     def result_stt_handler(self, blackboard: Blackboard, result: ListenOnce.Result) -> str:
         """ handle STT results
@@ -72,9 +120,5 @@ class Merlin2SttState(StateMachine):
             str: outcome
         """
 
-        if len(result.stt_strings) != 0:
-            blackboard.speech = result.stt_strings
-            return BasicOutomes.SUCC
-
-        else:
-            return "repeat"
+        blackboard.speech = result.stt_strings
+        return BasicOutomes.SUCC
