@@ -4,9 +4,11 @@
 from merlin2_arch_interfaces.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
 from ros2_fsm_viewer import Ros2FsmViewerPub
-from ros2_fsm.basic_fsm import StateMachine
+from ros2_fsm.basic_fsm import StateMachine, State
 from ros2_fsm.basic_fsm.blackboard import Blackboard
 from ros2_fsm.ros2_states import BasicOutomes
+
+from .merlin2_state_factory import Merlin2StateFactory
 
 
 class Merlin2FsmAction(Merlin2Action, StateMachine):
@@ -15,6 +17,8 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
     def __init__(self, action_name: str):
 
         self.__action_state_list = []
+
+        self.__state_factory = Merlin2StateFactory()
 
         Merlin2Action.__init__(self, action_name)
         StateMachine.__init__(self, [BasicOutomes.SUCC,
@@ -40,3 +44,15 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
     def cancel_action(self):
         self.cancel_state()
+
+    def create_state(self, state: int) -> State:
+        """ create the basic state
+
+        Args:
+            state (int): state from basic states
+
+        Returns:
+            State: state object
+        """
+
+        return self.__state_factory.create_state(state, node=self)
