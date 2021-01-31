@@ -36,11 +36,11 @@ class Merlin2NavigationAction(Merlin2FsmAction):
         self.add_state(
             "PREPARING_GOAL",
             prepare_goal_state,
-            {"valid": "NAV_STATE"}
+            {"valid": "NAVIGATING"}
         )
 
         self.add_state(
-            "NAV_STATE",
+            "NAVIGATING",
             navigation_state
         )
 

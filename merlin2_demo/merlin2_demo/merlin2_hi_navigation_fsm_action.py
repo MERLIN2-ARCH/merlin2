@@ -47,30 +47,30 @@ class Merlin2HiNavigationAction(Merlin2FsmAction):
         self.add_state(
             "PREPARING_QUESTION",
             prepapre_question_state,
-            {"valid": "TTS"}
+            {"valid": "ASKING"}
         )
 
         self.add_state(
-            "TTS",
+            "ASKING",
             tts_state,
-            {BasicOutomes.SUCC: "STT"}
+            {BasicOutomes.SUCC: "LISTENING"}
         )
 
         self.add_state(
-            "STT",
+            "LISTENING",
             stt_state,
-            {BasicOutomes.SUCC: "CHECKING_STT"}
+            {BasicOutomes.SUCC: "CHECKING_SPEECH"}
         )
 
         self.add_state(
-            "CHECKING_STT",
+            "CHECKING_SPEECH",
             check_stt_state,
-            {"valid": "NAVIGATION",
+            {"valid": "NAVIGATING",
              "repeat": "PREPARING_QUESTION"}
         )
 
         self.add_state(
-            "NAVIGATION",
+            "NAVIGATING",
             navigation_state
         )
 
