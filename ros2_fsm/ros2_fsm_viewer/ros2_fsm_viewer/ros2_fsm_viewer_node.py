@@ -30,7 +30,7 @@ class Ros2FsmViewer(Node):
         super().__init__("ros2_fsm_viewer")
 
         self.__started = False
-        self.__fsm_dict = ExpiringDict(max_len=200, max_age_seconds=1.5)
+        self.__fsm_dict = ExpiringDict(max_len=300, max_age_seconds=3)
 
         thread_subscriber = Thread(target=self.start_subscriber)
         thread_subscriber.start()
