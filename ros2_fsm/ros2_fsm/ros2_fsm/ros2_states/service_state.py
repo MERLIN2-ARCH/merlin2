@@ -6,14 +6,25 @@ from .basic_outcomes import BasicOutomes
 
 class ServiceState(State):
 
-    def __init__(self, node, srv_type, srv_name, create_request_handler, response_handler=None):
+    def __init__(self,
+                 node,
+                 srv_type,
+                 srv_name,
+                 create_request_handler,
+                 outcomes=None,
+                 response_handler=None):
+
+        _outcomes = [BasicOutomes.SUCC, BasicOutomes.ABOR]
+
+        if outcomes:
+            _outcomes = _outcomes + outcomes
 
         self.__service_client = node.create_client(srv_type, srv_name)
 
         self.__create_request_handler = create_request_handler
         self.__response_handler = response_handler
 
-        super().__init__([BasicOutomes.SUCC, BasicOutomes.ABOR])
+        super().__init__(_outcomes)
 
     def _create_request(self, blackboard):
         return self.__create_request_handler(blackboard)
@@ -27,7 +38,10 @@ class ServiceState(State):
             response = self.__service_client.call(request)
 
             if self.__response_handler:
-                self.__response_handler(blackboard, response)
+                outcome = self.__response_handler(blackboard, response)
+
+                if outcome:
+                    return outcome
 
             return BasicOutomes.SUCC
         except:

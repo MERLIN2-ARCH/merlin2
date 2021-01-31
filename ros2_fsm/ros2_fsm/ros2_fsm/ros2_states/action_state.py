@@ -7,16 +7,25 @@ from .basic_outcomes import BasicOutomes
 
 class AcionState(State):
 
-    def __init__(self, node, action_type, action_name, create_goal_handler, resutl_handler=None):
+    def __init__(self,
+                 node,
+                 action_type,
+                 action_name,
+                 create_goal_handler,
+                 outcomes=None,
+                 resutl_handler=None):
+
+        _outcomes = [BasicOutomes.SUCC, BasicOutomes.ABOR, BasicOutomes.CANC]
+
+        if outcomes:
+            _outcomes = _outcomes + outcomes
 
         self.__action_client = ActionClient(node, action_type, action_name)
 
         self.__create_goal_handler = create_goal_handler
         self.__resutl_handler = resutl_handler
 
-        super().__init__([BasicOutomes.SUCC,
-                          BasicOutomes.ABOR,
-                          BasicOutomes.CANC])
+        super().__init__(_outcomes)
 
     def _create_goal(self, blackboard):
         return self.__create_goal_handler(blackboard)
@@ -40,6 +49,9 @@ class AcionState(State):
 
             if self.__resutl_handler:
                 result = self.__action_client.get_result()
-                self.__resutl_handler(blackboard, result)
+                outcome = self.__resutl_handler(blackboard, result)
+
+                if outcome:
+                    return outcome
 
             return BasicOutomes.SUCC
