@@ -68,7 +68,7 @@ class FSM extends React.Component {
                 if (!state.is_fsm) {
                     type = "current_state";
                 } else {
-                    current_state_path = current_state_path + state.state_name
+                    current_state_path = current_state_path + state.current_state
                     type = "current_fsm";
                 }
             } else {
