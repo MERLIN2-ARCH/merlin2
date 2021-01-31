@@ -56,7 +56,15 @@ class StateMachine(State):
             outcome = state["state"](self._blackboard)
 
             if outcome in state["transitions"]:
-                self._current_state = state["transitions"][outcome]
+                transition_target = state["transitions"][outcome]
+
+                if transition_target in self._outcomes:
+                    self._current_state = None
+                    self._blackboard = None
+
+                    return transition_target
+
+                self._current_state = transition_target
                 state = self._states[self._current_state]
 
             elif outcome in self._outcomes:
