@@ -71,6 +71,10 @@ class FSM extends React.Component {
                     current_state_path = current_state_path + state.state_name
                     type = "current_fsm";
                 }
+            } else {
+                if (state.is_fsm) {
+                    type = "fsm";
+                }
             }
 
             if (height < state.state_name.length * 6) {
@@ -187,8 +191,8 @@ class FSM extends React.Component {
         //const layout = { name: 'circle' }
         const layout = {
             name: 'klay', klay: {
-                spacing: 50,
-                direction: 'DOWN',
+                spacing: 80,
+                direction: 'RIGHT',
                 nodePlacement: 'BRANDES_KOEPF',
                 nodeLayering: 'INTERACTIVE',
                 fixedAlignment: 'BALANCED',
@@ -285,7 +289,7 @@ class FSM extends React.Component {
                                 ]}
 
                                 layout={layout}
-                                style={{ width: '100%', height: '500px' }}
+                                style={{ width: '100%', height: '75vh' }}
                                 zoomingEnabled={true}
                                 boxSelectionEnabled={false}
                                 autoungrabify={true}
