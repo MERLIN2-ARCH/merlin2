@@ -55,8 +55,8 @@ class FSM extends React.Component {
             var state = states.pop();
             var parent = '';
             var type = "node";
-            var height = 30;
-            var width = 60;
+            var height = 50;
+            var width = 100;
 
 
             //// NODE ////
@@ -191,11 +191,13 @@ class FSM extends React.Component {
         //const layout = { name: 'circle' }
         const layout = {
             name: 'klay', klay: {
-                spacing: 80,
-                direction: 'RIGHT',
+                spacing: 40,
+                direction: 'DOWN',
                 nodePlacement: 'BRANDES_KOEPF',
                 nodeLayering: 'INTERACTIVE',
                 fixedAlignment: 'BALANCED',
+                layoutHierarchy: true,
+                mergeHierarchyCrossingEdges: false
             }
         }
 
