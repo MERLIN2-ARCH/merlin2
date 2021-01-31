@@ -78,11 +78,6 @@ class FSM extends React.Component {
                 type = "current_state";
             }
 
-            //console.log(type)
-            console.log(fsm_data.current_state == state.state_name)
-            //console.log(state.is_fsm)
-
-
             if (height < state.state_name.length * 6) {
                 height = state.state_name.length * 6;
             }
@@ -189,16 +184,20 @@ class FSM extends React.Component {
 
     render() {
 
-
-        //const layout = { name: 'breadthfirst', circular: true, directed: true, roots: ["e"] };
-        //const layout = { name: 'circle' }
         const layout = {
+            name: 'dagre', rankDir: 'TB', ranker: 'longest-path' //tight-tree
+        }
+        //const layout = { name: 'breadthfirst'};
+        //const layout = { name: 'circle' }
+        /*const layout = {
             name: 'klay', klay: {
                 spacing: 100
             }
-        }
+        }*/
 
         cytoscape.use(klay);
+        cytoscape.use(cola);
+        cytoscape.use(dagre);
 
 
 
@@ -213,7 +212,7 @@ class FSM extends React.Component {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-            }}>
+            }} >
 
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
@@ -296,7 +295,7 @@ class FSM extends React.Component {
                         </Box >
                     </Grid>
                 </Grid>
-            </div>
+            </div >
         )
     }
 }
