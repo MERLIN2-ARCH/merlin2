@@ -14,7 +14,6 @@ class ActionClient(ActionClient2):
         self.__goal_handle = None
         self.__goal_thread = None
         self.__result = None
-        self.__working = False
         super().__init__(node, action_type, action_name)
 
     def get_status(self):
@@ -25,8 +24,14 @@ class ActionClient(ActionClient2):
         with self.__status_lock:
             self._status = status
 
-    def is_aborted(self):
-        return self.get_status() == GoalStatus.STATUS_ABORTED
+    def is_accepted(self):
+        return self.get_status() == GoalStatus.STATUS_ACCEPTED
+
+    def is_executing(self):
+        return self.get_status() == GoalStatus.STATUS_EXECUTING
+
+    def is_canceling(self):
+        return self.get_status() == GoalStatus.STATUS_CANCELING
 
     def is_succeeded(self):
         return self.get_status() == GoalStatus.STATUS_SUCCEEDED
@@ -34,8 +39,14 @@ class ActionClient(ActionClient2):
     def is_canceled(self):
         return self.get_status() == GoalStatus.STATUS_CANCELED
 
+    def is_aborted(self):
+        return self.get_status() == GoalStatus.STATUS_ABORTED
+
     def is_working(self):
-        return self.__working
+        return (self.is_executing() or self.is_canceling() or self.is_accepted())
+
+    def is_terminated(self):
+        return (self.is_succeeded() or self.is_canceled() or self.is_aborted())
 
     def wait_for_result(self):
         self.__goal_thread.join()
@@ -61,7 +72,6 @@ class ActionClient(ActionClient2):
             if self.is_canceled():
                 return
             self._set_status(GoalStatus.STATUS_ABORTED)
-            self.__working = False
             return
 
         # change status
@@ -84,14 +94,11 @@ class ActionClient(ActionClient2):
         # change status
         if self.is_canceled():
             return
-        self._set_status(get_result_future.result().status)
 
+        self._set_status(get_result_future.result().status)
         self.__result = get_result_future.result().result
 
-        self.__working = False
-
     def send_goal(self, goal):
-        self.__working = True
         self.__goal_thread = Thread(target=self.__send_goal, args=(goal,))
         self._set_status(GoalStatus.STATUS_UNKNOWN)
         self.__goal_thread.start()
@@ -102,6 +109,7 @@ class ActionClient(ActionClient2):
 
         cancel_goal_future = self._cancel_goal_async(self.__goal_handle)
         self._set_status(GoalStatus.STATUS_CANCELING)
+
         while not cancel_goal_future.done():
             time.sleep(1)
 
@@ -111,8 +119,6 @@ class ActionClient(ActionClient2):
             return False
 
         self._set_status(GoalStatus.STATUS_CANCELED)
-
-        self.__working = False
 
         return True
 
