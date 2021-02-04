@@ -31,8 +31,8 @@ class AcionState(State):
         return self.__create_goal_handler(blackboard)
 
     def cancel_state(self):
-        super().cancel_state()
         self.__action_client.cancel_goal()
+        super().cancel_state()
 
     def execute(self, blackboard):
 
