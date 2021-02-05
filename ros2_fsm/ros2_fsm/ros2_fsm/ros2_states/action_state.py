@@ -1,16 +1,16 @@
 
 
 from ros2_fsm.basic_fsm import State
-from custom_ros2 import ActionClient
+from custom_ros2 import Node
 from .basic_outcomes import BasicOutomes
 
 
 class AcionState(State):
 
     def __init__(self,
-                 node,
+                 node: Node,
                  action_type,
-                 action_name,
+                 action_name: str,
                  create_goal_handler,
                  outcomes=None,
                  resutl_handler=None):
@@ -20,7 +20,8 @@ class AcionState(State):
         if outcomes:
             _outcomes = _outcomes + outcomes
 
-        self.__action_client = ActionClient(node, action_type, action_name)
+        self.__action_client = node.create_action_client(
+            action_type, action_name)
 
         self.__create_goal_handler = create_goal_handler
         self.__resutl_handler = resutl_handler

@@ -1,6 +1,7 @@
 
 
 from ros2_fsm.basic_fsm import State
+from custom_ros2 import Node
 from .basic_outcomes import BasicOutomes
 
 
@@ -8,7 +9,7 @@ class ServiceState(State):
 
     def __init__(self,
                  node,
-                 srv_type,
+                 srv_type: str,
                  srv_name,
                  create_request_handler,
                  outcomes=None,
