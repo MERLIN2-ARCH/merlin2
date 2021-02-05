@@ -9,11 +9,7 @@ from merlin2_arch_interfaces.srv import (
 )
 from merlin2_arch_interfaces.action import DispatchPlan, Execute
 
-from custom_ros2 import (
-    Node,
-    ActionSingleServer,
-    ActionClient
-)
+from custom_ros2 import Node
 
 
 class Merlin2ExecutorNode(Node):
@@ -30,16 +26,15 @@ class Merlin2ExecutorNode(Node):
             GeneratePlan, "generate_plan")
 
         # action client
-        self.__plan_dispatcher_client = ActionClient(
-            self, DispatchPlan, "dispatch_plan")
+        self.__plan_dispatcher_client = self.create_action_client(
+            DispatchPlan, "dispatch_plan")
 
         # action server
-        self.__action_server = ActionSingleServer(self,
-                                                  Execute,
-                                                  "execute",
-                                                  execute_callback=self.__execute_server,
-                                                  cancel_callback=self.__cancel_callback
-                                                  )
+        self.__action_server = self.create_action_server(Execute,
+                                                         "execute",
+                                                         execute_callback=self.__execute_server,
+                                                         cancel_callback=self.__cancel_callback
+                                                         )
 
     def __cancel_callback(self):
         if self.__plan_dispatcher_client.is_working():

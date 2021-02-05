@@ -24,7 +24,6 @@ from ros2_topological_nav_interfaces.action import TopoNav
 from ros2_speech_recognition_interfaces.action import ListenOnce
 from ros2_text_to_speech_interfaces.action import TTS
 from merlin2_arch_interfaces.msg import PlanAction
-from custom_ros2 import ActionClient
 
 from .pddl import person_attended
 
@@ -39,14 +38,14 @@ class Merlin2HiNavigationAction(Merlin2Action):
 
         super().__init__("hi_navigation")
 
-        self.__topo_nav_client = ActionClient(
-            self, TopoNav, "/topo_nav/navigation")
+        self.__topo_nav_client = self.create_action_client(
+            TopoNav, "/topo_nav/navigation")
 
-        self.__tts_client = ActionClient(
-            self, TTS, "/text_to_speech/tts")
+        self.__tts_client = self.create_action_client(
+            TTS, "/text_to_speech/tts")
 
-        self.__speech_rec_client = ActionClient(
-            self, ListenOnce, "/speech_recognition/listen_once")
+        self.__speech_rec_client = self.create_action_client(
+            ListenOnce, "/speech_recognition/listen_once")
 
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = TopoNav.Goal()

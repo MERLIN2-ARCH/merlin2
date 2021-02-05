@@ -18,11 +18,7 @@ from pddl_dto import (
 
 from pddl_dao import PddlDaoParameterLoader
 
-from custom_ros2 import (
-    Node,
-    ActionSingleServer,
-    ActionClient
-)
+from custom_ros2 import Node
 
 
 class Merlin2PlanDispatcherNode(Node):
@@ -41,19 +37,18 @@ class Merlin2PlanDispatcherNode(Node):
 
         # action server/client
         self.__action_client = None
-        self.__action_server = ActionSingleServer(self,
-                                                  DispatchPlan,
-                                                  "dispatch_plan",
-                                                  execute_callback=self.__execute_server,
-                                                  cancel_callback=self.__cancel_callback)
+        self.__action_server = self.create_action_server(DispatchPlan,
+                                                         "dispatch_plan",
+                                                         execute_callback=self.__execute_server,
+                                                         cancel_callback=self.__cancel_callback)
 
     def __cancel_callback(self):
         if self.__action_client:
             self.__action_client.cancel_goal()
 
     def _call_action(self, goal):
-        self.__action_client = ActionClient(
-            self, DispatchAction, goal.action.action_name)
+        self.__action_client = self.create_action_client(
+            DispatchAction, goal.action.action_name)
         self.__action_client.wait_for_server()
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()

@@ -16,7 +16,6 @@ from merlin2_action.merlin2_action import Merlin2Action
 
 from ros2_topological_nav_interfaces.action import TopoNav
 from merlin2_arch_interfaces.msg import PlanAction
-from custom_ros2 import ActionClient
 
 
 class Merlin2NavigationAction(Merlin2Action):
@@ -29,8 +28,8 @@ class Merlin2NavigationAction(Merlin2Action):
 
         super().__init__("navigation")
 
-        self.__action_client = ActionClient(
-            self, TopoNav, "/topo_nav/navigation")
+        self.__action_client = self.create_action_client(
+            TopoNav, "/topo_nav/navigation")
 
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = TopoNav.Goal()

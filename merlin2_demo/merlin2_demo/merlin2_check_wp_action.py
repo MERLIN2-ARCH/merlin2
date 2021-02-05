@@ -22,7 +22,6 @@ from ros2_text_to_speech_interfaces.action import TTS
 from ros2_text_to_speech_interfaces.msg import Config
 
 from merlin2_arch_interfaces.msg import PlanAction
-from custom_ros2 import ActionClient
 
 from .pddl import wp_checked
 
@@ -36,8 +35,8 @@ class Merlin2CheckWpAction(Merlin2Action):
 
         super().__init__("check_wp")
 
-        self.__tts_client = ActionClient(
-            self, TTS, "/text_to_speech/tts")
+        self.__tts_client = self.create_action_client(
+            TTS, "/text_to_speech/tts")
 
     def run_action(self, goal: PlanAction) -> bool:
         tts_goal = TTS.Goal()

@@ -8,10 +8,7 @@ from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
 from pddl_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
 from pddl_dao import PddlDaoParameterLoader
-from custom_ros2 import (
-    Node,
-    ActionSingleServer
-)
+from custom_ros2 import Node
 
 
 class Merlin2Action(Node, PddlActionDto, ABC):
@@ -45,10 +42,10 @@ class Merlin2Action(Node, PddlActionDto, ABC):
             raise Exception("Wrong Action: " + str(self))
 
         # action
-        self.__action_server = ActionSingleServer(self, DispatchAction,
-                                                  a_name,
-                                                  self.__execute_server,
-                                                  cancel_callback=self.__cancel_callback)
+        self.__action_server = self.create_action_server(DispatchAction,
+                                                         a_name,
+                                                         self.__execute_server,
+                                                         cancel_callback=self.__cancel_callback)
 
     def __hash__(self):
         return Node.__hash__(self)

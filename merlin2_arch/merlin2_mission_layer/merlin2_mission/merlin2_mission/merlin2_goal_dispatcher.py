@@ -13,10 +13,7 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDa
 
 from merlin2_arch_interfaces.action import Execute
 
-from custom_ros2 import (
-    Node,
-    ActionClient
-)
+from custom_ros2 import Node
 
 
 class Merlin2GoalDispatcher:
@@ -31,7 +28,8 @@ class Merlin2GoalDispatcher:
         self.__pddl_proposition_dao = self.__pddl_dao_factory.create_pddl_proposition_dao()
 
         # action client
-        self.__action_client = ActionClient(self.__node, Execute, "execute")
+        self.__action_client = self.__node.create_action_client(
+            Execute, "execute")
 
     def get_pddl_factory(self) -> PddlDaoFactory:
         """ get pddl dao factory of the goal dispatcher
