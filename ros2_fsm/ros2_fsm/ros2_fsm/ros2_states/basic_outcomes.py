@@ -1,6 +1,5 @@
 
-
 class BasicOutomes:
-    SUCC = "succeed"
+    SUCC = "succeeded"
     ABOR = "aborted"
     CANC = "canceled"
