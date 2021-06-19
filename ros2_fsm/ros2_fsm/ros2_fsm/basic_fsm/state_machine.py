@@ -13,7 +13,6 @@ class StateMachine(State):
         self._states = {}
         self._start_state = None
         self._current_state = None
-        self._blackboard = None
 
     def add_state(self,
                   name: str,
@@ -44,35 +43,30 @@ class StateMachine(State):
     def execute(self, blackboard: Blackboard = None):
 
         if not blackboard:
-            self._blackboard = Blackboard()
-        else:
-            self._blackboard = blackboard
+            blackboard = Blackboard()
 
         self._current_state = self._start_state
 
         state = self._states[self._start_state]
 
         while True:
-            outcome = state["state"](self._blackboard)
+            outcome = state["state"](blackboard)
 
+            # tranlate outcome using transitions
             if outcome in state["transitions"]:
-                transition_target = state["transitions"][outcome]
+                outcome = state["transitions"][outcome]
 
-                if transition_target in self._outcomes:
-                    self._current_state = None
-                    self._blackboard = None
-
-                    return transition_target
-
-                self._current_state = transition_target
-                state = self._states[self._current_state]
-
-            elif outcome in self._outcomes:
+            # outcome is an outcome of the sm
+            if outcome in self._outcomes:
                 self._current_state = None
-                self._blackboard = None
-
                 return outcome
 
+            # outcome is a state
+            elif outcome in self._states:
+                self._current_state = outcome
+                state = self._states[self._current_state]
+
+            # outcome is not in the sm
             else:
                 raise Exception("Outcome (" + outcome + ") without transition")
 

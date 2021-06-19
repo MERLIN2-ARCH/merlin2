@@ -27,9 +27,6 @@ class State(ABC):
     def __str__(self):
         return self.__class__.__name__
 
-    def restart_canceled(self):
-        self._canceled = False
-
     def cancel_state(self):
         self._canceled = True
 
