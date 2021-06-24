@@ -26,6 +26,9 @@ class AcionState(State):
         self.__create_goal_handler = create_goal_handler
         self.__resutl_handler = resutl_handler
 
+        if not self.__create_goal_handler or not self.__resutl_handler:
+            raise Exception("create_goal and result handlers are needed")
+
         super().__init__(_outcomes)
 
     def _create_goal(self, blackboard):
@@ -48,11 +51,10 @@ class AcionState(State):
             return BasicOutomes.ABOR
         elif self.__action_client.is_succeeded():
 
-            if self.__resutl_handler:
-                result = self.__action_client.get_result()
-                outcome = self.__resutl_handler(blackboard, result)
+            result = self.__action_client.get_result()
+            outcome = self.__resutl_handler(blackboard, result)
 
-                if outcome:
-                    return outcome
+            if outcome:
+                return outcome
 
             return BasicOutomes.SUCC
