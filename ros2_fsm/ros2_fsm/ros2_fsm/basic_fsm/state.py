@@ -14,11 +14,17 @@ class State(ABC):
         if outcomes:
             self._outcomes = outcomes
         else:
-            raise Exception("There mmust be at least one outcome")
+            raise Exception("There must be at least one outcome")
 
     def __call__(self, blackboard: Blackboard):
         self._canceled = False
-        return self.execute(blackboard)
+
+        outcome = self.execute(blackboard)
+
+        if not outcome in self._outcomes:
+            raise Exception("Outcome " + outcome + " does not belong")
+
+        return outcome
 
     @abstractmethod
     def execute(self, blackboard: Blackboard) -> str:
