@@ -48,7 +48,7 @@ def main():
                  transitions={"outcome2": "FOO"})
 
     # Execute
-    outcome = sm.execute()
+    outcome = sm()
     print(outcome)
 
 
