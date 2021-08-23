@@ -2,7 +2,7 @@
 
 from ros2_fsm.basic_fsm import State
 from custom_ros2 import Node
-from .basic_outcomes import BasicOutomes
+from ros2_fsm.basic_outcomes import SUCCEED, ABORT
 
 
 class ServiceState(State):
@@ -15,7 +15,7 @@ class ServiceState(State):
                  outcomes=None,
                  response_handler=None):
 
-        _outcomes = [BasicOutomes.SUCC, BasicOutomes.ABOR]
+        _outcomes = [SUCCEED, ABORT]
 
         if outcomes:
             _outcomes = _outcomes + outcomes
@@ -44,6 +44,6 @@ class ServiceState(State):
                 if outcome:
                     return outcome
 
-            return BasicOutomes.SUCC
+            return SUCCEED
         except:
-            return BasicOutomes.ABOR
+            return ABORT

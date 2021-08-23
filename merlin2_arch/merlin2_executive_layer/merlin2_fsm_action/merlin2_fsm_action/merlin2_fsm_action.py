@@ -6,7 +6,7 @@ from merlin2_action.merlin2_action import Merlin2Action
 from ros2_fsm_viewer import Ros2FsmViewerPub
 from ros2_fsm.basic_fsm import StateMachine, State
 from ros2_fsm.basic_fsm.blackboard import Blackboard
-from ros2_fsm.ros2_states import BasicOutomes
+from ros2_fsm.basic_outcomes import SUCCEED, ABORT, CANCEL
 
 from .merlin2_state_factory import Merlin2StateFactory
 
@@ -19,9 +19,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
         self.__state_factory = Merlin2StateFactory()
 
         Merlin2Action.__init__(self, action_name)
-        StateMachine.__init__(self, [BasicOutomes.SUCC,
-                                     BasicOutomes.ABOR,
-                                     BasicOutomes.CANC])
+        StateMachine.__init__(self, [SUCCEED, ABORT, CANCEL])
 
         Ros2FsmViewerPub(self, action_name.upper(), self)
 
@@ -35,7 +33,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
         outcome = self(blackboard)
 
-        if outcome == BasicOutomes.SUCC:
+        if outcome == SUCCEED:
             return True
         else:
             return False

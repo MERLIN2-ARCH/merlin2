@@ -23,7 +23,7 @@ from merlin2_fsm_action import (
     Merlin2BasicStates
 )
 from ros2_fsm.basic_fsm import CbState
-from ros2_fsm.ros2_states import BasicOutomes
+from ros2_fsm.basic_outcomes import SUCCEED
 
 from .pddl import person_attended
 
@@ -53,13 +53,13 @@ class Merlin2HiNavigationAction(Merlin2FsmAction):
         self.add_state(
             "ASKING",
             tts_state,
-            {BasicOutomes.SUCC: "LISTENING"}
+            {SUCCEED: "LISTENING"}
         )
 
         self.add_state(
             "LISTENING",
             stt_state,
-            {BasicOutomes.SUCC: "CHECKING_SPEECH"}
+            {SUCCEED: "CHECKING_SPEECH"}
         )
 
         self.add_state(

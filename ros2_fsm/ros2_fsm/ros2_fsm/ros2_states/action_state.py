@@ -2,7 +2,7 @@
 
 from ros2_fsm.basic_fsm import State
 from custom_ros2 import Node
-from .basic_outcomes import BasicOutomes
+from ros2_fsm.basic_outcomes import SUCCEED, ABORT, CANCEL
 
 
 class AcionState(State):
@@ -15,7 +15,7 @@ class AcionState(State):
                  outcomes=None,
                  resutl_handler=None):
 
-        _outcomes = [BasicOutomes.SUCC, BasicOutomes.ABOR, BasicOutomes.CANC]
+        _outcomes = [SUCCEED, ABORT, CANCEL]
 
         if outcomes:
             _outcomes = _outcomes + outcomes
@@ -26,8 +26,8 @@ class AcionState(State):
         self.__create_goal_handler = create_goal_handler
         self.__resutl_handler = resutl_handler
 
-        if not self.__create_goal_handler or not self.__resutl_handler:
-            raise Exception("create_goal and result handlers are needed")
+        if not self.__create_goal_handler:
+            raise Exception("create_goal is needed")
 
         super().__init__(_outcomes)
 
@@ -46,15 +46,15 @@ class AcionState(State):
         self.__action_client.wait_for_result()
 
         if self.__action_client.is_canceled():
-            return BasicOutomes.CANC
+            return CANCEL
         elif self.__action_client.is_aborted():
-            return BasicOutomes.ABOR
+            return ABORT
         elif self.__action_client.is_succeeded():
 
             result = self.__action_client.get_result()
-            outcome = self.__resutl_handler(blackboard, result)
 
-            if outcome:
+            if not self.__resutl_handler is None:
+                outcome = self.__resutl_handler(blackboard, result)
                 return outcome
 
-            return BasicOutomes.SUCC
+            return SUCCEED

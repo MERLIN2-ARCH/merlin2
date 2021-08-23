@@ -4,7 +4,8 @@
 from ros2_text_to_speech_interfaces.action import TTS
 from ros2_speech_recognition_interfaces.action import ListenOnce
 from std_srvs.srv import Empty
-from ros2_fsm.ros2_states import AcionState, ServiceState, BasicOutomes
+from ros2_fsm.ros2_states import AcionState, ServiceState
+from ros2_fsm.basic_outcomes import SUCCEED, ABORT, CANCEL
 from ros2_fsm.basic_fsm import StateMachine, CbState
 from ros2_fsm.basic_fsm.blackboard import Blackboard
 
@@ -17,7 +18,7 @@ class Merlin2SttState(StateMachine):
         self.node = node
 
         super().__init__(
-            [BasicOutomes.SUCC, BasicOutomes.ABOR, BasicOutomes.CANC])
+            [SUCCEED, ABORT, CANCEL])
 
         checking_speech_state = CbState(
             ["valid", "repeat"], self.checking_speech)
@@ -35,23 +36,23 @@ class Merlin2SttState(StateMachine):
         self.add_state(
             "CALIBRATING",
             calibrating_state,
-            {BasicOutomes.SUCC: "LISTENING"})
+            {SUCCEED: "LISTENING"})
 
         self.add_state(
             "LISTENING",
             stt_state,
-            {BasicOutomes.SUCC: "CHECKING_SPEECH"})
+            {SUCCEED: "CHECKING_SPEECH"})
 
         self.add_state(
             "CHECKING_SPEECH",
             checking_speech_state,
             {"repeat": "COMPLAINING",
-             "valid": BasicOutomes.SUCC})
+             "valid": SUCCEED})
 
         self.add_state(
             "COMPLAINING",
             tts_state,
-            {BasicOutomes.SUCC: "CALIBRATING"})
+            {SUCCEED: "CALIBRATING"})
 
     def create_tts_goal(self, blackboard: Blackboard) -> TTS.Goal:
         """ create a goal for the tts system
@@ -121,4 +122,4 @@ class Merlin2SttState(StateMachine):
         """
 
         blackboard.speech = result.stt_strings
-        return BasicOutomes.SUCC
+        return SUCCEED
