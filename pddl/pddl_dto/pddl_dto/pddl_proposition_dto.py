@@ -10,11 +10,11 @@ from pddl_dto.pddl_object_dto import PddlObjectDto
 class PddlPropositionDto(PddlDto):
     """ Pddl Proposition Dto Class """
 
-    def __init__(self, PddlPredicateModel: PddlPredicateDto,
+    def __init__(self, pddl_predicate_dto: PddlPredicateDto,
                  pddl_objects_list: List[PddlObjectDto] = None,
                  is_goal: bool = False):
 
-        self.set_pddl_predicate(PddlPredicateModel)
+        self.set_pddl_predicate(pddl_predicate_dto)
         self.set_pddl_objects_list(pddl_objects_list)
         self.set_is_goal(is_goal)
 

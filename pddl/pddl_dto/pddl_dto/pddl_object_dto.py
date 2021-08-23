@@ -8,9 +8,9 @@ from pddl_dto.pddl_type_dto import PddlTypeDto
 class PddlObjectDto(PddlDto):
     """ Pddl Object Dto Class """
 
-    def __init__(self, PddlTypeModel: PddlTypeDto, object_name: str):
+    def __init__(self, pddl_type_dto: PddlTypeDto, object_name: str):
 
-        self.set_pddl_type(PddlTypeModel)
+        self.set_pddl_type(pddl_type_dto)
         self.set_object_name(object_name)
 
         PddlDto.__init__(self)
