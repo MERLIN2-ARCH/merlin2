@@ -16,8 +16,11 @@ class State(ABC):
         else:
             raise Exception("There must be at least one outcome")
 
-    def __call__(self, blackboard: Blackboard):
+    def __call__(self, blackboard: Blackboard = None):
         self._canceled = False
+
+        if blackboard is None:
+            blackboard = Blackboard()
 
         outcome = self.execute(blackboard)
 
