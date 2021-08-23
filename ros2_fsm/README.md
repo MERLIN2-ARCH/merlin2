@@ -1,7 +1,7 @@
 # ros2_fsm
 
 ## Simple Demo
-```Python
+```python
 from ros2_fsm.basic_fsm import State
 from ros2_fsm.basic_fsm import StateMachine
 
