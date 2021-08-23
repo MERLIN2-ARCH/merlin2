@@ -40,10 +40,7 @@ class StateMachine(State):
         if self._current_state:
             self._states[self._current_state]["state"].cancel_state()
 
-    def execute(self, blackboard: Blackboard = None):
-
-        if not blackboard:
-            blackboard = Blackboard()
+    def execute(self, blackboard: Blackboard):
 
         self._current_state = self._start_state
 

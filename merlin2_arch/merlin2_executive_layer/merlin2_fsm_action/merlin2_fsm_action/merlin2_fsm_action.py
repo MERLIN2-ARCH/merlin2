@@ -16,8 +16,6 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
     def __init__(self, action_name: str):
 
-        self.__action_state_list = []
-
         self.__state_factory = Merlin2StateFactory()
 
         Merlin2Action.__init__(self, action_name)
