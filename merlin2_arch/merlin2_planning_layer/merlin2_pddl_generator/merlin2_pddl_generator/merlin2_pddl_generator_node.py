@@ -8,7 +8,7 @@ from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
 
 from pddl_dao import PddlDaoParameterLoader
 
-from custom_ros2 import Node
+from simple_node import Node
 
 
 class Merlin2PddlGeneratorNode(Node):

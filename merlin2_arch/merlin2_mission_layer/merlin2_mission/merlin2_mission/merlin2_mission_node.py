@@ -9,7 +9,7 @@ from pddl_dto import (
     PddlPropositionDto
 )
 
-from custom_ros2 import Node
+from simple_node import Node
 
 from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
 

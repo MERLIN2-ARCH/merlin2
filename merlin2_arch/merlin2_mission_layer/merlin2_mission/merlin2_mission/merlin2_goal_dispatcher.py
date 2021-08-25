@@ -13,7 +13,7 @@ from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDa
 
 from merlin2_arch_interfaces.action import Execute
 
-from custom_ros2 import Node
+from simple_node import Node
 
 
 class Merlin2GoalDispatcher:

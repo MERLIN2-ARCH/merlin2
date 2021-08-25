@@ -8,7 +8,7 @@ from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
 from pddl_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
 from pddl_dao import PddlDaoParameterLoader
-from custom_ros2 import Node
+from simple_node import Node
 
 
 class Merlin2Action(Node, PddlActionDto, ABC):

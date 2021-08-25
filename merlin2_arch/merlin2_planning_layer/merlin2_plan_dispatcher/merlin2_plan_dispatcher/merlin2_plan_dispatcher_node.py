@@ -18,7 +18,7 @@ from pddl_dto import (
 
 from pddl_dao import PddlDaoParameterLoader
 
-from custom_ros2 import Node
+from simple_node import Node
 
 
 class Merlin2PlanDispatcherNode(Node):

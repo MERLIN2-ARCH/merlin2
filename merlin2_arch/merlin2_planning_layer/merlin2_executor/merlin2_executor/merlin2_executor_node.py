@@ -9,7 +9,7 @@ from merlin2_arch_interfaces.srv import (
 )
 from merlin2_arch_interfaces.action import DispatchPlan, Execute
 
-from custom_ros2 import Node
+from simple_node import Node
 
 
 class Merlin2ExecutorNode(Node):
