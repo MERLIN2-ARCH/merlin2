@@ -1,4 +1,4 @@
-# merlin2
+# MERLIN 2
 
 ![](./Arquitectura_MERLIN2.png)
 
