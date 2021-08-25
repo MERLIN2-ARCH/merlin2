@@ -2,7 +2,7 @@
 import unittest
 from merlin2_pddl_generator.merlin2_pddl_parser import Merlin2PddlDomainParser
 
-from pddl_dto import (
+from kant_dto import (
     PddlTypeDto,
     PddlObjectDto,
     PddlPredicateDto,

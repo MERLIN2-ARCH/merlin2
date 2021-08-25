@@ -10,13 +10,13 @@ from merlin2_arch_interfaces.action import (
 
 import rclpy
 
-from pddl_dto import (
+from kant_dto import (
     PddlPropositionDto,
     PddlConditionEffectDto,
     PddlObjectDto
 )
 
-from pddl_dao import PddlDaoParameterLoader
+from kant_dao import PddlDaoParameterLoader
 
 from simple_node import Node
 

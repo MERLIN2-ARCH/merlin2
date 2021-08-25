@@ -3,7 +3,7 @@
 Shell 1
 ```shell
 sudo service mongod start
-ros2 run merlin2_knowledge_base knowledge_base_node
+ros2 run knowledge_base knowledge_base_node
 ```
 
 Shell 2

@@ -1,5 +1,5 @@
 
-from pddl_dao.pddl_dao_factory import (
+from kant_dao.pddl_dao_factory import (
     PddlDaoFactoryFactory,
     PddlDaoFamilies
 )
@@ -7,10 +7,10 @@ from pddl_dao.pddl_dao_factory import (
 from simple_node import Node
 import rclpy
 
-from tests_merlin2_pddl_generator_basic.test_mongoengine_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
+from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
 
 
-class TestMerlin2PddlProblemGeneratorNode(TestMerlin2PddlProblemGenerator):
+class TestMerlin2PddlProblemGeneratorRos2(TestMerlin2PddlProblemGenerator):
 
     def setUp(self):
 
@@ -18,7 +18,7 @@ class TestMerlin2PddlProblemGeneratorNode(TestMerlin2PddlProblemGenerator):
         pddl_dao_factory_factory = PddlDaoFactoryFactory()
         self.node = Node("test_mongoengine_merlin_pddl_generator_node")
         self.pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            PddlDaoFamilies.MERLIN2, node=self.node)
+            PddlDaoFamilies.ROS2, node=self.node)
 
         super().setUp()
 

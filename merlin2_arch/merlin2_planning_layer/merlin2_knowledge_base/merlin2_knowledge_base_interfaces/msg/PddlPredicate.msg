@@ -1,2 +1,0 @@
-string predicate_name
-merlin2_knowledge_base_interfaces/PddlType[] pddl_types

@@ -1,5 +1,5 @@
 
-from pddl_dto import (
+from kant_dto import (
     PddlTypeDto
 )
 

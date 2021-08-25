@@ -5,11 +5,11 @@
 
 from typing import List
 
-from pddl_dto import PddlPropositionDto
+from kant_dto import PddlPropositionDto
 
-from pddl_dao import PddlDaoParameterLoader
+from kant_dao import PddlDaoParameterLoader
 
-from pddl_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
+from kant_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 from merlin2_arch_interfaces.action import Execute
 

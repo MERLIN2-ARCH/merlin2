@@ -1,2 +1,0 @@
-merlin2_knowledge_base_interfaces/PddlType pddl_type
-string object_name

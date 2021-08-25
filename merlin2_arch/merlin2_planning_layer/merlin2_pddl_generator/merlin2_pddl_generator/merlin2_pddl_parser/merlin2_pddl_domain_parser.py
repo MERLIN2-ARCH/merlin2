@@ -3,7 +3,7 @@
 
 from typing import List
 
-from pddl_dto import (
+from kant_dto import (
     PddlTypeDto,
     PddlPredicateDto,
     PddlActionDto

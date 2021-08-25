@@ -4,7 +4,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from pddl_dto import (
+from kant_dto import (
     PddlObjectDto,
     PddlPropositionDto
 )

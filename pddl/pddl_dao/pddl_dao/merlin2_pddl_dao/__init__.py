@@ -1,6 +1,0 @@
-
-from pddl_dao.merlin2_pddl_dao.merlin2_pddl_type_dao import Merlin2PddlTypeDao
-from pddl_dao.merlin2_pddl_dao.merlin2_pddl_object_dao import Merlin2PddlObjectDao
-from pddl_dao.merlin2_pddl_dao.merlin2_pddl_predicate_dao import Merlin2PddlPredicateDao
-from pddl_dao.merlin2_pddl_dao.merlin2_pddl_proposition_dao import Merlin2PddlPropositionDao
-from pddl_dao.merlin2_pddl_dao.merlin2_pddl_action_dao import Merlin2PddlActionDao

@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 
 from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
-from pddl_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
-from pddl_dao import PddlDaoParameterLoader
+from kant_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
+from kant_dao import PddlDaoParameterLoader
 from simple_node import Node
 
 

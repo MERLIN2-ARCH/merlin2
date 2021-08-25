@@ -1,10 +1,10 @@
 
-from pddl_dao.pddl_dao_factory import (
+from kant_dao.pddl_dao_factory import (
     PddlDaoFactoryFactory,
     PddlDaoFamilies
 )
 
-from tests_merlin2_pddl_generator_basic.test_mongoengine_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
+from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
 
 
 class TestMerlin2PddlProblemGeneratorMongoengine(TestMerlin2PddlProblemGenerator):

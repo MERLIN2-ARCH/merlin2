@@ -11,35 +11,35 @@ import ament_index_python
 def generate_launch_description():
 
     planning_layer_share_dir = get_package_share_directory(
-        'merlin2_planning_layer')
+        "merlin2_planning_layer")
     topo_nav_share_dir = get_package_share_directory(
-        'ros2_topological_nav')
+        "ros2_topological_nav")
     tts_share_dir = get_package_share_directory(
-        'ros2_text_to_speech')
+        "ros2_text_to_speech")
 
     stdout_linebuf_envvar = SetEnvironmentVariable(
-        'RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
+        "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
 
     #
     # NODES
     #
 
     merlin2_navigation_action_cmd = Node(
-        package='merlin2_basic_actions',
-        executable='merlin2_navigation_action',
-        name='navigation'
+        package="merlin2_basic_actions",
+        executable="merlin2_navigation_action",
+        name="navigation"
     )
 
     merlin2_check_wp_action_cmd = Node(
-        package='merlin2_demo',
-        executable='merlin2_check_wp_action',
-        name='check_wp'
+        package="merlin2_demo",
+        executable="merlin2_check_wp_action",
+        name="check_wp"
     )
 
     merlin2_mdpi_node_cmd = Node(
-        package='merlin2_demo',
-        executable='merlin2_mdpi_node',
-        name='merlin2_mdpi_node'
+        package="merlin2_demo",
+        executable="merlin2_mdpi_node",
+        name="merlin2_mdpi_node"
     )
 
     #
@@ -48,20 +48,20 @@ def generate_launch_description():
 
     topo_nav_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(topo_nav_share_dir, 'ros2_topo_nav_launch.py')),
-        launch_arguments={'points': ament_index_python.get_package_share_directory(
-            "merlin2_demo") + '/params/granny.yaml'}.items()
+            os.path.join(topo_nav_share_dir, "ros2_topo_nav_launch.py")),
+        launch_arguments={"points": ament_index_python.get_package_share_directory(
+            "merlin2_demo") + "/params/granny.yaml"}.items()
 
     )
 
     tts_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(tts_share_dir, 'ros2_text_to_speech_launch.py'))
+            os.path.join(tts_share_dir, "ros2_text_to_speech_launch.py"))
     )
 
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(planning_layer_share_dir, 'merlin2_planning_layer_launch.py'))
+            os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py"))
     )
 
     ld = LaunchDescription()

@@ -4,7 +4,7 @@
 from typing import List
 import rclpy
 
-from pddl_dto import (
+from kant_dto import (
     PddlObjectDto,
     PddlConditionEffectDto,
 )

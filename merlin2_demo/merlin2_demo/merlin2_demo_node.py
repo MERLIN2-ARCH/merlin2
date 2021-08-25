@@ -12,7 +12,7 @@ from merlin2_basic_actions.merlin2_basic_predicates import (
     person_at
 )
 
-from pddl_dto import (
+from kant_dto import (
     PddlObjectDto,
     PddlPropositionDto
 )
