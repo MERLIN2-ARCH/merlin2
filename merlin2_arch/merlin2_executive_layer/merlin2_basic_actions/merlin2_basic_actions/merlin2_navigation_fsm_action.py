@@ -16,7 +16,7 @@ from merlin2_fsm_action import (
     Merlin2FsmAction,
     Merlin2BasicStates
 )
-from ros2_fsm.basic_fsm import CbState
+from yasmin import CbState
 
 
 class Merlin2NavigationAction(Merlin2FsmAction):

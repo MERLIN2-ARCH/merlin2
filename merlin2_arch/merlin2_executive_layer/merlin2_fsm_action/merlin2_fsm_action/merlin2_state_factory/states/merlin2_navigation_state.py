@@ -2,8 +2,8 @@
 """ Navigation State """
 
 from ros2_topological_nav_interfaces.action import TopoNav
-from ros2_fsm.ros2_states import AcionState
-from ros2_fsm.basic_fsm.blackboard import Blackboard
+from yasmin_ros import AcionState
+from yasmin.blackboard import Blackboard
 
 
 class Merlin2NavigationState(AcionState):

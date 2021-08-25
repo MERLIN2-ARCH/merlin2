@@ -1,7 +1,7 @@
 
 """ MERLIN2 State Factory """
 
-from ros2_fsm.basic_fsm import State
+from yasmin import State
 from .merlin2_basic_states import Merlin2BasicStates
 from .states import (
     Merlin2NavigationState,

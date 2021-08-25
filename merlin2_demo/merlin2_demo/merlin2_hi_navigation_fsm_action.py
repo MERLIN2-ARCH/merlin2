@@ -22,8 +22,8 @@ from merlin2_fsm_action import (
     Merlin2FsmAction,
     Merlin2BasicStates
 )
-from ros2_fsm.basic_fsm import CbState
-from ros2_fsm.basic_outcomes import SUCCEED
+from yasmin import CbState
+from yasmin_ros.basic_outcomes import SUCCEED
 
 from .pddl import person_attended
 

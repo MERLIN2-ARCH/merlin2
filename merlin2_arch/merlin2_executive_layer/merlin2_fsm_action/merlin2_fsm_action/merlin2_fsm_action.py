@@ -3,10 +3,10 @@
 
 from merlin2_arch_interfaces.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
-from ros2_fsm_viewer import Ros2FsmViewerPub
-from ros2_fsm.basic_fsm import StateMachine, State
-from ros2_fsm.basic_fsm.blackboard import Blackboard
-from ros2_fsm.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin_viewer import YasminViewerPub
+from yasmin import StateMachine, State
+from yasmin.blackboard import Blackboard
+from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 
 from .merlin2_state_factory import Merlin2StateFactory
 
@@ -21,7 +21,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
         Merlin2Action.__init__(self, action_name)
         StateMachine.__init__(self, [SUCCEED, ABORT, CANCEL])
 
-        Ros2FsmViewerPub(self, action_name.upper(), self)
+        YasminViewerPub(self, action_name.upper(), self)
 
     def __hash__(self):
         return Merlin2Action.__hash__(self)

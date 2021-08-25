@@ -1,3 +1,0 @@
-
-string outcome
-string state

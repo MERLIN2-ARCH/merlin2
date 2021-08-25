@@ -4,10 +4,10 @@
 from ros2_text_to_speech_interfaces.action import TTS
 from ros2_speech_recognition_interfaces.action import ListenOnce
 from std_srvs.srv import Empty
-from ros2_fsm.ros2_states import AcionState, ServiceState
-from ros2_fsm.basic_outcomes import SUCCEED, ABORT, CANCEL
-from ros2_fsm.basic_fsm import StateMachine, CbState
-from ros2_fsm.basic_fsm.blackboard import Blackboard
+from yasmin_ros import AcionState, ServiceState
+from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin import StateMachine, CbState
+from yasmin.blackboard import Blackboard
 
 
 class Merlin2SttState(StateMachine):
