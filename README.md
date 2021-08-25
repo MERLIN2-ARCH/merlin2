@@ -1,4 +1,4 @@
-# MERLIN 2
+# MERLIN 2 (MachinEd Ros pLanINg)
 
 ![](./Arquitectura_MERLIN2.png)
 
