@@ -18,7 +18,7 @@
 	path = simple_node
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/simple_node.git
 	branch = master
-[submodule "knowledge_management"]
-	path = knowledge_management
-	url = ssh://git@niebla.unileon.es:5022/mgonzs/knowledge_management.git
+[submodule "kant"]
+	path = kant
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/kant.git
 	branch = master
