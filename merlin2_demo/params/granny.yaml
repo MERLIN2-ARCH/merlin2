@@ -1,5 +1,5 @@
-topo_nav:
-  topo_nav_node:
+topological_nav:
+  topological_nav_node:
     ros__parameters:
       points:
         - "wp0"

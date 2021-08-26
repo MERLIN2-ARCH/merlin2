@@ -1,14 +1,14 @@
-[submodule "merlin2_arch/merlin2_reactive_layer/ros2_speech_recognition"]
-	path = merlin2_arch/merlin2_reactive_layer/ros2_speech_recognition
-	url = ssh://git@niebla.unileon.es:5022/mgonzs/ros2_speech_recognition.git
+[submodule "merlin2_arch/merlin2_reactive_layer/speech_to_text"]
+	path = merlin2_arch/merlin2_reactive_layer/speech_to_text
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/speech_to_text.git
 	branch = master
-[submodule "merlin2_arch/merlin2_reactive_layer/ros2_text_to_speech"]
-	path = merlin2_arch/merlin2_reactive_layer/ros2_text_to_speech
-	url = ssh://git@niebla.unileon.es:5022/mgonzs/ros2_text_to_speech.git
+[submodule "merlin2_arch/merlin2_reactive_layer/text_to_speech"]
+	path = merlin2_arch/merlin2_reactive_layer/text_to_speech
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/text_to_speech.git
 	branch = master
-[submodule "merlin2_arch/merlin2_reactive_layer/ros2_topological_nav"]
-	path = merlin2_arch/merlin2_reactive_layer/ros2_topological_nav
-	url = ssh://git@niebla.unileon.es:5022/mgonzs/ros2_topological_nav.git
+[submodule "merlin2_arch/merlin2_reactive_layer/topological_nav"]
+	path = merlin2_arch/merlin2_reactive_layer/topological_nav
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/topological_nav.git
 	branch = master
 [submodule "yasmin"]
 	path = yasmin

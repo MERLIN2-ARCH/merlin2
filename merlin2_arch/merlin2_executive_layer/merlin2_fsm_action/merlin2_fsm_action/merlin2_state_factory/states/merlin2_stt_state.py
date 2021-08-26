@@ -1,8 +1,8 @@
 
 """ Navigation State """
 
-from ros2_text_to_speech_interfaces.action import TTS
-from ros2_speech_recognition_interfaces.action import ListenOnce
+from text_to_speech_interfaces.action import TTS
+from speech_to_text_interfaces.action import ListenOnce
 from std_srvs.srv import Empty
 from yasmin_ros import AcionState, ServiceState
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
@@ -24,13 +24,13 @@ class Merlin2SttState(StateMachine):
             ["valid", "repeat"], self.checking_speech)
 
         calibrating_state = ServiceState(
-            node, Empty, "/speech_recognition/calibrate_listening", self.crate_calibrate_rquest)
+            node, Empty, "/speech_to_text/calibrate_listening", self.crate_calibrate_rquest)
 
         tts_state = AcionState(
             node, TTS, "/text_to_speech/tts", self.create_tts_goal)
 
         stt_state = AcionState(
-            node, ListenOnce, "/speech_recognition/listen_once", self.create_stt_goal,
+            node, ListenOnce, "/speech_to_text/listen_once", self.create_stt_goal,
             resutl_handler=self.result_stt_handler)
 
         self.add_state(

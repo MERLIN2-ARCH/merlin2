@@ -1,7 +1,7 @@
 
 """ Navigation State """
 
-from ros2_text_to_speech_interfaces.action import TTS
+from text_to_speech_interfaces.action import TTS
 from yasmin_ros import AcionState
 from yasmin.blackboard import Blackboard
 

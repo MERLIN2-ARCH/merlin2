@@ -16,12 +16,12 @@ def generate_launch_description():
 
     planning_layer_share_dir = get_package_share_directory(
         "merlin2_planning_layer")
-    topo_nav_share_dir = get_package_share_directory(
-        "ros2_topological_nav")
-    speech_recognition_share_dir = get_package_share_directory(
-        "ros2_speech_recognition")
-    tts_share_dir = get_package_share_directory(
-        "ros2_text_to_speech")
+    topological_nav_share_dir = get_package_share_directory(
+        "topological_nav")
+    speech_to_text_share_dir = get_package_share_directory(
+        "speech_to_text")
+    text_to_speech_share_dir = get_package_share_directory(
+        "text_to_speech")
 
     stdout_linebuf_envvar = SetEnvironmentVariable(
         "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
@@ -74,19 +74,19 @@ def generate_launch_description():
     # LAUNCHES
     #
 
-    topo_nav_cmd = IncludeLaunchDescription(
+    topological_nav_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(topo_nav_share_dir, "ros2_topo_nav_launch.py"))
+            os.path.join(topological_nav_share_dir, "topological_nav_launch.py"))
     )
 
-    speech_recognition_cmd = IncludeLaunchDescription(
+    speech_to_text_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(speech_recognition_share_dir, "ros2_speech_recognition_launch.py"))
+            os.path.join(speech_to_text_share_dir, "speech_to_text_launch.py"))
     )
 
-    tts_cmd = IncludeLaunchDescription(
+    text_to_speech_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(tts_share_dir, "ros2_text_to_speech_launch.py"))
+            os.path.join(text_to_speech_share_dir, "text_to_speech_launch.py"))
     )
 
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
@@ -106,9 +106,9 @@ def generate_launch_description():
     ld.add_action(pddl_dao_family_cmd)
     ld.add_action(mongoengine_uri_cmd)
 
-    ld.add_action(topo_nav_cmd)
-    ld.add_action(speech_recognition_cmd)
-    ld.add_action(tts_cmd)
+    ld.add_action(topological_nav_cmd)
+    ld.add_action(speech_to_text_cmd)
+    ld.add_action(text_to_speech_cmd)
 
     ld.add_action(merlin2_navigation_action_cmd)
     ld.add_action(merlin2_hi_navigation_action_cmd)
