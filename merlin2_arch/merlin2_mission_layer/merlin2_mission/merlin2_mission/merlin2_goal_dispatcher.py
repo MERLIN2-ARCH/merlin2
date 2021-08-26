@@ -20,6 +20,8 @@ class Merlin2GoalDispatcher:
     def __init__(self, node: Node):
         self.__node = node
 
+        self.result = None
+
         # loading parameters
         pddl_dao_parameter_loader = PddlDaoParameterLoader(self.__node)
         self.__pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
@@ -49,6 +51,7 @@ class Merlin2GoalDispatcher:
         """
 
         succeed = True
+        self.result = None
 
         # save goals
         for pddl_proposition_dto in pddl_proposition_dto_list:
@@ -64,15 +67,20 @@ class Merlin2GoalDispatcher:
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()
 
-        results = self.__action_client.get_result()
+        self.results = self.__action_client.get_result()
 
         # results
         succeed = (self.__action_client.is_succeeded() and
-                   results.generate_pddl and
-                   results.generate_plan and
-                   results.dispatch_plan)
+                   self.results.generate_pddl and
+                   self.results.generate_plan and
+                   self.results.dispatch_plan)
 
         return succeed
+
+    def get_result(self) -> Execute.Result:
+        """ get result of the goal execution """
+
+        return self.result
 
     def cancel_goals(self):
         """ cancel executor (canceling everything else) """
