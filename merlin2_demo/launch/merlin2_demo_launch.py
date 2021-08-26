@@ -33,7 +33,7 @@ def generate_launch_description():
     pddl_dao_family = LaunchConfiguration("pddl_dao_family")
     pddl_dao_family_cmd = DeclareLaunchArgument(
         "pddl_dao_family",
-        default_value=str(int(PddlDaoFamilies.ROS2)),
+        default_value=str(int(PddlDaoFamilies.KANT)),
         description="DAO family")
 
     mongoengine_uri = LaunchConfiguration("mongoengine_uri")

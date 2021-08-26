@@ -18,7 +18,7 @@ class TestMerlin2PddlProblemGeneratorRos2(TestMerlin2PddlProblemGenerator):
         pddl_dao_factory_factory = PddlDaoFactoryFactory()
         self.node = Node("test_mongoengine_merlin_pddl_generator_node")
         self.pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            PddlDaoFamilies.ROS2, node=self.node)
+            PddlDaoFamilies.KANT, node=self.node)
 
         super().setUp()
 
