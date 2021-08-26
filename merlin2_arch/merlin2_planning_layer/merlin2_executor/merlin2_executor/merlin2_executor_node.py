@@ -65,6 +65,13 @@ class Merlin2ExecutorNode(Node):
         plan = self.__planner_client.call(req)
         self.get_logger().info(str(plan.has_solution))
         self.get_logger().info(str(plan.plan))
+
+        if not plan.has_solution:
+            result.generate_plan = False
+            result.dispatch_plan = False
+            goal_handle.abort()
+            return result
+
         result.generate_plan = True
 
         if not self.__action_server.is_canceled():
@@ -81,7 +88,10 @@ class Merlin2ExecutorNode(Node):
             self.__action_server.wait_for_canceling()
             goal_handle.canceled()
         else:
-            goal_handle.succeed()
+            if result.dispatch_plan:
+                goal_handle.succeed()
+            else:
+                goal_handle.abort()
 
         return result
 
