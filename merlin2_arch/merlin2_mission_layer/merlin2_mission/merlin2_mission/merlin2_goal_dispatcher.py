@@ -6,9 +6,7 @@
 from typing import List
 
 from kant_dto import PddlPropositionDto
-
 from kant_dao import PddlDaoParameterLoader
-
 from kant_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
 
 from merlin2_arch_interfaces.action import Execute
@@ -70,8 +68,8 @@ class Merlin2GoalDispatcher:
 
         # results
         succeed = (self.__action_client.is_succeeded() and
-                   results.dispatch_plan and
                    results.generate_pddl and
+                   results.generate_plan and
                    results.dispatch_plan)
 
         return succeed
