@@ -2,6 +2,8 @@
 
 ![](./Arquitectura_MERLIN2.png)
 
+
+<!---
 ## Docker
 
 ### Update image
@@ -19,5 +21,5 @@ docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2 --net=guaca
 docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2_kb --net=guacamole_guacnetwork_compose niebla.unileon.es:5000/mgonzs/merlin2:v1
 docker run --shm-size=2g  -p 27017:27017 -e VNC_PASSWORD=vncpasswd -d --name=mmongodb1 --net=guacamole_guacnetwork_compose -e MONGO_INITDB_ROOT_USERNAME=<user> -e MONGO_INITDB_ROOT_PASSWORD=<passwd> mongo --auth
 ```
-
+--->
 
