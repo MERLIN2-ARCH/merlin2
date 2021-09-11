@@ -8,7 +8,7 @@ from merlin2_pddl_generator.merlin2_pddl_parser import (
     Merlin2PddlProblemParser
 )
 
-from kant_dto import PddlDto
+from kant_dto import Dto
 from kant_dao.dao_factory.dao_factories.dao_factory import DaoFactory
 
 
@@ -25,11 +25,11 @@ class Merlin2PddlGenerator:
         self.pddl_object_dao = dao_factory.create_pddl_object_dao()
         self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
 
-    def get_pddl_dtos(self) -> List[List[PddlDto]]:
+    def get_pddl_dtos(self) -> List[List[Dto]]:
         """ gets all dtos and returns them in a list
 
         Returns:
-            List[List[PddlDto]]: list of dtos:
+            List[List[Dto]]: list of dtos:
                                 0: types
                                 1: predicates
                                 2: actions
@@ -52,7 +52,7 @@ class Merlin2PddlGenerator:
         """ generate pddl domain and problem
 
         Returns:
-            List[PddlDto]: list of two elements,
+            List[str]: list of two elements,
                        the first element is the domain, the second the problem
         """
 
