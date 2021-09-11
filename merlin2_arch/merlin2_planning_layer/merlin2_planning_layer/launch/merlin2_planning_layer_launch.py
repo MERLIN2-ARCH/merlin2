@@ -4,7 +4,7 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.conditions import LaunchConfigurationEquals
 
-from kant_dao.pddl_dao_factory import PddlDaoFamilies
+from kant_dao.dao_factory import DaoFamilies
 
 
 def generate_launch_description():
@@ -20,7 +20,7 @@ def generate_launch_description():
     pddl_dao_family = LaunchConfiguration("pddl_dao_family")
     pddl_dao_family_cmd = DeclareLaunchArgument(
         "pddl_dao_family",
-        default_value=str(int(PddlDaoFamilies.KANT)),
+        default_value=str(int(DaoFamilies.ROS2)),
         description="DAO family")
 
     mongoengine_uri = LaunchConfiguration("mongoengine_uri")
@@ -71,7 +71,7 @@ def generate_launch_description():
         name="knowledge_base_node",
         namespace=namespace,
         condition=LaunchConfigurationEquals(
-            "pddl_dao_family", str(int(PddlDaoFamilies.KANT)))
+            "pddl_dao_family", str(int(DaoFamilies.ROS2)))
     )
 
     ld = LaunchDescription()

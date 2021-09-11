@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
 from kant_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
-from kant_dao import PddlDaoParameterLoader
+from kant_dao import ParameterLoader
 from simple_node import Node
 
 
@@ -23,18 +23,18 @@ class Merlin2Action(Node, PddlActionDto, ABC):
                                duration=duration)
 
         # loading parameters
-        pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
-        pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
-        self.__pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
+        parameter_loader = ParameterLoader(self)
+        dao_factory = parameter_loader.get_pddl_dao_factory()
+        self.__pddl_action_dao = dao_factory.create_pddl_action_dao()
 
         # creating and saving the action
         pddl_parameter_dto_list = self.create_parameters()
         pddl_effect_dto_list = self.create_efects()
         pddl_condition_dto_list = self.create_conditions()
 
-        self.set_pddl_parameters_list(pddl_parameter_dto_list)
-        self.set_pddl_effects_list(pddl_effect_dto_list)
-        self.set_pddl_conditions_list(pddl_condition_dto_list)
+        self.set_parameters(pddl_parameter_dto_list)
+        self.set_effects(pddl_effect_dto_list)
+        self.set_conditions(pddl_condition_dto_list)
 
         succeed = self.save_action()
 

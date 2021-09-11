@@ -22,10 +22,10 @@ class Merlin2MissionNode(Node, ABC):
         super().__init__(node_name, namespace="merlin2")
 
         self.goal_dispatcher = Merlin2GoalDispatcher(self)
-        self.pddl_dao_factory = self.goal_dispatcher.get_pddl_factory()
+        self.dao_factory = self.goal_dispatcher.get_pddl_factory()
 
-        self.pddl_object_dao = self.pddl_dao_factory.create_pddl_object_dao()
-        self.pddl_proposition_dao = self.pddl_dao_factory.create_pddl_proposition_dao()
+        self.pddl_object_dao = self.dao_factory.create_pddl_object_dao()
+        self.pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
         if reset_problem:
             self.pddl_object_dao.delete_all()

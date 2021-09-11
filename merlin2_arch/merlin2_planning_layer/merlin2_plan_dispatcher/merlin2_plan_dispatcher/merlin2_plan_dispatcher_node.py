@@ -16,7 +16,7 @@ from kant_dto import (
     PddlObjectDto
 )
 
-from kant_dao import PddlDaoParameterLoader
+from kant_dao import ParameterLoader
 
 from simple_node import Node
 
@@ -29,11 +29,11 @@ class Merlin2PlanDispatcherNode(Node):
         super().__init__("merlin2_plan_dispatcher_node")
 
         # loading parameters
-        pddl_dao_parameter_loader = PddlDaoParameterLoader(self)
-        pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
-        self.pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
-        self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
-        self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
+        parameter_loader = ParameterLoader(self)
+        dao_factory = parameter_loader.get_pddl_dao_factory()
+        self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
+        self.pddl_action_dao = dao_factory.create_pddl_action_dao()
+        self.pddl_object_dao = dao_factory.create_pddl_object_dao()
 
         # action server/client
         self.__action_client = None
@@ -64,13 +64,13 @@ class Merlin2PlanDispatcherNode(Node):
                                    " with objects " + str(action.objects))
 
             pddl_action_dto = self.pddl_action_dao.get(action.action_name)
-            pddl_parameter_dto_list = pddl_action_dto.get_pddl_parameters_list()
-            pddl_efect_dto_list = pddl_action_dto.get_pddl_effects_list()
+            pddl_parameter_dto_list = pddl_action_dto.get_parameters()
+            pddl_efect_dto_list = pddl_action_dto.get_effects()
             pddl_objects_dto_dict = {}
 
             for object_name, pddl_parameter_dto in zip(action.objects, pddl_parameter_dto_list):
                 pddl_object_dto = self.pddl_object_dao.get(object_name)
-                pddl_objects_dto_dict[pddl_parameter_dto.get_object_name(
+                pddl_objects_dto_dict[pddl_parameter_dto.get_name(
                 )] = pddl_object_dto
 
             # creating action goal
@@ -189,12 +189,12 @@ class Merlin2PlanDispatcherNode(Node):
 
         proposition_objects_dto_list = []
 
-        for pdll_parameter_dto in pddl_effect_dto.get_pddl_objects_list():
+        for pdll_parameter_dto in pddl_effect_dto.get_objects():
             proposition_objects_dto_list.append(
-                pddl_objects_dto_dict[pdll_parameter_dto.get_object_name()])
+                pddl_objects_dto_dict[pdll_parameter_dto.get_name()])
 
         pddl_proposition_dto = PddlPropositionDto(
-            pddl_effect_dto.get_pddl_predicate(), proposition_objects_dto_list)
+            pddl_effect_dto.get_predicate(), proposition_objects_dto_list)
 
         return pddl_proposition_dto
 

@@ -89,7 +89,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
     def execute(self):
 
         self.init_points()
-        pddl_proposition_dao = self.pddl_dao_factory.create_pddl_proposition_dao()
+        pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
         start_t = time.time()
 

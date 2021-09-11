@@ -9,21 +9,21 @@ from merlin2_pddl_generator.merlin2_pddl_parser import (
 )
 
 from kant_dto import PddlDto
-from kant_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
+from kant_dao.dao_factory.dao_factories.dao_factory import DaoFactory
 
 
 class Merlin2PddlGenerator:
     """ Merlin2 Pddl Generator Class"""
 
-    def __init__(self, pddl_dao_factory: PddlDaoFactory):
+    def __init__(self, dao_factory: DaoFactory):
         self.domain_parser = Merlin2PddlDomainParser()
         self.problem_parser = Merlin2PddlProblemParser()
 
-        self.pddl_type_dao = pddl_dao_factory.create_pddl_type_dao()
-        self.pddl_predicate_dao = pddl_dao_factory.create_pddl_predicate_dao()
-        self.pddl_action_dao = pddl_dao_factory.create_pddl_action_dao()
-        self.pddl_object_dao = pddl_dao_factory.create_pddl_object_dao()
-        self.pddl_proposition_dao = pddl_dao_factory.create_pddl_proposition_dao()
+        self.pddl_type_dao = dao_factory.create_pddl_type_dao()
+        self.pddl_predicate_dao = dao_factory.create_pddl_predicate_dao()
+        self.pddl_action_dao = dao_factory.create_pddl_action_dao()
+        self.pddl_object_dao = dao_factory.create_pddl_object_dao()
+        self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
 
     def get_pddl_dtos(self) -> List[List[PddlDto]]:
         """ gets all dtos and returns them in a list

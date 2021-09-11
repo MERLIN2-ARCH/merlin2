@@ -1,7 +1,7 @@
 
-from kant_dao.pddl_dao_factory import (
-    PddlDaoFactoryFactory,
-    PddlDaoFamilies
+from kant_dao.dao_factory import (
+    DaoFactoryFactory,
+    DaoFamilies
 )
 
 from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
@@ -10,9 +10,9 @@ from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import TestMe
 class TestMerlin2PddlProblemGeneratorMongoengine(TestMerlin2PddlProblemGenerator):
 
     def setUp(self):
-        pddl_dao_factory_factory = PddlDaoFactoryFactory()
-        self.pddl_dao_factory = pddl_dao_factory_factory.create_pddl_dao_factory(
-            PddlDaoFamilies.MONGOENGINE, uri="mongodb://localhost:27017/merlin2_tests")
+        dao_factory_factory = DaoFactoryFactory()
+        self.dao_factory = dao_factory_factory.create_pddl_dao_factory(
+            DaoFamilies.MONGO, uri="mongodb://localhost:27017/merlin2_tests")
         super().setUp()
 
 

@@ -6,8 +6,8 @@
 from typing import List
 
 from kant_dto import PddlPropositionDto
-from kant_dao import PddlDaoParameterLoader
-from kant_dao.pddl_dao_factory.pddl_dao_factories.pddl_dao_factory import PddlDaoFactory
+from kant_dao import ParameterLoader
+from kant_dao.dao_factory.dao_factories.dao_factory import DaoFactory
 
 from merlin2_arch_interfaces.action import Execute
 
@@ -23,19 +23,19 @@ class Merlin2GoalDispatcher:
         self.result = None
 
         # loading parameters
-        pddl_dao_parameter_loader = PddlDaoParameterLoader(self.__node)
-        self.__pddl_dao_factory = pddl_dao_parameter_loader.get_pddl_dao_factory()
+        parameter_loader = ParameterLoader(self.__node)
+        self.__pddl_dao_factory = parameter_loader.get_pddl_dao_factory()
         self.__pddl_proposition_dao = self.__pddl_dao_factory.create_pddl_proposition_dao()
 
         # action client
         self.__action_client = self.__node.create_action_client(
             Execute, "execute")
 
-    def get_pddl_factory(self) -> PddlDaoFactory:
+    def get_pddl_factory(self) -> DaoFactory:
         """ get pddl dao factory of the goal dispatcher
 
         Returns:
-            PddlDaoFactory: pddl dao factory
+            DaoFactory: pddl dao factory
         """
 
         return self.__pddl_dao_factory

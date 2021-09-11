@@ -17,11 +17,11 @@ from kant_dto import (
 
 class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 
-    pddl_dao_factory = None
+    dao_factory = None
 
     def setUp(self):
 
-        self.pddl_generator = Merlin2PddlGenerator(self.pddl_dao_factory)
+        self.pddl_generator = Merlin2PddlGenerator(self.dao_factory)
 
         # types
         robot_type = PddlTypeDto("robot")
@@ -77,11 +77,11 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
             "check_wp", [r, s], [condition_1], [effect_3])
 
         # saving
-        self.pddl_type_dao = self.pddl_dao_factory.create_pddl_type_dao()
-        self.pddl_predicate_dao = self.pddl_dao_factory.create_pddl_predicate_dao()
-        self.pddl_action_dao = self.pddl_dao_factory.create_pddl_action_dao()
-        self.pddl_object_dao = self.pddl_dao_factory.create_pddl_object_dao()
-        self.pddl_proposition_dao = self.pddl_dao_factory.create_pddl_proposition_dao()
+        self.pddl_type_dao = self.dao_factory.create_pddl_type_dao()
+        self.pddl_predicate_dao = self.dao_factory.create_pddl_predicate_dao()
+        self.pddl_action_dao = self.dao_factory.create_pddl_action_dao()
+        self.pddl_object_dao = self.dao_factory.create_pddl_object_dao()
+        self.pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
         self.pddl_type_dao.save(robot_type)
         self.pddl_type_dao.save(wp_type)
@@ -90,8 +90,8 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
         self.pddl_object_dao.save(wp1)
         self.pddl_object_dao.save(wp2)
 
-        self.pddl_predicate_dao.save(robot_at)
         self.pddl_predicate_dao.save(wp_checked)
+        self.pddl_predicate_dao.save(robot_at)
 
         self.pddl_proposition_dao.save(rb1_robot_at)
 
@@ -123,6 +123,16 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 \t(robot_at ?r0 - robot ?w1 - wp)
 \t(wp_checked ?r0 - robot ?w1 - wp)
 )
+(:durative-action check_wp
+\t:parameters ( ?r - robot ?s - wp)
+\t:duration (= ?duration 10)
+\t:condition (and
+\t\t(at start (robot_at ?r ?s))
+\t)
+\t:effect (and
+\t\t(at end (wp_checked ?r ?s))
+\t)
+)
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
@@ -132,16 +142,6 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 \t:effect (and
 \t\t(at start (not (robot_at ?r ?s)))
 \t\t(at end (robot_at ?r ?d))
-\t)
-)
-(:durative-action check_wp
-\t:parameters ( ?r - robot ?s - wp)
-\t:duration (= ?duration 10)
-\t:condition (and
-\t\t(at start (robot_at ?r ?s))
-\t)
-\t:effect (and
-\t\t(at end (wp_checked ?r ?s))
 \t)
 )
 )
