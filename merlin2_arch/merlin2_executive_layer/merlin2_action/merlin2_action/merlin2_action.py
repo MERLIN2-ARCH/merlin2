@@ -6,21 +6,24 @@ from abc import ABC, abstractmethod
 
 from merlin2_arch_interfaces.action import DispatchAction
 from merlin2_arch_interfaces.msg import PlanAction
+
 from kant_dto import PddlActionDto, PddlConditionEffectDto, PddlObjectDto
 from kant_dao import ParameterLoader
+
 from simple_node import Node
+from rclpy.parameter import Parameter
+from rcl_interfaces.msg import SetParametersResult
 
 
 class Merlin2Action(Node, PddlActionDto, ABC):
     """ Merlin2 Action Class """
 
-    def __init__(self, a_name, durative: bool = True, duration: int = 10):
+    def __init__(self, a_name, durative: bool = True):
 
         Node.__init__(self, a_name, namespace="merlin2")
         PddlActionDto.__init__(self,
                                a_name,
-                               durative=durative,
-                               duration=duration)
+                               durative=durative)
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
@@ -46,6 +49,45 @@ class Merlin2Action(Node, PddlActionDto, ABC):
                                                          a_name,
                                                          self.__execute_server,
                                                          cancel_callback=self.__cancel_callback)
+
+    def set_parameters(self, parameters):
+        """ set parameters for PddlActionDto and Node
+            both has the same method
+
+        Args:
+            parameters (PddlObjectDto || Parameter): list of parameters that can be PddlObjectDto or Parameter
+
+        Returns:
+            None || List[SetParametersResult]: returns None if Dto version or SetParametersResult if Node version
+        """
+
+        if parameters:
+            if isinstance(parameters, list):
+
+                if isinstance(parameters[0], PddlObjectDto):
+                    PddlActionDto.set_parameters(self, parameters)
+
+                elif isinstance(parameters[0], Parameter):
+                    return Node.set_parameters(self, parameters)
+
+    def get_parameters(self, names: List[str] = None):
+        """ get parameters for PddlActionDto and Node
+            both has the same method
+
+        Args:
+            names (List[str], optional): names of parameters for a Node. 
+                                         Only used with Node version. Defaults to None.
+
+        Returns:
+            List[PddlObjectDto] || List[Parameter]: returns a list of PddlObjectDto 
+                                                   if Dto version or Parameters if Node version
+        """
+
+        if not names:
+            return PddlActionDto.get_parameters(self)
+
+        else:
+            return Node.get_parameters(self, names)
 
     def __hash__(self):
         return Node.__hash__(self)
@@ -81,7 +123,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         """ Code to the efects of the action. Must be implemented.
 
         Returns:
-            List[PddlObjectDto]: list of parameters
+            List[PddlConditionEffectDto]: list of parameters
         """
 
     @abstractmethod
@@ -89,7 +131,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         """ Code to the conditions of the action. Must be implemented.
 
         Returns:
-            List[PddlObjectDto]: list of parameters
+            List[PddlConditionEffectDto]: list of parameters
         """
 
     def save_action(self) -> bool:
