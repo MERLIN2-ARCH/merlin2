@@ -11,7 +11,7 @@ class TestMerlin2PddlProblemGeneratorMongoengine(TestMerlin2PddlProblemGenerator
 
     def setUp(self):
         dao_factory_factory = DaoFactoryFactory()
-        self.dao_factory = dao_factory_factory.create_pddl_dao_factory(
+        self.dao_factory = dao_factory_factory.create_dao_factory(
             DaoFamilies.MONGO, uri="mongodb://localhost:27017/merlin2_tests")
         super().setUp()
 
