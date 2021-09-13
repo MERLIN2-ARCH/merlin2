@@ -30,15 +30,15 @@ def generate_launch_description():
     # ARGS
     #
 
-    pddl_dao_family = LaunchConfiguration("pddl_dao_family")
-    pddl_dao_family_cmd = DeclareLaunchArgument(
-        "pddl_dao_family",
+    dao_family = LaunchConfiguration("dao_family")
+    dao_family_cmd = DeclareLaunchArgument(
+        "dao_family",
         default_value=str(int(DaoFamilies.ROS2)),
         description="DAO family")
 
-    mongoengine_uri = LaunchConfiguration("mongoengine_uri")
-    mongoengine_uri_cmd = DeclareLaunchArgument(
-        "mongoengine_uri",
+    mongo_uri = LaunchConfiguration("mongo_uri")
+    mongo_uri_cmd = DeclareLaunchArgument(
+        "mongo_uri",
         default_value="mongodb://localhost:27017/merlin2",
         description="MongoDB URI")
 
@@ -50,24 +50,24 @@ def generate_launch_description():
         package="merlin2_basic_actions",
         executable="merlin2_navigation_fsm_action",
         name="navigation",
-        parameters=[{"pddl_dao_family": pddl_dao_family,
-                     "mongoengine_uri": mongoengine_uri}]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     merlin2_hi_navigation_action_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_hi_navigation_fsm_action",
         name="hi_navigation",
-        parameters=[{"pddl_dao_family": pddl_dao_family,
-                     "mongoengine_uri": mongoengine_uri}]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     merlin2_demo_node_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_demo_node",
         name="merlin2_demo_node",
-        parameters=[{"pddl_dao_family": pddl_dao_family,
-                     "mongoengine_uri": mongoengine_uri}]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     #
@@ -92,7 +92,7 @@ def generate_launch_description():
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py")),
-        launch_arguments={"pddl_dao_family": pddl_dao_family}.items()
+        launch_arguments={"dao_family": dao_family}.items()
     )
 
     ld = LaunchDescription()
@@ -103,8 +103,8 @@ def generate_launch_description():
 
     ld.add_action(stdout_linebuf_envvar)
 
-    ld.add_action(pddl_dao_family_cmd)
-    ld.add_action(mongoengine_uri_cmd)
+    ld.add_action(dao_family_cmd)
+    ld.add_action(mongo_uri_cmd)
 
     ld.add_action(topological_nav_cmd)
     ld.add_action(speech_to_text_cmd)

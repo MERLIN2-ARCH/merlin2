@@ -17,15 +17,15 @@ def generate_launch_description():
     # ARGS
     #
 
-    pddl_dao_family = LaunchConfiguration("pddl_dao_family")
-    pddl_dao_family_cmd = DeclareLaunchArgument(
-        "pddl_dao_family",
+    dao_family = LaunchConfiguration("dao_family")
+    dao_family_cmd = DeclareLaunchArgument(
+        "dao_family",
         default_value=str(int(DaoFamilies.ROS2)),
         description="DAO family")
 
-    mongoengine_uri = LaunchConfiguration("mongoengine_uri")
-    mongoengine_uri_cmd = DeclareLaunchArgument(
-        "mongoengine_uri",
+    mongo_uri = LaunchConfiguration("mongo_uri")
+    mongo_uri_cmd = DeclareLaunchArgument(
+        "mongo_uri",
         default_value="mongodb://localhost:27017/merlin2",
         description="MongoDB URI")
 
@@ -38,8 +38,8 @@ def generate_launch_description():
         executable="pddl_generator_node",
         name="pddl_generator_node",
         namespace=namespace,
-        parameters=[{"pddl_dao_family": pddl_dao_family,
-                     "mongoengine_uri": mongoengine_uri}]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     planner_node_cmd = Node(
@@ -54,8 +54,8 @@ def generate_launch_description():
         executable="plan_dispatcher_node",
         name="plan_dispatcher_node",
         namespace=namespace,
-        parameters=[{"pddl_dao_family": pddl_dao_family,
-                     "mongoengine_uri": mongoengine_uri}]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     executor_node_cmd = Node(
@@ -71,15 +71,15 @@ def generate_launch_description():
         name="knowledge_base_node",
         namespace=namespace,
         condition=LaunchConfigurationEquals(
-            "pddl_dao_family", str(int(DaoFamilies.ROS2)))
+            "dao_family", str(int(DaoFamilies.ROS2)))
     )
 
     ld = LaunchDescription()
 
     ld.add_action(stdout_linebuf_envvar)
 
-    ld.add_action(pddl_dao_family_cmd)
-    ld.add_action(mongoengine_uri_cmd)
+    ld.add_action(dao_family_cmd)
+    ld.add_action(mongo_uri_cmd)
 
     ld.add_action(pddl_generator_node_cmd)
     ld.add_action(planner_node_cmd)
