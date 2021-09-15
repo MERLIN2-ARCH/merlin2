@@ -117,7 +117,6 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 
             # wait for thread
             thread.join()
-            pddl_proposition_dao.delete(goal)
 
         # results
         end_t = time.time()

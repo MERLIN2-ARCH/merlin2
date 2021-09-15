@@ -1,5 +1,5 @@
 
-""" Goal Dispatcher, which is in chager of adding new propositions
+""" Goal Dispatcher, which is in chager of adding/deleting new propositions
     as goals and executing/canceling the Executor (canceling everything else)
 """
 
@@ -83,6 +83,11 @@ class Merlin2GoalDispatcher:
         return self.result
 
     def cancel_goals(self):
-        """ cancel executor (canceling everything else) """
+        """ cancel executor (canceling everything else)
+            and delete current goals
+        """
 
         self.__action_client.cancel_goal()
+
+        for pddl_goal_dto in self.__pddl_proposition_dao.get_goals():
+            self.__pddl_proposition_dao.delete(pddl_goal_dto)
