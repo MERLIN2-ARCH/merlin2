@@ -16,12 +16,12 @@ class Merlin2PddlDomainParser:
     def __init__(self):
         self._requirements = "(:requirements :typing :negative-preconditions :durative-actions)"
 
-    def parse_pddl_type_dtos(self, pddl_type_dtos: List[PddlTypeDto]) -> str:
+    def parse_pddl_type_dtos_list(self, pddl_type_dto_list: List[PddlTypeDto]) -> str:
         """ this method generates the string of the pddl types
             using a list of pddl type dtos
 
         Args:
-            pddl_type_dtos (List[PddlTypeDto]): list of pddl type dtos
+            pddl_type_dto_list (List[PddlTypeDto]): list of pddl type dtos
 
         Returns:
             str: str of pddl types
@@ -29,19 +29,19 @@ class Merlin2PddlDomainParser:
 
         string = "(:types\n"
 
-        for pddl_type_dto in pddl_type_dtos:
+        for pddl_type_dto in pddl_type_dto_list:
             string += "\t" + str(pddl_type_dto) + "\n"
 
         string += ")\n"
 
         return string
 
-    def parse_pddl_predicate_dtos(self, pddl_predicate_dtos: List[PddlPredicateDto]) -> str:
+    def parse_pddl_predicate_dtos_list(self, pddl_predicate_dto_list: List[PddlPredicateDto]) -> str:
         """ this method generates the string of the pddl predicates
             using a list of pddl predicate dtos
 
         Args:
-            pddl_predicate_dtos (List[PddlPredicateDto]): list of pddl predicate dtos
+            pddl_predicate_dto_list (List[PddlPredicateDto]): list of pddl predicate dtos
 
         Returns:
             str: str of pddl predicates
@@ -49,19 +49,19 @@ class Merlin2PddlDomainParser:
 
         string = "(:predicates\n"
 
-        for pddl_predicate_dto in pddl_predicate_dtos:
+        for pddl_predicate_dto in pddl_predicate_dto_list:
             string += "\t" + str(pddl_predicate_dto) + "\n"
 
         string += ")\n"
 
         return string
 
-    def parse_pddl_action_dtos(self, pddl_action_dtos: List[PddlActionDto]) -> str:
+    def parse_pddl_action_dtos_list(self, pddl_action_dto_list: List[PddlActionDto]) -> str:
         """ this method generates the string of the pddl actions
             using a list of pddl action dtos
 
         Args:
-            pddl_action_dtos (List[PddlActionDto]): list of pddl action dtos
+            pddl_action_dto_list (List[PddlActionDto]): list of pddl action dtos
 
         Returns:
             str: str of pddl actions
@@ -69,23 +69,23 @@ class Merlin2PddlDomainParser:
 
         string = ""
 
-        for pddl_action_dto in pddl_action_dtos:
+        for pddl_action_dto in pddl_action_dto_list:
             string += str(pddl_action_dto) + "\n"
 
         return string
 
     def parse_pddl_domain_dto(self,
-                              pddl_type_dtos: List[PddlTypeDto],
-                              pddl_predicate_dtos: List[PddlPredicateDto],
-                              pddl_action_dtos: List[PddlActionDto],
+                              pddl_type_dto_list: List[PddlTypeDto],
+                              pddl_predicate_dto_list: List[PddlPredicateDto],
+                              pddl_action_dto_list: List[PddlActionDto],
                               domain_name: str = "merlin2") -> str:
         """ this method generates the string pddl of the domain
             using lists of pddl types dtos, predicates dtos and action dtos
 
         Args:
-            pddl_type_dtos (List[PddlTypeDto]): list of pddl type dtos
-            pddl_predicate_dtos (List[PddlPredicateDto]): list of pddl predicate dtos
-            pddl_action_dtos (List[PddlActionDto]): list of pddl action dtos
+            pddl_type_dto_list (List[PddlTypeDto]): list of pddl type dtos
+            pddl_predicate_dto_list (List[PddlPredicateDto]): list of pddl predicate dtos
+            pddl_action_dto_list (List[PddlActionDto]): list of pddl action dtos
             domain_name (str, optional): Pddl domain name. Defaults to "merlin2".
 
         Returns:
@@ -94,9 +94,9 @@ class Merlin2PddlDomainParser:
 
         string = "(define (domain " + domain_name + ")\n"
         string += self._requirements + "\n"
-        string += self.parse_pddl_type_dtos(pddl_type_dtos)
-        string += self.parse_pddl_predicate_dtos(pddl_predicate_dtos)
-        string += self.parse_pddl_action_dtos(pddl_action_dtos)
+        string += self.parse_pddl_type_dtos_list(pddl_type_dto_list)
+        string += self.parse_pddl_predicate_dtos_list(pddl_predicate_dto_list)
+        string += self.parse_pddl_action_dtos_list(pddl_action_dto_list)
         string += ")\n"
 
         return string

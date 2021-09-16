@@ -24,8 +24,8 @@ class Merlin2GoalDispatcher:
 
         # loading parameters
         parameter_loader = ParameterLoader(self.__node)
-        self.__pddl_dao_factory = parameter_loader.get_pddl_dao_factory()
-        self.__pddl_proposition_dao = self.__pddl_dao_factory.create_pddl_proposition_dao()
+        self.__dao_factory = parameter_loader.get_dao_factory()
+        self.__pddl_proposition_dao = self.__dao_factory.create_pddl_proposition_dao()
 
         # action client
         self.__action_client = self.__node.create_action_client(
@@ -38,7 +38,7 @@ class Merlin2GoalDispatcher:
             DaoFactory: pddl dao factory
         """
 
-        return self.__pddl_dao_factory
+        return self.__dao_factory
 
     def execute_goals(self, pddl_proposition_dto_list: List[PddlPropositionDto]) -> bool:
         """ add goals to knowledge base and call executor

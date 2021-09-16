@@ -30,7 +30,7 @@ class Merlin2PlanDispatcherNode(Node):
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
-        dao_factory = parameter_loader.get_pddl_dao_factory()
+        dao_factory = parameter_loader.get_dao_factory()
         self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
         self.pddl_action_dao = dao_factory.create_pddl_action_dao()
         self.pddl_object_dao = dao_factory.create_pddl_object_dao()

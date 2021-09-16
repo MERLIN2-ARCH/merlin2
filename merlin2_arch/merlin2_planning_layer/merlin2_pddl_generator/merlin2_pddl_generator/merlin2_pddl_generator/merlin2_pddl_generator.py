@@ -69,8 +69,8 @@ class Merlin2PddlGenerator:
                                                                predicates_list,
                                                                actions_list)
 
-        pddl_problem = self.problem_parser.parse_pddl_problem_dto(objects_list,
-                                                                  propositions_list,
-                                                                  goals_list)
+        pddl_problem = self.problem_parser.parse_pddl_problem_dto_list(objects_list,
+                                                                       propositions_list,
+                                                                       goals_list)
 
         return [pddl_domain, pddl_problem]

@@ -107,7 +107,7 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
         self.pddl_object_dao.delete_all()
         self.pddl_proposition_dao.delete_all()
 
-    def test_parse_pddl_type_dtos(self):
+    def test_parse_pddl_type_dtos_list(self):
         self.maxDiff = None
 
         pddl_generated = self.pddl_generator.generate_pddl()

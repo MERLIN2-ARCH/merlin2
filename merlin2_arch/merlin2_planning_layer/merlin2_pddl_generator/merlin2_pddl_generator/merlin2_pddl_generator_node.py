@@ -20,7 +20,7 @@ class Merlin2PddlGeneratorNode(Node):
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
-        dao_factory = parameter_loader.get_pddl_dao_factory()
+        dao_factory = parameter_loader.get_dao_factory()
         self.pddl_generator = Merlin2PddlGenerator(dao_factory)
 
         # service servers
