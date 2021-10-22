@@ -31,7 +31,7 @@ class Merlin2SttState(StateMachine):
 
         stt_state = AcionState(
             node, ListenOnce, "/speech_to_text/listen_once", self.create_stt_goal,
-            resutl_handler=self.result_stt_handler)
+            result_handler=self.result_stt_handler)
 
         self.add_state(
             "CALIBRATING",
