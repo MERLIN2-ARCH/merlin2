@@ -14,3 +14,9 @@
 	path = simple_node
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/simple_node.git
 	branch = master
+[submodule "yasmin"]
+	path = yasmin
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/yasmin.git
+[submodule "kant"]
+	path = kant
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/kant.git
