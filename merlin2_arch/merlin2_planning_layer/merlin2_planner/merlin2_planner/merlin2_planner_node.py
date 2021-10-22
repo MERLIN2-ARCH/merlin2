@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ Merlin2 Planner Node """
 
