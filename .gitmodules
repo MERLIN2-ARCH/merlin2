@@ -17,6 +17,8 @@
 [submodule "yasmin"]
 	path = yasmin
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/yasmin.git
+	branch = master
 [submodule "kant"]
 	path = kant
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/kant.git
+	branch = master
