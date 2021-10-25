@@ -83,18 +83,22 @@ class Merlin2PlanDispatcherNode(Node):
 
                 # clasifaying effects by time
                 for pddl_effect_dto in pddl_efect_dto_list:
+
                     if pddl_effect_dto.get_time() not in pddl_effect_dict:
                         pddl_effect_dict[pddl_effect_dto.get_time()] = []
 
-                        pddl_effect_dict[pddl_effect_dto.get_time()
-                                         ].append(pddl_effect_dto)
+                    pddl_effect_dict[pddl_effect_dto.get_time()
+                                     ].append(pddl_effect_dto)
 
                 # before calling action
                 at_start = PddlConditionEffectDto.AT_START
+
                 if at_start in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[at_start]:
+
                         pddl_proposition_dto = self.__build_proposition(
                             pddl_effect_dto, pddl_objects_dto_dict)
+
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
@@ -102,11 +106,14 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
+                # over calling action
                 over_all = PddlConditionEffectDto.OVER_ALL
                 if over_all in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[over_all]:
+
                         pddl_proposition_dto = self.__build_proposition(
                             pddl_effect_dto, pddl_objects_dto_dict)
+
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
@@ -117,11 +124,13 @@ class Merlin2PlanDispatcherNode(Node):
                 # calling action
                 self._call_action(goal)
 
-                # after calling action
+                # over calling action
                 if over_all in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[over_all]:
+
                         pddl_proposition_dto = self.__build_proposition(
                             pddl_effect_dto, pddl_objects_dto_dict)
+
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
 
@@ -129,11 +138,14 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
+                # after calling action
                 at_end = PddlConditionEffectDto.AT_END
                 if at_end in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[at_end]:
+
                         pddl_proposition_dto = self.__build_proposition(
                             pddl_effect_dto, pddl_objects_dto_dict)
+
                         succeed = self.__update_knowledge(
                             pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
@@ -147,8 +159,10 @@ class Merlin2PlanDispatcherNode(Node):
                 self._call_action(goal)
 
                 for pddl_effect_dto in pddl_efect_dto_list:
+
                     pddl_proposition_dto = self.__build_proposition(
                         pddl_effect_dto, pddl_objects_dto_dict)
+
                     succeed = self.__update_knowledge(
                         pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
