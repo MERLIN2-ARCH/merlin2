@@ -17,8 +17,6 @@ from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 from merlin2_basic_actions.merlin2_navigation_action import Merlin2NavigationAction
 from merlin2_plan_dispatcher.merlin2_plan_dispatcher_node import Merlin2PlanDispatcherNode
 
-from kant_knowledge_base.knowledge_base.knowledge_base_node import KnowledgeBaseNode
-
 
 class FakeNavigationAction(Merlin2NavigationAction):
     def __init__(self):
