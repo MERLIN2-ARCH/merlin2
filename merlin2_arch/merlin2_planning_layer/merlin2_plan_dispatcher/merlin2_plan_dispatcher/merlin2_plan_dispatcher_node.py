@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ Merlin2 Plan Dispatcher Node """
 
@@ -26,7 +27,7 @@ class Merlin2PlanDispatcherNode(Node):
 
     def __init__(self):
 
-        super().__init__("merlin2_plan_dispatcher_node")
+        super().__init__("plan_dispatcher_node", namespace="merlin2")
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
@@ -57,13 +58,17 @@ class Merlin2PlanDispatcherNode(Node):
         """ action server execute callback """
 
         result = DispatchPlan.Result()
-        succeed = True
 
         for action in goal_handle.request.plan:
             self.get_logger().info("Executing action " + str(action.action_name) +
                                    " with objects " + str(action.objects))
 
             pddl_action_dto = self.pddl_action_dao.get(action.action_name)
+
+            if pddl_action_dto is None:
+                goal_handle.abort()
+                return result
+
             pddl_parameter_dto_list = pddl_action_dto.get_parameters()
             pddl_efect_dto_list = pddl_action_dto.get_effects()
             pddl_objects_dto_dict = {}
@@ -92,17 +97,10 @@ class Merlin2PlanDispatcherNode(Node):
 
                 # before calling action
                 at_start = PddlConditionEffectDto.AT_START
-
                 if at_start in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[at_start]:
 
-                        pddl_proposition_dto = self.__build_proposition(
-                            pddl_effect_dto, pddl_objects_dto_dict)
-
-                        succeed = self.__update_knowledge(
-                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
+                        if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                             goal_handle.abort()
                             return result
 
@@ -111,30 +109,21 @@ class Merlin2PlanDispatcherNode(Node):
                 if over_all in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[over_all]:
 
-                        pddl_proposition_dto = self.__build_proposition(
-                            pddl_effect_dto, pddl_objects_dto_dict)
-
-                        succeed = self.__update_knowledge(
-                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
+                        if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                             goal_handle.abort()
                             return result
 
                 # calling action
                 self._call_action(goal)
 
+                if self.__action_server.is_canceled():
+                    break
+
                 # over calling action
                 if over_all in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[over_all]:
 
-                        pddl_proposition_dto = self.__build_proposition(
-                            pddl_effect_dto, pddl_objects_dto_dict)
-
-                        succeed = self.__update_knowledge(
-                            pddl_proposition_dto, not pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
+                        if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                             goal_handle.abort()
                             return result
 
@@ -143,13 +132,7 @@ class Merlin2PlanDispatcherNode(Node):
                 if at_end in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[at_end]:
 
-                        pddl_proposition_dto = self.__build_proposition(
-                            pddl_effect_dto, pddl_objects_dto_dict)
-
-                        succeed = self.__update_knowledge(
-                            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                        if not succeed:
+                        if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                             goal_handle.abort()
                             return result
 
@@ -158,15 +141,12 @@ class Merlin2PlanDispatcherNode(Node):
                 # calling action
                 self._call_action(goal)
 
+                if self.__action_server.is_canceled():
+                    break
+
                 for pddl_effect_dto in pddl_efect_dto_list:
 
-                    pddl_proposition_dto = self.__build_proposition(
-                        pddl_effect_dto, pddl_objects_dto_dict)
-
-                    succeed = self.__update_knowledge(
-                        pddl_proposition_dto, pddl_effect_dto.get_is_negative())
-
-                    if not succeed:
+                    if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                         goal_handle.abort()
                         return result
 
@@ -232,6 +212,27 @@ class Merlin2PlanDispatcherNode(Node):
         else:
             succeed = self.pddl_proposition_dao.save(
                 pddl_proposition_dto)
+
+        return succeed
+
+    def __apply_effect(self,
+                       pddl_effect_dto: PddlConditionEffectDto,
+                       pddl_objects_dto_dict: Dict[str, PddlObjectDto]) -> bool:
+        """ apply an action effect removing or adding knowledge
+
+        Args:
+            pddl_effect_dto (PddlConditionEffectDto): effect to apply
+            pddl_objects_dto_dict (Dict[str, PddlObjectDto]): objects of the action of the effect
+
+        Returns:
+            bool: succeed
+        """
+
+        pddl_proposition_dto = self.__build_proposition(
+            pddl_effect_dto, pddl_objects_dto_dict)
+
+        succeed = self.__update_knowledge(
+            pddl_proposition_dto, pddl_effect_dto.get_is_negative())
 
         return succeed
 
