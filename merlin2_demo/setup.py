@@ -24,7 +24,7 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "merlin2_demo_node = merlin2_demo.merlin2_demo_node:main",
+            "demo_node = merlin2_demo.merlin2_demo_node:main",
             "merlin2_hi_navigation_action = merlin2_demo.merlin2_hi_navigation_action:main",
             "merlin2_hi_navigation_fsm_action = merlin2_demo.merlin2_hi_navigation_fsm_action:main",
             "merlin2_check_wp_action = merlin2_demo.merlin2_check_wp_action:main",
