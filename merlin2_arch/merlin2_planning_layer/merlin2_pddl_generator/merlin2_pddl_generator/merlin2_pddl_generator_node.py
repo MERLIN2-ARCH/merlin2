@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ Merlin2 Pddl Generator Node """
 
@@ -16,7 +17,7 @@ class Merlin2PddlGeneratorNode(Node):
 
     def __init__(self):
 
-        super().__init__("merlin2_pddl_generator_node")
+        super().__init__("pddl_generator_node", namespace="merlin2")
 
         # loading parameters
         parameter_loader = ParameterLoader(self)

@@ -8,7 +8,6 @@ from kant_dao.dao_factory import DaoFamilies
 
 
 def generate_launch_description():
-    namespace = "merlin2"
 
     stdout_linebuf_envvar = SetEnvironmentVariable(
         "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
@@ -37,7 +36,6 @@ def generate_launch_description():
         package="merlin2_pddl_generator",
         executable="pddl_generator_node",
         name="pddl_generator_node",
-        namespace=namespace,
         parameters=[{"dao_family": dao_family,
                      "mongo_uri": mongo_uri}]
     )
@@ -46,14 +44,12 @@ def generate_launch_description():
         package="merlin2_planner",
         executable="planner_node",
         name="planner_node",
-        namespace=namespace,
     )
 
     plan_dispatcher_node_cmd = Node(
         package="merlin2_plan_dispatcher",
         executable="plan_dispatcher_node",
         name="plan_dispatcher_node",
-        namespace=namespace,
         parameters=[{"dao_family": dao_family,
                      "mongo_uri": mongo_uri}]
     )
@@ -62,14 +58,13 @@ def generate_launch_description():
         package="merlin2_executor",
         executable="executor_node",
         name="executor_node",
-        namespace=namespace,
     )
 
     knowledge_base_node_cmd = Node(
         package="kant_knowledge_base",
         executable="knowledge_base_node",
         name="knowledge_base_node",
-        namespace=namespace,
+        namespace="merlin2",
         condition=LaunchConfigurationEquals(
             "dao_family", str(int(DaoFamilies.ROS2)))
     )

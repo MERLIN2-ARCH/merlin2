@@ -19,7 +19,7 @@ class Merlin2PlannerNode(Node):
 
     def __init__(self):
 
-        super().__init__("merlin2_planner_node")
+        super().__init__("planner_node", namespace="merlin2")
 
         planner_factory = Merlin2PlannerFactory()
 
