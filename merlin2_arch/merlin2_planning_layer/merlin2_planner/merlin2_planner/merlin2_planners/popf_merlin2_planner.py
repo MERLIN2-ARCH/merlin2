@@ -57,7 +57,7 @@ class PopfMerlin2Planner(Merlin2Planner):
             list of PlanAction and check if has solution
         """
 
-        self._actions_plan = []
+        self._plan_actions = []
         self._has_solution = False
 
         if "Solution Found" in self._str_plan:
@@ -67,7 +67,7 @@ class PopfMerlin2Planner(Merlin2Planner):
 
             for action in pddl_action_list:
                 plan_action = self.parse_action_str(action)
-                self._actions_plan.append(plan_action)
+                self._plan_actions.append(plan_action)
 
     def get_lines_with_actions(self, pddl_plan: str) -> List[str]:
         """ get the lines with actions

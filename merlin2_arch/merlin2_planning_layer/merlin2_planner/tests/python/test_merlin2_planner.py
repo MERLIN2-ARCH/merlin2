@@ -35,4 +35,4 @@ Initial heuristic = 1.000\n\
 ", planner.get_str_plan())
 
         self.assertEqual(
-            "navigation", planner.get_actions_plan()[0].action_name)
+            "navigation", planner.get_plan_actions()[0].action_name)

@@ -12,7 +12,7 @@ class Merlin2Planner(ABC):
     def __init__(self):
         self._has_solution = False
         self._str_plan = ""
-        self._actions_plan = []
+        self._plan_actions = []
 
     @abstractmethod
     def _generate_plan(self, domain: str, problem: str):
@@ -39,7 +39,7 @@ class Merlin2Planner(ABC):
 
         self._has_solution = False
         self._str_plan = ""
-        self._actions_plan = []
+        self._plan_actions = []
 
         self._generate_plan(domain, problem)
         self._parse_plan()
@@ -53,14 +53,14 @@ class Merlin2Planner(ABC):
 
         return self._has_solution
 
-    def get_actions_plan(self) -> List[PlanAction]:
+    def get_plan_actions(self) -> List[PlanAction]:
         """ get the PlanAction that composed the plan
 
         Returns:
             List[PlanAction]: list of PlanAction
         """
 
-        return self._actions_plan
+        return self._plan_actions
 
     def get_str_plan(self) -> str:
         """ get the str plan
