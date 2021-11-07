@@ -51,7 +51,7 @@ class Merlin2PddlProblemParser:
 
         return string
 
-    def parse_pddl_dto_goals_list(self, pddl_dto_goals_list: List[PddlPropositionDto]) -> str:
+    def parse_pddl_goal_dto_list(self, pddl_dto_goals_list: List[PddlPropositionDto]) -> str:
         """ this method generates the string of the pddl goals
             using a list of pddl goal dtos
 
@@ -104,7 +104,7 @@ class Merlin2PddlProblemParser:
         string += self.parse_pddl_object_dto_list(pddl_object_dto_list)
         string += self.parse_pddl_proposition_dto_list(
             pddl_proposition_dto_list)
-        string += self.parse_pddl_dto_goals_list(pddl_dto_goals_list)
+        string += self.parse_pddl_goal_dto_list(pddl_dto_goals_list)
         string += ")\n"
 
         return string

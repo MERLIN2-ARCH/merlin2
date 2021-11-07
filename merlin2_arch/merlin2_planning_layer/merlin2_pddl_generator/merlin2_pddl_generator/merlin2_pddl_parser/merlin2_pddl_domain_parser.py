@@ -16,7 +16,7 @@ class Merlin2PddlDomainParser:
     def __init__(self):
         self._requirements = "(:requirements :typing :negative-preconditions :durative-actions)"
 
-    def parse_pddl_type_dtos_list(self, pddl_type_dto_list: List[PddlTypeDto]) -> str:
+    def parse_pddl_type_dto_list(self, pddl_type_dto_list: List[PddlTypeDto]) -> str:
         """ this method generates the string of the pddl types
             using a list of pddl type dtos
 
@@ -36,7 +36,7 @@ class Merlin2PddlDomainParser:
 
         return string
 
-    def parse_pddl_predicate_dtos_list(self, pddl_predicate_dto_list: List[PddlPredicateDto]) -> str:
+    def parse_pddl_predicate_dto_list(self, pddl_predicate_dto_list: List[PddlPredicateDto]) -> str:
         """ this method generates the string of the pddl predicates
             using a list of pddl predicate dtos
 
@@ -56,7 +56,7 @@ class Merlin2PddlDomainParser:
 
         return string
 
-    def parse_pddl_action_dtos_list(self, pddl_action_dto_list: List[PddlActionDto]) -> str:
+    def parse_pddl_action_dto_list(self, pddl_action_dto_list: List[PddlActionDto]) -> str:
         """ this method generates the string of the pddl actions
             using a list of pddl action dtos
 
@@ -94,9 +94,9 @@ class Merlin2PddlDomainParser:
 
         string = "(define (domain " + domain_name + ")\n"
         string += self._requirements + "\n"
-        string += self.parse_pddl_type_dtos_list(pddl_type_dto_list)
-        string += self.parse_pddl_predicate_dtos_list(pddl_predicate_dto_list)
-        string += self.parse_pddl_action_dtos_list(pddl_action_dto_list)
+        string += self.parse_pddl_type_dto_list(pddl_type_dto_list)
+        string += self.parse_pddl_predicate_dto_list(pddl_predicate_dto_list)
+        string += self.parse_pddl_action_dto_list(pddl_action_dto_list)
         string += ")\n"
 
         return string

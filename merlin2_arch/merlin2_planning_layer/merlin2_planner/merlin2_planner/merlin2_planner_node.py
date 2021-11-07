@@ -38,7 +38,7 @@ class Merlin2PlannerNode(Node):
         self.planner = planner_factory.create_planner(planner_num)
 
         # service servers
-        self.__start_server = self.create_service(
+        self.__planner_service = self.create_service(
             GeneratePlan, "generate_plan", self.__planner_srv)
 
     def __planner_srv(self,

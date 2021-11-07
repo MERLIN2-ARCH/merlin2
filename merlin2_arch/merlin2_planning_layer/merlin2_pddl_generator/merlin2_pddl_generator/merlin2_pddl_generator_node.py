@@ -25,7 +25,7 @@ class Merlin2PddlGeneratorNode(Node):
         self.pddl_generator = Merlin2PddlGenerator(dao_factory)
 
         # service servers
-        self.__start_server = self.create_service(
+        self.__generate_pddl_service = self.create_service(
             GeneratePddl, "generate_pddl", self.__generate_pddl_srv)
 
     def __generate_pddl_srv(self,

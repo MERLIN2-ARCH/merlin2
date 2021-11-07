@@ -42,7 +42,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
         self.rb1_wp2_wp_checked_goal = PddlPropositionDto(
             wp_checked, [self.rb1, self.wp2], is_goal=True)
 
-    def test_parse_pddl_type_dtos_list(self):
+    def test_parse_pddl_type_dto_list(self):
         self.maxDiff = None
         self.assertEqual("""\
 (:objects
@@ -53,7 +53,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
 """,
                          self.problem_parser.parse_pddl_object_dto_list([self.rb1, self.wp1, self.wp2]))
 
-    def test_parse_pddl_type_dtos_list_empty_list(self):
+    def test_parse_pddl_type_dto_list_empty_list(self):
         self.maxDiff = None
         self.assertEqual("""\
 (:objects
@@ -85,7 +85,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
 \t(robot_at rb1 wp2)
 )
 """,
-                         self.problem_parser.parse_pddl_dto_goals_list([self.rb1_robot_at_goal]))
+                         self.problem_parser.parse_pddl_goal_dto_list([self.rb1_robot_at_goal]))
 
     def test_parse_pddl_goal_dtos_two_goals(self):
         self.maxDiff = None
@@ -97,7 +97,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
 \t)
 )
 """,
-                         self.problem_parser.parse_pddl_dto_goals_list([self.rb1_robot_at_goal, self.rb1_wp2_wp_checked_goal]))
+                         self.problem_parser.parse_pddl_goal_dto_list([self.rb1_robot_at_goal, self.rb1_wp2_wp_checked_goal]))
 
     def test_parse_pddl_goal_dtos_empty_list(self):
         self.maxDiff = None
@@ -105,7 +105,7 @@ class TestMerlin2PddlProblemParser(unittest.TestCase):
 (:goal
 ())
 """,
-                         self.problem_parser.parse_pddl_dto_goals_list([]))
+                         self.problem_parser.parse_pddl_goal_dto_list([]))
 
     def test_parse_pddl_problem_dto_list(self):
         self.maxDiff = None
