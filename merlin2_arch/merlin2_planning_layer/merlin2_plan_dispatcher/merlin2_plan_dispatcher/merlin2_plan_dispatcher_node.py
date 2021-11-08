@@ -47,14 +47,14 @@ class Merlin2PlanDispatcherNode(Node):
         if self.__action_client:
             self.__action_client.cancel_goal()
 
-    def _call_action(self, goal):
+    def _call_action(self, goal: DispatchAction.Goal):
         self.__action_client = self.create_action_client(
             DispatchAction, goal.action.action_name)
         self.__action_client.wait_for_server()
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()
 
-    def __execute_server(self, goal_handle):
+    def __execute_server(self, goal_handle) -> DispatchPlan.Result:
         """ action server execute callback """
 
         result = DispatchPlan.Result()
