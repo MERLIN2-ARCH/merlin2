@@ -24,7 +24,7 @@ class Merlin2SttState(StateMachine):
             ["valid", "repeat"], self.checking_speech)
 
         calibrating_state = ServiceState(
-            node, Empty, "/speech_to_text/calibrate_listening", self.crate_calibrate_rquest)
+            node, Empty, "/speech_to_text/calibrate_listening", self.create_calibrate_request)
 
         tts_state = AcionState(
             node, TTS, "/text_to_speech/tts", self.create_tts_goal)
@@ -98,7 +98,7 @@ class Merlin2SttState(StateMachine):
         else:
             return "repeat"
 
-    def crate_calibrate_rquest(self, blackboard: Blackboard) -> Empty.Request:
+    def create_calibrate_request(self, blackboard: Blackboard) -> Empty.Request:
         """ create a calibreate request
 
         Args:

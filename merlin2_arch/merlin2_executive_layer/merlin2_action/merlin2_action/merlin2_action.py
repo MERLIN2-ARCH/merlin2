@@ -18,7 +18,7 @@ from rcl_interfaces.msg import SetParametersResult
 class Merlin2Action(Node, PddlActionDto, ABC):
     """ Merlin2 Action Class """
 
-    def __init__(self, a_name, durative: bool = True):
+    def __init__(self, a_name: str, durative: bool = True):
 
         Node.__init__(self, a_name, namespace="merlin2")
         PddlActionDto.__init__(self,
@@ -147,7 +147,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
     def __cancel_callback(self):
         self.cancel_action()
 
-    def __execute_server(self, goal_handle):
+    def __execute_server(self, goal_handle) -> DispatchAction.Result:
         result = DispatchAction.Result()
 
         succeed = self.run_action(goal_handle.request.action)
