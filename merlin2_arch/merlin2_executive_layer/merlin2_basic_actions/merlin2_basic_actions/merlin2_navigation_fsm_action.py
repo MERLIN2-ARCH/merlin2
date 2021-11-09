@@ -17,9 +17,10 @@ from merlin2_fsm_action import (
     Merlin2BasicStates
 )
 from yasmin import CbState
+from yasmin.blackboard import Blackboard
 
 
-class Merlin2NavigationAction(Merlin2FsmAction):
+class Merlin2NavigationFsmAction(Merlin2FsmAction):
     """ Merlin2 Navigation Action Class """
 
     def __init__(self):
@@ -44,7 +45,7 @@ class Merlin2NavigationAction(Merlin2FsmAction):
             navigation_state
         )
 
-    def prepapre_goal(self, blackboard):
+    def prepapre_goal(self, blackboard: Blackboard) -> str:
         blackboard.destination = blackboard.merlin2_action_goal.objects[1]
         return "valid"
 
@@ -73,7 +74,7 @@ class Merlin2NavigationAction(Merlin2FsmAction):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = Merlin2NavigationAction()
+    node = Merlin2NavigationFsmAction()
 
     node.join_spin()
 

@@ -28,7 +28,7 @@ class Merlin2NavigationAction(Merlin2Action):
 
         super().__init__("navigation")
 
-        self.__action_client = self.create_action_client(
+        self.__topo_nav_client = self.create_action_client(
             TopoNav, "/topological_nav/navigation")
 
     def run_action(self, goal: PlanAction) -> bool:
@@ -37,18 +37,18 @@ class Merlin2NavigationAction(Merlin2Action):
         dst = goal.objects[1]
         nav_goal.point = dst
 
-        self.__action_client.wait_for_server()
-        self.__action_client.send_goal(nav_goal)
-        self.__action_client.wait_for_result()
+        self.__topo_nav_client.wait_for_server()
+        self.__topo_nav_client.send_goal(nav_goal)
+        self.__topo_nav_client.wait_for_result()
 
-        if self.__action_client.is_succeeded():
+        if self.__topo_nav_client.is_succeeded():
             return True
 
         else:
             return False
 
     def cancel_action(self):
-        self.__action_client.cancel_goal()
+        self.__topo_nav_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:
         return [self.__org, self.__dst]

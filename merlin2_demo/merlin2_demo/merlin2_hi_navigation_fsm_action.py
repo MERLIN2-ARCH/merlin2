@@ -24,11 +24,12 @@ from merlin2_fsm_action import (
 )
 from yasmin import CbState
 from yasmin_ros.basic_outcomes import SUCCEED
+from yasmin.blackboard import Blackboard
 
 from .pddl import person_attended
 
 
-class Merlin2HiNavigationAction(Merlin2FsmAction):
+class Merlin2HiNavigationFsmAction(Merlin2FsmAction):
     """ Merlin2 Navigation Action Class """
 
     def __init__(self):
@@ -74,11 +75,11 @@ class Merlin2HiNavigationAction(Merlin2FsmAction):
             navigation_state
         )
 
-    def prepapre_question(self, blackboard):
+    def prepapre_question(self, blackboard: Blackboard) -> str:
         blackboard.text = "Where do you want me to go?"
         return "valid"
 
-    def check_stt(self, blackboard):
+    def check_stt(self, blackboard: Blackboard) -> str:
         if blackboard.speech[0] == "go":
             blackboard.destination = blackboard.speech[1]
             return "valid"
@@ -116,7 +117,7 @@ class Merlin2HiNavigationAction(Merlin2FsmAction):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = Merlin2HiNavigationAction()
+    node = Merlin2HiNavigationFsmAction()
 
     node.join_spin()
 
