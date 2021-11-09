@@ -17,15 +17,15 @@ from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
 class Merlin2MissionNode(Node, ABC):
     """ MERLIN2 Mission Node Class """
 
-    def __init__(self, node_name, reset_problem=True, run_mission=True):
+    def __init__(self, node_name: str, reset_problem: bool = True, run_mission: bool = True):
 
         super().__init__(node_name, namespace="merlin2")
 
         self.goal_dispatcher = Merlin2GoalDispatcher(self)
-        self.dao_factory = self.goal_dispatcher.get_pddl_factory()
+        dao_factory = self.goal_dispatcher.get_dao_factory()
 
-        self.pddl_object_dao = self.dao_factory.create_pddl_object_dao()
-        self.pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
+        self.pddl_object_dao = dao_factory.create_pddl_object_dao()
+        self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
 
         if reset_problem:
             self.pddl_object_dao.delete_all()

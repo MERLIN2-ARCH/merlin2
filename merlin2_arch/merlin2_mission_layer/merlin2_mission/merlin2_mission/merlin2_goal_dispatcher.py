@@ -31,7 +31,7 @@ class Merlin2GoalDispatcher:
         self.__action_client = self.__node.create_action_client(
             Execute, "execute")
 
-    def get_pddl_factory(self) -> DaoFactory:
+    def get_dao_factory(self) -> DaoFactory:
         """ get pddl dao factory of the goal dispatcher
 
         Returns:
@@ -67,13 +67,13 @@ class Merlin2GoalDispatcher:
         self.__action_client.send_goal(goal)
         self.__action_client.wait_for_result()
 
-        self.results = self.__action_client.get_result()
+        self.result = self.__action_client.get_result()
 
         # results
         succeed = (self.__action_client.is_succeeded() and
-                   self.results.generate_pddl and
-                   self.results.generate_plan and
-                   self.results.dispatch_plan)
+                   self.result.generate_pddl and
+                   self.result.generate_plan and
+                   self.result.dispatch_plan)
 
         return succeed
 
