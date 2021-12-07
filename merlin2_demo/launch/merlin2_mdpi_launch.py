@@ -2,7 +2,8 @@
 import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import SetEnvironmentVariable, IncludeLaunchDescription
+from launch.actions import SetEnvironmentVariable, IncludeLaunchDescription, DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 import ament_index_python
@@ -19,6 +20,40 @@ def generate_launch_description():
 
     stdout_linebuf_envvar = SetEnvironmentVariable(
         "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
+
+    #
+    # ARGS
+    #
+
+    total_points = LaunchConfiguration("total_points")
+    total_points_cmd = DeclareLaunchArgument(
+        "total_points",
+        default_value="6",
+        description="Total points")
+
+    time_to_cancel = LaunchConfiguration("time_to_cancel")
+    time_to_cancel_cmd = DeclareLaunchArgument(
+        "time_to_cancel",
+        default_value="10",
+        description="Time to cancel each mission in seconds")
+
+    number_of_tests = LaunchConfiguration("number_of_tests")
+    number_of_tests_cmd = DeclareLaunchArgument(
+        "number_of_tests",
+        default_value="5",
+        description="Number of tests")
+
+    results_path = LaunchConfiguration("results_path")
+    results_path_cmd = DeclareLaunchArgument(
+        "results_path",
+        default_value="~/",
+        description="Path to store the results")
+
+    world = LaunchConfiguration("world")
+    world_cmd = DeclareLaunchArgument(
+        "world",
+        default_value="granny",
+        description="World used in tests")
 
     #
     # NODES
@@ -39,7 +74,12 @@ def generate_launch_description():
     merlin2_mdpi_node_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_mdpi_node",
-        name="merlin2_mdpi_node"
+        name="merlin2_mdpi_node",
+        parameters=[{"total_points": total_points,
+                     "time_to_cancel": time_to_cancel,
+                     "number_of_tests": number_of_tests,
+                     "results_path": results_path,
+                     "world": world}]
     )
 
     #
@@ -67,6 +107,12 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(stdout_linebuf_envvar)
+
+    ld.add_action(total_points_cmd)
+    ld.add_action(time_to_cancel_cmd)
+    ld.add_action(number_of_tests_cmd)
+    ld.add_action(results_path_cmd)
+    ld.add_action(world_cmd)
 
     ld.add_action(topological_nav_cmd)
     ld.add_action(tts_cmd)

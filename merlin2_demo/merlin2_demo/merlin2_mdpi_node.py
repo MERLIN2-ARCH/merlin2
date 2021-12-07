@@ -1,5 +1,5 @@
 
-
+import os
 import time
 from random import seed, randint
 import threading
@@ -35,18 +35,33 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         # parameters
         total_points_param_name = "total_points"
         time_to_cancel_param_name = "time_to_cancel"
+        number_of_tests_param_name = "number_of_tests"
+        results_path_param_name = "results_path"
+        world_param_name = "world"
 
         self.declare_parameter(
             total_points_param_name, 6)  # 6, 20, 120
         self.declare_parameter(
             time_to_cancel_param_name, 10)
+        self.declare_parameter(
+            number_of_tests_param_name, 10)
+        self.declare_parameter(
+            results_path_param_name, "~/")
+        self.declare_parameter(
+            world_param_name, "granny")
 
         self.total_points = self.get_parameter(
             total_points_param_name).get_parameter_value().integer_value
         self.time_to_cancel = self.get_parameter(
             time_to_cancel_param_name).get_parameter_value().integer_value
-        self.wp_list = []
+        self.number_of_tests = self.get_parameter(
+            number_of_tests_param_name).get_parameter_value().integer_value
+        self.results_path = self.get_parameter(
+            results_path_param_name).get_parameter_value().string_value
+        self.world = self.get_parameter(
+            world_param_name).get_parameter_value().string_value
 
+        self.wp_list = []
         self.__last_pose = None
         self.__distance = 0
         self.__pose_sub = self.create_subscription(
@@ -105,9 +120,10 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 
         self.get_logger().info(str(self.wp_list))
 
-    def execute(self):
+    def execute_test(self):
 
         self.init_points()
+        self.__distance = 0
 
         start_t = time.time()
 
@@ -142,8 +158,28 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         # results
         end_t = time.time()
         total_t = end_t - start_t
-        self.get_logger().info("TIME: " + str(total_t) + " " + "-" * 40)
-        self.get_logger().info("DISTANCE: " + str(self.__distance) + " " + "-" * 40)
+
+        return total_t, self.__distance
+
+    def run_tests(self):
+        string_csv = "ID, World, Time (Seconds), Distance (Meters)\n"
+
+        for i in range(self.number_of_tests):
+            time_t, distance = self.execute_test()
+            string_csv += str(i) + "," + self.world + "," + \
+                str(time_t) + "," + str(distance) + "\n"
+
+        file_name = self.results_path + "/results_" + \
+            self.world + "_" + str(self.total_points) + ".csv"
+        file_name = file_name.replace("//", "/")
+        file_name = os.path.abspath(os.path.expanduser(file_name))
+
+        f = open(file_name, "w")
+        f.write(string_csv)
+        f.close()
+
+    def execute(self):
+        self.run_tests()
 
 
 def main(args=None):
