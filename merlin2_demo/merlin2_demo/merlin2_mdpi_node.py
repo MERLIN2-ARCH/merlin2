@@ -7,19 +7,22 @@ import rclpy
 
 from merlin2_mission import Merlin2MissionNode
 
+from kant_dto import (
+    PddlObjectDto,
+    PddlPropositionDto
+)
+
+# distance measure
+from math import sqrt, pow
+from geometry_msgs.msg import PoseWithCovarianceStamped
+
+# pddl
 from merlin2_basic_actions.merlin2_basic_types import (
     wp_type,
 )
 from merlin2_basic_actions.merlin2_basic_predicates import (
     robot_at,
 )
-
-from kant_dto import (
-    PddlObjectDto,
-    PddlPropositionDto
-)
-
-
 from .pddl import wp_checked
 
 
@@ -34,15 +37,31 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         time_to_cancel_param_name = "time_to_cancel"
 
         self.declare_parameter(
-            total_points_param_name, 20)
+            total_points_param_name, 6)  # 6, 20, 120
         self.declare_parameter(
-            time_to_cancel_param_name, 10)
+            time_to_cancel_param_name, 3)
 
         self.total_points = self.get_parameter(
             total_points_param_name).get_parameter_value().integer_value
         self.time_to_cancel = self.get_parameter(
             time_to_cancel_param_name).get_parameter_value().integer_value
         self.wp_list = []
+
+        self.__last_pose = None
+        self.__distance = 0
+        self.__pose_sub = self.create_subscription(
+            PoseWithCovarianceStamped, "/amcl_pose", self.__pose_cb, 100)
+
+    def __pose_cb(self, msg: PoseWithCovarianceStamped):
+        pose = msg.pose.pose
+
+        if not self.__last_pose is None:
+            new_distance = sqrt(
+                pow((pose.position.x - self.__last_pose.position.x), 2) +
+                pow((pose.position.y - self.__last_pose.position.y), 2))
+            self.__distance += new_distance
+
+        self.__last_pose = pose
 
     def create_objects(self):
         self.wp0 = PddlObjectDto(wp_type, "wp0")
@@ -84,12 +103,11 @@ class Merlin2MdpiNode(Merlin2MissionNode):
             point_pos_list.append(point_pos)
             self.wp_list[point_pos]["cancel"] = True
 
-        print(self.wp_list)
+        self.get_logger().info(str(self.wp_list))
 
     def execute(self):
 
         self.init_points()
-        pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
         start_t = time.time()
 
@@ -107,8 +125,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 
             # cancel?
             if cancel:
-                self.get_logger().info(
-                    "CANCELING ------------------------------------")
+                self.get_logger().info("CANCELING " + "-"*40)
                 i = 0
                 while i < self.time_to_cancel and thread.is_alive():
                     time.sleep(1)
@@ -118,11 +135,15 @@ class Merlin2MdpiNode(Merlin2MissionNode):
             # wait for thread
             thread.join()
 
+            # remove propositions achieved
+            goal.set_is_goal(False)
+            self.pddl_proposition_dao.delete(goal)
+
         # results
         end_t = time.time()
         total_t = end_t - start_t
-        self.get_logger().info("TIME: " + str(total_t) +
-                               " ------------------------------------")
+        self.get_logger().info("TIME: " + str(total_t) + " " + "-" * 40)
+        self.get_logger().info("DISTANCE: " + str(self.__distance) + " " + "-" * 40)
 
 
 def main(args=None):
