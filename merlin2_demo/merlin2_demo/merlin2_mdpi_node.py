@@ -39,7 +39,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         self.declare_parameter(
             total_points_param_name, 6)  # 6, 20, 120
         self.declare_parameter(
-            time_to_cancel_param_name, 3)
+            time_to_cancel_param_name, 10)
 
         self.total_points = self.get_parameter(
             total_points_param_name).get_parameter_value().integer_value
