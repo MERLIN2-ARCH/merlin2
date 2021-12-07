@@ -180,12 +180,15 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 
             # cancel?
             if cancel:
-                self.get_logger().info("CANCELING " + "-"*40)
+                self.get_logger().info("GOAL TO CANCEL " + "-" * 40)
                 i = 0
                 while i < self.time_to_cancel and thread.is_alive():
                     time.sleep(1)
                     i += 1
-                self.cancel_goals()
+
+                if thread.is_alive():
+                    self.get_logger().info("CANCELING " + "-" * 40)
+                    self.cancel_goals()
 
             # wait for thread
             thread.join()
@@ -203,19 +206,23 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
         return self.END
 
     def save_results(self, blackboard: Blackboard) -> str:
-        string_csv = "ID, World, Time (Seconds), Distance (Meters)\n"
-
-        for i in range(len(blackboard.results)):
-            time_t, distance = blackboard.results[i]
-            string_csv += str(i) + "," + self.world + "," + \
-                str(time_t) + "," + str(distance) + "\n"
 
         file_name = self.results_path + "/results_" + \
             self.world + "_" + str(self.total_points) + ".csv"
         file_name = file_name.replace("//", "/")
         file_name = os.path.abspath(os.path.expanduser(file_name))
 
-        f = open(file_name, "w")
+        string_csv = "ID, World, Time (Seconds), Distance (Meters)\n"
+
+        if os.path.isfile(file_name):
+            string_csv = ""
+
+        for i in range(len(blackboard.results)):
+            time_t, distance = blackboard.results[i]
+            string_csv += str(i) + "," + self.world + "," + \
+                str(time_t) + "," + str(distance) + "\n"
+
+        f = open(file_name, "a")
         f.write(string_csv)
         f.close()
 
