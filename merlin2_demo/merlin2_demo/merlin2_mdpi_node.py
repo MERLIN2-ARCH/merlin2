@@ -30,7 +30,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 
     def __init__(self):
 
-        super().__init__("mdpi_node", run_mission=True)
+        super().__init__("mdpi_node", run_mission=False)
 
         # parameters
         total_points_param_name = "total_points"
@@ -185,7 +185,8 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 def main(args=None):
     rclpy.init(args=args)
 
-    Merlin2MdpiNode()
+    node = Merlin2MdpiNode()
+    node.execute_mission()
 
     rclpy.shutdown()
 
