@@ -115,7 +115,7 @@ class Merlin2PlanDispatcherNode(Node):
 
                 # calling action
                 self._call_action(goal)
-                self.get_logger().info("Action " + str(action.action_name) + " terminated")
+                self.get_logger().info("Action " + str(action.action_name) + " finished")
 
                 if self.__action_server.is_canceled():
                     break

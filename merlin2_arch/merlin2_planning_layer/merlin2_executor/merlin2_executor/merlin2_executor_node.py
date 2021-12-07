@@ -2,7 +2,10 @@
 """ Merlin2 Executor Node """
 
 
+from kant_dao.dao_interface import pddl_proposition_dao
 import rclpy
+
+from kant_dao import ParameterLoader
 
 from merlin2_arch_interfaces.srv import (
     GeneratePddl, GeneratePlan
@@ -18,6 +21,8 @@ class Merlin2ExecutorNode(Node):
     def __init__(self):
 
         super().__init__("executor_node", namespace="merlin2")
+
+        self.dao_factory = ParameterLoader(self).get_dao_factory()
 
         # service clients
         self.__pddl_generator_client = self.create_client(
@@ -39,6 +44,12 @@ class Merlin2ExecutorNode(Node):
     def __cancel_callback(self):
         if self.__plan_dispatcher_client.is_working():
             self.__plan_dispatcher_client.cancel_goal()
+
+    def delete_goals(self):
+        pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
+
+        for pddl_goal_dto in pddl_proposition_dao.get_goals():
+            pddl_proposition_dao.delete(pddl_goal_dto)
 
     def __execute_server(self, goal_handle):
         """ execute action server
@@ -92,6 +103,9 @@ class Merlin2ExecutorNode(Node):
                 goal_handle.succeed()
             else:
                 goal_handle.abort()
+
+        # remove goals
+        self.delete_goals()
 
         return result
 
