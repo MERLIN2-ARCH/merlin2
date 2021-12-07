@@ -1,3 +1,4 @@
 
 from .merlin2_mission_node import Merlin2MissionNode
 from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
+from .merlin2_fsm_mission_node import Merlin2FsmMissionNode

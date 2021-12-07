@@ -6,7 +6,7 @@ from yasmin import StateMachine
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 from yasmin_viewer import YasminViewerPub
 
-from .merlin2_fsm_mission_node import Merlin2MissionNode
+from .merlin2_mission_node import Merlin2MissionNode
 
 
 class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
