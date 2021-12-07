@@ -47,7 +47,7 @@ class Merlin2MissionNode(Node, ABC):
                                 str(pddl_proposition_dto))
 
         if run_mission:
-            self.execute()
+            self.execute_mission()
 
     def execute_goals(self, goals: List[PddlPropositionDto]) -> bool:
         """ execute list of goals
@@ -82,7 +82,7 @@ class Merlin2MissionNode(Node, ABC):
         return Node.__hash__(self)
 
     @abstractmethod
-    def execute(self):
+    def execute_mission(self):
         """ execute mission """
 
     @abstractmethod

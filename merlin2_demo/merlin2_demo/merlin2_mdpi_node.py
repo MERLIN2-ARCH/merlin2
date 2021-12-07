@@ -30,7 +30,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
 
     def __init__(self):
 
-        super().__init__("mdpi_node", run_mission=False)
+        super().__init__("mdpi_node", run_mission=True)
 
         # parameters
         total_points_param_name = "total_points"
@@ -178,16 +178,14 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         f.write(string_csv)
         f.close()
 
-    def execute(self):
+    def execute_mission(self):
         self.run_tests()
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = Merlin2MdpiNode()
-
-    node.execute()
+    Merlin2MdpiNode()
 
     rclpy.shutdown()
 

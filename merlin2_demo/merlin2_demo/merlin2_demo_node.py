@@ -42,7 +42,7 @@ class Merlin2DemoNode(Merlin2MissionNode):
         robot_at_prop = PddlPropositionDto(robot_at, [self.entrance])
         return [robot_at_prop, miguel_at_prop]
 
-    def execute(self):
+    def execute_mission(self):
         self.get_logger().info("EXECUTING MISSION")
         person_attended_goal = PddlPropositionDto(
             person_attended, [self.miguel], is_goal=True)
