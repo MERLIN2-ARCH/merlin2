@@ -67,7 +67,7 @@ def generate_launch_description():
 
     merlin2_check_wp_action_cmd = Node(
         package="merlin2_demo",
-        executable="merlin2_check_wp_action",
+        executable="merlin2_check_wp_fsm_action",
         name="check_wp"
     )
 
