@@ -5,18 +5,22 @@ from random import seed, randint
 import threading
 import rclpy
 
-from merlin2_mission import Merlin2MissionNode
+from merlin2_mission import Merlin2FsmMissionNode
 
-from kant_dto import (
-    PddlObjectDto,
-    PddlPropositionDto
-)
+# states
+from yasmin import CbState
+from yasmin.blackboard import Blackboard
 
 # distance measure
 from math import sqrt, pow
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
 # pddl
+from kant_dto import (
+    PddlObjectDto,
+    PddlPropositionDto
+)
+
 from merlin2_basic_actions.merlin2_basic_types import (
     wp_type,
 )
@@ -26,11 +30,14 @@ from merlin2_basic_actions.merlin2_basic_predicates import (
 from .pddl import wp_checked
 
 
-class Merlin2MdpiNode(Merlin2MissionNode):
+class Merlin2MdpiNode(Merlin2FsmMissionNode):
+
+    END = "end"
+    NEXT = "next"
 
     def __init__(self):
 
-        super().__init__("mdpi_node", run_mission=False)
+        super().__init__("mdpi_node", run_mission=False, outcomes=[self.END])
 
         # parameters
         total_points_param_name = "total_points"
@@ -61,11 +68,31 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         self.world = self.get_parameter(
             world_param_name).get_parameter_value().string_value
 
-        self.wp_list = []
         self.__last_pose = None
         self.__distance = 0
+
         self.__pose_sub = self.create_subscription(
             PoseWithCovarianceStamped, "/amcl_pose", self.__pose_cb, 100)
+
+        # build fsm
+        self.add_state("INITIATING_BLACKBOARD",
+                       CbState([self.END], self.init_blackboard),
+                       {self.END: "CHECKING_NEXT_TEST"})
+
+        self.add_state("CHECKING_NEXT_TEST",
+                       CbState([self.NEXT, self.END], self.check_next_test),
+                       {self.NEXT: "INITIATING_POINTS", self.END: "SAVING_RESULTS"})
+
+        self.add_state("INITIATING_POINTS",
+                       CbState([self.END], self.init_points),
+                       {self.END: "RUNNING_TEST"})
+
+        self.add_state("RUNNING_TEST",
+                       CbState([self.END], self.run_test),
+                       {self.END: "CHECKING_NEXT_TEST"})
+
+        self.add_state("SAVING_RESULTS",
+                       CbState([self.END], self.save_results))
 
     def __pose_cb(self, msg: PoseWithCovarianceStamped):
         pose = msg.pose.pose
@@ -91,8 +118,19 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         propositions = [robot_at_prop]
         return propositions
 
-    def init_points(self):
-        self.wp_list = []
+    def init_blackboard(self, blackboard: Blackboard) -> str:
+        blackboard.results = []
+        return self.END
+
+    def check_next_test(self, blackboard: Blackboard) -> str:
+
+        if len(blackboard.results) >= self.number_of_tests:
+            return self.END
+
+        return self.NEXT
+
+    def init_points(self, blackboard: Blackboard) -> str:
+        wp_list = []
         seed(time.time())
 
         for _ in range(self.total_points):
@@ -102,11 +140,11 @@ class Merlin2MdpiNode(Merlin2MissionNode):
             }
             point["value"] = "wp" + str(randint(0, 3))
 
-            if self.wp_list:
-                while point["value"] == self.wp_list[-1]["value"]:
+            if wp_list:
+                while point["value"] == wp_list[-1]["value"]:
                     point["value"] = "wp" + str(randint(0, 3))
 
-            self.wp_list.append(point)
+            wp_list.append(point)
 
         point_pos_list = []
         for _ in range(int(self.total_points/2)):
@@ -116,21 +154,21 @@ class Merlin2MdpiNode(Merlin2MissionNode):
                 point_pos = randint(0, self.total_points - 1)
 
             point_pos_list.append(point_pos)
-            self.wp_list[point_pos]["cancel"] = True
+            wp_list[point_pos]["cancel"] = True
 
-        self.get_logger().info(str(self.wp_list))
+        self.get_logger().info(str(wp_list))
+        blackboard.wp_list = wp_list
 
-    def execute_test(self):
+        return self.END
 
-        self.init_points()
-        self.__distance = 0
+    def run_test(self, blackboard: Blackboard) -> str:
 
         start_t = time.time()
 
-        while self.wp_list:
+        while blackboard.wp_list:
 
             # get next wp
-            wp = self.wp_list.pop()
+            wp = blackboard.wp_list.pop()
             cancel = wp["cancel"]
             wp = PddlObjectDto(wp_type, wp["value"])
             goal = PddlPropositionDto(wp_checked, [wp], is_goal=True)
@@ -159,13 +197,15 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         end_t = time.time()
         total_t = end_t - start_t
 
-        return total_t, self.__distance
+        blackboard.results.append([total_t, self.__distance])
 
-    def run_tests(self):
+        return self.END
+
+    def save_results(self, blackboard: Blackboard) -> str:
         string_csv = "ID, World, Time (Seconds), Distance (Meters)\n"
 
-        for i in range(self.number_of_tests):
-            time_t, distance = self.execute_test()
+        for i in range(len(blackboard.results)):
+            time_t, distance = blackboard.results[i]
             string_csv += str(i) + "," + self.world + "," + \
                 str(time_t) + "," + str(distance) + "\n"
 
@@ -178,8 +218,7 @@ class Merlin2MdpiNode(Merlin2MissionNode):
         f.write(string_csv)
         f.close()
 
-    def execute_mission(self):
-        self.run_tests()
+        return self.END
 
 
 def main(args=None):
@@ -187,6 +226,8 @@ def main(args=None):
 
     node = Merlin2MdpiNode()
     node.execute_mission()
+
+    node.join_spin()
 
     rclpy.shutdown()
 
