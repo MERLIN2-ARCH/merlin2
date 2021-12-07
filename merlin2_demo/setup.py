@@ -27,6 +27,7 @@ setup(
             "demo_node = merlin2_demo.merlin2_demo_node:main",
             "merlin2_hi_navigation_action = merlin2_demo.merlin2_hi_navigation_action:main",
             "merlin2_hi_navigation_fsm_action = merlin2_demo.merlin2_hi_navigation_fsm_action:main",
+            "merlin2_navigation_fsm_action = merlin2_demo.merlin2_navigation_fsm_action:main",
             "merlin2_check_wp_action = merlin2_demo.merlin2_check_wp_action:main",
             "merlin2_mdpi_node = merlin2_demo.merlin2_mdpi_node:main"
         ],
