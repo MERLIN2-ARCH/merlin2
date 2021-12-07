@@ -164,6 +164,7 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
     def run_test(self, blackboard: Blackboard) -> str:
 
         start_t = time.time()
+        self.__distance = 0
 
         while blackboard.wp_list:
 
