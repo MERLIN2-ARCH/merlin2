@@ -53,13 +53,13 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
 
     def cancel_action(self):
 
+        self.cancel_state()
+
         pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
         anywhere = PddlObjectDto(wp_type, "anywhere")
         prop = PddlPropositionDto(robot_at, [anywhere])
         pddl_proposition_dao.save(prop)
-
-        self.cancel_state()
 
     def prepapre_goal(self, blackboard: Blackboard) -> str:
         blackboard.destination = blackboard.merlin2_action_goal.objects[1]
