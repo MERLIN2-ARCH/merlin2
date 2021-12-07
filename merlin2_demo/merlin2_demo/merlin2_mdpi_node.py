@@ -213,13 +213,18 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
         file_name = os.path.abspath(os.path.expanduser(file_name))
 
         string_csv = "ID, World, Time (Seconds), Distance (Meters)\n"
+        offset = 0
 
         if os.path.isfile(file_name):
             string_csv = ""
 
+            f = open(file_name)
+            offset = sum(1 for _ in f) - 1
+            f.close()
+
         for i in range(len(blackboard.results)):
             time_t, distance = blackboard.results[i]
-            string_csv += str(i) + "," + self.world + "," + \
+            string_csv += str(i + offset) + "," + self.world + "," + \
                 str(time_t) + "," + str(distance) + "\n"
 
         f = open(file_name, "a")
