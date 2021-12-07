@@ -2,37 +2,46 @@
 """ Merlin2 Executor Node """
 
 
-from kant_dao.dao_interface import pddl_proposition_dao
 import rclpy
 
 from kant_dao import ParameterLoader
 
-from merlin2_arch_interfaces.srv import (
-    GeneratePddl, GeneratePlan
-)
-from merlin2_arch_interfaces.action import DispatchPlan, Execute
+from yasmin import StateMachine
+from yasmin.blackboard import Blackboard
+from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin_viewer import YasminViewerPub
+
+from merlin2_arch_interfaces.action import Execute
 
 from simple_node import Node
 
+from .states import (
+    Merlin2GeneratePddlState,
+    Merlin2GeneratePlanState,
+    Merlin2DispatchPlanState
+)
 
-class Merlin2ExecutorNode(Node):
+
+class Merlin2ExecutorNode(Node, StateMachine):
     """ Merlin2 Executor Node Class """
 
     def __init__(self):
 
-        super().__init__("executor_node", namespace="merlin2")
+        Node.__init__(self, "executor_node", namespace="merlin2")
+        StateMachine.__init__(self, [SUCCEED, ABORT, CANCEL])
 
         self.dao_factory = ParameterLoader(self).get_dao_factory()
 
-        # service clients
-        self.__pddl_generator_client = self.create_client(
-            GeneratePddl, "generate_pddl")
-        self.__planner_client = self.create_client(
-            GeneratePlan, "generate_plan")
+        # create fsm
+        self.add_state("GENERATING_PDDL", Merlin2GeneratePddlState(self),
+                       {SUCCEED: "GENERATING_PLAN"})
 
-        # action client
-        self.__plan_dispatcher_client = self.create_action_client(
-            DispatchPlan, "dispatch_plan")
+        self.add_state("GENERATING_PLAN", Merlin2GeneratePlanState(self),
+                       {SUCCEED: "DISPATCHING_PLAN"})
+
+        self.add_state("DISPATCHING_PLAN", Merlin2DispatchPlanState(self))
+
+        self.__yasmin_pub = YasminViewerPub(self, "MERLIN2_EXECUTOR", self)
 
         # action server
         self.__action_server = self.create_action_server(Execute,
@@ -42,8 +51,7 @@ class Merlin2ExecutorNode(Node):
                                                          )
 
     def __cancel_callback(self):
-        if self.__plan_dispatcher_client.is_working():
-            self.__plan_dispatcher_client.cancel_goal()
+        StateMachine.cancel_state(self)
 
     def delete_goals(self):
         pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
@@ -59,50 +67,24 @@ class Merlin2ExecutorNode(Node):
         """
 
         result = Execute.Result()
+        result.generate_pddl = False
+        result.generate_plan = False
+        result.dispatch_plan = False
 
-        # PDDL Generator
-        req = GeneratePddl.Request()
-        self.__pddl_generator_client.wait_for_service()
-        pddl_generated = self.__pddl_generator_client.call(req)
-        self.get_logger().info(pddl_generated.domain)
-        self.get_logger().info(pddl_generated.problem)
-        result.generate_pddl = True
+        blackboard = Blackboard()
+        blackboard.result = result
 
-        # Planner
-        req = GeneratePlan.Request()
-        req.domain = pddl_generated.domain
-        req.problem = pddl_generated.problem
-        self.__planner_client.wait_for_service()
-        plan = self.__planner_client.call(req)
-        self.get_logger().info(str(plan.has_solution))
-        self.get_logger().info(str(plan.plan))
+        outcome = self(blackboard)
 
-        if not plan.has_solution:
-            result.generate_plan = False
-            result.dispatch_plan = False
-            goal_handle.abort()
-            return result
-
-        result.generate_plan = True
-
-        if not self.__action_server.is_canceled():
-            # Plan Dispatcher
-            goal = DispatchPlan.Goal()
-            goal.plan = plan.plan
-            self.__plan_dispatcher_client.wait_for_server()
-            self.__plan_dispatcher_client.send_goal(goal)
-            self.__plan_dispatcher_client.wait_for_result()
-            self.get_logger().info(str(self.__plan_dispatcher_client.get_status()))
-            result.dispatch_plan = self.__plan_dispatcher_client.is_succeeded()
-
-        if self.__action_server.is_canceled():
+        if outcome == CANCEL:
             self.__action_server.wait_for_canceling()
             goal_handle.canceled()
-        else:
-            if result.dispatch_plan:
-                goal_handle.succeed()
-            else:
-                goal_handle.abort()
+
+        elif outcome == ABORT:
+            goal_handle.abort()
+
+        elif outcome == SUCCEED:
+            goal_handle.succeed()
 
         # remove goals
         self.delete_goals()
