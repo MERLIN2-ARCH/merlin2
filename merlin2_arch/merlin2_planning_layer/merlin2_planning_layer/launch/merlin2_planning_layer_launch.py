@@ -62,7 +62,7 @@ def generate_launch_description():
 
     knowledge_base_node_cmd = Node(
         package="kant_knowledge_base",
-        executable="knowledge_base_node",
+        executable="knowledge_base_node.py",
         name="knowledge_base_node",
         namespace="merlin2",
         condition=LaunchConfigurationEquals(

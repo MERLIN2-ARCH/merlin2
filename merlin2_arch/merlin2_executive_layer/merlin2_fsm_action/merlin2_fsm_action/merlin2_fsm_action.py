@@ -33,10 +33,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
         outcome = self(blackboard)
 
-        if outcome == SUCCEED:
-            return True
-        else:
-            return False
+        return outcome == SUCCEED
 
     def cancel_action(self):
         self.cancel_state()

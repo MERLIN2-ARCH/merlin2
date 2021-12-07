@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ros2 run kant_knowledge_base knowledge_base_node &
+ros2 run kant_knowledge_base knowledge_base_node.py &
 pid=$!
 
 pkg=merlin2_pddl_generator

@@ -115,6 +115,7 @@ class Merlin2PlanDispatcherNode(Node):
 
                 # calling action
                 self._call_action(goal)
+                self.get_logger().info("Action " + str(action.action_name) + " terminated")
 
                 if self.__action_server.is_canceled():
                     break
@@ -122,7 +123,8 @@ class Merlin2PlanDispatcherNode(Node):
                 # over calling action
                 if over_all in pddl_effect_dict:
                     for pddl_effect_dto in pddl_effect_dict[over_all]:
-
+                        pddl_effect_dto.set_is_negative(
+                            not pddl_effect_dto.get_is_negative())
                         if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                             goal_handle.abort()
                             return result

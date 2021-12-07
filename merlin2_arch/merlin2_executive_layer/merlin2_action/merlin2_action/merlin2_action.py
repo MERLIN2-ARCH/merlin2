@@ -27,8 +27,8 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
-        dao_factory = parameter_loader.get_dao_factory()
-        self.__pddl_action_dao = dao_factory.create_pddl_action_dao()
+        self.dao_factory = parameter_loader.get_dao_factory()
+        self.__pddl_action_dao = self.dao_factory.create_pddl_action_dao()
 
         # creating and saving the action
         pddl_parameter_dto_list = self.create_parameters()

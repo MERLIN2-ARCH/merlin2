@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ros2 run kant_knowledge_base knowledge_base_node --ros-args --remap __ns:=/merlin2 &
+ros2 run kant_knowledge_base knowledge_base_node.py --ros-args --remap __ns:=/merlin2 &
 pid=$!
 
 pkg=merlin2_plan_dispatcher
