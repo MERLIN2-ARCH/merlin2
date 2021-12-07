@@ -126,7 +126,7 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
-                if self.__action_client.is_canceled():
+                if self.__action_client.is_canceled() or self.__action_server.is_canceled():
                     break
 
                 # after calling action
@@ -143,7 +143,7 @@ class Merlin2PlanDispatcherNode(Node):
                 # calling action
                 self._call_action(goal)
 
-                if self.__action_client.is_canceled():
+                if self.__action_client.is_canceled() or self.__action_server.is_canceled():
                     break
 
                 for pddl_effect_dto in pddl_efect_dto_list:
