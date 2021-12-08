@@ -8,6 +8,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 import ament_index_python
 
+from kant_dao.dao_factory import DaoFamilies
+
 
 def generate_launch_description():
 
@@ -24,6 +26,18 @@ def generate_launch_description():
     #
     # ARGS
     #
+
+    dao_family = LaunchConfiguration("dao_family")
+    dao_family_cmd = DeclareLaunchArgument(
+        "dao_family",
+        default_value=str(int(DaoFamilies.ROS2)),
+        description="DAO family")
+
+    mongo_uri = LaunchConfiguration("mongo_uri")
+    mongo_uri_cmd = DeclareLaunchArgument(
+        "mongo_uri",
+        default_value="mongodb://localhost:27017/merlin2",
+        description="MongoDB URI")
 
     total_points = LaunchConfiguration("total_points")
     total_points_cmd = DeclareLaunchArgument(
@@ -62,20 +76,26 @@ def generate_launch_description():
     merlin2_navigation_action_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_navigation_fsm_action",
-        name="navigation"
+        name="navigation",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     merlin2_check_wp_action_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_check_wp_fsm_action",
-        name="check_wp"
+        name="check_wp",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     merlin2_mdpi_node_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_mdpi_node",
         name="merlin2_mdpi_node",
-        parameters=[{"total_points": total_points,
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri,
+                     "total_points": total_points,
                      "time_to_cancel": time_to_cancel,
                      "number_of_tests": number_of_tests,
                      "results_path": results_path,
@@ -101,7 +121,8 @@ def generate_launch_description():
 
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py"))
+            os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py")),
+        launch_arguments={"dao_family": dao_family}.items()
     )
 
     ld = LaunchDescription()
