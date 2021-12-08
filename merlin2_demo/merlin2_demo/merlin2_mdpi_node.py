@@ -81,7 +81,11 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 
         self.add_state("CHECKING_NEXT_TEST",
                        CbState([self.NEXT, self.END], self.check_next_test),
-                       {self.NEXT: "INITIATING_POINTS", self.END: "SAVING_RESULTS"})
+                       {self.NEXT: "MOVING_ROBOT_TO_INIT_POSE", self.END: "SAVING_RESULTS"})
+
+        self.add_state("MOVING_ROBOT_TO_INIT_POSE",
+                       CbState([self.END], self.move_robot_to_init_pose),
+                       {self.END: "INITIATING_POINTS"})
 
         self.add_state("INITIATING_POINTS",
                        CbState([self.END], self.init_points),
@@ -128,6 +132,11 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
             return self.END
 
         return self.NEXT
+
+    def move_robot_to_init_pose(self, blackboard: Blackboard) -> str:
+        goal = PddlPropositionDto(robot_at, [self.wp0], is_goal=True)
+        self.execute_goal(goal)
+        return self.END
 
     def init_points(self, blackboard: Blackboard) -> str:
         wp_list = []
