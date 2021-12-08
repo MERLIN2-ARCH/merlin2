@@ -30,7 +30,7 @@ def generate_launch_description():
     dao_family = LaunchConfiguration("dao_family")
     dao_family_cmd = DeclareLaunchArgument(
         "dao_family",
-        default_value=str(int(DaoFamilies.ROS2)),
+        default_value=str(int(DaoFamilies.MONGO)),
         description="DAO family")
 
     mongo_uri = LaunchConfiguration("mongo_uri")
@@ -129,6 +129,8 @@ def generate_launch_description():
 
     ld.add_action(stdout_linebuf_envvar)
 
+    ld.add_action(dao_family_cmd)
+    ld.add_action(mongo_uri_cmd)
     ld.add_action(total_points_cmd)
     ld.add_action(time_to_cancel_cmd)
     ld.add_action(number_of_tests_cmd)
