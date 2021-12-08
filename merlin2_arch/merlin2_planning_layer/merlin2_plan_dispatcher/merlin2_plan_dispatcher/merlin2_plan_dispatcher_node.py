@@ -2,6 +2,7 @@
 
 """ Merlin2 Plan Dispatcher Node """
 
+import time
 from typing import Dict
 
 from merlin2_arch_interfaces.action import (
@@ -44,7 +45,9 @@ class Merlin2PlanDispatcherNode(Node):
                                                          cancel_callback=self.__cancel_callback)
 
     def __cancel_callback(self):
-        if self.__action_client:
+        if self.__action_server.is_working():
+            while self.__action_client is None:
+                time.sleep(0.25)
             self.__action_client.cancel_goal()
 
     def _call_action(self, goal: DispatchAction.Goal):
@@ -126,7 +129,7 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
-                if self.__action_client.is_canceled() or self.__action_server.is_canceled():
+                if self.__action_client.is_canceled():
                     break
 
                 # after calling action
@@ -138,18 +141,24 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
+                if self.__action_server.is_canceled():
+                    break
+
             else:
 
                 # calling action
                 self._call_action(goal)
 
-                if self.__action_client.is_canceled() or self.__action_server.is_canceled():
+                if self.__action_client.is_canceled():
                     break
 
                 for pddl_effect_dto in pddl_efect_dto_list:
                     if not self.__apply_effect(pddl_effect_dto, pddl_objects_dto_dict):
                         goal_handle.abort()
                         return result
+
+                if self.__action_server.is_canceled():
+                    break
 
             if self.__action_server.is_canceled():
                 self.__action_server.wait_for_canceling()
