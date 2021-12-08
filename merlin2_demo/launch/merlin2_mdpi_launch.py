@@ -30,7 +30,7 @@ def generate_launch_description():
     dao_family = LaunchConfiguration("dao_family")
     dao_family_cmd = DeclareLaunchArgument(
         "dao_family",
-        default_value=str(int(DaoFamilies.MONGO)),
+        default_value=str(int(DaoFamilies.ROS2)),
         description="DAO family")
 
     mongo_uri = LaunchConfiguration("mongo_uri")
@@ -111,7 +111,6 @@ def generate_launch_description():
             os.path.join(topological_nav_share_dir, "topological_nav_launch.py")),
         launch_arguments={"points": ament_index_python.get_package_share_directory(
             "merlin2_demo") + "/params/granny.yaml"}.items()
-
     )
 
     tts_cmd = IncludeLaunchDescription(

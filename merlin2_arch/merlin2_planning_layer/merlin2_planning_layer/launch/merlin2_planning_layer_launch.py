@@ -58,6 +58,8 @@ def generate_launch_description():
         package="merlin2_executor",
         executable="executor_node",
         name="executor_node",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     knowledge_base_node_cmd = Node(
