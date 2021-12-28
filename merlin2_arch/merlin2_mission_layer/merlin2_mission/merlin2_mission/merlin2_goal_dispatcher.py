@@ -55,20 +55,25 @@ class Merlin2GoalDispatcher:
 
         # save goals
         for pddl_proposition_dto in pddl_proposition_dto_list:
+
             pddl_proposition_dto.set_is_goal(True)
+            self.__node.get_logger().info("Saving goals")
             succeed = self.__pddl_proposition_dao.save(pddl_proposition_dto)
+            self.__node.get_logger().info("Saving goals: " + str(succeed))
 
             if not succeed:
                 return False
+        self.__node.get_logger().info("goals saved")
 
         # call executor
         goal = Execute.Goal()
         self.__action_client.wait_for_server()
         self.__action_client.send_goal(goal)
+        self.__node.get_logger().info("wait for results")
         self.__action_client.wait_for_result()
 
         self.result = self.__action_client.get_result()
-
+        self.__node.get_logger().info("results got")
         # results
         succeed = (self.__action_client.is_succeeded() and
                    self.result.generate_pddl and
@@ -88,6 +93,3 @@ class Merlin2GoalDispatcher:
         """
 
         self.__action_client.cancel_goal()
-
-        for pddl_goal_dto in self.__pddl_proposition_dao.get_goals():
-            self.__pddl_proposition_dao.delete(pddl_goal_dto)

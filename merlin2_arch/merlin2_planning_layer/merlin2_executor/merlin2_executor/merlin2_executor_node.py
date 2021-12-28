@@ -87,6 +87,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
             goal_handle.succeed()
 
         # remove goals
+        self.get_logger().info("Removing goals")
         self.delete_goals()
 
         return result

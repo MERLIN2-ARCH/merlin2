@@ -53,7 +53,7 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
 
     def cancel_action(self):
 
-        self.cancel_state()
+        super().cancel_action()
 
         pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
 
