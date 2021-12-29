@@ -47,7 +47,7 @@ class Merlin2PlanDispatcherNode(Node):
     def __cancel_callback(self):
         if self.__action_server.is_working():
             while self.__action_client is None:
-                time.sleep(0.1)
+                time.sleep(0.01)
             self.__action_client.cancel_goal()
 
     def _call_action(self, goal: DispatchAction.Goal):
