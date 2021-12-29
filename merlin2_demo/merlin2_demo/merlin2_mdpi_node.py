@@ -4,6 +4,7 @@ import time
 from random import seed, randint
 import threading
 import rclpy
+from tqdm import tqdm
 
 from merlin2_mission import Merlin2FsmMissionNode
 
@@ -81,7 +82,8 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 
         self.add_state("CHECKING_NEXT_TEST",
                        CbState([self.NEXT, self.END], self.check_next_test),
-                       {self.NEXT: "MOVING_ROBOT_TO_INIT_POSE", self.END: "SAVING_RESULTS"})
+                       {self.NEXT: "MOVING_ROBOT_TO_INIT_POSE",
+                        self.END: self.END})
 
         self.add_state("MOVING_ROBOT_TO_INIT_POSE",
                        CbState([self.END], self.move_robot_to_init_pose),
@@ -93,10 +95,11 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 
         self.add_state("RUNNING_TEST",
                        CbState([self.END], self.run_test),
-                       {self.END: "CHECKING_NEXT_TEST"})
+                       {self.END: "SAVING_RESULTS"})
 
         self.add_state("SAVING_RESULTS",
-                       CbState([self.END], self.save_results))
+                       CbState([self.END], self.save_results),
+                       {self.END: "CHECKING_NEXT_TEST"})
 
     def __pose_cb(self, msg: PoseWithCovarianceStamped):
         pose = msg.pose.pose
@@ -124,11 +127,14 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 
     def init_blackboard(self, blackboard: Blackboard) -> str:
         blackboard.results = []
+        blackboard.number_of_tests = 0
+        blackboard.progress_bar = tqdm(
+            total=self.total_points * self.number_of_tests)
         return self.END
 
     def check_next_test(self, blackboard: Blackboard) -> str:
 
-        if len(blackboard.results) >= self.number_of_tests:
+        if blackboard.number_of_tests >= self.number_of_tests:
             return self.END
 
         return self.NEXT
@@ -149,9 +155,9 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
             }
             point["value"] = "wp" + str(randint(0, 3))
 
-            if wp_list:
-                while point["value"] == wp_list[-1]["value"]:
-                    point["value"] = "wp" + str(randint(0, 3))
+            while ((len(wp_list) > 0 and point["value"] == wp_list[-1]["value"]) or
+                   (len(wp_list) == 0 and point["value"] == "wp0")):
+                point["value"] = "wp" + str(randint(0, 3))
 
             wp_list.append(point)
 
@@ -186,6 +192,7 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
             # send goal
             thread = threading.Thread(target=self.execute_goal, args=(goal,))
             thread.start()
+            self.get_logger().info("starting test")
 
             # cancel?
             if cancel:
@@ -202,15 +209,22 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
             # wait for thread
             thread.join()
 
+            blackboard.progress_bar.update(1)
+            self.get_logger().info(str(blackboard.progress_bar))
+
             # remove propositions achieved
             goal.set_is_goal(False)
             self.pddl_proposition_dao.delete(goal)
+
+            self.get_logger().info("test finished")
 
         # results
         end_t = time.time()
         total_t = end_t - start_t
 
-        blackboard.results.append([total_t, self.__distance])
+        blackboard.results.append(total_t)
+        blackboard.results.append(self.__distance)
+        blackboard.number_of_tests += 1
 
         return self.END
 
@@ -231,14 +245,15 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
             offset = sum(1 for _ in f) - 1
             f.close()
 
-        for i in range(len(blackboard.results)):
-            time_t, distance = blackboard.results[i]
-            string_csv += str(i + offset) + "," + self.world + "," + \
-                str(time_t) + "," + str(distance) + "\n"
+        time_t, distance = blackboard.results
+        string_csv += str(offset) + "," + self.world + "," + \
+            str(time_t) + "," + str(distance) + "\n"
 
         f = open(file_name, "a")
         f.write(string_csv)
         f.close()
+
+        blackboard.results = []
 
         return self.END
 
