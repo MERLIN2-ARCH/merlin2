@@ -31,14 +31,14 @@ from merlin2_basic_actions.merlin2_basic_predicates import (
 from .pddl import wp_checked
 
 
-class Merlin2MdpiNode(Merlin2FsmMissionNode):
+class Merlin2Demo2Node(Merlin2FsmMissionNode):
 
     END = "end"
     NEXT = "next"
 
     def __init__(self):
 
-        super().__init__("mdpi_node", run_mission=False, outcomes=[self.END])
+        super().__init__("demo_2_node", run_mission=False, outcomes=[self.END])
 
         # parameters
         total_points_param_name = "total_points"
@@ -261,7 +261,7 @@ class Merlin2MdpiNode(Merlin2FsmMissionNode):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = Merlin2MdpiNode()
+    node = Merlin2Demo2Node()
     node.execute_mission()
 
     node.join_spin()

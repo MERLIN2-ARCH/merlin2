@@ -91,8 +91,8 @@ def generate_launch_description():
 
     merlin2_mdpi_node_cmd = Node(
         package="merlin2_demo",
-        executable="merlin2_mdpi_node",
-        name="merlin2_mdpi_node",
+        executable="merlin2_demo2_node",
+        name="merlin2_demo2_node",
         parameters=[{"dao_family": dao_family,
                      "mongo_uri": mongo_uri,
                      "total_points": total_points,
