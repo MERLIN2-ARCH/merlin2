@@ -15,7 +15,7 @@ class SmtpMerlin2Planner(Merlin2Planner):
     def __init__(self):
         super().__init__()
 
-        self.popf_path = ament_index_python.get_package_share_directory(
+        self.smtp_path = ament_index_python.get_package_share_directory(
             "merlin2_planner") + "/planners/SMTPlan"
 
     def _generate_plan(self, domain: str, problem: str):
@@ -38,7 +38,7 @@ class SmtpMerlin2Planner(Merlin2Planner):
         process = subprocess.Popen([
             "timeout",
             "60",
-            self.popf_path,
+            self.smtp_path,
             str(domain_file.name),
             str(problem_file.name),
             "-u",
