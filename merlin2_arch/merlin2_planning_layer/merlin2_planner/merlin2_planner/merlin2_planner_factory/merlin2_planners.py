@@ -8,3 +8,4 @@ class Merlin2Planners(IntEnum):
     """ Enum Class of Merlin2 Planners """
 
     POPF = auto()
+    SMTP = auto()
