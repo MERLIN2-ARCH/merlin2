@@ -10,13 +10,15 @@ import ament_index_python
 
 
 class PopfMerlin2Planner(Merlin2Planner):
-    """ Popf Merlin2 Planner Abstract """
+    """ Popf Merlin2 Planner """
 
     def __init__(self):
         super().__init__()
 
-        self.popf_path = ament_index_python.get_package_share_directory(
+        self.planner_path = ament_index_python.get_package_share_directory(
             "merlin2_planner") + "/planners/popf"
+
+        self.planner_cmd = "timeout 60 " + self.planner_path + " {} {}"
 
     def _generate_plan(self, domain: str, problem: str):
         """ create a ppdl plan
@@ -35,14 +37,9 @@ class PopfMerlin2Planner(Merlin2Planner):
         domain_file.seek(0)
         problem_file.seek(0)
 
-        process = subprocess.Popen([
-            "timeout",
-            "60",
-            self.popf_path,
-            # "-n",
-            str(domain_file.name),
-            str(problem_file.name)],
-            stdout=subprocess.PIPE)
+        process = subprocess.Popen(self.planner_cmd.format(str(domain_file.name),
+                                                           str(problem_file.name)).split(" "),
+                                   stdout=subprocess.PIPE)
 
         process.wait()
         plan = str(process.stdout.read().decode("utf-8"))
