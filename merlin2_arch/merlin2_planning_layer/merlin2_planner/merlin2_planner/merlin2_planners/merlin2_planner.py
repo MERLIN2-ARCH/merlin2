@@ -42,7 +42,9 @@ class Merlin2Planner(ABC):
         self._plan_actions = []
 
         self._generate_plan(domain, problem)
-        self._parse_plan()
+
+        if self._str_plan:
+            self._parse_plan()
 
     def has_solution(self) -> bool:
         """ returns if if generated plan has solution
