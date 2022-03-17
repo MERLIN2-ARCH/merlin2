@@ -57,6 +57,9 @@ class PopfMerlin2Planner(Merlin2Planner):
         self._plan_actions = []
         self._has_solution = False
 
+        if not self._str_plan:
+            return
+
         if "Solution Found" in self._str_plan:
             self._has_solution = True
 

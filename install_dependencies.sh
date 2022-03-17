@@ -1,0 +1,1 @@
+sudo apt install libz3-dev # for SMTPlan+
