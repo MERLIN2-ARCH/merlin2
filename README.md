@@ -1,25 +1,46 @@
 # MERLIN 2 (MachinEd Ros pLanINg)
 
-![](./Arquitectura_MERLIN2.png)
+<p align="center">
+  <img src="./images/logo.png" width="50%" />
+</p>
 
+## Table of Contents
 
-<!---
-## Docker
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Knowledge Base](#knowledge-base)
+4. [Demos](#demos)
 
-### Update image
+## Features
+
+![](./images/architecture.png)
+
+## Installation
+
+### SMTPlan+
+
 ```shell
-docker login niebla.unileon.es:5000 --username=<USER>
-docker container commit cd8a975d2169 merlin2:v1
-docker image tag merlin2:v1 niebla.unileon.es:5000/mgonzs/merlin2:v1
-docker image push niebla.unileon.es:5000/mgonzs/merlin2:v1
+$ sudo apt install libz3-dev
 ```
 
-### Run
-```shell
-docker pull mongo
-docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2 --net=guacamole_guacnetwork_compose niebla.unileon.es:5000/mgonzs/merlin2:v1
-docker run --shm-size=2g -e VNC_PASSWORD=vncpasswd -d --name=merlin2_kb --net=guacamole_guacnetwork_compose niebla.unileon.es:5000/mgonzs/merlin2:v1
-docker run --shm-size=2g  -p 27017:27017 -e VNC_PASSWORD=vncpasswd -d --name=mmongodb1 --net=guacamole_guacnetwork_compose -e MONGO_INITDB_ROOT_USERNAME=<user> -e MONGO_INITDB_ROOT_PASSWORD=<passwd> mongo --auth
-```
---->
+### MERLIN2
 
+```shell
+$ cd ~/ros2_ws/src
+$ git clone --recurse-submodules ssh://git@niebla.unileon.es:5022/mgonzs/merlin2.git
+
+# check packages installation
+# KANT, YASMIN, simple_node
+
+$ cd ~/ros2_ws
+$ colcon build
+```
+
+## Demos
+
+This demo is tested with [ros2_rb1](https://github.com/mgonzs13/ros2_rb1) world. The RB1 robot will start driving to specific points in the world. Half of the goals are canceled randomly. Distance and time are saved in a CSV file.
+
+```shell
+$ ros2 launch rb1_gazebo granny.launch.py
+$ ros2 launch merlin2_demo merlin2_demo_launch.py
+```
