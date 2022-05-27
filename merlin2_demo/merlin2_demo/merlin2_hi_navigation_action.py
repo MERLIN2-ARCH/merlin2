@@ -20,7 +20,7 @@ from merlin2_basic_actions.merlin2_basic_predicates import (
 
 from merlin2_action.merlin2_action import Merlin2Action
 
-from topological_nav_interfaces.action import TopoNav
+from waypoint_navigation_interfaces.action import NavigateToWp
 from speech_to_text_interfaces.action import ListenOnce
 from text_to_speech_interfaces.action import TTS
 from merlin2_arch_interfaces.msg import PlanAction
@@ -38,8 +38,8 @@ class Merlin2HiNavigationAction(Merlin2Action):
 
         super().__init__("hi_navigation")
 
-        self.__topo_nav_client = self.create_action_client(
-            TopoNav, "/topological_nav/navigation")
+        self.__wp_nav_client = self.create_action_client(
+            NavigateToWp, "waypoint_navigation/navigate_to_pose")
 
         self.__tts_client = self.create_action_client(
             TTS, "/text_to_speech/tts")
@@ -48,7 +48,7 @@ class Merlin2HiNavigationAction(Merlin2Action):
             ListenOnce, "/speech_to_text/listen_once")
 
     def run_action(self, goal: PlanAction) -> bool:
-        nav_goal = TopoNav.Goal()
+        nav_goal = NavigateToWp.Goal()
         tts_goal = TTS.Goal()
         speech_recog_goal = ListenOnce.Goal()
 
@@ -77,12 +77,12 @@ class Merlin2HiNavigationAction(Merlin2Action):
             return False
 
         # navigation
-        nav_goal.point = results[1]
-        self.__topo_nav_client.wait_for_server()
-        self.__topo_nav_client.send_goal(nav_goal)
-        self.__topo_nav_client.wait_for_result()
+        nav_goal.wp_id = results[1]
+        self.__wp_nav_client.wait_for_server()
+        self.__wp_nav_client.send_goal(nav_goal)
+        self.__wp_nav_client.wait_for_result()
 
-        if not self.__topo_nav_client.is_succeeded():
+        if not self.__wp_nav_client.is_succeeded():
             return False
 
         return True
@@ -90,7 +90,7 @@ class Merlin2HiNavigationAction(Merlin2Action):
     def cancel_action(self):
         self.__tts_client.cancel_goal()
         self.__speech_rec_client.cancel_goal()
-        self.__topo_nav_client.cancel_goal()
+        self.__wp_nav_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:
         return [self.__source_p, self.__per]

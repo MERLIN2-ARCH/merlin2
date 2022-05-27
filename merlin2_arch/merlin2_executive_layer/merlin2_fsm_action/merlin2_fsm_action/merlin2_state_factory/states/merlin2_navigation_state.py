@@ -1,7 +1,7 @@
 
 """ Navigation State """
 
-from topological_nav_interfaces.action import TopoNav
+from waypoint_navigation_interfaces.action import NavigateToWp
 from yasmin_ros import AcionState
 from yasmin.blackboard import Blackboard
 
@@ -11,10 +11,11 @@ class Merlin2NavigationState(AcionState):
 
     def __init__(self, node):
 
-        super().__init__(node, TopoNav, "/topological_nav/navigation", self.create_nav_goal)
+        super().__init__(node, NavigateToWp,
+                         "/waypoint_navigation/navigate_to_wp", self.create_nav_goal)
 
-    def create_nav_goal(self, blackboard: Blackboard) -> TopoNav.Goal:
-        """ create a goal for the topological navigation
+    def create_nav_goal(self, blackboard: Blackboard) -> NavigateToWp.Goal:
+        """ create a goal for the waypoint navigation
 
             blackboard:
                 destination
@@ -23,9 +24,9 @@ class Merlin2NavigationState(AcionState):
             blackboard (Blackboard): blackboard of the fsm
 
         Returns:
-            TopoNav.Goal: goal
+            NavigateToWp.Goal: goal
         """
 
-        goal = TopoNav.Goal()
-        goal.point = blackboard.destination
+        goal = NavigateToWp.Goal()
+        goal.wp_id = blackboard.destination
         return goal

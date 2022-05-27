@@ -1,7 +1,7 @@
-topological_nav:
-  topological_nav_node:
+waypoint_navigation:
+  waypoint_navigation_node:
     ros__parameters:
-      points:
+      wps:
         - "wp0"
         - "0.23"
         - "0.0"
@@ -14,7 +14,7 @@ topological_nav:
         - "1.0"
         - "0.0"
 
-        - "wp2" 
+        - "wp2"
         - "0.55"
         - "5.61"
         - "0.35"

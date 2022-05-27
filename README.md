@@ -28,6 +28,7 @@ $ sudo apt install libz3-dev
 ```shell
 $ cd ~/ros2_ws/src
 $ git clone --recurse-submodules ssh://git@niebla.unileon.es:5022/mgonzs/merlin2.git
+$ sudo pip3 install tqdm
 
 # check packages installation
 # KANT, YASMIN, simple_node
@@ -42,5 +43,5 @@ This demo is tested with [ros2_rb1](https://github.com/mgonzs13/ros2_rb1) world.
 
 ```shell
 $ ros2 launch rb1_gazebo granny.launch.py
-$ ros2 launch merlin2_demo merlin2_demo_launch.py
+$ ros2 launch merlin2_demo merlin2_demo2_launch.py
 ```

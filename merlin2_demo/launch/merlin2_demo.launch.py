@@ -16,8 +16,8 @@ def generate_launch_description():
 
     planning_layer_share_dir = get_package_share_directory(
         "merlin2_planning_layer")
-    topological_nav_share_dir = get_package_share_directory(
-        "topological_nav")
+    waypoint_navigation_share_dir = get_package_share_directory(
+        "waypoint_navigation")
     speech_to_text_share_dir = get_package_share_directory(
         "speech_to_text")
     text_to_speech_share_dir = get_package_share_directory(
@@ -74,24 +74,24 @@ def generate_launch_description():
     # LAUNCHES
     #
 
-    topological_nav_cmd = IncludeLaunchDescription(
+    waypoint_navigation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(topological_nav_share_dir, "topological_nav_launch.py"))
+            os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py"))
     )
 
     speech_to_text_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(speech_to_text_share_dir, "speech_to_text_launch.py"))
+            os.path.join(speech_to_text_share_dir, "speech_to_text.launch.py"))
     )
 
     text_to_speech_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(text_to_speech_share_dir, "text_to_speech_launch.py"))
+            os.path.join(text_to_speech_share_dir, "text_to_speech.launch.py"))
     )
 
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py")),
+            os.path.join(planning_layer_share_dir, "merlin2_planning_layer.launch.py")),
         launch_arguments={"dao_family": dao_family}.items()
     )
 
@@ -106,7 +106,7 @@ def generate_launch_description():
     ld.add_action(dao_family_cmd)
     ld.add_action(mongo_uri_cmd)
 
-    ld.add_action(topological_nav_cmd)
+    ld.add_action(waypoint_navigation_cmd)
     ld.add_action(speech_to_text_cmd)
     ld.add_action(text_to_speech_cmd)
 

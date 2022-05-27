@@ -1,5 +1,5 @@
 
-""" MERLIN2 action that uses the topological navigation """
+""" MERLIN2 action that uses the waypoint navigation """
 
 from typing import List
 import rclpy

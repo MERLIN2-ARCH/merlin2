@@ -15,8 +15,8 @@ def generate_launch_description():
 
     planning_layer_share_dir = get_package_share_directory(
         "merlin2_planning_layer")
-    topological_nav_share_dir = get_package_share_directory(
-        "topological_nav")
+    waypoint_navigation_share_dir = get_package_share_directory(
+        "waypoint_navigation")
     text_to_speech_share_dir = get_package_share_directory(
         "text_to_speech")
 
@@ -89,7 +89,7 @@ def generate_launch_description():
                      "mongo_uri": mongo_uri}]
     )
 
-    merlin2_mdpi_node_cmd = Node(
+    merlin2_demo2_node_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_demo2_node",
         name="merlin2_demo2_node",
@@ -108,19 +108,19 @@ def generate_launch_description():
 
     topological_nav_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(topological_nav_share_dir, "topological_nav_launch.py")),
-        launch_arguments={"points": ament_index_python.get_package_share_directory(
+            os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py")),
+        launch_arguments={"wps": ament_index_python.get_package_share_directory(
             "merlin2_demo") + "/params/granny.yaml"}.items()
     )
 
     tts_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(text_to_speech_share_dir, "text_to_speech_launch.py"))
+            os.path.join(text_to_speech_share_dir, "text_to_speech.launch.py"))
     )
 
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(planning_layer_share_dir, "merlin2_planning_layer_launch.py")),
+            os.path.join(planning_layer_share_dir, "merlin2_planning_layer.launch.py")),
         launch_arguments={"dao_family": dao_family}.items()
     )
 
@@ -143,6 +143,6 @@ def generate_launch_description():
     ld.add_action(merlin2_check_wp_action_cmd)
 
     ld.add_action(merlin2_planning_layer_cmd)
-    ld.add_action(merlin2_mdpi_node_cmd)
+    ld.add_action(merlin2_demo2_node_cmd)
 
     return ld

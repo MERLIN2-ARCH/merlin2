@@ -1,5 +1,5 @@
 
-""" MERLIN2 action that uses the topological navigation """
+""" MERLIN2 action that uses the waypoint navigation """
 
 from typing import List
 import rclpy
@@ -14,7 +14,7 @@ from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 
 from merlin2_action.merlin2_action import Merlin2Action
 
-from topological_nav_interfaces.action import TopoNav
+from waypoint_navigation_interfaces.action import NavigateToWp
 from merlin2_arch_interfaces.msg import PlanAction
 
 
@@ -28,27 +28,27 @@ class Merlin2NavigationAction(Merlin2Action):
 
         super().__init__("navigation")
 
-        self.__topo_nav_client = self.create_action_client(
-            TopoNav, "/topological_nav/navigation")
+        self.__wp_nav_client = self.create_action_client(
+            NavigateToWp, "/waypoint_navigation/navigate_to_wp")
 
     def run_action(self, goal: PlanAction) -> bool:
-        nav_goal = TopoNav.Goal()
+        nav_goal = NavigateToWp.Goal()
 
         dst = goal.objects[1]
-        nav_goal.point = dst
+        nav_goal.wp_id = dst
 
-        self.__topo_nav_client.wait_for_server()
-        self.__topo_nav_client.send_goal(nav_goal)
-        self.__topo_nav_client.wait_for_result()
+        self.__wp_nav_client.wait_for_server()
+        self.__wp_nav_client.send_goal(nav_goal)
+        self.__wp_nav_client.wait_for_result()
 
-        if self.__topo_nav_client.is_succeeded():
+        if self.__wp_nav_client.is_succeeded():
             return True
 
         else:
             return False
 
     def cancel_action(self):
-        self.__topo_nav_client.cancel_goal()
+        self.__wp_nav_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:
         return [self.__org, self.__dst]
