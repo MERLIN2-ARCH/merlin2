@@ -10,3 +10,15 @@
 	path = merlin2_arch/merlin2_reactive_layer/topological_nav
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/topological_nav.git
 	branch = master
+[submodule "kant"]
+	path = kant
+	url = git@github.com:uleroboticsgroup/kant.git
+	branch = main
+[submodule "simple_node"]
+	path = simple_node
+	url = git@github.com:uleroboticsgroup/simple_node.git
+	branch = main
+[submodule "yasmin"]
+	path = yasmin
+	url = git@github.com:uleroboticsgroup/yasmin.git
+	branch = main
