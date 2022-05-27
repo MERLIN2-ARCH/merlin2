@@ -6,10 +6,6 @@
 	path = merlin2_arch/merlin2_reactive_layer/text_to_speech
 	url = ssh://git@niebla.unileon.es:5022/mgonzs/text_to_speech.git
 	branch = master
-[submodule "merlin2_arch/merlin2_reactive_layer/topological_nav"]
-	path = merlin2_arch/merlin2_reactive_layer/topological_nav
-	url = ssh://git@niebla.unileon.es:5022/mgonzs/topological_nav.git
-	branch = master
 [submodule "kant"]
 	path = kant
 	url = git@github.com:uleroboticsgroup/kant.git
@@ -22,3 +18,7 @@
 	path = yasmin
 	url = git@github.com:uleroboticsgroup/yasmin.git
 	branch = main
+[submodule "merlin2_arch/merlin2_reactive_layer/waypoint_navigation"]
+	path = merlin2_arch/merlin2_reactive_layer/waypoint_navigation
+	url = ssh://git@niebla.unileon.es:5022/mgonzs/waypoint_navigation.git
+	branch = master
