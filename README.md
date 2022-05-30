@@ -8,6 +8,8 @@
 
 1. [Features](#features)
 2. [Installation](#installation)
+   - [Planners](#planners)
+   - [MERLIN2](#merlin2)
 3. [Knowledge Base](#knowledge-base)
 4. [Demos](#demos)
 
@@ -17,10 +19,28 @@
 
 ## Installation
 
-### SMTPlan+
+### Planners
+
+#### SMTPlan+
 
 ```shell
 $ sudo apt install libz3-dev
+```
+
+#### Unified Planning
+
+```shell
+# UP
+$ git clone git@github.com:aiplan4eu/unified-planning.git
+$ sudo pip3 install unified-planning/
+
+# up-tamer
+$ git clone https://github.com/aiplan4eu/up-tamer
+$ sudo pip3 install up-tamer/
+
+# up-pyperplan
+$ git clone https://github.com/aiplan4eu/up-pyperplan
+$ sudo pip3 install up-pyperplan/
 ```
 
 ### MERLIN2
