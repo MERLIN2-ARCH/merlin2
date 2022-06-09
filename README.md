@@ -27,28 +27,13 @@
 $ sudo apt install libz3-dev
 ```
 
-#### Unified Planning
-
-```shell
-# UP
-$ git clone git@github.com:aiplan4eu/unified-planning.git
-$ sudo pip3 install unified-planning/
-
-# up-tamer
-$ git clone https://github.com/aiplan4eu/up-tamer
-$ sudo pip3 install up-tamer/
-
-# up-pyperplan
-$ git clone https://github.com/aiplan4eu/up-pyperplan
-$ sudo pip3 install up-pyperplan/
-```
-
 ### MERLIN2
 
 ```shell
 $ cd ~/ros2_ws/src
 $ git clone --recurse-submodules ssh://git@niebla.unileon.es:5022/mgonzs/merlin2.git
-$ sudo pip3 install tqdm
+$ cd merlin2
+$ pip3 install -r requirements.txt
 
 # check packages installation
 # KANT, YASMIN, simple_node
