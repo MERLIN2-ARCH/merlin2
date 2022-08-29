@@ -1,6 +1,1 @@
 tqdm
-
-# UP
-git+https://github.com/aiplan4eu/unified-planning.git
-git+https://github.com/aiplan4eu/up-tamer.git
-git+https://github.com/aiplan4eu/up-pyperplan.git
