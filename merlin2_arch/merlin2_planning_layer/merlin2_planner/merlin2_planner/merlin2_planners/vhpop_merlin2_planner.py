@@ -15,3 +15,17 @@ class VhpopMerlin2Planner(PopfMerlin2Planner):
             "merlin2_planner") + "/planners/vhpop"
 
         self.planner_cmd = "timeout 60 " + self.planner_path + " {} {}"
+
+    def _parse_plan(self):
+        """ parse the current plan from str to
+            list of PlanAction and check if has solution
+        """
+
+        if "Time:" in self._str_plan:
+            self._has_solution = True
+
+            pddl_action_list = self.get_lines_with_actions(self._str_plan)
+
+            for action in pddl_action_list:
+                plan_action = self.parse_action_str(action)
+                self._plan_actions.append(plan_action)

@@ -7,39 +7,34 @@
 ## Table of Contents
 
 1. [Diagrams](#diagrams)
-2. [Installation](#installation)
-   - [Planners](#planners)
-   - [MERLIN2](#merlin2)
-3. [Demos](#demos)
+2. [Planners](#planners)
+3. [Installation](#installation)
+4. [Demos](#demos)
 
 ## Diagrams
 
-![](./docs/cerebrum.png)
-![](./docs/architecture.png)
+<p float="left">
+  <img src="./docs/cerebrum.png" width="49%" />
+  <img src="./docs/architecture.png" width="49%" /> 
+</p>
+
+## Planners
+
+- [POPF](https://planning.wiki/ref/planners/popf)
+- [SMTPlan+](https://planning.wiki/ref/planners/smtplan)
+- [unified-planning](https://github.com/aiplan4eu/unified-planning)
+- [VHPOP](https://github.com/hlsyounes/vhpop)
 
 ## Installation
 
-### Planners
-
-- POPF
-
-- SMTPlan+
-
 ```shell
+
+# SMTPlan+
 $ sudo apt install libz3-dev
-```
 
-- [unified-planning](https://github.com/aiplan4eu/unified-planning)
-
-```shell
+# unified-planning
 $ pip install --pre unified-planning[pyperplan,tamer]
-```
 
-- VHPOP
-
-### MERLIN2
-
-```shell
 $ cd ~/ros2_ws/src
 $ git clone --recurse-submodules ssh://git@niebla.unileon.es:5022/mgonzs/merlin2.git
 $ cd merlin2

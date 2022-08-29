@@ -54,6 +54,7 @@ class Merlin2PlannerNode(Node):
         self.planner.generate_plan(req.domain, req.problem)
         res.has_solution = self.planner.has_solution()
         res.plan = self.planner.get_plan_actions()
+        self.get_logger().info(self.planner.get_str_plan())
 
         return res
 
