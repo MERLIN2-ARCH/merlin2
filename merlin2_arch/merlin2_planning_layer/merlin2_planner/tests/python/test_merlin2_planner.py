@@ -1,7 +1,7 @@
 
 import unittest
 from merlin2_planner.merlin2_planner_factory import Merlin2PlannerFactory
-from merlin2_planner.merlin2_planner_factory import Merlin2Planners
+from merlin2_planner import Merlin2Planners
 
 
 class TestMerlin2Planner(unittest.TestCase):

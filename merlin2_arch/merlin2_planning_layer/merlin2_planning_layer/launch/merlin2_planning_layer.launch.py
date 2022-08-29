@@ -5,6 +5,7 @@ from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.conditions import LaunchConfigurationEquals
 
 from kant_dao.dao_factory import DaoFamilies
+from merlin2_planner import Merlin2Planners
 
 
 def generate_launch_description():
@@ -28,6 +29,12 @@ def generate_launch_description():
         default_value="mongodb://localhost:27017/merlin2",
         description="MongoDB URI")
 
+    planner = LaunchConfiguration("planner")
+    planner_cmd = DeclareLaunchArgument(
+        "planner",
+        default_value=str(int(Merlin2Planners.POPF)),
+        description="PDDL planner")
+
     #
     # NODES
     #
@@ -44,6 +51,7 @@ def generate_launch_description():
         package="merlin2_planner",
         executable="planner_node",
         name="planner_node",
+        parameters=[{"planner": planner}]
     )
 
     plan_dispatcher_node_cmd = Node(
@@ -77,6 +85,7 @@ def generate_launch_description():
 
     ld.add_action(dao_family_cmd)
     ld.add_action(mongo_uri_cmd)
+    ld.add_action(planner_cmd)
 
     ld.add_action(pddl_generator_node_cmd)
     ld.add_action(planner_node_cmd)

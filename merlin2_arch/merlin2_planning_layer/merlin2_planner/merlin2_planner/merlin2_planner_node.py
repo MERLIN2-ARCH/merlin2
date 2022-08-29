@@ -5,11 +5,8 @@
 import rclpy
 
 from merlin2_arch_interfaces.srv import GeneratePlan
-
-from merlin2_planner.merlin2_planner_factory import (
-    Merlin2PlannerFactory,
-    Merlin2Planners
-)
+from merlin2_planner.merlin2_planner_factory import Merlin2PlannerFactory
+from merlin2_planner import Merlin2Planners
 
 from simple_node import Node
 
@@ -24,18 +21,18 @@ class Merlin2PlannerNode(Node):
         planner_factory = Merlin2PlannerFactory()
 
         # param names
-        planner_num_param_name = "planner_num"
+        planner_param_name = "planner"
 
         # declaring params
-        self.declare_parameter(planner_num_param_name,
+        self.declare_parameter(planner_param_name,
                                Merlin2Planners.POPF)
 
         # getting params
-        planner_num = self.get_parameter(
-            planner_num_param_name).get_parameter_value().integer_value
+        planner = self.get_parameter(
+            planner_param_name).get_parameter_value().integer_value
 
         # creating planner
-        self.planner = planner_factory.create_planner(planner_num)
+        self.planner = planner_factory.create_planner(planner)
 
         # service servers
         self.__planner_service = self.create_service(

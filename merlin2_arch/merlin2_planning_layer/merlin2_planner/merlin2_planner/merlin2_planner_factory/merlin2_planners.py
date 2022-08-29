@@ -10,3 +10,4 @@ class Merlin2Planners(IntEnum):
     POPF = auto()
     SMTP = auto()
     UP = auto()
+    VHPOP = auto()

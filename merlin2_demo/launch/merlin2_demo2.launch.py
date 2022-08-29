@@ -9,6 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 import ament_index_python
 
 from kant_dao.dao_factory import DaoFamilies
+from merlin2_planner import Merlin2Planners
 
 
 def generate_launch_description():
@@ -38,6 +39,12 @@ def generate_launch_description():
         "mongo_uri",
         default_value="mongodb://localhost:27017/merlin2",
         description="MongoDB URI")
+
+    planner = LaunchConfiguration("planner")
+    planner_cmd = DeclareLaunchArgument(
+        "planner",
+        default_value=str(int(Merlin2Planners.POPF)),
+        description="PDDL planner")
 
     total_points = LaunchConfiguration("total_points")
     total_points_cmd = DeclareLaunchArgument(
@@ -121,7 +128,9 @@ def generate_launch_description():
     merlin2_planning_layer_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(planning_layer_share_dir, "merlin2_planning_layer.launch.py")),
-        launch_arguments={"dao_family": dao_family}.items()
+        launch_arguments={"dao_family": dao_family,
+                          "mongo_uri": mongo_uri,
+                          "planner": planner}.items()
     )
 
     ld = LaunchDescription()
@@ -130,6 +139,8 @@ def generate_launch_description():
 
     ld.add_action(dao_family_cmd)
     ld.add_action(mongo_uri_cmd)
+    ld.add_action(planner_cmd)
+
     ld.add_action(total_points_cmd)
     ld.add_action(time_to_cancel_cmd)
     ld.add_action(number_of_tests_cmd)
