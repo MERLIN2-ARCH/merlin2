@@ -7,7 +7,7 @@
 ## Table of Contents
 
 1. [Diagrams](#diagrams)
-2. [Planners](#planners)
+2. [PDDL Planners](#pddl-planners)
 3. [Installation](#installation)
 4. [Creating new actions](#creating-new-actions)
 
@@ -26,7 +26,7 @@
   <img src="./docs/architecture.png" width="49%" /> 
 </p>
 
-## Planners
+## PDDL Planners
 
 - [POPF](https://planning.wiki/ref/planners/popf)
 - [SMTPlan+](https://planning.wiki/ref/planners/smtplan)
