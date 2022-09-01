@@ -10,9 +10,13 @@
 2. [Planners](#planners)
 3. [Installation](#installation)
 4. [Creating new actions](#creating-new-actions)
+
    4.1. [PDDL Example](#pddl-example)
+
    4.2. [MERLIN2 Example](#merlin2-example)
+
    4.3. [MERLIN2 State Machine Example](#merlin2-state-machine-example)
+
 5. [Demos](#demos)
 
 ## Diagrams
