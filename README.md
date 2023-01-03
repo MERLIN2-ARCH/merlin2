@@ -5,8 +5,7 @@
 </p>
 
 ## Table of Contents
-
-1. [Diagrams](#diagrams)
+1. [Diagram](#diagrams)
 2. [PDDL Planners](#pddl-planners)
 3. [Installation](#installation)
 4. [Creating new actions](#creating-new-actions)
@@ -19,11 +18,10 @@
 
 5. [Demos](#demos)
 
-## Diagrams
+## Diagram
 
-<p float="left">
-  <img src="./docs/cerebrum.png" width="49%" />
-  <img src="./docs/architecture.png" width="49%" /> 
+<p align="center">
+  <img src="./docs/architecture.png" width="100%" />
 </p>
 
 ## PDDL Planners
@@ -279,7 +277,7 @@ if __name__ == "__main__":
 
 ## Demos
 
-These demos are tested with [ros2_rb1](https://github.com/mgonzs13/ros2_rb1) simulation. 
+These demos are tested with [ros2_rb1](https://github.com/mgonzs13/ros2_rb1) simulation.
 
 ### Demo 1
 
@@ -291,6 +289,7 @@ $ ros2 launch merlin2_demo merlin2_demo.launch.py
 ```
 
 ### Demo 2
+
 The RB1 robot will start driving to specific points in the world. Half of the goals are canceled randomly. Distance and time are saved in a CSV file.
 
 ```shell
