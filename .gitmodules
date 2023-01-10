@@ -1,11 +1,11 @@
 [submodule "merlin2_arch/merlin2_reactive_layer/speech_to_text"]
 	path = merlin2_arch/merlin2_reactive_layer/speech_to_text
 	url = https://github.com/MERLIN2-ARCH/speech_to_text.git
-	branch = master
+	branch = main
 [submodule "merlin2_arch/merlin2_reactive_layer/text_to_speech"]
 	path = merlin2_arch/merlin2_reactive_layer/text_to_speech
 	url = https://github.com/MERLIN2-ARCH/text_to_speech.git
-	branch = master
+	branch = main
 [submodule "kant"]
 	path = kant
 	url = https://github.com/uleroboticsgroup/kant.git
@@ -21,4 +21,4 @@
 [submodule "merlin2_arch/merlin2_reactive_layer/waypoint_navigation"]
 	path = merlin2_arch/merlin2_reactive_layer/waypoint_navigation
 	url = https://github.com/MERLIN2-ARCH/waypoint_navigation.git
-	branch = master
+	branch = main
