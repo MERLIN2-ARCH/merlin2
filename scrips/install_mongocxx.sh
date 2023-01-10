@@ -16,5 +16,6 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 echo 'export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH' >>~/.bashrc
 
 # remove
+cd ../..
 rm r3.4.2.tar.gz
 rm -rf mongo-cxx-driver-r3.4.2

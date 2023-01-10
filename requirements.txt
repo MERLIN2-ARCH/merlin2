@@ -21,3 +21,6 @@ contractions
 TextSearch
 pyparsing
 pyjsgf
+
+# tts
+gTTS
