@@ -17,6 +17,7 @@
    4.3. [MERLIN2 State Machine Example](#merlin2-state-machine-example)
 
 5. [Demos](#demos)
+6. [Citations](#citations)
 
 ## Diagram
 
@@ -300,3 +301,18 @@ $ ros2 launch merlin2_demo merlin2_demo2.launch.py
 <p align="center">
   <img src="./docs/demo2.gif" width="100%" />
 </p>
+
+## Citations
+
+```bibtex
+@article{gonzalez2020merlin,
+  title={MERLIN a cognitive architecture for service robots},
+  author={Gonz{\'a}lez-Santamarta, Miguel {\'A} and Rodr{\'\i}guez-Lera, Francisco J and {\'A}lvarez-Aparicio, Claudia and Guerrero-Higueras, {\'A}ngel M and Fern{\'a}ndez-Llamas, Camino},
+  journal={Applied Sciences},
+  volume={10},
+  number={17},
+  pages={5989},
+  year={2020},
+  publisher={MDPI}
+}
+```
