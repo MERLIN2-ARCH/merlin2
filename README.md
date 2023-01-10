@@ -35,22 +35,36 @@
 ## Installation
 
 ```shell
+# clone these repos
+$ cd ~/ros2_ws/src
+$ git clone --recurse-submodules https://github.com/MERLIN2-ARCH/merlin2.git
 
-# SMTPlan+
+# SMTPlan+ dependencies
 $ sudo apt install libz3-dev
 
 # unified-planning
-$ pip install --pre unified-planning[pyperplan,tamer]
+$ pip3 install --pre unified-planning[pyperplan,tamer]
 
-$ cd ~/ros2_ws/src
-$ git clone --recurse-submodules ssh://git@niebla.unileon.es:5022/mgonzs/merlin2.git
+# pip3
 $ cd merlin2
 $ pip3 install -r requirements.txt
 
-# check packages installation
-# KANT, YASMIN, simple_node,
-# merlin2_reactive_layer pacakges
+# MongoDB
+$ sudo ./scrips/install_mongo.sh
+$ sudo ./scrips/install_mongocxx.sh
 
+# sst
+$ sudo apt-get install -y python-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
+$ python3 merlin2_arch/merlin2_reactive_layer/speech_to_text/nltk_download.py
+
+# tts
+$ sudo apt install espeak -y
+$ sudo apt install speech-dispatcher -y
+$ sudo apt install festival festival-doc festvox-kdlpc16k festvox-ellpc11k festvox-italp16k festvox-itapc16k -y
+$ sudo pip3 install gTTS
+$ sudo apt install mpg321 -y
+
+# colcon
 $ cd ~/ros2_ws
 $ colcon build
 ```

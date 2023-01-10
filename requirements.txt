@@ -1,1 +1,23 @@
+# demos
 tqdm
+
+# yasmin
+flask
+waitress
+expiringdict
+
+# kant
+mongoengine 
+dnspython
+
+# stt
+pyaudio
+SpeechRecognition
+google-cloud-speech
+wheel
+pocketsphinx
+nltk
+contractions
+TextSearch
+pyparsing
+pyjsgf
