@@ -51,8 +51,7 @@ $ sudo ./scrips/install_mongo.sh
 $ sudo ./scrips/install_mongocxx.sh
 
 # sst
-$ sudo apt-get install -y python-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
-$ python3 merlin2_arch/merlin2_reactive_layer/speech_to_text/nltk_download.py
+$ sudo apt-get install -y pytho3n-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
 
 # tts
 $ sudo apt install espeak -y
@@ -62,6 +61,7 @@ $ sudo apt install mpg321 -y
 
 # pip3
 $ pip3 install -r requirements.txt
+$ python3 merlin2_arch/merlin2_reactive_layer/speech_to_text/nltk_download.py
 
 # colcon
 $ cd ~/ros2_ws
