@@ -1,7 +1,8 @@
 
 """ Unified Planning Merlin2 Planner """
 
-from unified_planning.shortcuts import OneshotPlanner, up
+from unified_planning.shortcuts import OneshotPlanner
+from unified_planning.engines.results import PlanGenerationResultStatus
 from unified_planning.io.pddl_reader import PDDLReader
 
 import tempfile
@@ -45,7 +46,7 @@ class UpMerlin2Planner(Merlin2Planner):
 
                 result = planner.solve(pddl_problem)
 
-                if result.status == up.solvers.PlanGenerationResultStatus.SOLVED_SATISFICING:
+                if result.status == PlanGenerationResultStatus.SOLVED_SATISFICING:
 
                     self._has_solution = True
                     self._str_plan = str(result.plan)
@@ -66,7 +67,7 @@ class UpMerlin2Planner(Merlin2Planner):
 
         if self._has_solution:
 
-            for ele in self._up_plan.actions:
+            for ele in self._up_plan._actions:
 
                 action = ele
 
