@@ -315,6 +315,19 @@ $ ros2 launch merlin2_demo merlin2_demo2.launch.py
   <img src="./docs/demo2.gif" width="100%" />
 </p>
 
+### Demo3
+
+The RB1 robot waits until it hears the sound of the doorbell, navigate to the door, attends the person and returns to the living room.
+
+```shell
+$ ros2 launch rb1_gazebo granny.launch.py
+$ ros2 launch merlin2_demo merlin2_demo3.launch.py
+```
+
+<p align="center">
+  <img src="./docs/demo3.gif" width="100%" />
+</p>
+
 ## Citations
 
 ```bibtex
