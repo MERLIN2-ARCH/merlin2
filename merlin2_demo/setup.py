@@ -30,7 +30,10 @@ setup(
             "merlin2_navigation_fsm_action = merlin2_demo.merlin2_navigation_fsm_action:main",
             "merlin2_check_wp_action = merlin2_demo.merlin2_check_wp_action:main",
             "merlin2_check_wp_fsm_action = merlin2_demo.merlin2_check_wp_fsm_action:main",
-            "merlin2_demo2_node = merlin2_demo.merlin2_demo2_node:main"
+            "merlin2_demo2_node = merlin2_demo.merlin2_demo2_node:main",
+            "merlin2_check_door_fsm_action = merlin2_demo.merlin2_check_door_fsm_action:main",
+            "merlin2_listen_audio_node = merlin2_demo.merlin2_listen_audio_node:main",
+            "merlin2_demo3_node = merlin2_demo.merlin2_demo3_node:main",
         ],
     },
 )
