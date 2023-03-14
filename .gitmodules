@@ -22,3 +22,7 @@
 	path = merlin2_arch/merlin2_reactive_layer/waypoint_navigation
 	url = https://github.com/MERLIN2-ARCH/waypoint_navigation.git
 	branch = main
+[submodule "sound_recognition"]
+	path = sound_recognition
+	url = https://github.com/MERLIN2-ARCH/sound_recognition,git
+	branch = main
