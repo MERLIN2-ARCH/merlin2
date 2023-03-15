@@ -51,7 +51,7 @@ $ sudo ./scrips/install_mongo.sh
 $ sudo ./scrips/install_mongocxx.sh
 
 # sst
-$ sudo apt-get install -y pytho3n-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
+$ sudo apt-get install -y python3-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
 
 # tts
 $ sudo apt install espeak -y
