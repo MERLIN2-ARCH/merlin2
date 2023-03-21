@@ -24,3 +24,9 @@ pyjsgf
 
 # tts
 gTTS
+
+# sound recognition
+resampy 
+tensorflow 
+soundfile 
+librosa 
