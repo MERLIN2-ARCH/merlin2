@@ -15,7 +15,7 @@ pyaudio
 SpeechRecognition
 google-cloud-speech
 wheel
-pocketsphinx
+pocketsphinx==0.1.15
 nltk
 contractions
 TextSearch
