@@ -12,7 +12,6 @@ from kant_dao import ParameterLoader
 
 from simple_node import Node
 from rclpy.parameter import Parameter
-from rcl_interfaces.msg import SetParametersResult
 
 
 class Merlin2Action(Node, PddlActionDto, ABC):
@@ -39,10 +38,8 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         self.set_effects(pddl_effect_dto_list)
         self.set_conditions(pddl_condition_dto_list)
 
-        succeed = self.save_action()
-
-        if not succeed:
-            raise Exception("Wrong Action: " + str(self))
+        if not self.save_action():
+            raise Exception("Wrong PDDL action: " + a_name)
 
         # action
         self.__action_server = self.create_action_server(DispatchAction,
@@ -141,10 +138,9 @@ class Merlin2Action(Node, PddlActionDto, ABC):
             bool: succeedd
         """
 
-        succeed = self.__pddl_action_dao.save(self)
-        return succeed
+        return self.__pddl_action_dao.save(self)
 
-    def __cancel_callback(self):
+    def __cancel_callback(self) -> None:
         self.cancel_action()
 
     def __execute_server(self, goal_handle) -> DispatchAction.Result:

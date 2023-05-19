@@ -15,7 +15,41 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(simple_node REQUIRED)
+find_package(kant_dto REQUIRED)
+find_package(kant_dao REQUIRED)
+find_package(merlin2_arch_interfaces REQUIRED)
 
+# C++
+include_directories(include)
+include_directories(src)
+
+set(LIB ${CMAKE_PROJECT_NAME}_lib)
+set(SOURCES
+  src/merlin2_action.cpp
+)
+set(DEPENDENCIES
+    rclcpp 
+    rclcpp_action
+    simple_node
+    kant_dto
+    kant_dao
+    merlin2_arch_interfaces
+)
+add_library(${LIB} STATIC ${SOURCES})
+ament_target_dependencies(${LIB} ${DEPENDENCIES} Threads)
+install(TARGETS ${LIB}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+install(DIRECTORY include/
+  DESTINATION include/
+)
+ament_export_include_directories(include)
+ament_export_libraries(${LIB})
+ament_export_dependencies(${DEPENDENCIES})
 
 # Python
 ament_python_install_package(${PROJECT_NAME})
