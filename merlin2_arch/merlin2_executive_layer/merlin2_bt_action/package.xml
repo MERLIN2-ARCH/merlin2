@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>merlin2_bt_action</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="mgons@unileon.es">miguel</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <depend>rclcpp</depend>
+  <depend>behaviortree_cpp_v3</depend>
+  <depend>merlin2_action</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

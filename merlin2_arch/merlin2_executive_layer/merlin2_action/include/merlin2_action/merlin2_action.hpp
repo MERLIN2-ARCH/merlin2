@@ -1,7 +1,7 @@
 
 
-#ifndef MERLIN2_ACTION
-#define MERLIN2_ACTION
+#ifndef MERLIN2_ACTION_HPP
+#define MERLIN2_ACTION_HPP
 
 #include <memory>
 #include <string>
