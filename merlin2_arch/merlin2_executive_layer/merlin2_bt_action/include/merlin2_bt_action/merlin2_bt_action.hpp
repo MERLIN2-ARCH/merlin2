@@ -19,8 +19,8 @@ class Merlin2BtAction : public Merlin2Action {
 public:
   Merlin2BtAction(std::string a_name);
 
-  virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal);
-  virtual void cancel_action();
+  bool run_action(merlin2_arch_interfaces::msg::PlanAction goal);
+  void cancel_action();
 
 protected:
   BT::BehaviorTreeFactory bt_factory;
