@@ -1,7 +1,7 @@
 
 
-#ifndef LLAMA_HPP
-#define LLAMA_HPP
+#ifndef MERLIN2_ACTION
+#define MERLIN2_ACTION
 
 #include <memory>
 #include <string>
