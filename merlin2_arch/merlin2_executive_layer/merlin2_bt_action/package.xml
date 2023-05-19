@@ -12,6 +12,7 @@
   <depend>rclcpp</depend>
   <depend>behaviortree_cpp_v3</depend>
   <depend>merlin2_action</depend>
+  <depend>waypoint_navigation_interfaces</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
