@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import rclpy
 
@@ -17,7 +18,7 @@ from kant_dto import (
     PddlPropositionDto
 )
 
-from .pddl import person_attended
+from merlin2_demo.pddl import person_attended
 
 
 class Merlin2DemoNode(Merlin2MissionNode):
@@ -52,9 +53,7 @@ class Merlin2DemoNode(Merlin2MissionNode):
 
 def main(args=None):
     rclpy.init(args=args)
-
     Merlin2DemoNode()
-
     rclpy.shutdown()
 
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that asks for a wp to move to """
 
@@ -25,7 +26,7 @@ from speech_to_text_interfaces.action import ListenOnce
 from text_to_speech_interfaces.action import TTS
 from merlin2_arch_interfaces.msg import PlanAction
 
-from .pddl import person_attended
+from merlin2_demo.pddl import person_attended
 
 
 class Merlin2HiNavigationAction(Merlin2Action):

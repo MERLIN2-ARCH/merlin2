@@ -70,9 +70,9 @@ def generate_launch_description():
     )
 
     merlin2_demo_node_cmd = Node(
-        package="merlin2_demo",
-        executable="demo_node",
-        name="demo_node",
+        package="merlin2_demo_node",
+        executable="merlin2_demo_node",
+        name="merlin2_demo_node",
         parameters=[{"dao_family": dao_family,
                      "mongo_uri": mongo_uri}]
     )
@@ -80,7 +80,6 @@ def generate_launch_description():
     #
     # LAUNCHES
     #
-
     waypoint_navigation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py"))

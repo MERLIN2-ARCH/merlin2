@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that uses the waypoint navigation """
 
@@ -25,7 +26,7 @@ from yasmin import CbState
 from yasmin_ros.basic_outcomes import SUCCEED
 from yasmin.blackboard import Blackboard
 
-from .pddl import door_checked, door_at, door_type
+from merlin2_demo.pddl import door_checked, door_at, door_type
 
 doorbell_sounds = ['Doorbell', 'Bell', 'Ding-dong',
                    'Tubular bells', 'Reversing beeps', 'Beep, bleep']
@@ -72,7 +73,7 @@ class Merlin2CheckDoorFsmAction(Merlin2FsmAction):
     def prepare_check_door(self, blackboard: Blackboard) -> str:
         blackboard.text = "Welcome, open the door"
         return "valid"
-    
+
     def prepare_welcome(self, blackboard: Blackboard) -> str:
         time.sleep(4)
         blackboard.text = "Hi, come with me to the living room"

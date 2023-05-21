@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that simulates checking a wp """
 
@@ -23,7 +24,7 @@ from text_to_speech_interfaces.msg import Config
 
 from merlin2_arch_interfaces.msg import PlanAction
 
-from .pddl import wp_checked
+from merlin2_demo.pddl import wp_checked
 
 
 class Merlin2CheckWpAction(Merlin2Action):

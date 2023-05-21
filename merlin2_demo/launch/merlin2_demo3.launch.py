@@ -88,7 +88,6 @@ def generate_launch_description():
     #
     # LAUNCHES
     #
-
     waypoint_navigation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py"))

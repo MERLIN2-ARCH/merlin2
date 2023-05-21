@@ -79,13 +79,18 @@ def generate_launch_description():
     #
     # NODES
     #
-
     merlin2_navigation_action_cmd = Node(
         package="merlin2_demo",
-        executable="merlin2_navigation_fsm_action",
+        executable="merlin2_navigation_bt_action",
         name="navigation",
         parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri}]
+                     "mongo_uri": mongo_uri,
+                     "bt_file_path": ament_index_python.get_package_share_directory(
+                         "merlin2_demo") + "/bt_xml/navigation.xml",
+                     "plugins": ["waypoint_navigation_bt_node"],
+                     "publisher_port": 1668,
+                     "server_port": 1669
+                     }]
     )
 
     merlin2_check_wp_action_cmd = Node(
@@ -112,8 +117,7 @@ def generate_launch_description():
     #
     # LAUNCHES
     #
-
-    topological_nav_cmd = IncludeLaunchDescription(
+    waypoint_navigation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py")),
         launch_arguments={"wps": ament_index_python.get_package_share_directory(
@@ -147,7 +151,7 @@ def generate_launch_description():
     ld.add_action(results_path_cmd)
     ld.add_action(world_cmd)
 
-    ld.add_action(topological_nav_cmd)
+    ld.add_action(waypoint_navigation_cmd)
     ld.add_action(tts_cmd)
 
     ld.add_action(merlin2_navigation_action_cmd)

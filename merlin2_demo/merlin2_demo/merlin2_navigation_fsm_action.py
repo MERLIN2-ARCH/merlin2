@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that uses the waypoint navigation """
 
@@ -51,14 +52,14 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
             navigation_state
         )
 
-    def cancel_action(self):
+    def cancel_action(self) -> None:
 
         super().cancel_action()
 
-        pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
-
         anywhere = PddlObjectDto(wp_type, "anywhere")
         prop = PddlPropositionDto(robot_at, [anywhere])
+
+        pddl_proposition_dao = self.dao_factory.create_pddl_proposition_dao()
         pddl_proposition_dao.save(prop)
 
     def prepapre_goal(self, blackboard: Blackboard) -> str:

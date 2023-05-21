@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 from genericpath import exists
 import rclpy
@@ -8,7 +9,7 @@ from std_msgs.msg import String
 from kant_dto import PddlPropositionDto, PddlObjectDto
 from kant_dao import ParameterLoader
 
-from .pddl import sound_listened, sound_type
+from merlin2_demo.pddl import sound_listened, sound_type
 
 
 class Merlin2ListenAudio(Node):
@@ -42,7 +43,6 @@ class Merlin2ListenAudio(Node):
         if not self._sound_listened_prop_old is None:
             self.__pddl_proposition_dao.delete(
                 self._sound_listened_prop_old)
-
 
         self.sound = PddlObjectDto(sound_type, msg.data)
 

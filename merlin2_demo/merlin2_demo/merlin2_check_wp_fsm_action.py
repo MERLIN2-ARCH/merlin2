@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that uses the waypoint navigation """
 
@@ -20,7 +21,7 @@ from merlin2_fsm_action import (
 from yasmin import CbState
 from yasmin.blackboard import Blackboard
 
-from .pddl import wp_checked
+from merlin2_demo.pddl import wp_checked
 
 
 class Merlin2CheckWpFsmAction(Merlin2FsmAction):

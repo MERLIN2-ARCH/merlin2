@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """ MERLIN2 action that uses the waypoint navigation """
 
@@ -26,7 +27,7 @@ from yasmin import CbState
 from yasmin_ros.basic_outcomes import SUCCEED
 from yasmin.blackboard import Blackboard
 
-from .pddl import person_attended
+from merlin2_demo.pddl import person_attended
 
 
 class Merlin2HiNavigationFsmAction(Merlin2FsmAction):

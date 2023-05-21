@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import rclpy
 import time
@@ -17,7 +18,7 @@ from kant_dto import (
     PddlPropositionDto
 )
 
-from .pddl import door_checked, door_at, door_type, sound_type, sound_listened
+from merlin2_demo.pddl import door_checked, door_at, door_type, sound_type, sound_listened
 
 sounds_acepted = ['doorbell', 'bell', 'ding-dong',
                   'tubular_bells', 'reversing_beeps', 'beepbleep', 'chime']
@@ -60,18 +61,17 @@ class Merlin2Demo3Node(Merlin2MissionNode):
             door_checked, [self.door], is_goal=True)
         robot_at_goal = PddlPropositionDto(
             robot_at, [self.livingroom], is_goal=True)
-        
+
         start = time.time()
         succeed = self.execute_goals([door_checked_goal, robot_at_goal])
         self.get_logger().info(str(succeed))
         end = time.time()
         self.get_logger().info("Execution time: "+str(end-start))
-    
+
+
 def main(args=None):
     rclpy.init(args=args)
-
     Merlin2Demo3Node()
-
     rclpy.shutdown()
 
 
