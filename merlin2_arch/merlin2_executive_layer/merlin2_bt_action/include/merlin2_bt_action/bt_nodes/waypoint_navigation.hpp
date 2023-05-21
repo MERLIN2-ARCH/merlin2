@@ -5,7 +5,9 @@
 #include <memory>
 #include <string>
 
+#include "behaviortree_cpp_v3/bt_factory.h"
 #include "example_interfaces/action/fibonacci.hpp"
+#include "merlin2_arch_interfaces/action/dispatch_action.hpp"
 #include "simple_node/actions/action_client.hpp"
 #include "simple_node/node.hpp"
 #include "waypoint_navigation_interfaces/action/navigate_to_wp.hpp"
@@ -23,8 +25,10 @@ public:
     config.blackboard->template get<std::shared_ptr<simple_node::Node>>("node",
                                                                         node);
 
-    config.blackboard->template get<std::string>("destination",
-                                                 this->destination);
+    merlin2_arch_interfaces::msg::PlanAction goal;
+    config.blackboard->template get<merlin2_arch_interfaces::msg::PlanAction>(
+        "merlin2_action_goal", goal);
+    this->destination = goal.objects[1];
 
     this->action_client = node->create_action_client<
         waypoint_navigation_interfaces::action::NavigateToWp>(
@@ -32,7 +36,8 @@ public:
   }
 
   static BT::PortsList providedPorts() {
-    return {BT::InputPort<std::string>("destination")};
+    return {BT::InputPort<merlin2_arch_interfaces::msg::PlanAction>(
+        "merlin2_action_goal")};
   }
 
   void halt() override { this->action_client->cancel_goal(); }

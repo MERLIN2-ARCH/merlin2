@@ -52,6 +52,7 @@ set(PLUGINS_DEPENDENCIES
   simple_node
   behaviortree_cpp_v3
   waypoint_navigation_interfaces
+  merlin2_arch_interfaces
 )
 
 add_library(waypoint_navigation_node SHARED src/bt_nodes/waypoint_navigation.cpp)
