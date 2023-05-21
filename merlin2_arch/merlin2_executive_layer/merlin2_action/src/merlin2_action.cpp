@@ -6,14 +6,33 @@ using namespace merlin2::action;
 using std::placeholders::_1;
 
 Merlin2Action::Merlin2Action(std::string a_name, bool durative)
-    : simple_node::Node(a_name), kant::dto::PddlActionDto(a_name) {
+    : simple_node::Node(a_name, "merlin2"), kant::dto::PddlActionDto(a_name) {
 
-  auto parameter_loader = kant::dao::ParameterLoader(this);
+  this->set_durative(durative);
+
+  kant::dao::ParameterLoader parameter_loader(this);
   this->dao_factory = parameter_loader.get_dao_factory();
   this->pddl_action_dao = this->dao_factory->create_pddl_action_dao();
+}
 
-  // creating and saving the action
-  this->set_durative(durative);
+Merlin2Action::~Merlin2Action() { delete this->dao_factory; }
+
+std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
+Merlin2Action::create_parameters() {
+  return {};
+}
+
+std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
+Merlin2Action::create_conditions() {
+  return {};
+}
+
+std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
+Merlin2Action::create_efects() {
+  return {};
+}
+
+void Merlin2Action::start_action() {
   auto pddl_parameter_dto_list = this->create_parameters();
   auto pddl_effect_dto_list = this->create_efects();
   auto pddl_condition_dto_list = this->create_conditions();
@@ -23,33 +42,30 @@ Merlin2Action::Merlin2Action(std::string a_name, bool durative)
   this->set_conditions(pddl_condition_dto_list);
 
   if (!this->save_action()) {
-    throw std::string("Wrong PDDL action: " + a_name);
+    RCLCPP_ERROR(this->get_logger(), "Wrong PDDL action: %s",
+                 +((kant::dto::PddlActionDto *)this)->get_name().c_str());
+    throw std::string("Wrong PDDL action: " +
+                      ((kant::dto::PddlActionDto *)this)->get_name());
   }
 
   this->action_server = this->create_action_server<
       merlin2_arch_interfaces::action::DispatchAction>(
-      a_name, std::bind(&Merlin2Action::execute_server, this, _1),
+      ((kant::dto::PddlActionDto *)this)->get_name(),
+      std::bind(&Merlin2Action::execute_server, this, _1),
       std::bind(&Merlin2Action::cancel_callback, this));
 }
 
-std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
-Merlin2Action::create_parameters() {
-  return {};
-}
-
-std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-Merlin2Action::create_efects() {
-  return {};
-}
-
-std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-Merlin2Action::create_conditions() {
-  return {};
-}
-
 bool Merlin2Action::save_action() {
-  std::shared_ptr<kant::dto::PddlActionDto> dto_ptr(
-      (kant::dto::PddlActionDto *)this);
+
+  auto dto_ptr = std::make_shared<kant::dto::PddlActionDto>(
+      ((kant::dto::PddlActionDto *)this)->get_name());
+
+  dto_ptr->set_duration(((kant::dto::PddlActionDto *)this)->get_duration());
+  dto_ptr->set_durative(((kant::dto::PddlActionDto *)this)->get_durative());
+  dto_ptr->set_parameters(((kant::dto::PddlActionDto *)this)->get_parameters());
+  dto_ptr->set_conditions(((kant::dto::PddlActionDto *)this)->get_conditions());
+  dto_ptr->set_effects(((kant::dto::PddlActionDto *)this)->get_effects());
+
   return this->pddl_action_dao->save(dto_ptr);
 }
 
@@ -67,9 +83,8 @@ void Merlin2Action::execute_server(
   if (this->action_server->is_canceled()) {
     this->action_server->wait_for_canceling();
     goal_handle->canceled(result);
-  }
 
-  else {
+  } else {
     if (succeed) {
       goal_handle->succeed(result);
     } else {

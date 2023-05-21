@@ -38,19 +38,20 @@ set(DEPENDENCIES
   merlin2_arch_interfaces
 )
 add_library(${LIB} STATIC ${SOURCES})
+
+install(TARGETS ${LIB}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+install(DIRECTORY include/
+  DESTINATION include
+)
+
 ament_target_dependencies(${LIB} ${DEPENDENCIES})
 ament_export_include_directories(include)
 ament_export_libraries(${LIB})
 ament_export_dependencies(${DEPENDENCIES})
-
-install(
-  TARGETS ${LIB}
-  EXPORT ${LIB}
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include
-)
 
 # Python
 ament_python_install_package(${PROJECT_NAME})

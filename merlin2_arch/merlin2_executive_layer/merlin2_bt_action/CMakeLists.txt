@@ -32,19 +32,20 @@ set(DEPENDENCIES
 )
 
 add_library(${LIB} STATIC ${SOURCES})
+
+install(TARGETS ${LIB}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+install(DIRECTORY include/
+  DESTINATION include
+)
+
 ament_target_dependencies(${LIB} ${DEPENDENCIES})
 ament_export_include_directories(include)
 ament_export_libraries(${LIB})
 ament_export_dependencies(${DEPENDENCIES})
-
-install(
-  TARGETS ${LIB}
-  EXPORT ${LIB}
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include
-)
 
 # plugins
 find_package(waypoint_navigation_interfaces REQUIRED)
@@ -56,10 +57,13 @@ set(PLUGINS_DEPENDENCIES
   merlin2_arch_interfaces
 )
 
-add_library(waypoint_navigation_node SHARED src/bt_nodes/waypoint_navigation.cpp)
-ament_target_dependencies(waypoint_navigation_node ${PLUGINS_DEPENDENCIES})
-list(APPEND PLUGIN_LIBS waypoint_navigation_node)
-target_compile_definitions(waypoint_navigation_node PRIVATE BT_PLUGIN_EXPORT)
+add_library(waypoint_navigation_bt_node SHARED src/bt_nodes/waypoint_navigation.cpp)
+list(APPEND PLUGIN_LIBS waypoint_navigation_bt_node)
+
+foreach(bt_plugin ${PLUGIN_LIBS})
+  ament_target_dependencies(${bt_plugin} ${PLUGINS_DEPENDENCIES})
+  target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
+endforeach()
 
 install(TARGETS ${PLUGIN_LIBS}
   ARCHIVE DESTINATION lib

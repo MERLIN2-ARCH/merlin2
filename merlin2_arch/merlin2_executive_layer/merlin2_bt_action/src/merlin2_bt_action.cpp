@@ -19,18 +19,21 @@ Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {
   int publisher_port = this->declare_parameter("publisher_port", 1666);
   int server_port = this->declare_parameter("server_port", 1667);
 
-  // load tree
-  this->blackboard = BT::Blackboard::create();
-  this->blackboard->set("node", shared_from_this());
-
-  RCLCPP_INFO(this->get_logger(), "Loading tree from file");
-  this->tree = std::make_shared<BT::Tree>(
-      this->bt_factory.createTreeFromFile(bt_file_path, this->blackboard));
-
+  // load plugins
   RCLCPP_INFO(this->get_logger(), "Loading plugins");
   for (const auto &p : plugins) {
     this->bt_factory.registerFromPlugin(BT::SharedLibrary::getOSName(p));
   }
+
+  // load tree
+  this->blackboard = BT::Blackboard::create();
+  std::shared_ptr<simple_node::Node> shared_this((simple_node::Node *)this);
+  this->blackboard->set("node", shared_from_this());
+
+  RCLCPP_INFO(this->get_logger(), "Loading tree from file: %s",
+              bt_file_path.c_str());
+  this->tree = std::make_shared<BT::Tree>(
+      this->bt_factory.createTreeFromFile(bt_file_path, this->blackboard));
 
   // groot
   this->groot_monitor = std::make_unique<BT::PublisherZMQ>(
@@ -61,7 +64,7 @@ bool Merlin2BtAction::run_action(
       finished = true;
       break;
     case BT::NodeStatus::RUNNING:
-      finished = true;
+      finished = false;
       break;
     }
   }

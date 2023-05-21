@@ -21,18 +21,14 @@ public:
                      const BT::NodeConfiguration &config)
       : BT::ActionNodeBase(name, config) {
 
-    std::shared_ptr<simple_node::Node> node;
-    config.blackboard->template get<std::shared_ptr<simple_node::Node>>("node",
-                                                                        node);
+    simple_node::Node::SharedPtr node;
+    config.blackboard->get("node", node);
 
-    merlin2_arch_interfaces::msg::PlanAction goal;
-    config.blackboard->template get<merlin2_arch_interfaces::msg::PlanAction>(
-        "merlin2_action_goal", goal);
-    this->destination = goal.objects[1];
-
-    this->action_client = node->create_action_client<
-        waypoint_navigation_interfaces::action::NavigateToWp>(
-        "/waypoint_navigation/navigate_to_wp");
+    this->action_client =
+        ((simple_node::Node *)node.get())
+            ->create_action_client<
+                waypoint_navigation_interfaces::action::NavigateToWp>(
+                "/waypoint_navigation/navigate_to_wp");
   }
 
   static BT::PortsList providedPorts() {
@@ -46,7 +42,10 @@ public:
 
     if (!this->action_client->is_working()) {
 
-      if (this->action_client->is_terminated()) {
+      if (this->action_client->is_terminated() && !this->destination.empty()) {
+
+        this->destination = "";
+
         if (this->action_client->is_canceled() &&
             this->action_client->is_aborted()) {
           return BT::NodeStatus::FAILURE;
@@ -54,7 +53,12 @@ public:
           return BT::NodeStatus::SUCCESS;
         }
 
-      } else {
+      } else if (this->destination.empty()) {
+
+        merlin2_arch_interfaces::msg::PlanAction plan_action_goal;
+        this->config().blackboard->get("merlin2_action_goal", plan_action_goal);
+        this->destination = plan_action_goal.objects[1];
+
         auto goal =
             waypoint_navigation_interfaces::action::NavigateToWp::Goal();
         goal.wp_id = this->destination;

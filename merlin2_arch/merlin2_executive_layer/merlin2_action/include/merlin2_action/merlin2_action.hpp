@@ -26,15 +26,18 @@ class Merlin2Action : public simple_node::Node,
 
 public:
   Merlin2Action(std::string a_name, bool durative = true);
+  ~Merlin2Action();
+
+  void start_action();
 
   virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) = 0;
   virtual void cancel_action() = 0;
   virtual std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
   create_parameters();
   virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-  create_efects();
-  virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
   create_conditions();
+  virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
+  create_efects();
 
   kant::dao::dao_factory::dao_factories::DaoFactory *dao_factory;
   kant::dao::dao_interface::PddlActionDao *pddl_action_dao;
