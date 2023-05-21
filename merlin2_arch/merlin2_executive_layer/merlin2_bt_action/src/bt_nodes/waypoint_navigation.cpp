@@ -4,5 +4,5 @@
 
 BT_REGISTER_NODES(factory) {
   factory.registerNodeType<merlin2::bt_nodes::WaypointNavigation>(
-      "waypoint_navigation");
+      "WaypointNavigation");
 }

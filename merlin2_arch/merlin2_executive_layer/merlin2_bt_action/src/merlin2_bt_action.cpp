@@ -3,7 +3,7 @@
 
 #include "merlin2_bt_action/merlin2_bt_action.hpp"
 
-using namespace merlin2;
+using namespace merlin2::action;
 using std::placeholders::_1;
 
 Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {

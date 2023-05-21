@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 project(merlin2_bt_action)
 
 # Default to C++14
@@ -32,18 +32,19 @@ set(DEPENDENCIES
 )
 
 add_library(${LIB} STATIC ${SOURCES})
-ament_target_dependencies(${LIB} ${DEPENDENCIES} Threads)
-install(TARGETS ${LIB}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-install(DIRECTORY include/
-  DESTINATION include/
-)
+ament_target_dependencies(${LIB} ${DEPENDENCIES})
 ament_export_include_directories(include)
 ament_export_libraries(${LIB})
 ament_export_dependencies(${DEPENDENCIES})
+
+install(
+  TARGETS ${LIB}
+  EXPORT ${LIB}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
 
 # plugins
 find_package(waypoint_navigation_interfaces REQUIRED)

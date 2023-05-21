@@ -1,9 +1,8 @@
 
-#include "kant_dao/parameter_loader.hpp"
 
 #include "merlin2_action/merlin2_action.hpp"
 
-using namespace merlin2;
+using namespace merlin2::action;
 using std::placeholders::_1;
 
 Merlin2Action::Merlin2Action(std::string a_name, bool durative)
@@ -31,6 +30,21 @@ Merlin2Action::Merlin2Action(std::string a_name, bool durative)
       merlin2_arch_interfaces::action::DispatchAction>(
       a_name, std::bind(&Merlin2Action::execute_server, this, _1),
       std::bind(&Merlin2Action::cancel_callback, this));
+}
+
+std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
+Merlin2Action::create_parameters() {
+  return {};
+}
+
+std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
+Merlin2Action::create_efects() {
+  return {};
+}
+
+std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
+Merlin2Action::create_conditions() {
+  return {};
 }
 
 bool Merlin2Action::save_action() {

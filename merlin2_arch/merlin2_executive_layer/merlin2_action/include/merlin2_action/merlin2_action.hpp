@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "kant_dao/dao_factory/dao_factories/dao_factory.hpp"
+#include "kant_dao/parameter_loader.hpp"
 #include "kant_dto/pddl_action_dto.hpp"
 #include "kant_dto/pddl_condition_effect_dto.hpp"
 #include "kant_dto/pddl_object_dto.hpp"
@@ -18,6 +19,7 @@
 #include "simple_node/node.hpp"
 
 namespace merlin2 {
+namespace action {
 
 class Merlin2Action : public simple_node::Node,
                       public kant::dto::PddlActionDto {
@@ -25,8 +27,8 @@ class Merlin2Action : public simple_node::Node,
 public:
   Merlin2Action(std::string a_name, bool durative = true);
 
-  virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal);
-  virtual void cancel_action();
+  virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) = 0;
+  virtual void cancel_action() = 0;
   virtual std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
   create_parameters();
   virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
@@ -49,6 +51,7 @@ private:
       action_server;
 };
 
+} // namespace action
 } // namespace merlin2
 
 #endif

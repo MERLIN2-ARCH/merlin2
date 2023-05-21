@@ -13,6 +13,7 @@
 #include "merlin2_action/merlin2_action.hpp"
 
 namespace merlin2 {
+namespace action {
 
 class Merlin2BtAction : public Merlin2Action {
 
@@ -31,6 +32,7 @@ private:
   BT::Blackboard::Ptr blackboard;
 };
 
+} // namespace action
 } // namespace merlin2
 
 #endif
