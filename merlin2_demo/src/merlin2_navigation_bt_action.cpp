@@ -21,7 +21,7 @@ Merlin2NavigationBtAction::Merlin2NavigationBtAction()
 
 void Merlin2NavigationBtAction::cancel_action() {
 
-  ((Merlin2BtAction *)this)->cancel_action();
+  this->tree->haltTree();
 
   auto anywhere =
       std::make_shared<kant::dto::PddlObjectDto>(this->wp_type, "anywhere");

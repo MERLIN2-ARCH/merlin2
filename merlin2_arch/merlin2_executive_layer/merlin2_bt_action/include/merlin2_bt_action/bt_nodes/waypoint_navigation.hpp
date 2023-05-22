@@ -65,6 +65,8 @@ public:
 
         return BT::NodeStatus::RUNNING;
       }
+
+      return BT::NodeStatus::FAILURE;
     }
 
     return BT::NodeStatus::RUNNING;
