@@ -26,8 +26,6 @@ public:
 protected:
   BT::BehaviorTreeFactory bt_factory;
   std::unique_ptr<BT::PublisherZMQ> groot_monitor;
-
-private:
   std::shared_ptr<BT::Tree> tree;
   BT::Blackboard::Ptr blackboard;
 };

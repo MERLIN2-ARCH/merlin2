@@ -43,11 +43,10 @@ Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {
 bool Merlin2BtAction::run_action(
     merlin2_arch_interfaces::msg::PlanAction goal) {
 
-  bool finished = false;
-  BT::NodeStatus result;
+  BT::NodeStatus result = BT::NodeStatus::RUNNING;
   this->blackboard->set("merlin2_action_goal", goal);
 
-  while (!finished) {
+  while (result == BT::NodeStatus::RUNNING) {
     try {
       result = this->tree->rootNode()->executeTick();
     } catch (const BT::LogicError &e) {
@@ -55,17 +54,7 @@ bool Merlin2BtAction::run_action(
     } catch (const BT::RuntimeError &e) {
       RCLCPP_ERROR_STREAM(get_logger(), e.what());
     } catch (const std::exception &e) {
-    }
-
-    switch (result) {
-    case BT::NodeStatus::IDLE:
-    case BT::NodeStatus::SUCCESS:
-    case BT::NodeStatus::FAILURE:
-      finished = true;
-      break;
-    case BT::NodeStatus::RUNNING:
-      finished = false;
-      break;
+      RCLCPP_ERROR_STREAM(get_logger(), e.what());
     }
   }
 

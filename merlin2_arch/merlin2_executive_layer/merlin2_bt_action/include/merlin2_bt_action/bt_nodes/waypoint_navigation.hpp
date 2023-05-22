@@ -6,7 +6,6 @@
 #include <string>
 
 #include "behaviortree_cpp_v3/bt_factory.h"
-#include "example_interfaces/action/fibonacci.hpp"
 #include "merlin2_arch_interfaces/action/dispatch_action.hpp"
 #include "simple_node/actions/action_client.hpp"
 #include "simple_node/node.hpp"
