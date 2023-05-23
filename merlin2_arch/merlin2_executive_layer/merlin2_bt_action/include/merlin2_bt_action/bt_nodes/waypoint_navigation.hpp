@@ -45,7 +45,7 @@ public:
 
         this->destination = "";
 
-        if (this->action_client->is_canceled() &&
+        if (this->action_client->is_canceled() ||
             this->action_client->is_aborted()) {
           return BT::NodeStatus::FAILURE;
         } else if (this->action_client->is_succeeded()) {
@@ -65,8 +65,6 @@ public:
 
         return BT::NodeStatus::RUNNING;
       }
-
-      return BT::NodeStatus::FAILURE;
     }
 
     return BT::NodeStatus::RUNNING;

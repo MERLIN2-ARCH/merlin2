@@ -22,10 +22,13 @@ public:
 
   bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) override;
   virtual void cancel_action() override;
+  void cancel_tree();
 
 protected:
   BT::BehaviorTreeFactory bt_factory;
   std::unique_ptr<BT::PublisherZMQ> groot_monitor;
+
+private:
   std::shared_ptr<BT::Tree> tree;
   BT::Blackboard::Ptr blackboard;
 };

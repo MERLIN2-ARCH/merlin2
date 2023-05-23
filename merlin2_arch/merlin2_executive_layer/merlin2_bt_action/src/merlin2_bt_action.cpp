@@ -61,4 +61,6 @@ bool Merlin2BtAction::run_action(
   return result == BT::NodeStatus::SUCCESS;
 }
 
-void Merlin2BtAction::cancel_action() { this->tree->haltTree(); }
+void Merlin2BtAction::cancel_action() { this->cancel_tree(); }
+
+void Merlin2BtAction::cancel_tree() { this->tree->haltTree(); }
