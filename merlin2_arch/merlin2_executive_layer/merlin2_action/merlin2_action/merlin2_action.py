@@ -148,8 +148,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
         succeed = self.run_action(goal_handle.request.action)
 
-        if self.__action_server.is_canceled():
-            self.__action_server.wait_for_canceling()
+        if goal_handle.is_cancel_requested:
             goal_handle.canceled()
 
         else:

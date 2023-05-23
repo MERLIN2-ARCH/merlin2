@@ -8,7 +8,7 @@ from merlin2_arch_interfaces.srv import GeneratePddl
 
 
 class Merlin2GeneratePddlState(ServiceState):
-    def __init__(self, node: Node):
+    def __init__(self, node: Node) -> None:
         super().__init__(node, GeneratePddl, "generate_pddl",
                          self.create_request_handler, response_handler=self.response_handler)
         self._node = node

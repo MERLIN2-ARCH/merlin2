@@ -8,7 +8,7 @@ from merlin2_arch_interfaces.action import DispatchPlan
 
 
 class Merlin2DispatchPlanState(AcionState):
-    def __init__(self, node: Node):
+    def __init__(self, node: Node) -> None:
         super().__init__(node, DispatchPlan, "dispatch_plan",
                          self.create_goal_handler, result_handler=self.result_handler)
         self._node = node

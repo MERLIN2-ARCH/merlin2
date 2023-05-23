@@ -77,7 +77,6 @@ class Merlin2ExecutorNode(Node, StateMachine):
         outcome = self(blackboard)
 
         if outcome == CANCEL:
-            self.__action_server.wait_for_canceling()
             goal_handle.canceled()
 
         elif outcome == ABORT:

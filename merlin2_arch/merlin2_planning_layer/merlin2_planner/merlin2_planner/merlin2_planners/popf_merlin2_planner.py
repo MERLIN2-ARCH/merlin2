@@ -76,7 +76,7 @@ class PopfMerlin2Planner(Merlin2Planner):
         pddl_action_list = []
 
         for line in pddl_plan.split("\n"):
-            if("(" in line and
+            if ("(" in line and
                 ")" in line and
                 "[" in line and
                     "]" in line):

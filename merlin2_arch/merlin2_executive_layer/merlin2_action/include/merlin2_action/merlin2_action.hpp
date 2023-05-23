@@ -1,5 +1,4 @@
 
-
 #ifndef MERLIN2_ACTION_HPP
 #define MERLIN2_ACTION_HPP
 
@@ -15,7 +14,7 @@
 #include "merlin2_arch_interfaces/action/dispatch_action.hpp"
 #include "merlin2_arch_interfaces/msg/plan_action.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "simple_node/actions/action_single_server.hpp"
+#include "simple_node/actions/action_server.hpp"
 #include "simple_node/node.hpp"
 
 namespace merlin2 {
@@ -49,7 +48,7 @@ private:
                           merlin2_arch_interfaces::action::DispatchAction>>
                           goal_handle);
 
-  std::shared_ptr<simple_node::actions::ActionSingleServer<
+  std::shared_ptr<simple_node::actions::ActionServer<
       merlin2_arch_interfaces::action::DispatchAction>>
       action_server;
 };

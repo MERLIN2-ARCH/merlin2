@@ -80,8 +80,7 @@ void Merlin2Action::execute_server(
       merlin2_arch_interfaces::action::DispatchAction::Result>();
   bool succeed = this->run_action(goal_handle->get_goal()->action);
 
-  if (this->action_server->is_canceled()) {
-    this->action_server->wait_for_canceling();
+  if (goal_handle->is_canceling()) {
     goal_handle->canceled(result);
 
   } else {

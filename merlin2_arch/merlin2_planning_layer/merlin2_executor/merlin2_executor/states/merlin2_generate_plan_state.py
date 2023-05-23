@@ -8,7 +8,7 @@ from merlin2_arch_interfaces.srv import GeneratePlan
 
 
 class Merlin2GeneratePlanState(ServiceState):
-    def __init__(self, node: Node):
+    def __init__(self, node: Node) -> None:
         super().__init__(node, GeneratePlan, "generate_plan",
                          self.create_request_handler, response_handler=self.response_handler)
         self._node = node

@@ -141,7 +141,7 @@ class Merlin2PlanDispatcherNode(Node):
                             goal_handle.abort()
                             return result
 
-                if self.__action_server.is_canceled():
+                if goal_handle.is_cancel_requested:
                     break
 
             else:
@@ -157,11 +157,10 @@ class Merlin2PlanDispatcherNode(Node):
                         goal_handle.abort()
                         return result
 
-                if self.__action_server.is_canceled():
+                if goal_handle.is_cancel_requested:
                     break
 
-            if self.__action_server.is_canceled():
-                self.__action_server.wait_for_canceling()
+            if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
                 self.__action_client = None
                 return result
