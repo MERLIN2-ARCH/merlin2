@@ -17,6 +17,18 @@ Merlin2Action::Merlin2Action(std::string a_name, bool durative)
 
 Merlin2Action::~Merlin2Action() { delete this->dao_factory; }
 
+void Merlin2Action::destroy_action() {
+  auto dto_ptr = std::make_shared<kant::dto::PddlActionDto>(
+      ((kant::dto::PddlActionDto *)this)->get_name());
+
+  dto_ptr->set_duration(((kant::dto::PddlActionDto *)this)->get_duration());
+  dto_ptr->set_durative(((kant::dto::PddlActionDto *)this)->get_durative());
+  dto_ptr->set_parameters(((kant::dto::PddlActionDto *)this)->get_parameters());
+  dto_ptr->set_conditions(((kant::dto::PddlActionDto *)this)->get_conditions());
+  dto_ptr->set_effects(((kant::dto::PddlActionDto *)this)->get_effects());
+  this->pddl_action_dao->delete_one(dto_ptr);
+}
+
 std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
 Merlin2Action::create_parameters() {
   return {};

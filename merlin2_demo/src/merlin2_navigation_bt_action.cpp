@@ -1,5 +1,15 @@
 
+#include <exception>
+#include <signal.h>
+
 #include "merlin2_demo/merlin2_navigation_bt_action.hpp"
+
+class InterruptException : public std::exception {
+public:
+  InterruptException(int s) : S(s) {}
+  int S;
+};
+void sig_to_exception(int s) { throw InterruptException(s); }
 
 using namespace merlin2::action;
 
@@ -61,9 +71,22 @@ Merlin2NavigationBtAction::create_efects() {
 }
 
 int main(int argc, char *argv[]) {
+  struct sigaction sigIntHandler;
+  sigIntHandler.sa_handler = sig_to_exception;
+  sigemptyset(&sigIntHandler.sa_mask);
+  sigIntHandler.sa_flags = 0;
+  sigaction(SIGINT, &sigIntHandler, NULL);
+
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<Merlin2NavigationBtAction>();
-  node->join_spin();
+  std::shared_ptr<Merlin2NavigationBtAction> node;
+
+  try {
+    node = std::make_shared<Merlin2NavigationBtAction>();
+    node->join_spin();
+  } catch (InterruptException &e) {
+    node->destroy_action();
+  }
+
   rclcpp::shutdown();
   return 0;
 }

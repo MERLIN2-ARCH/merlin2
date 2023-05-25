@@ -28,6 +28,7 @@ public:
   ~Merlin2Action();
 
   void start_action();
+  void destroy_action();
 
   virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) = 0;
   virtual void cancel_action() = 0;
