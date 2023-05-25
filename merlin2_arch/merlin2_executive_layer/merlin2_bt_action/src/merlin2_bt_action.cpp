@@ -13,8 +13,11 @@ Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {
       this->declare_parameter("bt_file_path", "tree.xml");
   std::vector<std::string> plugins =
       this->declare_parameter("plugins", std::vector<std::string>());
+  this->tick_rate = this->declare_parameter("tick_rate", 1);
 
   // groot params
+  bool enable_groot_monitoring =
+      this->declare_parameter("enable_groot_monitoring", true);
   int max_msg_per_second = this->declare_parameter("max_msg_per_second", 25);
   int publisher_port = this->declare_parameter("publisher_port", 1666);
   int server_port = this->declare_parameter("server_port", 1667);
@@ -36,8 +39,10 @@ Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {
       this->bt_factory.createTreeFromFile(bt_file_path, this->blackboard));
 
   // groot
-  this->groot_monitor = std::make_unique<BT::PublisherZMQ>(
-      *this->tree, max_msg_per_second, publisher_port, server_port);
+  if (enable_groot_monitoring) {
+    this->groot_monitor = std::make_unique<BT::PublisherZMQ>(
+        *this->tree, max_msg_per_second, publisher_port, server_port);
+  }
 }
 
 bool Merlin2BtAction::run_action(
@@ -45,6 +50,7 @@ bool Merlin2BtAction::run_action(
 
   BT::NodeStatus result = BT::NodeStatus::RUNNING;
   this->blackboard->set("merlin2_action_goal", goal);
+  rclcpp::Rate loop_rate(this->tick_rate);
 
   while (result == BT::NodeStatus::RUNNING) {
     try {
@@ -56,6 +62,7 @@ bool Merlin2BtAction::run_action(
     } catch (const std::exception &e) {
       RCLCPP_ERROR_STREAM(get_logger(), e.what());
     }
+    loop_rate.sleep();
   }
 
   return result == BT::NodeStatus::SUCCESS;

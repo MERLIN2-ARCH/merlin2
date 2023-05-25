@@ -31,6 +31,7 @@ protected:
 private:
   std::shared_ptr<BT::Tree> tree;
   BT::Blackboard::Ptr blackboard;
+  int tick_rate;
 };
 
 } // namespace action
