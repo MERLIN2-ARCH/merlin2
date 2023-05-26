@@ -1,8 +1,8 @@
 
 """ Navigation State """
 
-from text_to_speech_interfaces.action import TTS
-from speech_to_text_interfaces.action import ListenOnce
+from text_to_speech_msgs.action import TTS
+from speech_to_text_msgs.action import ListenOnce
 from std_srvs.srv import Empty
 from yasmin_ros import AcionState, ServiceState
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL

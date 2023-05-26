@@ -19,10 +19,10 @@ from merlin2_basic_actions.merlin2_basic_predicates import (
 
 from merlin2_action.merlin2_action import Merlin2Action
 
-from text_to_speech_interfaces.action import TTS
-from text_to_speech_interfaces.msg import Config
+from text_to_speech_msgs.action import TTS
+from text_to_speech_msgs.msg import Config
 
-from merlin2_arch_interfaces.msg import PlanAction
+from merlin2_msgs.msg import PlanAction
 
 from merlin2_demo.pddl import wp_checked
 

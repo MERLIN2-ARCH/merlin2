@@ -4,7 +4,7 @@ from simple_node import Node
 from yasmin.blackboard import Blackboard
 from yasmin_ros import ServiceState
 from yasmin_ros.basic_outcomes import SUCCEED
-from merlin2_arch_interfaces.srv import GeneratePddl
+from merlin2_msgs.srv import GeneratePddl
 
 
 class Merlin2GeneratePddlState(ServiceState):

@@ -3,7 +3,7 @@
 
 from typing import List
 from abc import ABC, abstractmethod
-from merlin2_arch_interfaces.msg import PlanAction
+from merlin2_msgs.msg import PlanAction
 
 
 class Merlin2Planner(ABC):

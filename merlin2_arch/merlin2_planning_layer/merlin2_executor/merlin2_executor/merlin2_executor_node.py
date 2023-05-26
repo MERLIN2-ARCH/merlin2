@@ -11,7 +11,7 @@ from yasmin.blackboard import Blackboard
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 from yasmin_viewer import YasminViewerPub
 
-from merlin2_arch_interfaces.action import Execute
+from merlin2_msgs.action import Execute
 
 from simple_node import Node
 

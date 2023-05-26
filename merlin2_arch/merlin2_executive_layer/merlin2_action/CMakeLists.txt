@@ -19,7 +19,7 @@ find_package(rclcpp_action REQUIRED)
 find_package(simple_node REQUIRED)
 find_package(kant_dto REQUIRED)
 find_package(kant_dao REQUIRED)
-find_package(merlin2_arch_interfaces REQUIRED)
+find_package(merlin2_msgs REQUIRED)
 
 # C++
 include_directories(include)
@@ -35,7 +35,7 @@ set(DEPENDENCIES
   simple_node
   kant_dto
   kant_dao
-  merlin2_arch_interfaces
+  merlin2_msgs
 )
 add_library(${LIB} STATIC ${SOURCES})
 

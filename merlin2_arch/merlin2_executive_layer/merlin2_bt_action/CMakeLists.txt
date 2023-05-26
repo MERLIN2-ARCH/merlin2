@@ -48,13 +48,13 @@ ament_export_libraries(${LIB})
 ament_export_dependencies(${DEPENDENCIES})
 
 # plugins
-find_package(waypoint_navigation_interfaces REQUIRED)
+find_package(waypoint_navigation_msgs REQUIRED)
 set(PLUGINS_DEPENDENCIES
   rclcpp
   simple_node
   behaviortree_cpp_v3
-  waypoint_navigation_interfaces
-  merlin2_arch_interfaces
+  waypoint_navigation_msgs
+  merlin2_msgs
 )
 
 add_library(waypoint_navigation_bt_node SHARED src/bt_nodes/waypoint_navigation.cpp)

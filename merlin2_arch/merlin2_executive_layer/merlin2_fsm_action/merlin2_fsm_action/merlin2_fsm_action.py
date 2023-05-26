@@ -1,7 +1,7 @@
 
 """ MERLIN2 FSM Action """
 
-from merlin2_arch_interfaces.msg import PlanAction
+from merlin2_msgs.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
 from yasmin_viewer import YasminViewerPub
 from yasmin import StateMachine, State

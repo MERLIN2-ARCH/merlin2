@@ -11,8 +11,8 @@
 #include "kant_dto/pddl_action_dto.hpp"
 #include "kant_dto/pddl_condition_effect_dto.hpp"
 #include "kant_dto/pddl_object_dto.hpp"
-#include "merlin2_arch_interfaces/action/dispatch_action.hpp"
-#include "merlin2_arch_interfaces/msg/plan_action.hpp"
+#include "merlin2_msgs/action/dispatch_action.hpp"
+#include "merlin2_msgs/msg/plan_action.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "simple_node/actions/action_server.hpp"
 #include "simple_node/node.hpp"
@@ -30,7 +30,7 @@ public:
   void start_action();
   void destroy_action();
 
-  virtual bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) = 0;
+  virtual bool run_action(merlin2_msgs::msg::PlanAction goal) = 0;
   virtual void cancel_action() = 0;
   virtual std::vector<std::shared_ptr<kant::dto::PddlObjectDto>>
   create_parameters();
@@ -45,12 +45,13 @@ public:
 private:
   bool save_action();
   void cancel_callback();
-  void execute_server(std::shared_ptr<rclcpp_action::ServerGoalHandle<
-                          merlin2_arch_interfaces::action::DispatchAction>>
-                          goal_handle);
+  void execute_server(
+      std::shared_ptr<
+          rclcpp_action::ServerGoalHandle<merlin2_msgs::action::DispatchAction>>
+          goal_handle);
 
-  std::shared_ptr<simple_node::actions::ActionServer<
-      merlin2_arch_interfaces::action::DispatchAction>>
+  std::shared_ptr<
+      simple_node::actions::ActionServer<merlin2_msgs::action::DispatchAction>>
       action_server;
 };
 

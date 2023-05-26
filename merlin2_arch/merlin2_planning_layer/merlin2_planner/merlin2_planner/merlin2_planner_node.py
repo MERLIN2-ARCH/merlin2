@@ -4,7 +4,7 @@
 
 import rclpy
 
-from merlin2_arch_interfaces.srv import GeneratePlan
+from merlin2_msgs.srv import GeneratePlan
 from merlin2_planner.merlin2_planner_factory import Merlin2PlannerFactory
 from merlin2_planner import Merlin2Planners
 

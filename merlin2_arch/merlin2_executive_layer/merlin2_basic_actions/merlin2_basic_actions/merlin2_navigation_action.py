@@ -14,8 +14,8 @@ from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 
 from merlin2_action.merlin2_action import Merlin2Action
 
-from waypoint_navigation_interfaces.action import NavigateToWp
-from merlin2_arch_interfaces.msg import PlanAction
+from waypoint_navigation_msgs.action import NavigateToWp
+from merlin2_msgs.msg import PlanAction
 
 
 class Merlin2NavigationAction(Merlin2Action):

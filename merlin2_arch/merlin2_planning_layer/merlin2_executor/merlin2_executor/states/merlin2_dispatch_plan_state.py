@@ -4,7 +4,7 @@ from simple_node import Node
 from yasmin.blackboard import Blackboard
 from yasmin_ros import AcionState
 from yasmin_ros.basic_outcomes import SUCCEED
-from merlin2_arch_interfaces.action import DispatchPlan
+from merlin2_msgs.action import DispatchPlan
 
 
 class Merlin2DispatchPlanState(AcionState):

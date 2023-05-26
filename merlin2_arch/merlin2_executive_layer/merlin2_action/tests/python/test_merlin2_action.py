@@ -5,8 +5,8 @@ import rclpy
 
 from simple_node import Node
 
-from merlin2_arch_interfaces.msg import PlanAction
-from merlin2_arch_interfaces.action import DispatchAction
+from merlin2_msgs.msg import PlanAction
+from merlin2_msgs.action import DispatchAction
 
 from merlin2_basic_actions.merlin2_navigation_action import Merlin2NavigationAction
 

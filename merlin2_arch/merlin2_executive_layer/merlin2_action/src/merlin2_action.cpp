@@ -60,11 +60,11 @@ void Merlin2Action::start_action() {
                       ((kant::dto::PddlActionDto *)this)->get_name());
   }
 
-  this->action_server = this->create_action_server<
-      merlin2_arch_interfaces::action::DispatchAction>(
-      ((kant::dto::PddlActionDto *)this)->get_name(),
-      std::bind(&Merlin2Action::execute_server, this, _1),
-      std::bind(&Merlin2Action::cancel_callback, this));
+  this->action_server =
+      this->create_action_server<merlin2_msgs::action::DispatchAction>(
+          ((kant::dto::PddlActionDto *)this)->get_name(),
+          std::bind(&Merlin2Action::execute_server, this, _1),
+          std::bind(&Merlin2Action::cancel_callback, this));
 }
 
 bool Merlin2Action::save_action() {
@@ -84,12 +84,12 @@ bool Merlin2Action::save_action() {
 void Merlin2Action::cancel_callback() { this->cancel_action(); }
 
 void Merlin2Action::execute_server(
-    std::shared_ptr<rclcpp_action::ServerGoalHandle<
-        merlin2_arch_interfaces::action::DispatchAction>>
+    std::shared_ptr<
+        rclcpp_action::ServerGoalHandle<merlin2_msgs::action::DispatchAction>>
         goal_handle) {
 
-  auto result = std::make_shared<
-      merlin2_arch_interfaces::action::DispatchAction::Result>();
+  auto result =
+      std::make_shared<merlin2_msgs::action::DispatchAction::Result>();
   bool succeed = this->run_action(goal_handle->get_goal()->action);
 
   if (goal_handle->is_canceling()) {

@@ -6,10 +6,10 @@
 #include <string>
 
 #include "behaviortree_cpp_v3/bt_factory.h"
-#include "merlin2_arch_interfaces/action/dispatch_action.hpp"
+#include "merlin2_msgs/action/dispatch_action.hpp"
 #include "simple_node/actions/action_client.hpp"
 #include "simple_node/node.hpp"
-#include "waypoint_navigation_interfaces/action/navigate_to_wp.hpp"
+#include "waypoint_navigation_msgs/action/navigate_to_wp.hpp"
 
 namespace merlin2 {
 namespace bt_nodes {
@@ -26,13 +26,13 @@ public:
     this->action_client =
         ((simple_node::Node *)node.get())
             ->create_action_client<
-                waypoint_navigation_interfaces::action::NavigateToWp>(
+                waypoint_navigation_msgs::action::NavigateToWp>(
                 "/waypoint_navigation/navigate_to_wp");
   }
 
   static BT::PortsList providedPorts() {
-    return {BT::InputPort<merlin2_arch_interfaces::msg::PlanAction>(
-        "merlin2_action_goal")};
+    return {
+        BT::InputPort<merlin2_msgs::msg::PlanAction>("merlin2_action_goal")};
   }
 
   void halt() override { this->action_client->cancel_goal(); }
@@ -54,12 +54,11 @@ public:
 
       } else if (this->destination.empty()) {
 
-        merlin2_arch_interfaces::msg::PlanAction plan_action_goal;
+        merlin2_msgs::msg::PlanAction plan_action_goal;
         this->config().blackboard->get("merlin2_action_goal", plan_action_goal);
         this->destination = plan_action_goal.objects[1];
 
-        auto goal =
-            waypoint_navigation_interfaces::action::NavigateToWp::Goal();
+        auto goal = waypoint_navigation_msgs::action::NavigateToWp::Goal();
         goal.wp_id = this->destination;
         this->action_client->send_goal(goal);
 
@@ -72,7 +71,7 @@ public:
 
 private:
   std::shared_ptr<simple_node::actions::ActionClient<
-      waypoint_navigation_interfaces::action::NavigateToWp>>
+      waypoint_navigation_msgs::action::NavigateToWp>>
       action_client;
 
   std::string destination;

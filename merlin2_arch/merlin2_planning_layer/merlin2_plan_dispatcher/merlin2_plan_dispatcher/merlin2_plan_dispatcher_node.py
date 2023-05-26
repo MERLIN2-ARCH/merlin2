@@ -5,7 +5,7 @@
 import time
 from typing import Dict
 
-from merlin2_arch_interfaces.action import (
+from merlin2_msgs.action import (
     DispatchPlan,
     DispatchAction
 )

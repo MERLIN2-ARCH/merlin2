@@ -45,8 +45,7 @@ Merlin2BtAction::Merlin2BtAction(std::string a_name) : Merlin2Action(a_name) {
   }
 }
 
-bool Merlin2BtAction::run_action(
-    merlin2_arch_interfaces::msg::PlanAction goal) {
+bool Merlin2BtAction::run_action(merlin2_msgs::msg::PlanAction goal) {
 
   BT::NodeStatus result = BT::NodeStatus::RUNNING;
   this->blackboard->set("merlin2_action_goal", goal);

@@ -1,5 +1,5 @@
 # Define the goal
-merlin2_arch_interfaces/PlanAction action
+merlin2_msgs/PlanAction action
 ---
 # Define the result
 ---

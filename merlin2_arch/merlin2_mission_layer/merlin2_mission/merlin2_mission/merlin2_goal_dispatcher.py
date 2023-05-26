@@ -9,7 +9,7 @@ from kant_dto import PddlPropositionDto
 from kant_dao import ParameterLoader
 from kant_dao.dao_factory.dao_factories.dao_factory import DaoFactory
 
-from merlin2_arch_interfaces.action import Execute
+from merlin2_msgs.action import Execute
 
 from simple_node import Node
 

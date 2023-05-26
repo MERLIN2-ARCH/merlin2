@@ -1,5 +1,5 @@
 string domain
 string problem
 ---
-merlin2_arch_interfaces/PlanAction[] plan
+merlin2_msgs/PlanAction[] plan
 bool has_solution

@@ -20,7 +20,7 @@ class Merlin2BtAction : public Merlin2Action {
 public:
   Merlin2BtAction(std::string a_name);
 
-  bool run_action(merlin2_arch_interfaces::msg::PlanAction goal) override;
+  bool run_action(merlin2_msgs::msg::PlanAction goal) override;
   virtual void cancel_action() override;
   void cancel_tree();
 

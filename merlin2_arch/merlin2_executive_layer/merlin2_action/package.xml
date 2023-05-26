@@ -16,7 +16,7 @@
   <depend>simple_node</depend>
   <depend>kant_dto</depend>
   <depend>kant_dao</depend>
-  <depend>merlin2_arch_interfaces</depend>
+  <depend>merlin2_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

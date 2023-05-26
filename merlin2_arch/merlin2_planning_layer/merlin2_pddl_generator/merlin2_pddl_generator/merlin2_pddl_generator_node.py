@@ -4,7 +4,7 @@
 
 import rclpy
 
-from merlin2_arch_interfaces.srv import GeneratePddl
+from merlin2_msgs.srv import GeneratePddl
 from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
 
 from kant_dao import ParameterLoader

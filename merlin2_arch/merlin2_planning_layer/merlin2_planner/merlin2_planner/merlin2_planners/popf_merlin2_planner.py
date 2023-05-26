@@ -5,7 +5,7 @@ import tempfile
 import subprocess
 from typing import List
 from merlin2_planner.merlin2_planners.merlin2_planner import Merlin2Planner
-from merlin2_arch_interfaces.msg import PlanAction
+from merlin2_msgs.msg import PlanAction
 import ament_index_python
 
 

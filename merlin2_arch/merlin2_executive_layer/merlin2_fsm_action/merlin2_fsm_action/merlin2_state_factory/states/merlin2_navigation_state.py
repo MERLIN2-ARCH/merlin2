@@ -1,7 +1,7 @@
 
 """ Navigation State """
 
-from waypoint_navigation_interfaces.action import NavigateToWp
+from waypoint_navigation_msgs.action import NavigateToWp
 from yasmin_ros import AcionState
 from yasmin.blackboard import Blackboard
 

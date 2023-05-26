@@ -8,8 +8,8 @@ from simple_node import Node
 from kant_dao import ParameterLoader
 from kant_dto import PddlObjectDto, PddlPropositionDto
 
-from merlin2_arch_interfaces.msg import PlanAction
-from merlin2_arch_interfaces.action import DispatchPlan
+from merlin2_msgs.msg import PlanAction
+from merlin2_msgs.action import DispatchPlan
 
 from merlin2_basic_actions.merlin2_basic_types import wp_type
 from merlin2_basic_actions.merlin2_basic_predicates import robot_at

@@ -4,7 +4,7 @@ from simple_node import Node
 from yasmin.blackboard import Blackboard
 from yasmin_ros import ServiceState
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT
-from merlin2_arch_interfaces.srv import GeneratePlan
+from merlin2_msgs.srv import GeneratePlan
 
 
 class Merlin2GeneratePlanState(ServiceState):
