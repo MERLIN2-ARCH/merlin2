@@ -15,8 +15,8 @@ setup(
     zip_safe=True,
     maintainer='miguel',
     maintainer_email='mgons@unileon.es',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='MERLIN2 mission package',
+    license='GPL-3',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

@@ -3,9 +3,9 @@
 <package format="3">
   <name>merlin2_executor</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="mgonzs13@estudiantes.unileon.es">miguel</maintainer>
-  <license>TODO: License declaration</license>
+  <description>MERLIN2 executor package</description>
+  <maintainer email="mgons@unileon.es">Miguel Ángel González Santamarta</maintainer>
+  <license>GPL-3</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

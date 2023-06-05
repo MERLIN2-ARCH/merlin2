@@ -13,10 +13,10 @@ setup(
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="miguel",
+    maintainer="Miguel Ángel González Santamarta",
     maintainer_email="mgonzs13@estudiantes.unileon.es",
-    description="TODO: Package description",
-    license="TODO: License declaration",
+    description="MERLIN2 executor package",
+    license="GPL-3",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
