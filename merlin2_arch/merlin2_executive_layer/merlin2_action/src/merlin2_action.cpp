@@ -28,7 +28,10 @@ Merlin2Action::Merlin2Action(std::string a_name, bool durative)
   this->pddl_action_dao = this->dao_factory->create_pddl_action_dao();
 }
 
-Merlin2Action::~Merlin2Action() { delete this->dao_factory; }
+Merlin2Action::~Merlin2Action() {
+  delete this->dao_factory;
+  delete this->pddl_action_dao;
+}
 
 void Merlin2Action::destroy_action() {
   auto dto_ptr = std::make_shared<kant::dto::PddlActionDto>(

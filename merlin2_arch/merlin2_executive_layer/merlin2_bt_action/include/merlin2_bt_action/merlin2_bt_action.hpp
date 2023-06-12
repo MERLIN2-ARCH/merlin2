@@ -38,12 +38,12 @@ public:
   void cancel_tree();
 
 protected:
+  BT::Blackboard::Ptr blackboard;
   BT::BehaviorTreeFactory bt_factory;
   std::unique_ptr<BT::PublisherZMQ> groot_monitor;
 
 private:
   std::shared_ptr<BT::Tree> tree;
-  BT::Blackboard::Ptr blackboard;
   int tick_rate;
 };
 
