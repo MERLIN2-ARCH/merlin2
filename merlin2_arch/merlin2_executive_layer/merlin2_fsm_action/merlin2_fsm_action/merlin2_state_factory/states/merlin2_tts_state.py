@@ -17,11 +17,11 @@
 """ Navigation State """
 
 from text_to_speech_msgs.action import TTS
-from yasmin_ros import AcionState
+from yasmin_ros import ActionState
 from yasmin.blackboard import Blackboard
 
 
-class Merlin2TtsState(AcionState):
+class Merlin2TtsState(ActionState):
     """ Navigation State Class """
 
     def __init__(self, node):

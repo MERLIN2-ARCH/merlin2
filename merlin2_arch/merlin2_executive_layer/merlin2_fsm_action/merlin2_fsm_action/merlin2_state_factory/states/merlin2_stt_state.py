@@ -19,7 +19,7 @@
 from text_to_speech_msgs.action import TTS
 from speech_to_text_msgs.action import ListenOnce
 from std_srvs.srv import Empty
-from yasmin_ros import AcionState, ServiceState
+from yasmin_ros import ActionState, ServiceState
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 from yasmin import StateMachine, CbState
 from yasmin.blackboard import Blackboard
@@ -41,10 +41,10 @@ class Merlin2SttState(StateMachine):
         calibrating_state = ServiceState(
             node, Empty, "/speech_to_text/calibrate_listening", self.create_calibrate_request)
 
-        tts_state = AcionState(
+        tts_state = ActionState(
             node, TTS, "/text_to_speech/tts", self.create_tts_goal)
 
-        stt_state = AcionState(
+        stt_state = ActionState(
             node, ListenOnce, "/speech_to_text/listen_once", self.create_stt_goal,
             result_handler=self.result_stt_handler)
 

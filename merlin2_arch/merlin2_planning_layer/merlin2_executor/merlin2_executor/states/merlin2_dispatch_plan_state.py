@@ -18,12 +18,12 @@
 
 from simple_node import Node
 from yasmin.blackboard import Blackboard
-from yasmin_ros import AcionState
+from yasmin_ros import ActionState
 from yasmin_ros.basic_outcomes import SUCCEED
 from merlin2_msgs.action import DispatchPlan
 
 
-class Merlin2DispatchPlanState(AcionState):
+class Merlin2DispatchPlanState(ActionState):
     def __init__(self, node: Node) -> None:
         super().__init__(node, DispatchPlan, "dispatch_plan",
                          self.create_goal_handler, result_handler=self.result_handler)

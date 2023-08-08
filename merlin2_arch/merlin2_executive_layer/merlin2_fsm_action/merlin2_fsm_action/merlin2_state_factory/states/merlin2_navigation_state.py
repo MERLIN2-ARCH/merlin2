@@ -17,11 +17,11 @@
 """ Navigation State """
 
 from waypoint_navigation_msgs.action import NavigateToWp
-from yasmin_ros import AcionState
+from yasmin_ros import ActionState
 from yasmin.blackboard import Blackboard
 
 
-class Merlin2NavigationState(AcionState):
+class Merlin2NavigationState(ActionState):
     """ Navigation State Class """
 
     def __init__(self, node):

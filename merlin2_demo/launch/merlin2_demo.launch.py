@@ -85,7 +85,7 @@ def generate_launch_description():
     )
 
     merlin2_demo_node_cmd = Node(
-        package="merlin2_demo_node",
+        package="merlin2_demo",
         executable="merlin2_demo_node",
         name="merlin2_demo_node",
         parameters=[{"dao_family": dao_family,
