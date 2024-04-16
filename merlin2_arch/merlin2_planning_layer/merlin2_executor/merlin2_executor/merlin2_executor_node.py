@@ -56,7 +56,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
 
         self.add_state("DISPATCHING_PLAN", Merlin2DispatchPlanState(self))
 
-        YasminViewerPub(self, "MERLIN2_EXECUTOR", self)
+        YasminViewerPub("MERLIN2_EXECUTOR", self, node=self)
 
         # action server
         self.__action_server = self.create_action_server(Execute,

@@ -25,8 +25,12 @@ from merlin2_msgs.srv import GeneratePlan
 
 class Merlin2GeneratePlanState(ServiceState):
     def __init__(self, node: Node) -> None:
-        super().__init__(node, GeneratePlan, "generate_plan",
-                         self.create_request_handler, response_handler=self.response_handler)
+        super().__init__(
+            GeneratePlan, "generate_plan",
+            self.create_request_handler,
+            response_handler=self.response_handler,
+            node=node
+        )
         self._node = node
 
     def create_request_handler(self, blackboard: Blackboard) -> GeneratePlan.Request:

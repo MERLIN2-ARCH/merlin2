@@ -42,7 +42,7 @@ class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
         Merlin2MissionNode.__init__(
             self, node_name, reset_problem, run_mission)
 
-        YasminViewerPub(self, node_name.upper(), self)
+        YasminViewerPub(node_name.upper(), self, node=self)
 
     def execute_mission(self) -> None:
         self()

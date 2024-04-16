@@ -27,9 +27,12 @@ class Merlin2NavigationState(ActionState):
 
     def __init__(self, node: Node) -> None:
 
-        super().__init__(node, NavigateToWp,
-                         "/waypoint_navigation/navigate_to_wp",
-                         self.create_nav_goal)
+        super().__init__(
+            NavigateToWp,
+            "/waypoint_navigation/navigate_to_wp",
+            self.create_nav_goal,
+            node=node
+        )
 
     def create_nav_goal(self, blackboard: Blackboard) -> NavigateToWp.Goal:
         """ create a goal for the waypoint navigation

@@ -27,7 +27,11 @@ class Merlin2TtsState(ActionState):
 
     def __init__(self, node: Node) -> None:
 
-        super().__init__(node, TTS, "/text_to_speech/tts", self.create_tts_goal)
+        super().__init__(
+            TTS, "/text_to_speech/tts",
+            self.create_tts_goal,
+            node=node
+        )
 
     def create_tts_goal(self, blackboard: Blackboard) -> TTS.Goal:
         """ create a goal for the tts system

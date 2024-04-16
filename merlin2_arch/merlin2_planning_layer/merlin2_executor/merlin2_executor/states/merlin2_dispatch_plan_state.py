@@ -25,9 +25,12 @@ from merlin2_msgs.action import DispatchPlan
 
 class Merlin2DispatchPlanState(ActionState):
     def __init__(self, node: Node) -> None:
-        super().__init__(node, DispatchPlan, "dispatch_plan",
-                         self.create_goal_handler, result_handler=self.result_handler)
-        self._node = node
+        super().__init__(
+            DispatchPlan, "dispatch_plan",
+            self.create_goal_handler,
+            result_handler=self.result_handler,
+            node=node
+        )
 
     def create_goal_handler(self, blackboard: Blackboard) -> DispatchPlan.Goal:
         goal = DispatchPlan.Goal()

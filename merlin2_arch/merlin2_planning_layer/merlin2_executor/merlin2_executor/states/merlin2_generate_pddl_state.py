@@ -25,8 +25,12 @@ from merlin2_msgs.srv import GeneratePddl
 
 class Merlin2GeneratePddlState(ServiceState):
     def __init__(self, node: Node) -> None:
-        super().__init__(node, GeneratePddl, "generate_pddl",
-                         self.create_request_handler, response_handler=self.response_handler)
+        super().__init__(
+            GeneratePddl, "generate_pddl",
+            self.create_request_handler,
+            response_handler=self.response_handler,
+            node=node
+        )
         self._node = node
 
     def create_request_handler(self, blackboard: Blackboard) -> GeneratePddl.Request:

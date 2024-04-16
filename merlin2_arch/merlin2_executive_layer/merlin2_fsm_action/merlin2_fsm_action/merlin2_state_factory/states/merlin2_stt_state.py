@@ -38,17 +38,23 @@ class Merlin2SttState(StateMachine):
             ["valid", "repeat"], self.checking_speech)
 
         calibrating_state = ServiceState(
-            node, Empty, "/speech_to_text/calibrate_listening",
-            self.create_calibrate_request)
+            Empty, "/speech_to_text/calibrate_listening",
+            self.create_calibrate_request,
+            node=node
+        )
 
         tts_state = ActionState(
-            node, TTS, "/text_to_speech/tts",
-            self.create_tts_goal)
+            TTS, "/text_to_speech/tts",
+            self.create_tts_goal,
+            node=node
+        )
 
         stt_state = ActionState(
-            node, ListenOnce, "/speech_to_text/listen_once",
+            ListenOnce, "/speech_to_text/listen_once",
             self.create_stt_goal,
-            result_handler=self.result_stt_handler)
+            result_handler=self.result_stt_handler,
+            node=node
+        )
 
         self.add_state(
             "CALIBRATING",
