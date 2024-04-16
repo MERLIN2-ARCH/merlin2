@@ -262,8 +262,8 @@ class Merlin2PlanDispatcherNode(Node):
         return succeed
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
 
     node = Merlin2PlanDispatcherNode()
 

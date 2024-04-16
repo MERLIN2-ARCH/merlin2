@@ -28,7 +28,7 @@ from .states import (
 class Merlin2StateFactory:
     """ MERLIN2 State Factory Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.merlin2_basic_states = Merlin2BasicStates
         self.__enum_to_state = {
             self.merlin2_basic_states.NAVIGATION: Merlin2NavigationState,

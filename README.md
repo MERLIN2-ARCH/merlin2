@@ -5,6 +5,7 @@
 </p>
 
 ## Table of Contents
+
 1. [Diagram](#diagrams)
 2. [PDDL Planners](#pddl-planners)
 3. [Installation](#installation)
@@ -160,27 +161,33 @@ class Merlin2NavigationAction(Merlin2Action):
 
     # add PDDL action conditions as PddlConditionEffectDto
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [self.__org],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            time=PddlConditionEffectDto.AT_START
+        )
         return [condition_1]
 
     # add PDDL action effects as PddlConditionEffectDto
     def create_efects(self) -> List[PddlConditionEffectDto]:
-        effect_1 = PddlConditionEffectDto(robot_at,
-                                          [self.__dst],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__dst],
+            time=PddlConditionEffectDto.AT_END
+        )
 
-        effect_2 = PddlConditionEffectDto(robot_at,
-                                          [self.__org],
-                                          is_negative=True,
-                                          time=PddlConditionEffectDto.AT_START)
+        effect_2 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            is_negative=True,
+            time=PddlConditionEffectDto.AT_START
+        )
 
         return [effect_1, effect_2]
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     node = Merlin2NavigationAction()
     node.join_spin()
     rclpy.shutdown()
@@ -259,27 +266,33 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
 
     # add PDDL action conditions as PddlConditionEffectDto
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [self.__org],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            time=PddlConditionEffectDto.AT_START
+        )
         return [condition_1]
 
     # add PDDL action effects as PddlConditionEffectDto
     def create_efects(self) -> List[PddlConditionEffectDto]:
-        effect_1 = PddlConditionEffectDto(robot_at,
-                                          [self.__dst],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__dst],
+            time=PddlConditionEffectDto.AT_END
+        )
 
-        effect_2 = PddlConditionEffectDto(robot_at,
-                                          [self.__org],
-                                          is_negative=True,
-                                          time=PddlConditionEffectDto.AT_START)
+        effect_2 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            is_negative=True,
+            time=PddlConditionEffectDto.AT_START
+        )
 
         return [effect_1, effect_2]
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     node = Merlin2NavigationFsmAction()
     node.join_spin()
     rclpy.shutdown()
@@ -345,7 +358,6 @@ $ ros2 launch merlin2_demo merlin2_demo3.launch.py
     abstract = {Any service robot should be able to make decisions and schedule tasks to reach predefined goals such as opening a door or assisting users at home. However, these processes are not single short-term tasks anymore and it is required to set long-term skills for establishing a control architecture that allows robots to perform daily tasks. This paper presents MERLIN2, a hybrid cognitive architecture based on symbolic planning and state machine decision-making systems, that allows performing robot behaviors. The architecture can run in any robot running ROS 2, the latest version of the Robot Operative System. MERLIN2 is available at https://github.com/MERLIN2-ARCH/merlin2.}
 }
 ```
-
 
 ```bibtex
 @article{gonzalez2020merlin,

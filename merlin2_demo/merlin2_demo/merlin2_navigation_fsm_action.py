@@ -46,7 +46,7 @@ from merlin2_basic_actions.merlin2_basic_types import wp_type
 class Merlin2NavigationFsmAction(Merlin2FsmAction):
     """ Merlin2 Navigation Action Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.__org = PddlObjectDto(wp_type, "o")
         self.__dst = PddlObjectDto(wp_type, "d")
@@ -86,31 +86,34 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
         return [self.__org, self.__dst]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [self.__org],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            time=PddlConditionEffectDto.AT_START
+        )
         return [condition_1]
 
     def create_efects(self) -> List[PddlConditionEffectDto]:
-        effect_1 = PddlConditionEffectDto(robot_at,
-                                          [self.__dst],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__dst],
+            time=PddlConditionEffectDto.AT_END
+        )
 
-        effect_2 = PddlConditionEffectDto(robot_at,
-                                          [self.__org],
-                                          is_negative=True,
-                                          time=PddlConditionEffectDto.AT_START)
+        effect_2 = PddlConditionEffectDto(
+            robot_at,
+            [self.__org],
+            is_negative=True,
+            time=PddlConditionEffectDto.AT_START
+        )
 
         return [effect_1, effect_2]
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node = Merlin2NavigationFsmAction()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

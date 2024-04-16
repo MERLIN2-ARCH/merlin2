@@ -18,7 +18,6 @@
 
 import rclpy
 import time
-from typing import List
 
 from merlin2_mission import Merlin2MissionNode
 
@@ -42,7 +41,7 @@ sounds_acepted = ['doorbell', 'bell', 'ding-dong',
 
 class Merlin2Demo3Node(Merlin2MissionNode):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("demo_3_node")
 
     def create_objects(self):
@@ -85,8 +84,8 @@ class Merlin2Demo3Node(Merlin2MissionNode):
         self.get_logger().info("Execution time: "+str(end-start))
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     Merlin2Demo3Node()
     rclpy.shutdown()
 

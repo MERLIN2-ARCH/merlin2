@@ -48,7 +48,7 @@ from merlin2_demo.pddl import person_attended
 class Merlin2HiNavigationAction(Merlin2Action):
     """ Merlin2 HI Navigation Action Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.__source_p = PddlObjectDto(wp_type, "source_p")
         self.__per = PddlObjectDto(person_type, "per")
@@ -113,37 +113,42 @@ class Merlin2HiNavigationAction(Merlin2Action):
         return [self.__source_p, self.__per]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [self.__source_p],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__source_p],
+            time=PddlConditionEffectDto.AT_START
+        )
 
-        condition_2 = PddlConditionEffectDto(person_at,
-                                             [self.__per, self.__source_p],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_2 = PddlConditionEffectDto(
+            person_at,
+            [self.__per, self.__source_p],
+            time=PddlConditionEffectDto.AT_START
+        )
 
         return [condition_1, condition_2]
 
     def create_efects(self) -> List[PddlConditionEffectDto]:
 
-        effect_1 = PddlConditionEffectDto(person_attended,
-                                          [self.__per],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_1 = PddlConditionEffectDto(
+            person_attended,
+            [self.__per],
+            time=PddlConditionEffectDto.AT_END
+        )
 
-        effect_2 = PddlConditionEffectDto(robot_at,
-                                          [self.__source_p],
-                                          is_negative=True,
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_2 = PddlConditionEffectDto(
+            robot_at,
+            [self.__source_p],
+            is_negative=True,
+            time=PddlConditionEffectDto.AT_END
+        )
 
         return [effect_1, effect_2]
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node = Merlin2HiNavigationAction()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

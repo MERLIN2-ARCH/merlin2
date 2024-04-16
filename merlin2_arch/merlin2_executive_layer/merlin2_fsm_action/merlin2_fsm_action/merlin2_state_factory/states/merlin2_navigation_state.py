@@ -16,6 +16,7 @@
 
 """ Navigation State """
 
+from rclpy.node import Node
 from waypoint_navigation_msgs.action import NavigateToWp
 from yasmin_ros import ActionState
 from yasmin.blackboard import Blackboard
@@ -24,10 +25,11 @@ from yasmin.blackboard import Blackboard
 class Merlin2NavigationState(ActionState):
     """ Navigation State Class """
 
-    def __init__(self, node):
+    def __init__(self, node: Node) -> None:
 
         super().__init__(node, NavigateToWp,
-                         "/waypoint_navigation/navigate_to_wp", self.create_nav_goal)
+                         "/waypoint_navigation/navigate_to_wp",
+                         self.create_nav_goal)
 
     def create_nav_goal(self, blackboard: Blackboard) -> NavigateToWp.Goal:
         """ create a goal for the waypoint navigation

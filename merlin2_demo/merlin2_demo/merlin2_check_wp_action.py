@@ -46,7 +46,7 @@ from merlin2_demo.pddl import wp_checked
 class Merlin2CheckWpAction(Merlin2Action):
     """ Merlin2 Navigation Action Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.__wp = PddlObjectDto(wp_type, "wp")
 
@@ -77,28 +77,29 @@ class Merlin2CheckWpAction(Merlin2Action):
         return [self.__wp]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [self.__wp],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at,
+            [self.__wp],
+            time=PddlConditionEffectDto.AT_START
+        )
 
         return [condition_1]
 
     def create_efects(self) -> List[PddlConditionEffectDto]:
 
-        effect_1 = PddlConditionEffectDto(wp_checked,
-                                          [self.__wp],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_1 = PddlConditionEffectDto(
+            wp_checked,
+            [self.__wp],
+            time=PddlConditionEffectDto.AT_END
+        )
 
         return [effect_1]
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node = Merlin2CheckWpAction()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

@@ -19,18 +19,17 @@
 """ Merlin2 Planner Node """
 
 import rclpy
+from rclpy.node import Node
 
 from merlin2_msgs.srv import GeneratePlan
 from merlin2_planner.merlin2_planner_factory import Merlin2PlannerFactory
 from merlin2_planner import Merlin2Planners
 
-from simple_node import Node
-
 
 class Merlin2PlannerNode(Node):
     """ Merlin2 Planner Node Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         super().__init__("planner_node", namespace="merlin2")
 
@@ -54,9 +53,13 @@ class Merlin2PlannerNode(Node):
         self.__planner_service = self.create_service(
             GeneratePlan, "generate_plan", self.__planner_srv)
 
-    def __planner_srv(self,
-                      req: GeneratePlan.Request,
-                      res: GeneratePlan.Response) -> GeneratePlan.Response:
+        self.get_logger().info("Planner Started")
+
+    def __planner_srv(
+            self,
+            req: GeneratePlan.Request,
+            res: GeneratePlan.Response
+    ) -> GeneratePlan.Response:
         """ plan srv callback
 
         Args:
@@ -75,13 +78,10 @@ class Merlin2PlannerNode(Node):
         return res
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node = Merlin2PlannerNode()
-
-    node.join_spin()
-
+    rclpy.spin(node)
     rclpy.shutdown()
 
 

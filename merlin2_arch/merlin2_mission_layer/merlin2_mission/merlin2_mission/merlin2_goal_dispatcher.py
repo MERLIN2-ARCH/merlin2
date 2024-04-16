@@ -32,7 +32,7 @@ from simple_node import Node
 class Merlin2GoalDispatcher:
     """ MERLIN2 Goal Dispatcher Class """
 
-    def __init__(self, node: Node):
+    def __init__(self, node: Node) -> None:
         self.__node = node
 
         self.result = None
@@ -102,7 +102,7 @@ class Merlin2GoalDispatcher:
 
         return self.result
 
-    def cancel_goals(self):
+    def cancel_goals(self) -> None:
         """ cancel executor (canceling everything else)
             and delete current goals
         """

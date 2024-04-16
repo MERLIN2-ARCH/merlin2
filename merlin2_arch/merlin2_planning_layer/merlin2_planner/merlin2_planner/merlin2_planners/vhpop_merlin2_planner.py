@@ -23,7 +23,7 @@ import ament_index_python
 class VhpopMerlin2Planner(PopfMerlin2Planner):
     """ VHPOP Merlin2 Planner """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.planner_path = ament_index_python.get_package_share_directory(
@@ -31,7 +31,7 @@ class VhpopMerlin2Planner(PopfMerlin2Planner):
 
         self.planner_cmd = "timeout 60 " + self.planner_path + " {} {}"
 
-    def _parse_plan(self):
+    def _parse_plan(self) -> None:
         """ parse the current plan from str to
             list of PlanAction and check if has solution
         """

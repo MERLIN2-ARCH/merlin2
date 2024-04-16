@@ -39,7 +39,7 @@ from merlin2_demo.pddl import person_attended
 
 class Merlin2DemoNode(Merlin2MissionNode):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("demo_node")
 
     def create_objects(self):
@@ -67,8 +67,8 @@ class Merlin2DemoNode(Merlin2MissionNode):
         self.get_logger().info(str(succeed))
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     Merlin2DemoNode()
     rclpy.shutdown()
 

@@ -28,13 +28,13 @@ from merlin2_msgs.msg import PlanAction
 class UpMerlin2Planner(Merlin2Planner):
     """ UP Merlin2 Planner """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.reader = PDDLReader()
         self._up_plan = None
 
-    def _generate_plan(self, domain: str, problem: str):
+    def _generate_plan(self, domain: str, problem: str) -> None:
         """ create a ppdl plan
 
         Args:
@@ -75,7 +75,7 @@ class UpMerlin2Planner(Merlin2Planner):
         domain_file.close()
         problem_file.close()
 
-    def _parse_plan(self):
+    def _parse_plan(self) -> None:
         """ parse the current plan from str to
             list of PlanAction and check if has solution
         """

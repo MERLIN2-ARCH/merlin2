@@ -16,16 +16,14 @@
 
 import os
 
+from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
-from launch_ros.actions import Node
-from launch.actions import SetEnvironmentVariable, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
 from kant_dao.dao_factory import DaoFamilies
-from merlin2_planner import Merlin2Planners
 
 
 def generate_launch_description():
@@ -39,13 +37,9 @@ def generate_launch_description():
     text_to_speech_share_dir = get_package_share_directory(
         "text_to_speech")
 
-    stdout_linebuf_envvar = SetEnvironmentVariable(
-        "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
-
     #
     # ARGS
     #
-
     dao_family = LaunchConfiguration("dao_family")
     dao_family_cmd = DeclareLaunchArgument(
         "dao_family",
@@ -61,35 +55,40 @@ def generate_launch_description():
     planner = LaunchConfiguration("planner")
     planner_cmd = DeclareLaunchArgument(
         "planner",
-        default_value=str(int(Merlin2Planners.POPF)),
+        default_value="1",
         description="PDDL planner")
 
     #
     # NODES
     #
-
     merlin2_navigation_action_cmd = Node(
         package="merlin2_basic_actions",
         executable="merlin2_navigation_fsm_action",
         name="navigation",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri}]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri
+        }]
     )
 
     merlin2_hi_navigation_action_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_hi_navigation_fsm_action",
         name="hi_navigation",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri}]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri
+        }]
     )
 
     merlin2_demo_node_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_demo_node",
         name="merlin2_demo_node",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri}]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri
+        }]
     )
 
     #
@@ -123,9 +122,6 @@ def generate_launch_description():
     #
     # ADD
     #
-
-    ld.add_action(stdout_linebuf_envvar)
-
     ld.add_action(dao_family_cmd)
     ld.add_action(mongo_uri_cmd)
     ld.add_action(planner_cmd)

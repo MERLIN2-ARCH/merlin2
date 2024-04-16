@@ -16,7 +16,7 @@
 
 """ Merlin2 Action Base """
 
-from typing import List
+from typing import List, Union
 from abc import ABC, abstractmethod
 
 from merlin2_msgs.action import DispatchAction
@@ -32,7 +32,7 @@ from rclpy.parameter import Parameter
 class Merlin2Action(Node, PddlActionDto, ABC):
     """ Merlin2 Action Class """
 
-    def __init__(self, a_name: str, durative: bool = True):
+    def __init__(self, a_name: str, durative: bool = True) -> None:
 
         Node.__init__(self, a_name, namespace="merlin2")
         PddlActionDto.__init__(self,
@@ -62,7 +62,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
                                                          self.__execute_server,
                                                          cancel_callback=self.__cancel_callback)
 
-    def set_parameters(self, parameters):
+    def set_parameters(self, parameters: Union[PddlActionDto | Parameter]) -> None:
         """ set parameters for PddlActionDto and Node
             both has the same method
 
@@ -82,7 +82,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
                 elif isinstance(parameters[0], Parameter):
                     return Node.set_parameters(self, parameters)
 
-    def get_parameters(self, names: List[str] = None):
+    def get_parameters(self, names: List[str] = None) -> None:
         """ get parameters for PddlActionDto and Node
             both has the same method
 
@@ -104,7 +104,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
     def __hash__(self):
         return Node.__hash__(self)
 
-    def destroy_node(self):
+    def destroy_node(self) -> None:
         """ destroy node method """
 
         self.__pddl_action_dao.delete(self)
@@ -119,7 +119,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         """
 
     @abstractmethod
-    def cancel_action(self):
+    def cancel_action(self) -> None:
         """ Code to cancel the action. Must be implemented. """
 
     @abstractmethod

@@ -32,7 +32,12 @@ from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
 class Merlin2MissionNode(Node, ABC):
     """ MERLIN2 Mission Node Class """
 
-    def __init__(self, node_name: str, reset_problem: bool = True, run_mission: bool = True):
+    def __init__(
+        self,
+        node_name: str,
+        reset_problem: bool = True,
+        run_mission: bool = True
+    ) -> None:
 
         super().__init__(node_name, namespace="merlin2")
 
@@ -88,7 +93,7 @@ class Merlin2MissionNode(Node, ABC):
 
         return self.goal_dispatcher.execute_goals([goal])
 
-    def cancel_goals(self):
+    def cancel_goals(self) -> None:
         """ cancel executor goals """
 
         self.goal_dispatcher.cancel_goals()
@@ -97,7 +102,7 @@ class Merlin2MissionNode(Node, ABC):
         return Node.__hash__(self)
 
     @abstractmethod
-    def execute_mission(self):
+    def execute_mission(self) -> None:
         """ execute mission """
 
     @abstractmethod

@@ -16,7 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from genericpath import exists
 import rclpy
 from simple_node import Node
 
@@ -30,7 +29,7 @@ from merlin2_demo.pddl import sound_listened, sound_type
 
 class Merlin2ListenAudio(Node):
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         super().__init__("merlin2_listen_audio")
 
@@ -69,9 +68,8 @@ class Merlin2ListenAudio(Node):
         self._sound_listened_prop_old = sound_listened_prop
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node_listen = Merlin2ListenAudio()
     node_listen.join_spin()
     node_listen.destroy_node()

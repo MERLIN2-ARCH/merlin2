@@ -27,11 +27,13 @@ from .merlin2_mission_node import Merlin2MissionNode
 class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
     """ MERLIN2 FSM Mission Node Class """
 
-    def __init__(self,
-                 node_name: str,
-                 reset_problem: bool = True,
-                 run_mission: bool = False,
-                 outcomes: List[str] = None):
+    def __init__(
+        self,
+        node_name: str,
+        reset_problem: bool = True,
+        run_mission: bool = False,
+        outcomes: List[str] = None
+    ) -> None:
 
         if not outcomes:
             outcomes = [SUCCEED, ABORT, CANCEL]
@@ -42,5 +44,5 @@ class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
 
         YasminViewerPub(self, node_name.upper(), self)
 
-    def execute_mission(self):
+    def execute_mission(self) -> None:
         self()

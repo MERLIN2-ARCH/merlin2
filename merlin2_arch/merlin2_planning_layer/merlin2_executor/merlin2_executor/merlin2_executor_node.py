@@ -107,8 +107,8 @@ class Merlin2ExecutorNode(Node, StateMachine):
         return result
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
 
     node = Merlin2ExecutorNode()
 

@@ -16,6 +16,7 @@
 
 """ Navigation State """
 
+from rclpy.node import Node
 from text_to_speech_msgs.action import TTS
 from speech_to_text_msgs.action import ListenOnce
 from std_srvs.srv import Empty
@@ -28,9 +29,7 @@ from yasmin.blackboard import Blackboard
 class Merlin2SttState(StateMachine):
     """ Navigation State Class """
 
-    def __init__(self, node):
-
-        self.node = node
+    def __init__(self, node: Node) -> None:
 
         super().__init__(
             [SUCCEED, ABORT, CANCEL])
@@ -39,35 +38,44 @@ class Merlin2SttState(StateMachine):
             ["valid", "repeat"], self.checking_speech)
 
         calibrating_state = ServiceState(
-            node, Empty, "/speech_to_text/calibrate_listening", self.create_calibrate_request)
+            node, Empty, "/speech_to_text/calibrate_listening",
+            self.create_calibrate_request)
 
         tts_state = ActionState(
-            node, TTS, "/text_to_speech/tts", self.create_tts_goal)
+            node, TTS, "/text_to_speech/tts",
+            self.create_tts_goal)
 
         stt_state = ActionState(
-            node, ListenOnce, "/speech_to_text/listen_once", self.create_stt_goal,
+            node, ListenOnce, "/speech_to_text/listen_once",
+            self.create_stt_goal,
             result_handler=self.result_stt_handler)
 
         self.add_state(
             "CALIBRATING",
             calibrating_state,
-            {SUCCEED: "LISTENING"})
+            {SUCCEED: "LISTENING"}
+        )
 
         self.add_state(
             "LISTENING",
             stt_state,
-            {SUCCEED: "CHECKING_SPEECH"})
+            {SUCCEED: "CHECKING_SPEECH"}
+        )
 
         self.add_state(
             "CHECKING_SPEECH",
             checking_speech_state,
-            {"repeat": "COMPLAINING",
-             "valid": SUCCEED})
+            {
+                "repeat": "COMPLAINING",
+                "valid": SUCCEED
+            }
+        )
 
         self.add_state(
             "COMPLAINING",
             tts_state,
-            {SUCCEED: "CALIBRATING"})
+            {SUCCEED: "CALIBRATING"}
+        )
 
     def create_tts_goal(self, blackboard: Blackboard) -> TTS.Goal:
         """ create a goal for the tts system

@@ -24,13 +24,13 @@ from merlin2_msgs.msg import PlanAction
 class Merlin2Planner(ABC):
     """ Merlin2 Planner Abstract Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._has_solution = False
         self._str_plan = ""
         self._plan_actions = []
 
     @abstractmethod
-    def _generate_plan(self, domain: str, problem: str):
+    def _generate_plan(self, domain: str, problem: str) -> None:
         """ create a ppdl plan
 
         Args:
@@ -39,12 +39,12 @@ class Merlin2Planner(ABC):
         """
 
     @abstractmethod
-    def _parse_plan(self):
+    def _parse_plan(self) -> None:
         """ parse the current plan from str to
             list of PlanAction and check if has solution
         """
 
-    def generate_plan(self, domain: str, problem: str):
+    def generate_plan(self, domain: str, problem: str) -> None:
         """ create and parse a pddl plan
 
         Args:

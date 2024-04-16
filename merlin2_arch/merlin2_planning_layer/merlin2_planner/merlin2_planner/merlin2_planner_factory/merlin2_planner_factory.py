@@ -29,7 +29,7 @@ from merlin2_planner.merlin2_planners import (
 class Merlin2PlannerFactory:
     """ Merlin2 Planner Factory Class """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.planners = Merlin2Planners
         self.__num_to_planner = {
             self.planners.POPF: PopfMerlin2Planner,

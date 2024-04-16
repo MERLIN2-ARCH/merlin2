@@ -29,7 +29,7 @@ from .merlin2_state_factory import Merlin2StateFactory
 class Merlin2FsmAction(Merlin2Action, StateMachine):
     """ Merlin2 FSM Action Class """
 
-    def __init__(self, action_name: str):
+    def __init__(self, action_name: str) -> None:
 
         self.__state_factory = Merlin2StateFactory()
 
@@ -50,7 +50,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
         return outcome == SUCCEED
 
-    def cancel_action(self):
+    def cancel_action(self) -> None:
         self.cancel_state()
 
     def create_state(self, state: int) -> State:

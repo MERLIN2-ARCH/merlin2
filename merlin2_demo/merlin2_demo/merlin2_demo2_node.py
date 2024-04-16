@@ -53,7 +53,7 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
     END = "end"
     NEXT = "next"
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         super().__init__("demo_2_node", run_mission=False, outcomes=[self.END])
 
@@ -93,30 +93,44 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
             PoseWithCovarianceStamped, "/amcl_pose", self.__pose_cb, 100)
 
         # build fsm
-        self.add_state("INITIATING_BLACKBOARD",
-                       CbState([self.END], self.init_blackboard),
-                       {self.END: "CHECKING_NEXT_TEST"})
+        self.add_state(
+            "INITIATING_BLACKBOARD",
+            CbState([self.END], self.init_blackboard),
+            {self.END: "CHECKING_NEXT_TEST"}
+        )
 
-        self.add_state("CHECKING_NEXT_TEST",
-                       CbState([self.NEXT, self.END], self.check_next_test),
-                       {self.NEXT: "MOVING_ROBOT_TO_INIT_POSE",
-                        self.END: self.END})
+        self.add_state(
+            "CHECKING_NEXT_TEST",
+            CbState([self.NEXT, self.END], self.check_next_test),
+            {
+                self.NEXT: "MOVING_ROBOT_TO_INIT_POSE",
+                self.END: self.END
+            }
+        )
 
-        self.add_state("MOVING_ROBOT_TO_INIT_POSE",
-                       CbState([self.END], self.move_robot_to_init_pose),
-                       {self.END: "INITIATING_POINTS"})
+        self.add_state(
+            "MOVING_ROBOT_TO_INIT_POSE",
+            CbState([self.END], self.move_robot_to_init_pose),
+            {self.END: "INITIATING_POINTS"}
+        )
 
-        self.add_state("INITIATING_POINTS",
-                       CbState([self.END], self.init_points),
-                       {self.END: "RUNNING_TEST"})
+        self.add_state(
+            "INITIATING_POINTS",
+            CbState([self.END], self.init_points),
+            {self.END: "RUNNING_TEST"}
+        )
 
-        self.add_state("RUNNING_TEST",
-                       CbState([self.END], self.run_test),
-                       {self.END: "SAVING_RESULTS"})
+        self.add_state(
+            "RUNNING_TEST",
+            CbState([self.END], self.run_test),
+            {self.END: "SAVING_RESULTS"}
+        )
 
-        self.add_state("SAVING_RESULTS",
-                       CbState([self.END], self.save_results),
-                       {self.END: "CHECKING_NEXT_TEST"})
+        self.add_state(
+            "SAVING_RESULTS",
+            CbState([self.END], self.save_results),
+            {self.END: "CHECKING_NEXT_TEST"}
+        )
 
     def __pose_cb(self, msg: PoseWithCovarianceStamped):
         pose = msg.pose.pose
@@ -275,14 +289,11 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         return self.END
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     node = Merlin2Demo2Node()
     node.execute_mission()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

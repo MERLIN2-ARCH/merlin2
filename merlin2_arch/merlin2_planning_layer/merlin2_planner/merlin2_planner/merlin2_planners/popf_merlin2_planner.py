@@ -27,7 +27,7 @@ import ament_index_python
 class PopfMerlin2Planner(Merlin2Planner):
     """ Popf Merlin2 Planner """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.planner_path = ament_index_python.get_package_share_directory(
@@ -35,7 +35,7 @@ class PopfMerlin2Planner(Merlin2Planner):
 
         self.planner_cmd = "timeout 60 " + self.planner_path + " {} {}"
 
-    def _generate_plan(self, domain: str, problem: str):
+    def _generate_plan(self, domain: str, problem: str) -> None:
         """ create a ppdl plan
 
         Args:
@@ -64,7 +64,7 @@ class PopfMerlin2Planner(Merlin2Planner):
 
         self._str_plan = plan
 
-    def _parse_plan(self):
+    def _parse_plan(self) -> None:
         """ parse the current plan from str to
             list of PlanAction and check if has solution
         """
