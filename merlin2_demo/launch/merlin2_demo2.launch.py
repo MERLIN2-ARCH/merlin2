@@ -24,7 +24,6 @@ from ament_index_python.packages import get_package_share_directory
 import ament_index_python
 
 from kant_dao.dao_factory import DaoFamilies
-from merlin2_planner import Merlin2Planners
 
 
 def generate_launch_description():
@@ -58,7 +57,7 @@ def generate_launch_description():
     planner = LaunchConfiguration("planner")
     planner_cmd = DeclareLaunchArgument(
         "planner",
-        default_value=str(int(Merlin2Planners.POPF)),
+        default_value="1",
         description="PDDL planner")
 
     total_points = LaunchConfiguration("total_points")
@@ -96,24 +95,22 @@ def generate_launch_description():
     #
     merlin2_navigation_action_cmd = Node(
         package="merlin2_demo",
-        executable="merlin2_navigation_bt_action",
+        executable="merlin2_navigation_fsm_action",
         name="navigation",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri,
-                     "bt_file_path": ament_index_python.get_package_share_directory(
-                         "merlin2_demo") + "/bt_xml/navigation.xml",
-                     "plugins": ["waypoint_navigation_bt_node"],
-                     "publisher_port": 1668,
-                     "server_port": 1669
-                     }]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri,
+        }]
     )
 
     merlin2_check_wp_action_cmd = Node(
         package="merlin2_demo",
         executable="merlin2_check_wp_fsm_action",
         name="check_wp",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri}]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri
+        }]
     )
 
     merlin2_demo2_node_cmd = Node(

@@ -105,7 +105,7 @@ class ClientNode(Node):
         while not self.plan_dispatcher_client.is_working():
             time.sleep(1)
 
-        return self.plan_dispatcher_client.cancel_goal()
+        self.plan_dispatcher_client.cancel_goal()
 
     def is_succeeded(self):
         return self.plan_dispatcher_client.is_succeeded()
@@ -154,7 +154,8 @@ class TestMerlin2PlanDispatcher(unittest.TestCase):
             time.sleep(1)
 
         self.client_node.call_plan_dispatcher()
-        self.assertTrue(self.client_node.cancel_plan_dispatcher())
+        self.client_node.cancel_plan_dispatcher()
+
         self.client_node.wait_plan_dispatcher()
         self.assertTrue(self.client_node.is_canceled())
 

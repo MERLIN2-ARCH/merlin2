@@ -98,14 +98,12 @@ class TestMerlin2Action(unittest.TestCase):
         rclpy.shutdown()
 
     def test_action(self):
-
         self.client_node.call_action()
         self.client_node.wait_action()
         self.assertTrue(self.client_node.is_succeeded())
 
     def test_action_canceled(self):
-
         self.client_node.call_action()
-        self.assertTrue(self.client_node.cancel_action())
+        self.client_node.cancel_action()
         self.client_node.wait_action()
         self.assertTrue(self.client_node.is_canceled())

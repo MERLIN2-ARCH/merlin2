@@ -55,10 +55,12 @@ class Merlin2PlanDispatcherNode(Node):
 
         # action server/client
         self.__action_client = None
-        self.__action_server = self.create_action_server(DispatchPlan,
-                                                         "dispatch_plan",
-                                                         execute_callback=self.__execute_server,
-                                                         cancel_callback=self.__cancel_callback)
+        self.__action_server = self.create_action_server(
+            DispatchPlan,
+            "dispatch_plan",
+            execute_callback=self.__execute_server,
+            cancel_callback=self.__cancel_callback
+        )
 
     def __cancel_callback(self):
         if self.__action_server.is_working():
@@ -176,15 +178,15 @@ class Merlin2PlanDispatcherNode(Node):
                 if goal_handle.is_cancel_requested:
                     break
 
-            if goal_handle.is_cancel_requested:
-                goal_handle.canceled()
-                self.__action_client = None
-                return result
+        if goal_handle.is_cancel_requested:
+            goal_handle.canceled()
+            self.__action_client = None
+            return result
 
-            elif not self.__action_client.is_succeeded():
-                goal_handle.abort()
-                self.__action_client = None
-                return result
+        elif not self.__action_client.is_succeeded():
+            goal_handle.abort()
+            self.__action_client = None
+            return result
 
         # reset action client
         goal_handle.succeed()
@@ -192,10 +194,11 @@ class Merlin2PlanDispatcherNode(Node):
 
         return result
 
-    def __build_proposition(self,
-                            pddl_effect_dto: PddlPropositionDto,
-                            pddl_objects_dto_dict: Dict[str, PddlObjectDto],
-                            ) -> PddlPropositionDto:
+    def __build_proposition(
+        self,
+        pddl_effect_dto: PddlPropositionDto,
+        pddl_objects_dto_dict: Dict[str, PddlObjectDto],
+    ) -> PddlPropositionDto:
         """ create a pddl proposition from an action effect
 
         Args:
@@ -217,9 +220,11 @@ class Merlin2PlanDispatcherNode(Node):
 
         return pddl_proposition_dto
 
-    def __update_knowledge(self,
-                           pddl_proposition_dto: PddlPropositionDto,
-                           deleted: bool) -> bool:
+    def __update_knowledge(
+            self,
+            pddl_proposition_dto: PddlPropositionDto,
+            deleted: bool
+    ) -> bool:
         """ update knowledge using a ppdl proposition
 
         Args:
@@ -240,9 +245,11 @@ class Merlin2PlanDispatcherNode(Node):
 
         return succeed
 
-    def __apply_effect(self,
-                       pddl_effect_dto: PddlConditionEffectDto,
-                       pddl_objects_dto_dict: Dict[str, PddlObjectDto]) -> bool:
+    def __apply_effect(
+        self,
+        pddl_effect_dto: PddlConditionEffectDto,
+        pddl_objects_dto_dict: Dict[str, PddlObjectDto]
+    ) -> bool:
         """ apply an action effect removing or adding knowledge
 
         Args:
@@ -264,11 +271,8 @@ class Merlin2PlanDispatcherNode(Node):
 
 def main():
     rclpy.init()
-
     node = Merlin2PlanDispatcherNode()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

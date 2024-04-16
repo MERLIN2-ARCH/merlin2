@@ -25,7 +25,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
 from kant_dao.dao_factory import DaoFamilies
-from merlin2_planner import Merlin2Planners
 
 
 def generate_launch_description():
@@ -61,7 +60,7 @@ def generate_launch_description():
     planner = LaunchConfiguration("planner")
     planner_cmd = DeclareLaunchArgument(
         "planner",
-        default_value=str(int(Merlin2Planners.UP)),
+        default_value="1",
         description="PDDL planner")
 
     #
