@@ -183,7 +183,7 @@ class Merlin2PlanDispatcherNode(Node):
             self.__action_client = None
             return result
 
-        elif not self.__action_client.is_succeeded():
+        elif self.__action_client and not self.__action_client.is_succeeded():
             goal_handle.abort()
             self.__action_client = None
             return result

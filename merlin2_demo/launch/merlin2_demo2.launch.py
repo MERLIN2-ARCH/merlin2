@@ -95,12 +95,16 @@ def generate_launch_description():
     #
     merlin2_navigation_action_cmd = Node(
         package="merlin2_demo",
-        executable="merlin2_navigation_fsm_action",
+        executable="merlin2_navigation_bt_action",
         name="navigation",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri,
-        }]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri,
+                     "bt_file_path": ament_index_python.get_package_share_directory(
+                         "merlin2_demo") + "/bt_xml/navigation.xml",
+                     "plugins": ["waypoint_navigation_bt_node"],
+                     "publisher_port": 1668,
+                     "server_port": 1669
+                     }]
     )
 
     merlin2_check_wp_action_cmd = Node(
