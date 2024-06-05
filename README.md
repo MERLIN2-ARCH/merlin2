@@ -169,7 +169,7 @@ class Merlin2NavigationAction(Merlin2Action):
         return [condition_1]
 
     # add PDDL action effects as PddlConditionEffectDto
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
         effect_1 = PddlConditionEffectDto(
             robot_at,
             [self.__dst],
@@ -274,7 +274,7 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
         return [condition_1]
 
     # add PDDL action effects as PddlConditionEffectDto
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
         effect_1 = PddlConditionEffectDto(
             robot_at,
             [self.__dst],

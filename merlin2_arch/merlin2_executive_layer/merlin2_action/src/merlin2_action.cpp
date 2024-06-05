@@ -56,13 +56,13 @@ Merlin2Action::create_conditions() {
 }
 
 std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-Merlin2Action::create_efects() {
+Merlin2Action::create_effects() {
   return {};
 }
 
 void Merlin2Action::start_action() {
   auto pddl_parameter_dto_list = this->create_parameters();
-  auto pddl_effect_dto_list = this->create_efects();
+  auto pddl_effect_dto_list = this->create_effects();
   auto pddl_condition_dto_list = this->create_conditions();
 
   ((kant::dto::PddlActionDto *)this)->set_parameters(pddl_parameter_dto_list);

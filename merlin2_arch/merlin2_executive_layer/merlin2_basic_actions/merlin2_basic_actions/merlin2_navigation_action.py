@@ -76,7 +76,7 @@ class Merlin2NavigationAction(Merlin2Action):
         )
         return [condition_1]
 
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
         effect_1 = PddlConditionEffectDto(
             robot_at,
             [self.__dst],

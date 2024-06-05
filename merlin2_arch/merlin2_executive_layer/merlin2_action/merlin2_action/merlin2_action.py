@@ -46,7 +46,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
         # creating and saving the action
         pddl_parameter_dto_list = self.create_parameters()
-        pddl_effect_dto_list = self.create_efects()
+        pddl_effect_dto_list = self.create_effects()
         pddl_condition_dto_list = self.create_conditions()
 
         self.set_parameters(pddl_parameter_dto_list)
@@ -131,7 +131,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         """
 
     @abstractmethod
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
         """ Code to the efects of the action. Must be implemented.
 
         Returns:

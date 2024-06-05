@@ -39,7 +39,7 @@ public:
   std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
   create_conditions() override;
   std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-  create_efects() override;
+  create_effects() override;
 
 private:
   std::shared_ptr<kant::dto::PddlTypeDto> wp_type;

@@ -127,7 +127,7 @@ class Merlin2HiNavigationAction(Merlin2Action):
 
         return [condition_1, condition_2]
 
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
             person_attended,

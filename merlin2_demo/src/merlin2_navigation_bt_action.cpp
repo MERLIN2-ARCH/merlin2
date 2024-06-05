@@ -72,7 +72,7 @@ Merlin2NavigationBtAction::create_conditions() {
 }
 
 std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-Merlin2NavigationBtAction::create_efects() {
+Merlin2NavigationBtAction::create_effects() {
   auto effect_1 = std::make_shared<kant::dto::PddlConditionEffectDto>(
       kant::dto::PddlConditionEffectDto(this->robot_at, {this->dst},
                                         kant::dto::AT_END));

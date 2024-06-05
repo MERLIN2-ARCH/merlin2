@@ -51,7 +51,7 @@ public:
   virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
   create_conditions();
   virtual std::vector<std::shared_ptr<kant::dto::PddlConditionEffectDto>>
-  create_efects();
+  create_effects();
 
   kant::dao::dao_factory::dao_factories::DaoFactory *dao_factory;
   kant::dao::dao_interface::PddlActionDao *pddl_action_dao;

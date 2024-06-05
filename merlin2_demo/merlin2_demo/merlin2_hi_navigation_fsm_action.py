@@ -123,7 +123,7 @@ class Merlin2HiNavigationFsmAction(Merlin2FsmAction):
 
         return [condition_1, condition_2]
 
-    def create_efects(self) -> List[PddlConditionEffectDto]:
+    def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
             person_attended,
