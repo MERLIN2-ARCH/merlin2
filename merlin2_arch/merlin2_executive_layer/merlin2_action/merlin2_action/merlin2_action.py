@@ -32,12 +32,14 @@ from rclpy.parameter import Parameter
 class Merlin2Action(Node, PddlActionDto, ABC):
     """ Merlin2 Action Class """
 
-    def __init__(self, a_name: str, durative: bool = True) -> None:
+    def __init__(self, action_name: str, durative: bool = True) -> None:
 
-        Node.__init__(self, a_name, namespace="merlin2")
-        PddlActionDto.__init__(self,
-                               a_name,
-                               durative=durative)
+        Node.__init__(self, action_name, namespace="merlin2")
+        PddlActionDto.__init__(
+            self,
+            self.get_name(),
+            durative=durative
+        )
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
@@ -54,13 +56,15 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         self.set_conditions(pddl_condition_dto_list)
 
         if not self.save_action():
-            raise Exception("Wrong PDDL action: " + a_name)
+            raise Exception(f"Wrong PDDL action: {self.get_name()}")
 
         # action
-        self.__action_server = self.create_action_server(DispatchAction,
-                                                         a_name,
-                                                         self.__execute_server,
-                                                         cancel_callback=self.__cancel_callback)
+        self.__action_server = self.create_action_server(
+            DispatchAction,
+            self.get_name(),
+            self.__execute_server,
+            cancel_callback=self.__cancel_callback
+        )
 
     def set_parameters(self, parameters: Union[PddlActionDto | Parameter]) -> None:
         """ set parameters for PddlActionDto and Node
