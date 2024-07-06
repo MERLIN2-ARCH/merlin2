@@ -97,14 +97,15 @@ def generate_launch_description():
         package="merlin2_demo",
         executable="merlin2_navigation_bt_action",
         name="navigation",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri,
-                     "bt_file_path": ament_index_python.get_package_share_directory(
-                         "merlin2_demo") + "/bt_xml/navigation.xml",
-                     "plugins": ["waypoint_navigation_bt_node"],
-                     "publisher_port": 1668,
-                     "server_port": 1669
-                     }]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri,
+            "bt_file_path": ament_index_python.get_package_share_directory(
+                "merlin2_demo") + "/bt_xml/navigation.xml",
+            "plugins": ["waypoint_navigation_bt_node"],
+            "publisher_port": 1668,
+            "server_port": 1669
+        }]
     )
 
     merlin2_check_wp_action_cmd = Node(
@@ -121,13 +122,15 @@ def generate_launch_description():
         package="merlin2_demo",
         executable="merlin2_demo2_node",
         name="merlin2_demo2_node",
-        parameters=[{"dao_family": dao_family,
-                     "mongo_uri": mongo_uri,
-                     "total_points": total_points,
-                     "time_to_cancel": time_to_cancel,
-                     "number_of_tests": number_of_tests,
-                     "results_path": results_path,
-                     "world": world}]
+        parameters=[{
+            "dao_family": dao_family,
+            "mongo_uri": mongo_uri,
+            "total_points": total_points,
+            "time_to_cancel": time_to_cancel,
+            "number_of_tests": number_of_tests,
+            "results_path": results_path,
+            "world": world
+        }]
     )
 
     #

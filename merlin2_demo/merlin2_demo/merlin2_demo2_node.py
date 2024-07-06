@@ -148,11 +148,12 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         wp1 = PddlObjectDto(wp_type, "wp1")
         wp2 = PddlObjectDto(wp_type, "wp2")
         wp3 = PddlObjectDto(wp_type, "wp3")
-        objects = [self.wp0, wp1, wp2, wp3]
+        self.anywhere = PddlObjectDto(wp_type, "anywhere")
+        objects = [self.wp0, wp1, wp2, wp3, self.anywhere]
         return objects
 
     def create_propositions(self):
-        robot_at_prop = PddlPropositionDto(robot_at, [self.wp0])
+        robot_at_prop = PddlPropositionDto(robot_at, [self.anywhere])
         propositions = [robot_at_prop]
         return propositions
 
