@@ -16,6 +16,7 @@
 
 """ Generate PDDL State """
 
+import time
 from simple_node import Node
 from yasmin.blackboard import Blackboard
 from yasmin_ros import ServiceState
@@ -39,10 +40,14 @@ class Merlin2GeneratePddlState(ServiceState):
     def response_handler(self, blackboard: Blackboard, response: GeneratePddl.Response) -> str:
         blackboard["domain"] = response.domain
         blackboard["problem"] = response.problem
+        blackboard["result"].generate_pddl = True
+
+        elapsed_time = time.time() - blackboard["init_time"]
 
         self._node.get_logger().info(response.domain)
         self._node.get_logger().info(response.problem)
 
-        blackboard["result"].generate_pddl = True
+        self._node.get_logger().info(
+            f"Time from receiving goals to planning: {elapsed_time} seconds")
 
         return SUCCEED

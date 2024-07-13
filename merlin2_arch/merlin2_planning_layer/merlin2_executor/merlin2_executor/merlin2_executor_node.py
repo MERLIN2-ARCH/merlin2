@@ -17,6 +17,7 @@
 """ Merlin2 Executor Node """
 
 
+import time
 import rclpy
 
 from kant_dao import ParameterLoader
@@ -89,6 +90,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
 
         blackboard = Blackboard()
         blackboard["result"] = result
+        blackboard["init_time"] = time.time()
 
         outcome = self(blackboard)
 
@@ -110,11 +112,8 @@ class Merlin2ExecutorNode(Node, StateMachine):
 
 def main():
     rclpy.init()
-
     node = Merlin2ExecutorNode()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 

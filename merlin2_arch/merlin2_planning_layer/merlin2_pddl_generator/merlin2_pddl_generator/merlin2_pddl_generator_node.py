@@ -73,11 +73,8 @@ class Merlin2PddlGeneratorNode(Node):
 
 def main():
     rclpy.init()
-
     node = Merlin2PddlGeneratorNode()
-
     node.join_spin()
-
     rclpy.shutdown()
 
 
