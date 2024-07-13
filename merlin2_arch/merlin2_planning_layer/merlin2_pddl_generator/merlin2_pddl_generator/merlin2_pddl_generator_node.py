@@ -18,14 +18,14 @@
 
 """ Merlin2 Pddl Generator Node """
 
+import time
 import rclpy
 
 from merlin2_msgs.srv import GeneratePddl
 from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
 
-from kant_dao import ParameterLoader
-
 from simple_node import Node
+from kant_dao import ParameterLoader
 
 
 class Merlin2PddlGeneratorNode(Node):
@@ -57,7 +57,13 @@ class Merlin2PddlGeneratorNode(Node):
             GeneratePddl.Response:  response (domain and problem)
         """
 
+        start_time = time.time()
         pddl_generated = self.pddl_generator.generate_pddl()
+        end_time = time.time()
+
+        elapsed_time = end_time - start_time
+        self.get_logger().info(
+            f"Time to generate PDDL: {elapsed_time} seconds")
 
         res.domain = pddl_generated[0]
         res.problem = pddl_generated[1]

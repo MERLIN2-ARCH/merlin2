@@ -18,6 +18,7 @@
 
 """ Merlin2 Planner Node """
 
+import time
 import rclpy
 from rclpy.node import Node
 
@@ -70,10 +71,17 @@ class Merlin2PlannerNode(Node):
             GeneratePlan.Response: response (plan)
         """
 
+        start_time = time.time()
         self.planner.generate_plan(req.domain, req.problem)
         res.has_solution = self.planner.has_solution()
         res.plan = self.planner.get_plan_actions()
         self.get_logger().info(self.planner.get_str_plan())
+
+        end_time = time.time()
+
+        elapsed_time = end_time - start_time
+        self.get_logger().info(
+            f"Time to plan: {elapsed_time} seconds")
 
         return res
 

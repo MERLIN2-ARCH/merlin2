@@ -72,9 +72,9 @@ class Merlin2GoalDispatcher:
         for pddl_proposition_dto in pddl_proposition_dto_list:
 
             pddl_proposition_dto.set_is_goal(True)
-            self.__node.get_logger().info("Saving goals")
             succeed = self.__pddl_proposition_dao.save(pddl_proposition_dto)
-            self.__node.get_logger().info("Saving goals: " + str(succeed))
+            self.__node.get_logger().info(
+                f"Goal {pddl_proposition_dto} saved {succeed}")
 
             if not succeed:
                 return False

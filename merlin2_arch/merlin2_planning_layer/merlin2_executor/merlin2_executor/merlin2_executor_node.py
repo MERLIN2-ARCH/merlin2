@@ -59,11 +59,12 @@ class Merlin2ExecutorNode(Node, StateMachine):
         YasminViewerPub("MERLIN2_EXECUTOR", self, node=self)
 
         # action server
-        self.__action_server = self.create_action_server(Execute,
-                                                         "execute",
-                                                         execute_callback=self.__execute_server,
-                                                         cancel_callback=self.__cancel_callback
-                                                         )
+        self.__action_server = self.create_action_server(
+            Execute,
+            "execute",
+            execute_callback=self.__execute_server,
+            cancel_callback=self.__cancel_callback
+        )
 
     def __cancel_callback(self):
         StateMachine.cancel_state(self)
