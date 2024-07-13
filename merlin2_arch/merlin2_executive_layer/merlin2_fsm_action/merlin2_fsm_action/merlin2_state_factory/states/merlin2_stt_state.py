@@ -121,7 +121,7 @@ class Merlin2SttState(StateMachine):
             str: outcome
         """
 
-        if len(blackboard.speech) != 0:
+        if len(blackboard["speech"]) != 0:
             return "valid"
 
         else:
@@ -150,5 +150,5 @@ class Merlin2SttState(StateMachine):
             str: outcome
         """
 
-        blackboard.speech = result.stt_strings
+        blackboard["speech"] = result.stt_strings
         return SUCCEED

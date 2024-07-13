@@ -95,12 +95,12 @@ class Merlin2HiNavigationFsmAction(Merlin2FsmAction):
         )
 
     def prepapre_question(self, blackboard: Blackboard) -> str:
-        blackboard.text = "Where do you want me to go?"
+        blackboard["text"] = "Where do you want me to go?"
         return "valid"
 
     def check_stt(self, blackboard: Blackboard) -> str:
-        if blackboard.speech[0] == "go":
-            blackboard.destination = blackboard.speech[1]
+        if blackboard["speech"][0] == "go":
+            blackboard["destination"] = blackboard["speech"][1]
             return "valid"
 
         return "repeat"

@@ -37,12 +37,12 @@ class Merlin2GeneratePddlState(ServiceState):
         return GeneratePddl.Request()
 
     def response_handler(self, blackboard: Blackboard, response: GeneratePddl.Response) -> str:
-        blackboard.domain = response.domain
-        blackboard.problem = response.problem
+        blackboard["domain"] = response.domain
+        blackboard["problem"] = response.problem
 
         self._node.get_logger().info(response.domain)
         self._node.get_logger().info(response.problem)
 
-        blackboard.result.generate_pddl = True
+        blackboard["result"].generate_pddl = True
 
         return SUCCEED

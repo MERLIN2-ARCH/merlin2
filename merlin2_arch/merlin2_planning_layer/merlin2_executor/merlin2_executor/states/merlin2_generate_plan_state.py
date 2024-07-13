@@ -35,8 +35,8 @@ class Merlin2GeneratePlanState(ServiceState):
 
     def create_request_handler(self, blackboard: Blackboard) -> GeneratePlan.Request:
         req = GeneratePlan.Request()
-        req.domain = blackboard.domain
-        req.problem = blackboard.problem
+        req.domain = blackboard["domain"]
+        req.problem = blackboard["problem"]
         return req
 
     def response_handler(self, blackboard: Blackboard, response: GeneratePlan.Response) -> str:
@@ -46,7 +46,7 @@ class Merlin2GeneratePlanState(ServiceState):
             return ABORT
 
         self._node.get_logger().info(str(response.plan))
-        blackboard.plan = response.plan
-        blackboard.result.generate_plan = True
+        blackboard["plan"] = response.plan
+        blackboard["result"].generate_plan = True
 
         return SUCCEED

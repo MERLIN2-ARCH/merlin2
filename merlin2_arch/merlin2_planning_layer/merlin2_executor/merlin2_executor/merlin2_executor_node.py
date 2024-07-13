@@ -88,7 +88,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
         result.dispatch_plan = False
 
         blackboard = Blackboard()
-        blackboard.result = result
+        blackboard["result"] = result
 
         outcome = self(blackboard)
 

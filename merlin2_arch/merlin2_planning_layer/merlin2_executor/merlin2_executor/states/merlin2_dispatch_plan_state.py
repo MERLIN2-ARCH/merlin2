@@ -34,9 +34,9 @@ class Merlin2DispatchPlanState(ActionState):
 
     def create_goal_handler(self, blackboard: Blackboard) -> DispatchPlan.Goal:
         goal = DispatchPlan.Goal()
-        goal.plan = blackboard.plan
+        goal.plan = blackboard["plan"]
         return goal
 
     def result_handler(self, blackboard: Blackboard, response: DispatchPlan.Result) -> str:
-        blackboard.result.dispatch_plan = True
+        blackboard["result"].dispatch_plan = True
         return SUCCEED

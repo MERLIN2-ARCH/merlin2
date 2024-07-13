@@ -44,7 +44,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
     def run_action(self, goal: PlanAction) -> bool:
 
         blackboard = Blackboard()
-        blackboard.merlin2_action_goal = goal
+        blackboard["merlin2_action_goal"] = goal
 
         outcome = self(blackboard)
 

@@ -87,12 +87,12 @@ class Merlin2CheckDoorFsmAction(Merlin2FsmAction):
         )
 
     def prepare_check_door(self, blackboard: Blackboard) -> str:
-        blackboard.text = "Welcome, open the door"
+        blackboard["text"] = "Welcome, open the door"
         return "valid"
 
     def prepare_welcome(self, blackboard: Blackboard) -> str:
         time.sleep(4)
-        blackboard.text = "Hi, come with me to the living room"
+        blackboard["text"] = "Hi, come with me to the living room"
         return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:

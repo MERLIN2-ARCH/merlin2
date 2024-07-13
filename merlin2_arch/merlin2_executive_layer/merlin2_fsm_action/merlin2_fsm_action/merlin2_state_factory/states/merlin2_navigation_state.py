@@ -48,5 +48,5 @@ class Merlin2NavigationState(ActionState):
         """
 
         goal = NavigateToWp.Goal()
-        goal.wp_id = blackboard.destination
+        goal.wp_id = blackboard["destination"]
         return goal

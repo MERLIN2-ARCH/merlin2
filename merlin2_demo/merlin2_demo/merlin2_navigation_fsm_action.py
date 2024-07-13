@@ -79,7 +79,7 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
         pddl_proposition_dao.save(prop)
 
     def prepapre_goal(self, blackboard: Blackboard) -> str:
-        blackboard.destination = blackboard.merlin2_action_goal.objects[1]
+        blackboard["destination"] = blackboard["merlin2_action_goal"].objects[1]
         return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:

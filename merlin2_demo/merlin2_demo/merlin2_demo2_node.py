@@ -158,15 +158,15 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         return propositions
 
     def init_blackboard(self, blackboard: Blackboard) -> str:
-        blackboard.results = []
-        blackboard.number_of_tests = 0
-        blackboard.progress_bar = tqdm(
+        blackboard["results"] = []
+        blackboard["number_of_tests"] = 0
+        blackboard["progress_bar"] = tqdm(
             total=self.total_points * self.number_of_tests)
         return self.END
 
     def check_next_test(self, blackboard: Blackboard) -> str:
 
-        if blackboard.number_of_tests >= self.number_of_tests:
+        if blackboard["number_of_tests"] >= self.number_of_tests:
             return self.END
 
         return self.NEXT
@@ -204,7 +204,7 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
             wp_list[point_pos]["cancel"] = True
 
         self.get_logger().info(str(wp_list))
-        blackboard.wp_list = wp_list
+        blackboard["wp_list"] = wp_list
 
         return self.END
 
@@ -213,10 +213,10 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         start_t = time.time()
         self.__distance = 0
 
-        while blackboard.wp_list:
+        while blackboard["wp_list"]:
 
             # get next wp
-            wp = blackboard.wp_list.pop()
+            wp = blackboard["wp_list"].pop()
             cancel = wp["cancel"]
             wp = PddlObjectDto(wp_type, wp["value"])
             goal = PddlPropositionDto(wp_checked, [wp], is_goal=True)
@@ -241,8 +241,8 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
             # wait for thread
             thread.join()
 
-            blackboard.progress_bar.update(1)
-            self.get_logger().info(str(blackboard.progress_bar))
+            blackboard["progress_bar"].update(1)
+            self.get_logger().info(str(blackboard["progress_bar"]))
 
             # remove propositions achieved
             goal.set_is_goal(False)
@@ -254,9 +254,9 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         end_t = time.time()
         total_t = end_t - start_t
 
-        blackboard.results.append(total_t)
-        blackboard.results.append(self.__distance)
-        blackboard.number_of_tests += 1
+        blackboard["results"].append(total_t)
+        blackboard["results"].append(self.__distance)
+        blackboard["number_of_tests"] += 1
 
         return self.END
 
@@ -277,7 +277,7 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
             offset = sum(1 for _ in f) - 1
             f.close()
 
-        time_t, distance = blackboard.results
+        time_t, distance = blackboard["results"]
         string_csv += str(offset) + "," + self.world + "," + \
             str(time_t) + "," + str(distance) + "\n"
 
@@ -285,7 +285,7 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         f.write(string_csv)
         f.close()
 
-        blackboard.results = []
+        blackboard["results"] = []
 
         return self.END
 

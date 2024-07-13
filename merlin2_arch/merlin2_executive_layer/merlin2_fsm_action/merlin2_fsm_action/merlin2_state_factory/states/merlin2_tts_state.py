@@ -47,5 +47,5 @@ class Merlin2TtsState(ActionState):
         """
 
         goal = TTS.Goal()
-        goal.text = blackboard.text
+        goal.text = blackboard["text"]
         return goal

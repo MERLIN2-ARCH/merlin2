@@ -65,8 +65,8 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
         )
 
     def prepapre_goal(self, blackboard: Blackboard) -> str:
-        blackboard.text = "Waypoint " + \
-            str(blackboard.merlin2_action_goal.objects[0][-1]) + " checked."
+        blackboard["text"] = "Waypoint " + \
+            str(blackboard["merlin2_action_goal"].objects[0][-1]) + " checked."
         return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:
