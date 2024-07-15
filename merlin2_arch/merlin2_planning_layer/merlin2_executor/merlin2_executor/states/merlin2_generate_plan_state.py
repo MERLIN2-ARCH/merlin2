@@ -16,6 +16,7 @@
 
 """ Generate Plan State """
 
+import time
 from simple_node import Node
 from yasmin.blackboard import Blackboard
 from yasmin_ros import ServiceState
@@ -48,5 +49,9 @@ class Merlin2GeneratePlanState(ServiceState):
         self._node.get_logger().info(str(response.plan))
         blackboard["plan"] = response.plan
         blackboard["result"].generate_plan = True
+
+        elapsed_time = time.time() - blackboard["init_time"]
+        self._node.get_logger().info(
+            f"Time from receiving goals to planning: {elapsed_time} seconds")
 
         return SUCCEED
