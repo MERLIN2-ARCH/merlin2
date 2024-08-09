@@ -33,7 +33,7 @@ from kant_dto import (
     PddlPropositionDto
 )
 
-from merlin2_demo.pddl import door_checked, door_at, door_type, sound_type, sound_listened
+from merlin2_demos.pddl import door_checked, door_at, door_type, sound_type, sound_listened
 
 sounds_acepted = ['doorbell', 'bell', 'ding-dong',
                   'tubular_bells', 'reversing_beeps', 'beepbleep', 'chime']

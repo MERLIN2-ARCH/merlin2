@@ -34,7 +34,7 @@ from kant_dto import (
     PddlPropositionDto
 )
 
-from merlin2_demo.pddl import person_attended
+from merlin2_demos.pddl import person_attended
 
 
 class Merlin2DemoNode(Merlin2MissionNode):

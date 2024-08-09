@@ -16,10 +16,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that uses the waypoint navigation """
+""" MERLIN2 action that simulates checking a wp """
 
 from typing import List
-
 import rclpy
 
 from kant_dto import (
@@ -27,20 +26,24 @@ from kant_dto import (
     PddlConditionEffectDto,
 )
 
-from merlin2_basic_actions.merlin2_basic_types import wp_type
-from merlin2_basic_actions.merlin2_basic_predicates import robot_at
-
-from merlin2_fsm_action import (
-    Merlin2FsmAction,
-    Merlin2BasicStates
+from merlin2_basic_actions.merlin2_basic_types import (
+    wp_type,
 )
-from yasmin import CbState
-from yasmin.blackboard import Blackboard
+from merlin2_basic_actions.merlin2_basic_predicates import (
+    robot_at
+)
 
-from merlin2_demo.pddl import wp_checked
+from merlin2_action.merlin2_action import Merlin2Action
+
+from text_to_speech_msgs.action import TTS
+from text_to_speech_msgs.msg import Config
+
+from merlin2_msgs.msg import PlanAction
+
+from merlin2_demos.pddl import wp_checked
 
 
-class Merlin2CheckWpFsmAction(Merlin2FsmAction):
+class Merlin2CheckWpAction(Merlin2Action):
     """ Merlin2 Navigation Action Class """
 
     def __init__(self) -> None:
@@ -49,25 +52,26 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
 
         super().__init__("check_wp")
 
-        prepare_goal_state = CbState(["valid"], self.prepapre_goal)
+        self.__tts_client = self.create_action_client(
+            TTS, "/text_to_speech/tts")
 
-        tts_state = self.create_state(Merlin2BasicStates.TTS)
+    def run_action(self, goal: PlanAction) -> bool:
+        tts_goal = TTS.Goal()
 
-        self.add_state(
-            "PREPARING_GOAL",
-            prepare_goal_state,
-            {"valid": "CHECKING_WP"}
-        )
+        tts_goal.text = "Waypoint " + str(goal.objects[0][-1]) + " checked."
+        tts_goal.config.tool = Config.GTTS
 
-        self.add_state(
-            "CHECKING_WP",
-            tts_state
-        )
+        self.__tts_client.wait_for_server()
+        self.__tts_client.send_goal(tts_goal)
+        self.__tts_client.wait_for_result()
 
-    def prepapre_goal(self, blackboard: Blackboard) -> str:
-        blackboard["text"] = "Waypoint " + \
-            str(blackboard["merlin2_action_goal"].objects[0][-1]) + " checked."
-        return "valid"
+        if not self.__tts_client.is_succeeded():
+            return False
+
+        return True
+
+    def cancel_action(self):
+        self.__tts_client.cancel_goal()
 
     def create_parameters(self) -> List[PddlObjectDto]:
         return [self.__wp]
@@ -94,7 +98,7 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
 
 def main():
     rclpy.init()
-    node = Merlin2CheckWpFsmAction()
+    node = Merlin2CheckWpAction()
     node.join_spin()
     rclpy.shutdown()
 

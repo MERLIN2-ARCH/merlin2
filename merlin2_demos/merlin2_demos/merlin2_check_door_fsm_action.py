@@ -20,6 +20,7 @@
 
 from typing import List
 import rclpy
+import time
 
 from kant_dto import (
     PddlObjectDto,
@@ -27,12 +28,10 @@ from kant_dto import (
 )
 
 from merlin2_basic_actions.merlin2_basic_types import (
-    wp_type,
-    person_type
+    wp_type
 )
 from merlin2_basic_actions.merlin2_basic_predicates import (
-    robot_at,
-    person_at
+    robot_at
 )
 
 from merlin2_fsm_action import (
@@ -43,81 +42,73 @@ from yasmin import CbState
 from yasmin_ros.basic_outcomes import SUCCEED
 from yasmin.blackboard import Blackboard
 
-from merlin2_demo.pddl import person_attended
+from merlin2_demos.pddl import door_checked, door_at, door_type
+
+doorbell_sounds = ['Doorbell', 'Bell', 'Ding-dong',
+                   'Tubular bells', 'Reversing beeps', 'Beep, bleep']
 
 
-class Merlin2HiNavigationFsmAction(Merlin2FsmAction):
-    """ Merlin2 Navigation Action Class """
+class Merlin2CheckDoorFsmAction(Merlin2FsmAction):
+    """ Merlin2 Check Door Action Class """
 
     def __init__(self) -> None:
 
-        self.__source_p = PddlObjectDto(wp_type, "source_p")
-        self.__per = PddlObjectDto(person_type, "per")
+        self.__entrance = PddlObjectDto(wp_type, "wp")
+        self.__door = PddlObjectDto(door_type, "door")
 
-        super().__init__("hi_navigation")
+        super().__init__("check_door")
 
-        prepapre_question_state = CbState(["valid"], self.prepapre_question)
-        check_stt_state = CbState(["valid", "repeat"], self.check_stt)
+        prepare_goal_check_state = CbState(["valid"], self.prepare_check_door)
+        prepare_goal_welcome_state = CbState(["valid"], self.prepare_welcome)
+
         tts_state = self.create_state(Merlin2BasicStates.TTS)
-        stt_state = self.create_state(Merlin2BasicStates.STT)
-        navigation_state = self.create_state(Merlin2BasicStates.NAVIGATION)
 
         self.add_state(
-            "PREPARING_QUESTION",
-            prepapre_question_state,
-            {"valid": "ASKING"}
+            "PREPARING_CHECK_THE_DOOR",
+            prepare_goal_check_state,
+            {"valid": "CHECKING_THE_DOOR"}
         )
 
         self.add_state(
-            "ASKING",
+            "CHECKING_THE_DOOR",
             tts_state,
-            {SUCCEED: "LISTENING"}
+            {SUCCEED: "PREPARING_WELCOME"}
         )
 
         self.add_state(
-            "LISTENING",
-            stt_state,
-            {SUCCEED: "CHECKING_SPEECH"}
+            "PREPARING_WELCOME",
+            prepare_goal_welcome_state,
+            {"valid": "WELCOME"}
         )
 
         self.add_state(
-            "CHECKING_SPEECH",
-            check_stt_state,
-            {
-                "valid": "NAVIGATING",
-                "repeat": "PREPARING_QUESTION"
-            }
+            "WELCOME",
+            tts_state
         )
 
-        self.add_state(
-            "NAVIGATING",
-            navigation_state
-        )
-
-    def prepapre_question(self, blackboard: Blackboard) -> str:
-        blackboard["text"] = "Where do you want me to go?"
+    def prepare_check_door(self, blackboard: Blackboard) -> str:
+        blackboard["text"] = "Welcome, open the door"
         return "valid"
 
-    def check_stt(self, blackboard: Blackboard) -> str:
-        if blackboard["speech"][0] == "go":
-            blackboard["destination"] = blackboard["speech"][1]
-            return "valid"
-
-        return "repeat"
+    def prepare_welcome(self, blackboard: Blackboard) -> str:
+        time.sleep(4)
+        blackboard["text"] = "Hi, come with me to the living room"
+        return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:
-        return [self.__source_p, self.__per]
+        return [self.__entrance, self.__door]
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
+
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__source_p],
+            door_at,
+            [self.__door, self.__entrance],
             time=PddlConditionEffectDto.AT_START
         )
 
         condition_2 = PddlConditionEffectDto(
-            person_at,
-            [self.__per, self.__source_p],
+            robot_at,
+            [self.__entrance],
             time=PddlConditionEffectDto.AT_START
         )
 
@@ -126,24 +117,17 @@ class Merlin2HiNavigationFsmAction(Merlin2FsmAction):
     def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
-            person_attended,
-            [self.__per],
+            door_checked,
+            [self.__door],
             time=PddlConditionEffectDto.AT_END
         )
 
-        effect_2 = PddlConditionEffectDto(
-            robot_at,
-            [self.__source_p],
-            is_negative=True,
-            time=PddlConditionEffectDto.AT_END
-        )
-
-        return [effect_1, effect_2]
+        return [effect_1]
 
 
 def main():
     rclpy.init()
-    node = Merlin2HiNavigationFsmAction()
+    node = Merlin2CheckDoorFsmAction()
     node.join_spin()
     rclpy.shutdown()
 

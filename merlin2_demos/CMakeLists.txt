@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(merlin2_demo)
+project(merlin2_demos)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -39,61 +39,61 @@ install(TARGETS
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
-  merlin2_demo/merlin2_demo_node.py
+  merlin2_demos/merlin2_demo_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_demo_node
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_demo2_node.py
+  merlin2_demos/merlin2_demo2_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_demo2_node
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_demo3_node.py
+  merlin2_demos/merlin2_demo3_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_demo3_node
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_hi_navigation_action.py
+  merlin2_demos/merlin2_hi_navigation_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_hi_navigation_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_hi_navigation_fsm_action.py
+  merlin2_demos/merlin2_hi_navigation_fsm_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_hi_navigation_fsm_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_navigation_fsm_action.py
+  merlin2_demos/merlin2_navigation_fsm_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_navigation_fsm_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_check_wp_action.py
+  merlin2_demos/merlin2_check_wp_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_check_wp_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_check_wp_fsm_action.py
+  merlin2_demos/merlin2_check_wp_fsm_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_check_wp_fsm_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_check_door_fsm_action.py
+  merlin2_demos/merlin2_check_door_fsm_action.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_check_door_fsm_action
 )
 
 install(PROGRAMS
-  merlin2_demo/merlin2_listen_audio_node.py
+  merlin2_demos/merlin2_listen_audio_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME merlin2_listen_audio_node
 )

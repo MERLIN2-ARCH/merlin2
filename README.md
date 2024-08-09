@@ -6,19 +6,20 @@
 
 ## Table of Contents
 
-1. [Diagram](#diagrams)
-2. [PDDL Planners](#pddl-planners)
-3. [Installation](#installation)
-4. [Creating new actions](#creating-new-actions)
-
-   4.1. [PDDL Example](#pddl-example)
-
-   4.2. [MERLIN2 Example](#merlin2-example)
-
-   4.3. [MERLIN2 State Machine Example](#merlin2-state-machine-example)
-
-5. [Demos](#demos)
-6. [Citations](#citations)
+- [MERLIN 2 (MachinEd Ros pLanINg)](#merlin-2-machined-ros-planing)
+  - [Table of Contents](#table-of-contents)
+  - [Diagram](#diagram)
+  - [PDDL Planners](#pddl-planners)
+  - [Installation](#installation)
+  - [Creating new actions](#creating-new-actions)
+    - [PDDL Example](#pddl-example)
+    - [MERLIN2 Example](#merlin2-example)
+    - [MERLIN2 State Machine Example](#merlin2-state-machine-example)
+  - [Demos](#demos)
+    - [Demo 1](#demo-1)
+    - [Demo 2](#demo-2)
+    - [Demo3](#demo3)
+  - [Citations](#citations)
 
 ## Diagram
 
@@ -312,7 +313,7 @@ This a navigation, STT, TTS demo using the RB1 robot.
 
 ```shell
 $ ros2 launch rb1_gazebo gazebo_nav2.launch.py
-$ ros2 launch merlin2_demo merlin2_demo.launch.py
+$ ros2 launch merlin2_demos merlin2_demo1.launch.py
 ```
 
 ### Demo 2
@@ -321,7 +322,7 @@ The RB1 robot will start driving to specific points in the world. Half of the go
 
 ```shell
 $ ros2 launch rb1_gazebo granny.launch.py
-$ ros2 launch merlin2_demo merlin2_demo2.launch.py
+$ ros2 launch merlin2_demos merlin2_demo2.launch.py
 ```
 
 <p align="center">
@@ -334,7 +335,7 @@ The RB1 robot waits until it hears the sound of the doorbell, navigates to the d
 
 ```shell
 $ ros2 launch rb1_gazebo granny.launch.py
-$ ros2 launch merlin2_demo merlin2_demo3.launch.py
+$ ros2 launch merlin2_demos merlin2_demo3.launch.py
 ```
 
 <p align="center">

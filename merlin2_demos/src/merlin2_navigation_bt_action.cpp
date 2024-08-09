@@ -16,7 +16,7 @@
 #include <exception>
 #include <signal.h>
 
-#include "merlin2_demo/merlin2_navigation_bt_action.hpp"
+#include "merlin2_demos/merlin2_navigation_bt_action.hpp"
 
 class InterruptException : public std::exception {
 public:

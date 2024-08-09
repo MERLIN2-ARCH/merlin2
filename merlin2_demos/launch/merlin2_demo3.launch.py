@@ -16,10 +16,11 @@
 
 import os
 
-from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch_ros.actions import Node
+from launch.actions import SetEnvironmentVariable, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
@@ -32,14 +33,18 @@ def generate_launch_description():
         "merlin2_planning_layer")
     waypoint_navigation_share_dir = get_package_share_directory(
         "waypoint_navigation")
-    speech_to_text_share_dir = get_package_share_directory(
-        "speech_to_text")
     text_to_speech_share_dir = get_package_share_directory(
         "text_to_speech")
+    sound_recognition_share_dir = get_package_share_directory(
+        "sound_recognition")
+
+    stdout_linebuf_envvar = SetEnvironmentVariable(
+        "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
 
     #
     # ARGS
     #
+
     dao_family = LaunchConfiguration("dao_family")
     dao_family_cmd = DeclareLaunchArgument(
         "dao_family",
@@ -61,34 +66,37 @@ def generate_launch_description():
     #
     # NODES
     #
+
+    merlin2_listen_audio_node_cmd = Node(
+        package="merlin2_demos",
+        executable="merlin2_listen_audio_node",
+        name="listen_audio_node",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
+    )
+
     merlin2_navigation_action_cmd = Node(
         package="merlin2_basic_actions",
         executable="merlin2_navigation_fsm_action",
         name="navigation",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
-    merlin2_hi_navigation_action_cmd = Node(
-        package="merlin2_demo",
-        executable="merlin2_hi_navigation_fsm_action",
-        name="hi_navigation",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+    merlin2_check_door_action_cmd = Node(
+        package="merlin2_demos",
+        executable="merlin2_check_door_fsm_action",
+        name="check_door",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     merlin2_demo_node_cmd = Node(
-        package="merlin2_demo",
-        executable="merlin2_demo_node",
-        name="merlin2_demo_node",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+        package="merlin2_demos",
+        executable="merlin2_demo3_node",
+        name="merlin2_demo3_node",
+        parameters=[{"dao_family": dao_family,
+                     "mongo_uri": mongo_uri}]
     )
 
     #
@@ -99,12 +107,12 @@ def generate_launch_description():
             os.path.join(waypoint_navigation_share_dir, "waypoint_navigation.launch.py"))
     )
 
-    speech_to_text_cmd = IncludeLaunchDescription(
+    sound_recognition_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(speech_to_text_share_dir, "speech_to_text.launch.py"))
+            os.path.join(sound_recognition_share_dir, "sound_recognition.launch.py"))
     )
 
-    text_to_speech_cmd = IncludeLaunchDescription(
+    tts_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(text_to_speech_share_dir, "text_to_speech.launch.py"))
     )
@@ -122,18 +130,21 @@ def generate_launch_description():
     #
     # ADD
     #
+
+    ld.add_action(stdout_linebuf_envvar)
+
     ld.add_action(dao_family_cmd)
     ld.add_action(mongo_uri_cmd)
     ld.add_action(planner_cmd)
 
     ld.add_action(waypoint_navigation_cmd)
-    ld.add_action(speech_to_text_cmd)
-    ld.add_action(text_to_speech_cmd)
-
-    ld.add_action(merlin2_navigation_action_cmd)
-    ld.add_action(merlin2_hi_navigation_action_cmd)
+    ld.add_action(sound_recognition_cmd)
+    ld.add_action(tts_cmd)
 
     ld.add_action(merlin2_planning_layer_cmd)
+    ld.add_action(merlin2_listen_audio_node_cmd)
+    ld.add_action(merlin2_navigation_action_cmd)
+    ld.add_action(merlin2_check_door_action_cmd)
     ld.add_action(merlin2_demo_node_cmd)
 
     return ld

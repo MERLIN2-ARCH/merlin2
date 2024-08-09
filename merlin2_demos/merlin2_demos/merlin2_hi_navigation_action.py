@@ -42,7 +42,7 @@ from speech_to_text_msgs.action import ListenOnce
 from text_to_speech_msgs.action import TTS
 from merlin2_msgs.msg import PlanAction
 
-from merlin2_demo.pddl import person_attended
+from merlin2_demos.pddl import person_attended
 
 
 class Merlin2HiNavigationAction(Merlin2Action):

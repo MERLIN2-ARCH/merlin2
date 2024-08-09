@@ -45,7 +45,7 @@ from merlin2_basic_actions.merlin2_basic_types import (
 from merlin2_basic_actions.merlin2_basic_predicates import (
     robot_at,
 )
-from merlin2_demo.pddl import wp_checked
+from merlin2_demos.pddl import wp_checked
 
 
 class Merlin2Demo2Node(Merlin2FsmMissionNode):

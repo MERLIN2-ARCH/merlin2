@@ -24,7 +24,7 @@ from std_msgs.msg import String
 from kant_dto import PddlPropositionDto, PddlObjectDto
 from kant_dao import ParameterLoader
 
-from merlin2_demo.pddl import sound_listened, sound_type
+from merlin2_demos.pddl import sound_listened, sound_type
 
 
 class Merlin2ListenAudio(Node):
