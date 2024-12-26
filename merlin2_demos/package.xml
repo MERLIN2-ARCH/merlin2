@@ -20,6 +20,8 @@
   <depend>merlin2_fsm_action</depend>
   <depend>merlin2_mission</depend>
   <depend>kant_dto</depend>
+  <depend>yasmin</depend>
+  <depend>yasmin_ros</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
