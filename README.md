@@ -345,6 +345,24 @@ $ ros2 launch merlin2_demos merlin2_demo3.launch.py
 ## Citations
 
 ```bibtex
+﻿@Article{González-Santamarta2024,
+author={Gonz{\'a}lez-Santamarta, Miguel {\'A}.
+and Rodr{\'i}guez-Lera, Francisco J.
+and Fern{\'a}ndez-Llamas, Camino
+and Matellan-Olivera, Vicente},
+title={A Hybrid Cognitive Architecture to Generate, Control, Plan, and Monitor Behaviors for Interactive Autonomous Robots},
+journal={International Journal of Social Robotics},
+year={2024},
+month={Dec},
+day={11},
+abstract={Interactive robots not only need to react in predefined or deterministic scenarios but also learn and adapt in real-time, mirroring cognitive flexibility akin to human intelligence. Achieving this autonomy entails developing cognitive architectures that integrate reactive, deliberative and emergent capabilities. Thus, this paper presents MERLIN2, a hybrid cognitive architecture to generate, control, plan, and monitor behaviors in autonomous robots. This architecture combines reactive, deliberative, and emergent components, aiming to enhance adaptability in dynamic environments and make intelligent real-time decisions, thereby improving autonomy and performance. MERLIN2 comprises a deliberative system, based on a knowledge base and a symbolic planner; and a behavioral system composed of reactive components and several emergent components. It addresses core cognitive aspects like action selection, perception, memory, learning, reasoning, and explainability. MERLIN2 is evaluated in a simulated world and in the real world Carry My Luggage task from the RoboCup@Home. Therefore, the experimentation presented in this article showcases the architecture as a valid solution for autonomous robots.},
+issn={1875-4805},
+doi={10.1007/s12369-024-01192-4},
+url={https://doi.org/10.1007/s12369-024-01192-4}
+}
+```
+
+```bibtex
 @article{GONZALEZSANTAMARTA2023100477,
     title = {MERLIN2: MachinEd Ros 2 pLanINg},
     journal = {Software Impacts},
