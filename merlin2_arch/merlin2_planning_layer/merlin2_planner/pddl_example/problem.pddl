@@ -6,7 +6,7 @@
         kitchen bedroom livingroom bathroom entrance - location
 
         ; people
-        miguel - person
+       Miguel - person
     )
     (:init
         ; the robot at start is in the entrance of the house

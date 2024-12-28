@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ class Merlin2DemoNode(Merlin2MissionNode):
         return objects
 
     def create_propositions(self):
-        miguel_at_prop = PddlPropositionDto(
+       Miguel_at_prop = PddlPropositionDto(
             person_at, [self.miguel, self.livingroom])
         robot_at_prop = PddlPropositionDto(robot_at, [self.entrance])
         return [robot_at_prop, miguel_at_prop]
