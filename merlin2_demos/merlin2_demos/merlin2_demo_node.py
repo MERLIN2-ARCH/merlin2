@@ -54,7 +54,7 @@ class Merlin2DemoNode(Merlin2MissionNode):
         return objects
 
     def create_propositions(self):
-       Miguel_at_prop = PddlPropositionDto(
+        miguel_at_prop = PddlPropositionDto(
             person_at, [self.miguel, self.livingroom])
         robot_at_prop = PddlPropositionDto(robot_at, [self.entrance])
         return [robot_at_prop, miguel_at_prop]
