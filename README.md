@@ -38,36 +38,36 @@
 
 ```shell
 # clone these repos
-$ cd ~/ros2_ws/src
-$ git clone --recurse-submodules https://github.com/MERLIN2-ARCH/merlin2.git
-$ cd merlin2
+cd ~/ros2_ws/src
+git clone --recurse-submodules https://github.com/MERLIN2-ARCH/merlin2.git
+cd merlin2
 
 # SMTPlan+ dependencies
-$ sudo apt install libz3-dev -y
+sudo apt install libz3-dev -y
 
 # unified-planning
-$ pip3 install --pre unified-planning[pyperplan,tamer]
+pip3 install --pre unified-planning[pyperplan,tamer]
 
 # MongoDB
-$ sudo ./scrips/install_mongo.sh
-$ sudo ./scrips/install_mongocxx.sh
+sudo ./scrips/install_mongo.sh
+sudo ./scrips/install_mongocxx.sh
 
 # sst
-$ sudo apt-get install -y python3-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
+sudo apt-get install -y python3-dev libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev swig
 
 # tts
-$ sudo apt install espeak -y
-$ sudo apt install speech-dispatcher -y
-$ sudo apt install festival festival-doc festvox-kdlpc16k festvox-ellpc11k festvox-italp16k festvox-itapc16k -y
-$ sudo apt install mpg321 -y
+sudo apt install espeak -y
+sudo apt install speech-dispatcher -y
+sudo apt install festival festival-doc festvox-kdlpc16k festvox-ellpc11k festvox-italp16k festvox-itapc16k -y
+sudo apt install mpg321 -y
 
 # pip3
-$ pip3 install -r requirements.txt
-$ python3 merlin2_arch/merlin2_reactive_layer/speech_to_text/nltk_download.py
+pip3 install -r requirements.txt
+python3 merlin2_arch/merlin2_reactive_layer/speech_to_text/nltk_download.py
 
 # colcon
-$ cd ~/ros2_ws
-$ colcon build
+cd ~/ros2_ws
+colcon build
 ```
 
 ## Creating new actions
@@ -312,8 +312,8 @@ These demos are tested with [ros2_rb1](https://github.com/mgonzs13/ros2_rb1) sim
 This a navigation, STT, TTS demo using the RB1 robot.
 
 ```shell
-$ ros2 launch rb1_gazebo gazebo_nav2.launch.py
-$ ros2 launch merlin2_demos merlin2_demo1.launch.py
+ros2 launch rb1_gazebo gazebo_nav2.launch.py
+ros2 launch merlin2_demos merlin2_demo1.launch.py
 ```
 
 ### Demo 2
@@ -321,8 +321,8 @@ $ ros2 launch merlin2_demos merlin2_demo1.launch.py
 The RB1 robot will start driving to specific points in the world. Half of the goals are canceled randomly. Distance and time are saved in a CSV file.
 
 ```shell
-$ ros2 launch rb1_gazebo granny.launch.py
-$ ros2 launch merlin2_demos merlin2_demo2.launch.py
+ros2 launch rb1_gazebo granny.launch.py
+ros2 launch merlin2_demos merlin2_demo2.launch.py
 ```
 
 <p align="center">
@@ -334,8 +334,8 @@ $ ros2 launch merlin2_demos merlin2_demo2.launch.py
 The RB1 robot waits until it hears the sound of the doorbell, navigates to the door, attends the person and returns to the living room.
 
 ```shell
-$ ros2 launch rb1_gazebo granny.launch.py
-$ ros2 launch merlin2_demos merlin2_demo3.launch.py
+ros2 launch rb1_gazebo granny.launch.py
+ros2 launch merlin2_demos merlin2_demo3.launch.py
 ```
 
 <p align="center">
