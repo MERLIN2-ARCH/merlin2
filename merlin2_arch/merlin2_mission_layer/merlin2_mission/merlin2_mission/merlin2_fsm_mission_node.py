@@ -19,28 +19,30 @@
 from typing import List
 from yasmin import StateMachine
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin_ros.ros_logs import set_ros_loggers
 from yasmin_viewer import YasminViewerPub
 
 from .merlin2_mission_node import Merlin2MissionNode
 
 
 class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
-    """ MERLIN2 FSM Mission Node Class """
+    """MERLIN2 FSM Mission Node Class"""
 
     def __init__(
         self,
         node_name: str,
         reset_problem: bool = True,
         run_mission: bool = False,
-        outcomes: List[str] = None
+        outcomes: List[str] = None,
     ) -> None:
 
         if not outcomes:
             outcomes = [SUCCEED, ABORT, CANCEL]
 
         StateMachine.__init__(self, outcomes)
-        Merlin2MissionNode.__init__(
-            self, node_name, reset_problem, run_mission)
+        Merlin2MissionNode.__init__(self, node_name, reset_problem, run_mission)
+
+        set_ros_loggers()
 
         YasminViewerPub(node_name.upper(), self, node=self)
 

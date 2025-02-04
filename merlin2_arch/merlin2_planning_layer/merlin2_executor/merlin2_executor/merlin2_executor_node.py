@@ -25,6 +25,7 @@ from kant_dao import ParameterLoader
 from yasmin import StateMachine
 from yasmin.blackboard import Blackboard
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin_ros.ros_logs import set_ros_loggers
 from yasmin_viewer import YasminViewerPub
 
 from merlin2_msgs.action import Execute
@@ -34,12 +35,12 @@ from simple_node import Node
 from .states import (
     Merlin2GeneratePddlState,
     Merlin2GeneratePlanState,
-    Merlin2DispatchPlanState
+    Merlin2DispatchPlanState,
 )
 
 
 class Merlin2ExecutorNode(Node, StateMachine):
-    """ Merlin2 Executor Node Class """
+    """Merlin2 Executor Node Class"""
 
     def __init__(self):
 
@@ -49,22 +50,30 @@ class Merlin2ExecutorNode(Node, StateMachine):
         self.dao_factory = ParameterLoader(self).get_dao_factory()
 
         # create fsm
-        self.add_state("GENERATING_PDDL", Merlin2GeneratePddlState(self),
-                       {SUCCEED: "GENERATING_PLAN"})
+        self.add_state(
+            "GENERATING_PDDL",
+            Merlin2GeneratePddlState(self),
+            {SUCCEED: "GENERATING_PLAN"},
+        )
 
-        self.add_state("GENERATING_PLAN", Merlin2GeneratePlanState(self),
-                       {SUCCEED: "DISPATCHING_PLAN"})
+        self.add_state(
+            "GENERATING_PLAN",
+            Merlin2GeneratePlanState(self),
+            {SUCCEED: "DISPATCHING_PLAN"},
+        )
 
         self.add_state("DISPATCHING_PLAN", Merlin2DispatchPlanState(self))
 
         YasminViewerPub("MERLIN2_EXECUTOR", self, node=self)
+
+        set_ros_loggers()
 
         # action server
         self.__action_server = self.create_action_server(
             Execute,
             "execute",
             execute_callback=self.__execute_server,
-            cancel_callback=self.__cancel_callback
+            cancel_callback=self.__cancel_callback,
         )
 
     def __cancel_callback(self):
@@ -77,7 +86,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
             pddl_proposition_dao.delete(pddl_goal_dto)
 
     def __execute_server(self, goal_handle):
-        """ execute action server
+        """execute action server
 
         Args:
             goal_handle: goal_handle

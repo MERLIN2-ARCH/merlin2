@@ -18,16 +18,18 @@
 
 from merlin2_msgs.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
-from yasmin_viewer import YasminViewerPub
+
 from yasmin import StateMachine, State
 from yasmin.blackboard import Blackboard
 from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
+from yasmin_ros.ros_logs import set_ros_loggers
+from yasmin_viewer import YasminViewerPub
 
 from .merlin2_state_factory import Merlin2StateFactory
 
 
 class Merlin2FsmAction(Merlin2Action, StateMachine):
-    """ Merlin2 FSM Action Class """
+    """Merlin2 FSM Action Class"""
 
     def __init__(self, action_name: str) -> None:
 
@@ -35,6 +37,8 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
 
         Merlin2Action.__init__(self, action_name)
         StateMachine.__init__(self, [SUCCEED, ABORT, CANCEL])
+
+        set_ros_loggers()
 
         YasminViewerPub(self.get_name().upper(), self, node=self)
 
@@ -54,7 +58,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
         self.cancel_state()
 
     def create_state(self, state: int) -> State:
-        """ create the basic state
+        """create the basic state
 
         Args:
             state (int): state from basic states
