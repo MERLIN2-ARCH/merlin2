@@ -1,9 +1,6 @@
-
 import unittest
 
-from merlin2_pddl_generator.merlin2_pddl_generator import(
-    Merlin2PddlGenerator
-)
+from merlin2_pddl_generator.merlin2_pddl_generator import Merlin2PddlGenerator
 
 from kant_dto import (
     PddlTypeDto,
@@ -11,7 +8,7 @@ from kant_dto import (
     PddlPredicateDto,
     PddlPropositionDto,
     PddlConditionEffectDto,
-    PddlActionDto
+    PddlActionDto,
 )
 
 
@@ -33,48 +30,42 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
         wp2 = PddlObjectDto(wp_type, "wp2")
 
         # predicates
-        robot_at = PddlPredicateDto(
-            "robot_at", [robot_type, wp_type])
-        wp_checked = PddlPredicateDto(
-            "wp_checked", [robot_type, wp_type])
+        robot_at = PddlPredicateDto("robot_at", [robot_type, wp_type])
+        wp_checked = PddlPredicateDto("wp_checked", [robot_type, wp_type])
 
         # propositions
-        rb1_robot_at = PddlPropositionDto(
-            robot_at, [rb1, wp1])
+        rb1_robot_at = PddlPropositionDto(robot_at, [rb1, wp1])
 
         # goals
 
-        rb1_wp2_wp_checked_goal = PddlPropositionDto(
-            wp_checked, [rb1, wp2], is_goal=True)
+        rb1_wp2_wp_checked_goal = PddlPropositionDto(wp_checked, [rb1, wp2], is_goal=True)
 
         # actions
         r = PddlObjectDto(robot_type, "r")
         s = PddlObjectDto(wp_type, "s")
         d = PddlObjectDto(wp_type, "d")
 
-        condition_1 = PddlConditionEffectDto(robot_at,
-                                             [r, s],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            robot_at, [r, s], time=PddlConditionEffectDto.AT_START
+        )
 
-        effect_1 = PddlConditionEffectDto(robot_at,
-                                          [r, s],
-                                          time=PddlConditionEffectDto.AT_START,
-                                          is_negative=True)
+        effect_1 = PddlConditionEffectDto(
+            robot_at, [r, s], time=PddlConditionEffectDto.AT_START, is_negative=True
+        )
 
-        effect_2 = PddlConditionEffectDto(robot_at,
-                                          [r, d],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_2 = PddlConditionEffectDto(
+            robot_at, [r, d], time=PddlConditionEffectDto.AT_END
+        )
 
         navigation_action = PddlActionDto(
-            "navigation", [r, s, d], [condition_1], [effect_1, effect_2])
+            "navigation", [r, s, d], [condition_1], [effect_1, effect_2]
+        )
 
-        effect_3 = PddlConditionEffectDto(wp_checked,
-                                          [r, s],
-                                          time=PddlConditionEffectDto.AT_END,
-                                          is_negative=False)
+        effect_3 = PddlConditionEffectDto(
+            wp_checked, [r, s], time=PddlConditionEffectDto.AT_END, is_negative=False
+        )
 
-        check_wp = PddlActionDto(
-            "check_wp", [r, s], [condition_1], [effect_3])
+        check_wp = PddlActionDto("check_wp", [r, s], [condition_1], [effect_3])
 
         # saving
         self.pddl_type_dao = self.dao_factory.create_pddl_type_dao()
@@ -112,7 +103,8 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 
         pddl_generated = self.pddl_generator.generate_pddl()
 
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (define (domain merlin2)
 (:requirements :typing :negative-preconditions :durative-actions)
 (:types
@@ -146,9 +138,11 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 )
 )
 """,
-                         pddl_generated[0])
+            pddl_generated[0],
+        )
 
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (define (problem merlin2_prb)
 (:domain merlin2)
 (:objects
@@ -164,4 +158,5 @@ class TestMerlin2PddlProblemGenerator(unittest.TestCase):
 )
 )
 """,
-                         pddl_generated[1])
+            pddl_generated[1],
+        )
