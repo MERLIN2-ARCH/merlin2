@@ -14,8 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Goal Dispatcher, which is in charger of adding/deleting new propositions 
-as goals and executing/canceling the Executor (canceling everything else)"""
+"""Goal Dispatcher in charger of adding/deleting new propositions as goals and executing/canceling the Executor"""
 
 from typing import List
 
