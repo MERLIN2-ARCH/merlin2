@@ -42,7 +42,7 @@ class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):
         StateMachine.__init__(self, outcomes)
         Merlin2MissionNode.__init__(self, node_name, reset_problem, run_mission)
 
-        set_ros_loggers()
+        set_ros_loggers(self)
 
         YasminViewerPub(node_name.upper(), self, node=self)
 

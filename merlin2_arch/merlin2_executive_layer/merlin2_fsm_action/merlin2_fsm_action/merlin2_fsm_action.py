@@ -38,7 +38,7 @@ class Merlin2FsmAction(Merlin2Action, StateMachine):
         Merlin2Action.__init__(self, action_name)
         StateMachine.__init__(self, [SUCCEED, ABORT, CANCEL])
 
-        set_ros_loggers()
+        set_ros_loggers(self)
 
         YasminViewerPub(self.get_name().upper(), self, node=self)
 

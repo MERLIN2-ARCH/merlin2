@@ -66,7 +66,7 @@ class Merlin2ExecutorNode(Node, StateMachine):
 
         YasminViewerPub("MERLIN2_EXECUTOR", self, node=self)
 
-        set_ros_loggers()
+        set_ros_loggers(self)
 
         # action server
         self.__action_server = self.create_action_server(

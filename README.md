@@ -18,7 +18,7 @@
   - [Demos](#demos)
     - [Demo 1](#demo-1)
     - [Demo 2](#demo-2)
-    - [Demo3](#demo3)
+    - [Demo 3](#demo-3)
   - [Citations](#citations)
 
 ## Diagram
@@ -329,7 +329,7 @@ ros2 launch merlin2_demos merlin2_demo2.launch.py
   <img src="./docs/demo2.gif" width="100%" />
 </p>
 
-### Demo3
+### Demo 3
 
 The RB1 robot waits until it hears the sound of the doorbell, navigates to the door, attends the person and returns to the living room.
 
