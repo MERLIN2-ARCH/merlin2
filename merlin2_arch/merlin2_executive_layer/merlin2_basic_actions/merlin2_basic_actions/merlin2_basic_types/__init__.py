@@ -14,9 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from kant_dto import (
-    PddlTypeDto
-)
+from kant_dto import PddlTypeDto
 
 wp_type = PddlTypeDto("wp")
 person_type = PddlTypeDto("person")

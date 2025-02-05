@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Navigation State """
+"""Navigation State"""
 
 from rclpy.node import Node
 from waypoint_navigation_msgs.action import NavigateToWp
@@ -23,7 +23,7 @@ from yasmin.blackboard import Blackboard
 
 
 class Merlin2NavigationState(ActionState):
-    """ Navigation State Class """
+    """Navigation State Class"""
 
     def __init__(self, node: Node) -> None:
 
@@ -31,11 +31,11 @@ class Merlin2NavigationState(ActionState):
             NavigateToWp,
             "/waypoint_navigation/navigate_to_wp",
             self.create_nav_goal,
-            node=node
+            node=node,
         )
 
     def create_nav_goal(self, blackboard: Blackboard) -> NavigateToWp.Goal:
-        """ create a goal for the waypoint navigation
+        """create a goal for the waypoint navigation
 
             blackboard:
                 destination

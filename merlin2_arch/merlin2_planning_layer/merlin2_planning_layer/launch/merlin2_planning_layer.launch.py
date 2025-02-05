@@ -30,21 +30,20 @@ def generate_launch_description():
     #
     dao_family = LaunchConfiguration("dao_family")
     dao_family_cmd = DeclareLaunchArgument(
-        "dao_family",
-        default_value=str(int(DaoFamilies.ROS2)),
-        description="DAO family")
+        "dao_family", default_value=str(int(DaoFamilies.ROS2)), description="DAO family"
+    )
 
     mongo_uri = LaunchConfiguration("mongo_uri")
     mongo_uri_cmd = DeclareLaunchArgument(
         "mongo_uri",
         default_value="mongodb://localhost:27017/merlin2",
-        description="MongoDB URI")
+        description="MongoDB URI",
+    )
 
     planner = LaunchConfiguration("planner")
     planner_cmd = DeclareLaunchArgument(
-        "planner",
-        default_value="1",
-        description="PDDL planner")
+        "planner", default_value="1", description="PDDL planner"
+    )
 
     #
     # NODES
@@ -53,37 +52,28 @@ def generate_launch_description():
         package="merlin2_pddl_generator",
         executable="pddl_generator_node",
         name="pddl_generator_node",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+        parameters=[{"dao_family": dao_family, "mongo_uri": mongo_uri}],
     )
 
     planner_node_cmd = Node(
         package="merlin2_planner",
         executable="planner_node",
         name="planner_node",
-        parameters=[{"planner": planner}]
+        parameters=[{"planner": planner}],
     )
 
     plan_dispatcher_node_cmd = Node(
         package="merlin2_plan_dispatcher",
         executable="plan_dispatcher_node",
         name="plan_dispatcher_node",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+        parameters=[{"dao_family": dao_family, "mongo_uri": mongo_uri}],
     )
 
     executor_node_cmd = Node(
         package="merlin2_executor",
         executable="executor_node",
         name="executor_node",
-        parameters=[{
-            "dao_family": dao_family,
-            "mongo_uri": mongo_uri
-        }]
+        parameters=[{"dao_family": dao_family, "mongo_uri": mongo_uri}],
     )
 
     knowledge_base_node_cmd = Node(
@@ -91,8 +81,7 @@ def generate_launch_description():
         executable="knowledge_base_node.py",
         name="knowledge_base_node",
         namespace="merlin2",
-        condition=LaunchConfigurationEquals(
-            "dao_family", str(int(DaoFamilies.ROS2)))
+        condition=LaunchConfigurationEquals("dao_family", str(int(DaoFamilies.ROS2))),
     )
 
     #

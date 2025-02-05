@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Generate Plan State """
+"""Generate Plan State"""
 
 import time
 from simple_node import Node
@@ -27,10 +27,11 @@ from merlin2_msgs.srv import GeneratePlan
 class Merlin2GeneratePlanState(ServiceState):
     def __init__(self, node: Node) -> None:
         super().__init__(
-            GeneratePlan, "generate_plan",
+            GeneratePlan,
+            "generate_plan",
             self.create_request_handler,
             response_handler=self.response_handler,
-            node=node
+            node=node,
         )
         self._node = node
 
@@ -40,7 +41,9 @@ class Merlin2GeneratePlanState(ServiceState):
         req.problem = blackboard["problem"]
         return req
 
-    def response_handler(self, blackboard: Blackboard, response: GeneratePlan.Response) -> str:
+    def response_handler(
+        self, blackboard: Blackboard, response: GeneratePlan.Response
+    ) -> str:
 
         self._node.get_logger().info("Plan has solution: " + str(response.has_solution))
         if not response.has_solution:
@@ -52,6 +55,7 @@ class Merlin2GeneratePlanState(ServiceState):
 
         elapsed_time = time.time() - blackboard["init_time"]
         self._node.get_logger().info(
-            f"Time from receiving goals to planning: {elapsed_time} seconds")
+            f"Time from receiving goals to planning: {elapsed_time} seconds"
+        )
 
         return SUCCEED

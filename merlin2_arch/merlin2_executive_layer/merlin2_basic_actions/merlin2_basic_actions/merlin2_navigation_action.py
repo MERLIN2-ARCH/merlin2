@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that uses the waypoint navigation """
+"""MERLIN2 action that uses the waypoint navigation"""
 
 from typing import List
 import rclpy
@@ -34,7 +34,7 @@ from merlin2_msgs.msg import PlanAction
 
 
 class Merlin2NavigationAction(Merlin2Action):
-    """ Merlin2 Navigation Action Class """
+    """Merlin2 Navigation Action Class"""
 
     def __init__(self) -> None:
 
@@ -44,7 +44,8 @@ class Merlin2NavigationAction(Merlin2Action):
         super().__init__("navigation")
 
         self.__wp_nav_client = self.create_action_client(
-            NavigateToWp, "/waypoint_navigation/navigate_to_wp")
+            NavigateToWp, "/waypoint_navigation/navigate_to_wp"
+        )
 
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = NavigateToWp.Goal()
@@ -70,24 +71,17 @@ class Merlin2NavigationAction(Merlin2Action):
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__org],
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__org], time=PddlConditionEffectDto.AT_START
         )
         return [condition_1]
 
     def create_effects(self) -> List[PddlConditionEffectDto]:
         effect_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__dst],
-            time=PddlConditionEffectDto.AT_END
+            robot_at, [self.__dst], time=PddlConditionEffectDto.AT_END
         )
 
         effect_2 = PddlConditionEffectDto(
-            robot_at,
-            [self.__org],
-            is_negative=True,
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__org], is_negative=True, time=PddlConditionEffectDto.AT_START
         )
 
         return [effect_1, effect_2]

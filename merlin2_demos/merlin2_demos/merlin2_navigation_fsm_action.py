@@ -16,35 +16,26 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that uses the waypoint navigation """
+"""MERLIN2 action that uses the waypoint navigation"""
 
 from typing import List
 
 import rclpy
 
-from kant_dto import (
-    PddlObjectDto,
-    PddlConditionEffectDto,
-    PddlPropositionDto
-)
+from kant_dto import PddlObjectDto, PddlConditionEffectDto, PddlPropositionDto
 
 from merlin2_basic_actions.merlin2_basic_types import wp_type
 from merlin2_basic_actions.merlin2_basic_predicates import robot_at
+from merlin2_fsm_action import Merlin2FsmAction, Merlin2BasicStates
+from merlin2_basic_actions.merlin2_basic_predicates import robot_at
+from merlin2_basic_actions.merlin2_basic_types import wp_type
 
-from merlin2_fsm_action import (
-    Merlin2FsmAction,
-    Merlin2BasicStates
-)
 from yasmin import CbState
 from yasmin.blackboard import Blackboard
 
-# knowledge after cancel
-from merlin2_basic_actions.merlin2_basic_predicates import robot_at
-from merlin2_basic_actions.merlin2_basic_types import wp_type
-
 
 class Merlin2NavigationFsmAction(Merlin2FsmAction):
-    """ Merlin2 Navigation Action Class """
+    """Merlin2 Navigation Action Class"""
 
     def __init__(self) -> None:
 
@@ -57,16 +48,9 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
 
         navigation_state = self.create_state(Merlin2BasicStates.NAVIGATION)
 
-        self.add_state(
-            "PREPARING_GOAL",
-            prepare_goal_state,
-            {"valid": "NAVIGATING"}
-        )
+        self.add_state("PREPARING_GOAL", prepare_goal_state, {"valid": "NAVIGATING"})
 
-        self.add_state(
-            "NAVIGATING",
-            navigation_state
-        )
+        self.add_state("NAVIGATING", navigation_state)
 
     def cancel_action(self) -> None:
 
@@ -87,24 +71,17 @@ class Merlin2NavigationFsmAction(Merlin2FsmAction):
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__org],
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__org], time=PddlConditionEffectDto.AT_START
         )
         return [condition_1]
 
     def create_effects(self) -> List[PddlConditionEffectDto]:
         effect_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__dst],
-            time=PddlConditionEffectDto.AT_END
+            robot_at, [self.__dst], time=PddlConditionEffectDto.AT_END
         )
 
         effect_2 = PddlConditionEffectDto(
-            robot_at,
-            [self.__org],
-            is_negative=True,
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__org], is_negative=True, time=PddlConditionEffectDto.AT_START
         )
 
         return [effect_1, effect_2]

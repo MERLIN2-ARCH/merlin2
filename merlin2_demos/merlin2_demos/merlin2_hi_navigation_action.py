@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that asks for a wp to move to """
+"""MERLIN2 action that asks for a wp to move to"""
 
 from typing import List
 import rclpy
@@ -26,27 +26,19 @@ from kant_dto import (
     PddlConditionEffectDto,
 )
 
-from merlin2_basic_actions.merlin2_basic_types import (
-    wp_type,
-    person_type
-)
-from merlin2_basic_actions.merlin2_basic_predicates import (
-    robot_at,
-    person_at
-)
-
+from merlin2_basic_actions.merlin2_basic_types import wp_type, person_type
+from merlin2_basic_actions.merlin2_basic_predicates import robot_at, person_at
 from merlin2_action.merlin2_action import Merlin2Action
+from merlin2_msgs.msg import PlanAction
+from merlin2_demos.pddl import person_attended
 
 from waypoint_navigation_msgs.action import NavigateToWp
 from speech_to_text_msgs.action import ListenOnce
 from text_to_speech_msgs.action import TTS
-from merlin2_msgs.msg import PlanAction
-
-from merlin2_demos.pddl import person_attended
 
 
 class Merlin2HiNavigationAction(Merlin2Action):
-    """ Merlin2 HI Navigation Action Class """
+    """Merlin2 HI Navigation Action Class"""
 
     def __init__(self) -> None:
 
@@ -56,13 +48,14 @@ class Merlin2HiNavigationAction(Merlin2Action):
         super().__init__("hi_navigation")
 
         self.__wp_nav_client = self.create_action_client(
-            NavigateToWp, "waypoint_navigation/navigate_to_pose")
+            NavigateToWp, "waypoint_navigation/navigate_to_pose"
+        )
 
-        self.__tts_client = self.create_action_client(
-            TTS, "/text_to_speech/tts")
+        self.__tts_client = self.create_action_client(TTS, "/text_to_speech/tts")
 
         self.__speech_rec_client = self.create_action_client(
-            ListenOnce, "/speech_to_text/listen_once")
+            ListenOnce, "/speech_to_text/listen_once"
+        )
 
     def run_action(self, goal: PlanAction) -> bool:
         nav_goal = NavigateToWp.Goal()
@@ -114,15 +107,11 @@ class Merlin2HiNavigationAction(Merlin2Action):
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__source_p],
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__source_p], time=PddlConditionEffectDto.AT_START
         )
 
         condition_2 = PddlConditionEffectDto(
-            person_at,
-            [self.__per, self.__source_p],
-            time=PddlConditionEffectDto.AT_START
+            person_at, [self.__per, self.__source_p], time=PddlConditionEffectDto.AT_START
         )
 
         return [condition_1, condition_2]
@@ -130,16 +119,14 @@ class Merlin2HiNavigationAction(Merlin2Action):
     def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
-            person_attended,
-            [self.__per],
-            time=PddlConditionEffectDto.AT_END
+            person_attended, [self.__per], time=PddlConditionEffectDto.AT_END
         )
 
         effect_2 = PddlConditionEffectDto(
             robot_at,
             [self.__source_p],
             is_negative=True,
-            time=PddlConditionEffectDto.AT_END
+            time=PddlConditionEffectDto.AT_END,
         )
 
         return [effect_1, effect_2]

@@ -34,11 +34,7 @@ from math import sqrt, pow
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
 # pddl
-from kant_dto import (
-    PddlObjectDto,
-    PddlPropositionDto
-)
-
+from kant_dto import PddlObjectDto, PddlPropositionDto
 from merlin2_basic_actions.merlin2_basic_types import (
     wp_type,
 )
@@ -64,72 +60,76 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         results_path_param_name = "results_path"
         world_param_name = "world"
 
-        self.declare_parameter(
-            total_points_param_name, 6)  # 6, 20, 120
-        self.declare_parameter(
-            time_to_cancel_param_name, 10)
-        self.declare_parameter(
-            number_of_tests_param_name, 10)
-        self.declare_parameter(
-            results_path_param_name, "~/")
-        self.declare_parameter(
-            world_param_name, "granny")
+        self.declare_parameter(total_points_param_name, 6)  # 6, 20, 120
+        self.declare_parameter(time_to_cancel_param_name, 10)
+        self.declare_parameter(number_of_tests_param_name, 10)
+        self.declare_parameter(results_path_param_name, "~/")
+        self.declare_parameter(world_param_name, "granny")
 
-        self.total_points = self.get_parameter(
-            total_points_param_name).get_parameter_value().integer_value
-        self.time_to_cancel = self.get_parameter(
-            time_to_cancel_param_name).get_parameter_value().integer_value
-        self.number_of_tests = self.get_parameter(
-            number_of_tests_param_name).get_parameter_value().integer_value
-        self.results_path = self.get_parameter(
-            results_path_param_name).get_parameter_value().string_value
-        self.world = self.get_parameter(
-            world_param_name).get_parameter_value().string_value
+        self.total_points = (
+            self.get_parameter(total_points_param_name)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.time_to_cancel = (
+            self.get_parameter(time_to_cancel_param_name)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.number_of_tests = (
+            self.get_parameter(number_of_tests_param_name)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.results_path = (
+            self.get_parameter(results_path_param_name).get_parameter_value().string_value
+        )
+        self.world = (
+            self.get_parameter(world_param_name).get_parameter_value().string_value
+        )
 
         self.__last_pose = None
         self.__distance = 0
 
         self.__pose_sub = self.create_subscription(
-            PoseWithCovarianceStamped, "/amcl_pose", self.__pose_cb, 100)
+            PoseWithCovarianceStamped, "/amcl_pose", self.__pose_cb, 100
+        )
 
         # build fsm
         self.add_state(
             "INITIATING_BLACKBOARD",
             CbState([self.END], self.init_blackboard),
-            {self.END: "CHECKING_NEXT_TEST"}
+            {self.END: "CHECKING_NEXT_TEST"},
         )
 
         self.add_state(
             "CHECKING_NEXT_TEST",
             CbState([self.NEXT, self.END], self.check_next_test),
-            {
-                self.NEXT: "MOVING_ROBOT_TO_INIT_POSE",
-                self.END: self.END
-            }
+            {self.NEXT: "MOVING_ROBOT_TO_INIT_POSE", self.END: self.END},
         )
 
         self.add_state(
             "MOVING_ROBOT_TO_INIT_POSE",
             CbState([self.END], self.move_robot_to_init_pose),
-            {self.END: "INITIATING_POINTS"}
+            {self.END: "INITIATING_POINTS"},
         )
 
         self.add_state(
             "INITIATING_POINTS",
             CbState([self.END], self.init_points),
-            {self.END: "RUNNING_TEST"}
+            {self.END: "RUNNING_TEST"},
         )
 
         self.add_state(
             "RUNNING_TEST",
             CbState([self.END], self.run_test),
-            {self.END: "SAVING_RESULTS"}
+            {self.END: "SAVING_RESULTS"},
         )
 
         self.add_state(
             "SAVING_RESULTS",
             CbState([self.END], self.save_results),
-            {self.END: "CHECKING_NEXT_TEST"}
+            {self.END: "CHECKING_NEXT_TEST"},
         )
 
     def __pose_cb(self, msg: PoseWithCovarianceStamped):
@@ -137,8 +137,9 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
 
         if not self.__last_pose is None:
             new_distance = sqrt(
-                pow((pose.position.x - self.__last_pose.position.x), 2) +
-                pow((pose.position.y - self.__last_pose.position.y), 2))
+                pow((pose.position.x - self.__last_pose.position.x), 2)
+                + pow((pose.position.y - self.__last_pose.position.y), 2)
+            )
             self.__distance += new_distance
 
         self.__last_pose = pose
@@ -160,8 +161,7 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
     def init_blackboard(self, blackboard: Blackboard) -> str:
         blackboard["results"] = []
         blackboard["number_of_tests"] = 0
-        blackboard["progress_bar"] = tqdm(
-            total=self.total_points * self.number_of_tests)
+        blackboard["progress_bar"] = tqdm(total=self.total_points * self.number_of_tests)
         return self.END
 
     def check_next_test(self, blackboard: Blackboard) -> str:
@@ -181,20 +181,18 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
         seed(time.time())
 
         for _ in range(self.total_points):
-            point = {
-                "value": "",
-                "cancel": False
-            }
+            point = {"value": "", "cancel": False}
             point["value"] = "wp" + str(randint(0, 3))
 
-            while ((len(wp_list) > 0 and point["value"] == wp_list[-1]["value"]) or
-                   (len(wp_list) == 0 and point["value"] == "wp0")):
+            while (len(wp_list) > 0 and point["value"] == wp_list[-1]["value"]) or (
+                len(wp_list) == 0 and point["value"] == "wp0"
+            ):
                 point["value"] = "wp" + str(randint(0, 3))
 
             wp_list.append(point)
 
         point_pos_list = []
-        for _ in range(int(self.total_points/2)):
+        for _ in range(int(self.total_points / 2)):
             point_pos = randint(0, self.total_points - 1)
 
             while point_pos in point_pos_list:
@@ -262,8 +260,14 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
 
     def save_results(self, blackboard: Blackboard) -> str:
 
-        file_name = self.results_path + "/results_" + \
-            self.world + "_" + str(self.total_points) + ".csv"
+        file_name = (
+            self.results_path
+            + "/results_"
+            + self.world
+            + "_"
+            + str(self.total_points)
+            + ".csv"
+        )
         file_name = file_name.replace("//", "/")
         file_name = os.path.abspath(os.path.expanduser(file_name))
 
@@ -278,8 +282,16 @@ class Merlin2Demo2Node(Merlin2FsmMissionNode):
             f.close()
 
         time_t, distance = blackboard["results"]
-        string_csv += str(offset) + "," + self.world + "," + \
-            str(time_t) + "," + str(distance) + "\n"
+        string_csv += (
+            str(offset)
+            + ","
+            + self.world
+            + ","
+            + str(time_t)
+            + ","
+            + str(distance)
+            + "\n"
+        )
 
         f = open(file_name, "a")
         f.write(string_csv)

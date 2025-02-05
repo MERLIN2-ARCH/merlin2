@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Pddl Generator Node """
+"""Merlin2 Pddl Generator Node"""
 
 import time
 import rclpy
@@ -29,7 +29,7 @@ from kant_dao import ParameterLoader
 
 
 class Merlin2PddlGeneratorNode(Node):
-    """ Merlin2 Pddl Generator Node Class """
+    """Merlin2 Pddl Generator Node Class"""
 
     def __init__(self):
 
@@ -42,12 +42,13 @@ class Merlin2PddlGeneratorNode(Node):
 
         # service servers
         self.__generate_pddl_service = self.create_service(
-            GeneratePddl, "generate_pddl", self.__generate_pddl_srv)
+            GeneratePddl, "generate_pddl", self.__generate_pddl_srv
+        )
 
-    def __generate_pddl_srv(self,
-                            req: GeneratePddl.Request,
-                            res: GeneratePddl.Response) -> GeneratePddl.Response:
-        """ generate pddl srv callback
+    def __generate_pddl_srv(
+        self, req: GeneratePddl.Request, res: GeneratePddl.Response
+    ) -> GeneratePddl.Response:
+        """generate pddl srv callback
 
         Args:
             req (GeneratePddl.Request): request (empty msg)
@@ -62,8 +63,7 @@ class Merlin2PddlGeneratorNode(Node):
         end_time = time.time()
 
         elapsed_time = end_time - start_time
-        self.get_logger().info(
-            f"Time to generate PDDL: {elapsed_time} seconds")
+        self.get_logger().info(f"Time to generate PDDL: {elapsed_time} seconds")
 
         res.domain = pddl_generated[0]
         res.problem = pddl_generated[1]

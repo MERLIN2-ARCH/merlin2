@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that simulates checking a wp """
+"""MERLIN2 action that simulates checking a wp"""
 
 from typing import List
 import rclpy
@@ -29,22 +29,17 @@ from kant_dto import (
 from merlin2_basic_actions.merlin2_basic_types import (
     wp_type,
 )
-from merlin2_basic_actions.merlin2_basic_predicates import (
-    robot_at
-)
-
+from merlin2_basic_actions.merlin2_basic_predicates import robot_at
 from merlin2_action.merlin2_action import Merlin2Action
+from merlin2_msgs.msg import PlanAction
+from merlin2_demos.pddl import wp_checked
 
 from text_to_speech_msgs.action import TTS
 from text_to_speech_msgs.msg import Config
 
-from merlin2_msgs.msg import PlanAction
-
-from merlin2_demos.pddl import wp_checked
-
 
 class Merlin2CheckWpAction(Merlin2Action):
-    """ Merlin2 Navigation Action Class """
+    """Merlin2 Navigation Action Class"""
 
     def __init__(self) -> None:
 
@@ -52,8 +47,7 @@ class Merlin2CheckWpAction(Merlin2Action):
 
         super().__init__("check_wp")
 
-        self.__tts_client = self.create_action_client(
-            TTS, "/text_to_speech/tts")
+        self.__tts_client = self.create_action_client(TTS, "/text_to_speech/tts")
 
     def run_action(self, goal: PlanAction) -> bool:
         tts_goal = TTS.Goal()
@@ -78,9 +72,7 @@ class Merlin2CheckWpAction(Merlin2Action):
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__wp],
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__wp], time=PddlConditionEffectDto.AT_START
         )
 
         return [condition_1]
@@ -88,9 +80,7 @@ class Merlin2CheckWpAction(Merlin2Action):
     def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
-            wp_checked,
-            [self.__wp],
-            time=PddlConditionEffectDto.AT_END
+            wp_checked, [self.__wp], time=PddlConditionEffectDto.AT_END
         )
 
         return [effect_1]

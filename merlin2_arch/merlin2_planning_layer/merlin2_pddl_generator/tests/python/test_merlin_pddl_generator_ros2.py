@@ -14,15 +14,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from kant_dao.dao_factory import (
-    DaoFactoryMethod,
-    DaoFamilies
-)
+from kant_dao.dao_factory import DaoFactoryMethod, DaoFamilies
 
 from simple_node import Node
 import rclpy
 
-from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import TestMerlin2PddlProblemGenerator
+from tests_merlin2_pddl_generator_basic.test_merlin_pddl_generator import (
+    TestMerlin2PddlProblemGenerator,
+)
 
 
 class TestMerlin2PddlProblemGeneratorRos2(TestMerlin2PddlProblemGenerator):
@@ -33,7 +32,8 @@ class TestMerlin2PddlProblemGeneratorRos2(TestMerlin2PddlProblemGenerator):
         dao_factory_method = DaoFactoryMethod()
         self.node = Node("test_mongoengine_merlin_pddl_generator_node")
         self.dao_factory = dao_factory_method.create_dao_factory(
-            DaoFamilies.ROS2, node=self.node)
+            DaoFamilies.ROS2, node=self.node
+        )
 
         super().setUp()
 
@@ -43,4 +43,4 @@ class TestMerlin2PddlProblemGeneratorRos2(TestMerlin2PddlProblemGenerator):
         rclpy.shutdown()
 
 
-del (TestMerlin2PddlProblemGenerator)
+del TestMerlin2PddlProblemGenerator

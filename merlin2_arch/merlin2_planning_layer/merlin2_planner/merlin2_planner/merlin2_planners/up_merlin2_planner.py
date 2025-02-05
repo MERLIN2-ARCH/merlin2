@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Unified Planning Merlin2 Planner """
+"""Unified Planning Merlin2 Planner"""
 
 from unified_planning.shortcuts import OneshotPlanner
 from unified_planning.engines.results import PlanGenerationResultStatus
@@ -26,7 +26,7 @@ from merlin2_msgs.msg import PlanAction
 
 
 class UpMerlin2Planner(Merlin2Planner):
-    """ UP Merlin2 Planner """
+    """UP Merlin2 Planner"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -35,7 +35,7 @@ class UpMerlin2Planner(Merlin2Planner):
         self._up_plan = None
 
     def _generate_plan(self, domain: str, problem: str) -> None:
-        """ create a ppdl plan
+        """create a ppdl plan
 
         Args:
             domain (str): str of a pddl domain
@@ -53,8 +53,9 @@ class UpMerlin2Planner(Merlin2Planner):
         domain_file.seek(0)
         problem_file.seek(0)
 
-        pddl_problem = self.reader.parse_problem(str(domain_file.name),
-                                                 str(problem_file.name))
+        pddl_problem = self.reader.parse_problem(
+            str(domain_file.name), str(problem_file.name)
+        )
 
         with OneshotPlanner(problem_kind=pddl_problem.kind) as planner:
             try:
@@ -76,8 +77,8 @@ class UpMerlin2Planner(Merlin2Planner):
         problem_file.close()
 
     def _parse_plan(self) -> None:
-        """ parse the current plan from str to
-            list of PlanAction and check if has solution
+        """parse the current plan from str to
+        list of PlanAction and check if has solution
         """
 
         if self._has_solution:

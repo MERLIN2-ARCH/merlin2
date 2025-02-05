@@ -14,15 +14,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from merlin2_basic_actions.merlin2_basic_types import (
-    person_type,
-    wp_type
-)
+from merlin2_basic_actions.merlin2_basic_types import person_type, wp_type
 
-from kant_dto import (
-    PddlPredicateDto,
-    PddlTypeDto
-)
+from kant_dto import PddlPredicateDto, PddlTypeDto
 
 person_attended = PddlPredicateDto("person_attended", [person_type])
 wp_checked = PddlPredicateDto("wp_checked", [wp_type])

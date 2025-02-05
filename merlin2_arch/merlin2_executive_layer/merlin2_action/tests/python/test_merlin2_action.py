@@ -51,8 +51,7 @@ class ClientNode(Node):
     def __init__(self):
         super().__init__("client_node", namespace="merlin2")
 
-        self.action_client = self.create_action_client(
-            DispatchAction, "navigation")
+        self.action_client = self.create_action_client(DispatchAction, "navigation")
 
     def call_action(self):
 

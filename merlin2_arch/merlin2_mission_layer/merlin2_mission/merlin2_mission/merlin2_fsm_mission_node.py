@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Base class to create MERLIN2 missions using a FSM """
+"""Base class to create MERLIN2 missions using a FSM"""
 
 from typing import List
 from yasmin import StateMachine
@@ -22,7 +22,7 @@ from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 from yasmin_ros.ros_logs import set_ros_loggers
 from yasmin_viewer import YasminViewerPub
 
-from .merlin2_mission_node import Merlin2MissionNode
+from merlin2_mission.merlin2_mission_node import Merlin2MissionNode
 
 
 class Merlin2FsmMissionNode(Merlin2MissionNode, StateMachine):

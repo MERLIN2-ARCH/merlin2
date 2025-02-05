@@ -14,30 +14,32 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 State Factory """
+"""MERLIN2 State Factory"""
 
 from yasmin import State
-from .merlin2_basic_states import Merlin2BasicStates
-from .states import (
+from merlin2_fsm_action.merlin2_state_factory.merlin2_basic_states import (
+    Merlin2BasicStates,
+)
+from merlin2_fsm_action.merlin2_state_factory.states import (
     Merlin2NavigationState,
     Merlin2TtsState,
-    Merlin2SttState
+    Merlin2SttState,
 )
 
 
 class Merlin2StateFactory:
-    """ MERLIN2 State Factory Class """
+    """MERLIN2 State Factory Class"""
 
     def __init__(self) -> None:
         self.merlin2_basic_states = Merlin2BasicStates
         self.__enum_to_state = {
             self.merlin2_basic_states.NAVIGATION: Merlin2NavigationState,
             self.merlin2_basic_states.TTS: Merlin2TtsState,
-            self.merlin2_basic_states.STT: Merlin2SttState
+            self.merlin2_basic_states.STT: Merlin2SttState,
         }
 
     def create_state(self, state: int, **kwargs) -> State:
-        """ create a pddl dao factory of a given family
+        """create a pddl dao factory of a given family
 
         Args:
             state (int): number of the state

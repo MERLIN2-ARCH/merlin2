@@ -14,13 +14,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Planner Families Enumeration """
+"""Merlin2 Planner Families Enumeration"""
 
 from enum import IntEnum, auto
 
 
 class Merlin2Planners(IntEnum):
-    """ Enum Class of Merlin2 Planners """
+    """Enum Class of Merlin2 Planners"""
 
     POPF = auto()
     SMTP = auto()

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Generate PDDL State """
+"""Generate PDDL State"""
 
 from simple_node import Node
 from yasmin.blackboard import Blackboard
@@ -26,17 +26,20 @@ from merlin2_msgs.srv import GeneratePddl
 class Merlin2GeneratePddlState(ServiceState):
     def __init__(self, node: Node) -> None:
         super().__init__(
-            GeneratePddl, "generate_pddl",
+            GeneratePddl,
+            "generate_pddl",
             self.create_request_handler,
             response_handler=self.response_handler,
-            node=node
+            node=node,
         )
         self._node = node
 
     def create_request_handler(self, blackboard: Blackboard) -> GeneratePddl.Request:
         return GeneratePddl.Request()
 
-    def response_handler(self, blackboard: Blackboard, response: GeneratePddl.Response) -> str:
+    def response_handler(
+        self, blackboard: Blackboard, response: GeneratePddl.Response
+    ) -> str:
         blackboard["domain"] = response.domain
         blackboard["problem"] = response.problem
         blackboard["result"].generate_pddl = True

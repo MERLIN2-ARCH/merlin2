@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Navigation State """
+"""Navigation State"""
 
 from rclpy.node import Node
 from text_to_speech_msgs.action import TTS
@@ -23,18 +23,14 @@ from yasmin.blackboard import Blackboard
 
 
 class Merlin2TtsState(ActionState):
-    """ Navigation State Class """
+    """Navigation State Class"""
 
     def __init__(self, node: Node) -> None:
 
-        super().__init__(
-            TTS, "/text_to_speech/tts",
-            self.create_tts_goal,
-            node=node
-        )
+        super().__init__(TTS, "/text_to_speech/tts", self.create_tts_goal, node=node)
 
     def create_tts_goal(self, blackboard: Blackboard) -> TTS.Goal:
-        """ create a goal for the tts system
+        """create a goal for the tts system
 
             blackboard:
                 text

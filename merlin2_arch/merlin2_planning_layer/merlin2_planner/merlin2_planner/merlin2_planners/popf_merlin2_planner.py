@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Popf Merlin2 Planner """
+"""Popf Merlin2 Planner"""
 
 import tempfile
 import subprocess
@@ -25,18 +25,20 @@ import ament_index_python
 
 
 class PopfMerlin2Planner(Merlin2Planner):
-    """ Popf Merlin2 Planner """
+    """Popf Merlin2 Planner"""
 
     def __init__(self) -> None:
         super().__init__()
 
-        self.planner_path = ament_index_python.get_package_share_directory(
-            "merlin2_planner") + "/planners/popf"
+        self.planner_path = (
+            ament_index_python.get_package_share_directory("merlin2_planner")
+            + "/planners/popf"
+        )
 
         self.planner_cmd = "timeout 60 " + self.planner_path + " {} {}"
 
     def _generate_plan(self, domain: str, problem: str) -> None:
-        """ create a ppdl plan
+        """create a ppdl plan
 
         Args:
             domain (str): str of a pddl domain
@@ -52,9 +54,12 @@ class PopfMerlin2Planner(Merlin2Planner):
         domain_file.seek(0)
         problem_file.seek(0)
 
-        process = subprocess.Popen(self.planner_cmd.format(str(domain_file.name),
-                                                           str(problem_file.name)).split(" "),
-                                   stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            self.planner_cmd.format(str(domain_file.name), str(problem_file.name)).split(
+                " "
+            ),
+            stdout=subprocess.PIPE,
+        )
 
         process.wait()
         plan = str(process.stdout.read().decode("utf-8"))
@@ -65,8 +70,8 @@ class PopfMerlin2Planner(Merlin2Planner):
         self._str_plan = plan
 
     def _parse_plan(self) -> None:
-        """ parse the current plan from str to
-            list of PlanAction and check if has solution
+        """parse the current plan from str to
+        list of PlanAction and check if has solution
         """
 
         if "Solution Found" in self._str_plan:
@@ -79,7 +84,7 @@ class PopfMerlin2Planner(Merlin2Planner):
                 self._plan_actions.append(plan_action)
 
     def get_lines_with_actions(self, pddl_plan: str) -> List[str]:
-        """ get the lines with actions
+        """get the lines with actions
 
         Args:
             pddl_plan (str): pddl plan string
@@ -91,16 +96,13 @@ class PopfMerlin2Planner(Merlin2Planner):
         pddl_action_list = []
 
         for line in pddl_plan.split("\n"):
-            if ("(" in line and
-                ")" in line and
-                "[" in line and
-                    "]" in line):
+            if "(" in line and ")" in line and "[" in line and "]" in line:
                 pddl_action_list.append(line)
 
         return pddl_action_list
 
     def parse_action_str(self, action_str: str) -> PlanAction:
-        """ parse an action string
+        """parse an action string
 
         Args:
             action_str (str): string of an action

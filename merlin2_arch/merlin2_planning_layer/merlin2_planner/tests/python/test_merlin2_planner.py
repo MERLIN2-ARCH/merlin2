@@ -35,7 +35,8 @@ class TestMerlin2Planner(unittest.TestCase):
         planner.generate_plan(self.domain, self.problem)
         print(planner.get_str_plan())
         self.assertTrue(planner.has_solution())
-        self.assertEqual("\
+        self.assertEqual(
+            "\
 Number of literals: 2\n\
 Constructing lookup tables:\n\
 Post filtering unreachable actions: \n\
@@ -47,7 +48,8 @@ Initial heuristic = 1.000\n\
 ; Cost: 10.000\n\
 ; Time 0.00\n\
 0.000: (navigation rb1 wp1 wp2)  [10.000]\n\
-", planner.get_str_plan())
+",
+            planner.get_str_plan(),
+        )
 
-        self.assertEqual(
-            "navigation", planner.get_plan_actions()[0].action_name)
+        self.assertEqual("navigation", planner.get_plan_actions()[0].action_name)

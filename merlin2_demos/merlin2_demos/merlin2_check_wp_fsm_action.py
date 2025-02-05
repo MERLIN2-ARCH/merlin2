@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 action that uses the waypoint navigation """
+"""MERLIN2 action that uses the waypoint navigation"""
 
 from typing import List
 
@@ -27,21 +27,17 @@ from kant_dto import (
     PddlConditionEffectDto,
 )
 
+from merlin2_demos.pddl import wp_checked
 from merlin2_basic_actions.merlin2_basic_types import wp_type
 from merlin2_basic_actions.merlin2_basic_predicates import robot_at
+from merlin2_fsm_action import Merlin2FsmAction, Merlin2BasicStates
 
-from merlin2_fsm_action import (
-    Merlin2FsmAction,
-    Merlin2BasicStates
-)
 from yasmin import CbState
 from yasmin.blackboard import Blackboard
 
-from merlin2_demos.pddl import wp_checked
-
 
 class Merlin2CheckWpFsmAction(Merlin2FsmAction):
-    """ Merlin2 Navigation Action Class """
+    """Merlin2 Navigation Action Class"""
 
     def __init__(self) -> None:
 
@@ -53,20 +49,16 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
 
         tts_state = self.create_state(Merlin2BasicStates.TTS)
 
-        self.add_state(
-            "PREPARING_GOAL",
-            prepare_goal_state,
-            {"valid": "CHECKING_WP"}
-        )
+        self.add_state("PREPARING_GOAL", prepare_goal_state, {"valid": "CHECKING_WP"})
 
-        self.add_state(
-            "CHECKING_WP",
-            tts_state
-        )
+        self.add_state("CHECKING_WP", tts_state)
 
     def prepapre_goal(self, blackboard: Blackboard) -> str:
-        blackboard["text"] = "Waypoint " + \
-            str(blackboard["merlin2_action_goal"].objects[0][-1]) + " checked."
+        blackboard["text"] = (
+            "Waypoint "
+            + str(blackboard["merlin2_action_goal"].objects[0][-1])
+            + " checked."
+        )
         return "valid"
 
     def create_parameters(self) -> List[PddlObjectDto]:
@@ -74,9 +66,7 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
 
     def create_conditions(self) -> List[PddlConditionEffectDto]:
         condition_1 = PddlConditionEffectDto(
-            robot_at,
-            [self.__wp],
-            time=PddlConditionEffectDto.AT_START
+            robot_at, [self.__wp], time=PddlConditionEffectDto.AT_START
         )
 
         return [condition_1]
@@ -84,9 +74,7 @@ class Merlin2CheckWpFsmAction(Merlin2FsmAction):
     def create_effects(self) -> List[PddlConditionEffectDto]:
 
         effect_1 = PddlConditionEffectDto(
-            wp_checked,
-            [self.__wp],
-            time=PddlConditionEffectDto.AT_END
+            wp_checked, [self.__wp], time=PddlConditionEffectDto.AT_END
         )
 
         return [effect_1]

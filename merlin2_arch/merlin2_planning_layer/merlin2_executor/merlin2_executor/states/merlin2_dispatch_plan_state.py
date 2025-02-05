@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Dispatch Plan State """
+"""Dispatch Plan State"""
 
 from simple_node import Node
 from yasmin.blackboard import Blackboard
@@ -26,10 +26,11 @@ from merlin2_msgs.action import DispatchPlan
 class Merlin2DispatchPlanState(ActionState):
     def __init__(self, node: Node) -> None:
         super().__init__(
-            DispatchPlan, "dispatch_plan",
+            DispatchPlan,
+            "dispatch_plan",
             self.create_goal_handler,
             result_handler=self.result_handler,
-            node=node
+            node=node,
         )
 
     def create_goal_handler(self, blackboard: Blackboard) -> DispatchPlan.Goal:
@@ -37,6 +38,8 @@ class Merlin2DispatchPlanState(ActionState):
         goal.plan = blackboard["plan"]
         return goal
 
-    def result_handler(self, blackboard: Blackboard, response: DispatchPlan.Result) -> str:
+    def result_handler(
+        self, blackboard: Blackboard, response: DispatchPlan.Result
+    ) -> str:
         blackboard["result"].dispatch_plan = True
         return SUCCEED

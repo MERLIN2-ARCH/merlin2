@@ -14,13 +14,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Pddl Generator """
+"""Merlin2 Pddl Generator"""
 
 from typing import List
 
 from merlin2_pddl_generator.merlin2_pddl_parser import (
     Merlin2PddlDomainParser,
-    Merlin2PddlProblemParser
+    Merlin2PddlProblemParser,
 )
 
 from kant_dto import Dto
@@ -28,7 +28,7 @@ from kant_dao.dao_factory.dao_factories.dao_factory import DaoFactory
 
 
 class Merlin2PddlGenerator:
-    """ Merlin2 Pddl Generator Class"""
+    """Merlin2 Pddl Generator Class"""
 
     def __init__(self, dao_factory: DaoFactory):
         self.domain_parser = Merlin2PddlDomainParser()
@@ -41,7 +41,7 @@ class Merlin2PddlGenerator:
         self.pddl_proposition_dao = dao_factory.create_pddl_proposition_dao()
 
     def get_pddl_dtos(self) -> List[List[Dto]]:
-        """ gets all dtos and returns them in a list
+        """gets all dtos and returns them in a list
 
         Returns:
             List[List[Dto]]: list of dtos:
@@ -60,11 +60,17 @@ class Merlin2PddlGenerator:
         pddl_proposition_dtos = self.pddl_proposition_dao.get_no_goals()
         pddl_goal_dtos = self.pddl_proposition_dao.get_goals()
 
-        return [pddl_type_dtos, pddl_predicate_dtos, pddl_action_dtos,
-                pddl_object_dtos, pddl_proposition_dtos, pddl_goal_dtos]
+        return [
+            pddl_type_dtos,
+            pddl_predicate_dtos,
+            pddl_action_dtos,
+            pddl_object_dtos,
+            pddl_proposition_dtos,
+            pddl_goal_dtos,
+        ]
 
     def generate_pddl(self) -> List[str]:
-        """ generate pddl domain and problem
+        """generate pddl domain and problem
 
         Returns:
             List[str]: list of two elements,
@@ -80,12 +86,12 @@ class Merlin2PddlGenerator:
         propositions_list = dto_list[4]
         goals_list = dto_list[5]
 
-        pddl_domain = self.domain_parser.parse_pddl_domain_dto(types_list,
-                                                               predicates_list,
-                                                               actions_list)
+        pddl_domain = self.domain_parser.parse_pddl_domain_dto(
+            types_list, predicates_list, actions_list
+        )
 
-        pddl_problem = self.problem_parser.parse_pddl_problem_dto_list(objects_list,
-                                                                       propositions_list,
-                                                                       goals_list)
+        pddl_problem = self.problem_parser.parse_pddl_problem_dto_list(
+            objects_list, propositions_list, goals_list
+        )
 
         return [pddl_domain, pddl_problem]

@@ -22,7 +22,7 @@ from kant_dto import (
     PddlObjectDto,
     PddlPredicateDto,
     PddlConditionEffectDto,
-    PddlActionDto
+    PddlActionDto,
 )
 
 
@@ -37,79 +37,86 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
         self.wp_type = PddlTypeDto("wp")
 
         # predicates
-        self.robot_at = PddlPredicateDto(
-            "robot_at", [self.robot_type, self.wp_type])
-        self.wp_checked = PddlPredicateDto(
-            "wp_checked", [self.robot_type, self.wp_type])
+        self.robot_at = PddlPredicateDto("robot_at", [self.robot_type, self.wp_type])
+        self.wp_checked = PddlPredicateDto("wp_checked", [self.robot_type, self.wp_type])
 
         # actions
         r = PddlObjectDto(self.robot_type, "r")
         s = PddlObjectDto(self.wp_type, "s")
         d = PddlObjectDto(self.wp_type, "d")
 
-        condition_1 = PddlConditionEffectDto(self.robot_at,
-                                             [r, s],
-                                             time=PddlConditionEffectDto.AT_START)
+        condition_1 = PddlConditionEffectDto(
+            self.robot_at, [r, s], time=PddlConditionEffectDto.AT_START
+        )
 
-        effect_1 = PddlConditionEffectDto(self.robot_at,
-                                          [r, s],
-                                          time=PddlConditionEffectDto.AT_START,
-                                          is_negative=True)
+        effect_1 = PddlConditionEffectDto(
+            self.robot_at, [r, s], time=PddlConditionEffectDto.AT_START, is_negative=True
+        )
 
-        effect_2 = PddlConditionEffectDto(self.robot_at,
-                                          [r, d],
-                                          time=PddlConditionEffectDto.AT_END)
+        effect_2 = PddlConditionEffectDto(
+            self.robot_at, [r, d], time=PddlConditionEffectDto.AT_END
+        )
 
         self.navigation_action = PddlActionDto(
-            "navigation", [r, s, d], [condition_1], [effect_1, effect_2])
+            "navigation", [r, s, d], [condition_1], [effect_1, effect_2]
+        )
 
-        effect_3 = PddlConditionEffectDto(self.wp_checked,
-                                          [r, s],
-                                          time=PddlConditionEffectDto.AT_END,
-                                          is_negative=False)
+        effect_3 = PddlConditionEffectDto(
+            self.wp_checked, [r, s], time=PddlConditionEffectDto.AT_END, is_negative=False
+        )
 
-        self.check_wp = PddlActionDto(
-            "check_wp", [r, s], [condition_1], [effect_3])
+        self.check_wp = PddlActionDto("check_wp", [r, s], [condition_1], [effect_3])
 
     def test_parse_pddl_type_dto_list(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (:types
 \trobot
 \twp
 )
 """,
-                         self.domain_parser.parse_pddl_type_dto_list([self.robot_type, self.wp_type]))
+            self.domain_parser.parse_pddl_type_dto_list([self.robot_type, self.wp_type]),
+        )
 
     def test_parse_pddl_type_dto_list_empty_list(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (:types
 )
 """,
-                         self.domain_parser.parse_pddl_type_dto_list([]))
+            self.domain_parser.parse_pddl_type_dto_list([]),
+        )
 
     def test_parse_pddl_predicate_dto_list(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (:predicates
 \t(robot_at ?r0 - robot ?w1 - wp)
 \t(wp_checked ?r0 - robot ?w1 - wp)
 )
 """,
-                         self.domain_parser.parse_pddl_predicate_dto_list([self.robot_at, self.wp_checked]))
+            self.domain_parser.parse_pddl_predicate_dto_list(
+                [self.robot_at, self.wp_checked]
+            ),
+        )
 
     def test_parse_pddl_predicate_dto_list_empty_list(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (:predicates
 )
 """,
-                         self.domain_parser.parse_pddl_predicate_dto_list([]))
+            self.domain_parser.parse_pddl_predicate_dto_list([]),
+        )
 
     def test_parse_pddl_action_dto_list(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (:durative-action navigation
 \t:parameters ( ?r - robot ?s - wp ?d - wp)
 \t:duration (= ?duration 10)
@@ -132,16 +139,19 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 \t)
 )
 """,
-                         self.domain_parser.parse_pddl_action_dto_list([self.navigation_action, self.check_wp]))
+            self.domain_parser.parse_pddl_action_dto_list(
+                [self.navigation_action, self.check_wp]
+            ),
+        )
 
     def test_parse_pddl_action_dto_list_empty_list(self):
         self.maxDiff = None
-        self.assertEqual("",
-                         self.domain_parser.parse_pddl_action_dto_list([]))
+        self.assertEqual("", self.domain_parser.parse_pddl_action_dto_list([]))
 
     def test_parse_pddl_domain_dto(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (define (domain merlin2)
 (:requirements :typing :negative-preconditions :durative-actions)
 (:types
@@ -175,14 +185,17 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 )
 )
 """,
-                         self.domain_parser.parse_pddl_domain_dto([self.robot_type, self.wp_type],
-                                                                  [self.robot_at,
-                                                                   self.wp_checked],
-                                                                  [self.navigation_action, self.check_wp]))
+            self.domain_parser.parse_pddl_domain_dto(
+                [self.robot_type, self.wp_type],
+                [self.robot_at, self.wp_checked],
+                [self.navigation_action, self.check_wp],
+            ),
+        )
 
     def test_parse_pddl_domain_dto_empty_lists(self):
         self.maxDiff = None
-        self.assertEqual("""\
+        self.assertEqual(
+            """\
 (define (domain merlin2)
 (:requirements :typing :negative-preconditions :durative-actions)
 (:types
@@ -191,4 +204,5 @@ class TestMerlin2PddlDomainParser(unittest.TestCase):
 )
 )
 """,
-                         self.domain_parser.parse_pddl_domain_dto([], [], []))
+            self.domain_parser.parse_pddl_domain_dto([], [], []),
+        )

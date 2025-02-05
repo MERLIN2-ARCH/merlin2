@@ -77,7 +77,8 @@ class ClientNode(Node):
         self.pddl_proposition_dao.save(robot_at_prop)
 
         self.plan_dispatcher_client = self.create_action_client(
-            DispatchPlan, "dispatch_plan")
+            DispatchPlan, "dispatch_plan"
+        )
 
     def get_propositions(self):
         return self.pddl_proposition_dao.get_all()

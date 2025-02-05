@@ -14,20 +14,19 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Pddl Problem Generator """
+"""Pddl Problem Generator"""
 
 from typing import List
-from kant_dto import (
-    PddlObjectDto,
-    PddlPropositionDto
-)
+from kant_dto import PddlObjectDto, PddlPropositionDto
 
 
 class Merlin2PddlProblemParser:
-    """ Pddl Problem Generator Class """
+    """Pddl Problem Generator Class"""
 
-    def parse_pddl_object_dto_list(self, pddl_object_dto_list: List[PddlObjectDto]) -> str:
-        """ this method generates the string of the pddl objects
+    def parse_pddl_object_dto_list(
+        self, pddl_object_dto_list: List[PddlObjectDto]
+    ) -> str:
+        """this method generates the string of the pddl objects
             using a list of pddl object dtos
 
         Args:
@@ -46,8 +45,10 @@ class Merlin2PddlProblemParser:
 
         return string
 
-    def parse_pddl_proposition_dto_list(self, pddl_proposition_dto_list: List[PddlPropositionDto]) -> str:
-        """ this method generates the string of the pddl propositions
+    def parse_pddl_proposition_dto_list(
+        self, pddl_proposition_dto_list: List[PddlPropositionDto]
+    ) -> str:
+        """this method generates the string of the pddl propositions
             using a list of pddl proposition dtos
 
         Args:
@@ -66,8 +67,10 @@ class Merlin2PddlProblemParser:
 
         return string
 
-    def parse_pddl_goal_dto_list(self, pddl_dto_goals_list: List[PddlPropositionDto]) -> str:
-        """ this method generates the string of the pddl goals
+    def parse_pddl_goal_dto_list(
+        self, pddl_dto_goals_list: List[PddlPropositionDto]
+    ) -> str:
+        """this method generates the string of the pddl goals
             using a list of pddl goal dtos
 
         Args:
@@ -95,12 +98,15 @@ class Merlin2PddlProblemParser:
 
         return string
 
-    def parse_pddl_problem_dto_list(self, pddl_object_dto_list: List[PddlObjectDto],
-                                    pddl_proposition_dto_list: List[PddlPropositionDto],
-                                    pddl_dto_goals_list: List[PddlPropositionDto],
-                                    domain_name: str = "merlin2",
-                                    problem_name: str = "merlin2_prb") -> str:
-        """ this method generates the string pddl of the problem
+    def parse_pddl_problem_dto_list(
+        self,
+        pddl_object_dto_list: List[PddlObjectDto],
+        pddl_proposition_dto_list: List[PddlPropositionDto],
+        pddl_dto_goals_list: List[PddlPropositionDto],
+        domain_name: str = "merlin2",
+        problem_name: str = "merlin2_prb",
+    ) -> str:
+        """this method generates the string pddl of the problem
             using lists of pddl objects dtos, propositions dtos and goals dtos
 
         Args:
@@ -114,11 +120,9 @@ class Merlin2PddlProblemParser:
             str: [description]
         """
 
-        string = "(define (problem " + problem_name + \
-            ")\n(:domain " + domain_name + ")\n"
+        string = "(define (problem " + problem_name + ")\n(:domain " + domain_name + ")\n"
         string += self.parse_pddl_object_dto_list(pddl_object_dto_list)
-        string += self.parse_pddl_proposition_dto_list(
-            pddl_proposition_dto_list)
+        string += self.parse_pddl_proposition_dto_list(pddl_proposition_dto_list)
         string += self.parse_pddl_goal_dto_list(pddl_dto_goals_list)
         string += ")\n"
 

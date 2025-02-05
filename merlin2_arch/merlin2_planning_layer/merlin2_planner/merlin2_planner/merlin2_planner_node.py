@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Planner Node """
+"""Merlin2 Planner Node"""
 
 import time
 import rclpy
@@ -28,7 +28,7 @@ from merlin2_planner import Merlin2Planners
 
 
 class Merlin2PlannerNode(Node):
-    """ Merlin2 Planner Node Class """
+    """Merlin2 Planner Node Class"""
 
     def __init__(self) -> None:
 
@@ -40,28 +40,27 @@ class Merlin2PlannerNode(Node):
         planner_param_name = "planner"
 
         # declaring params
-        self.declare_parameter(planner_param_name,
-                               Merlin2Planners.POPF)
+        self.declare_parameter(planner_param_name, Merlin2Planners.POPF)
 
         # getting params
-        planner = self.get_parameter(
-            planner_param_name).get_parameter_value().integer_value
+        planner = (
+            self.get_parameter(planner_param_name).get_parameter_value().integer_value
+        )
 
         # creating planner
         self.planner = planner_factory.create_planner(planner)
 
         # service servers
         self.__planner_service = self.create_service(
-            GeneratePlan, "generate_plan", self.__planner_srv)
+            GeneratePlan, "generate_plan", self.__planner_srv
+        )
 
         self.get_logger().info("Planner Started")
 
     def __planner_srv(
-            self,
-            req: GeneratePlan.Request,
-            res: GeneratePlan.Response
+        self, req: GeneratePlan.Request, res: GeneratePlan.Response
     ) -> GeneratePlan.Response:
-        """ plan srv callback
+        """plan srv callback
 
         Args:
             req (GeneratePlan.Request): request (domain and problem)
@@ -80,8 +79,7 @@ class Merlin2PlannerNode(Node):
         end_time = time.time()
 
         elapsed_time = end_time - start_time
-        self.get_logger().info(
-            f"Time to plan: {elapsed_time} seconds")
+        self.get_logger().info(f"Time to plan: {elapsed_time} seconds")
 
         return res
 

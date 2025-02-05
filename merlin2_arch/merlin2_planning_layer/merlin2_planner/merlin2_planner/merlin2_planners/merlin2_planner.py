@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Planner """
+"""Merlin2 Planner"""
 
 from typing import List
 from abc import ABC, abstractmethod
@@ -22,7 +22,7 @@ from merlin2_msgs.msg import PlanAction
 
 
 class Merlin2Planner(ABC):
-    """ Merlin2 Planner Abstract Class """
+    """Merlin2 Planner Abstract Class"""
 
     def __init__(self) -> None:
         self._has_solution = False
@@ -31,7 +31,7 @@ class Merlin2Planner(ABC):
 
     @abstractmethod
     def _generate_plan(self, domain: str, problem: str) -> None:
-        """ create a ppdl plan
+        """create a ppdl plan
 
         Args:
             domain (str): str of a pddl domain
@@ -40,12 +40,12 @@ class Merlin2Planner(ABC):
 
     @abstractmethod
     def _parse_plan(self) -> None:
-        """ parse the current plan from str to
-            list of PlanAction and check if has solution
+        """parse the current plan from str to
+        list of PlanAction and check if has solution
         """
 
     def generate_plan(self, domain: str, problem: str) -> None:
-        """ create and parse a pddl plan
+        """create and parse a pddl plan
 
         Args:
             domain (str): [description]
@@ -62,7 +62,7 @@ class Merlin2Planner(ABC):
             self._parse_plan()
 
     def has_solution(self) -> bool:
-        """ returns if if generated plan has solution
+        """returns if if generated plan has solution
 
         Returns:
             bool: does the plan has solution?
@@ -71,7 +71,7 @@ class Merlin2Planner(ABC):
         return self._has_solution
 
     def get_plan_actions(self) -> List[PlanAction]:
-        """ get the PlanAction that composed the plan
+        """get the PlanAction that composed the plan
 
         Returns:
             List[PlanAction]: list of PlanAction
@@ -80,7 +80,7 @@ class Merlin2Planner(ABC):
         return self._plan_actions
 
     def get_str_plan(self) -> str:
-        """ get the str plan
+        """get the str plan
 
         Returns:
             str: plan

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Action Base """
+"""Merlin2 Action Base"""
 
 from typing import List, Union
 from abc import ABC, abstractmethod
@@ -30,16 +30,12 @@ from rclpy.parameter import Parameter
 
 
 class Merlin2Action(Node, PddlActionDto, ABC):
-    """ Merlin2 Action Class """
+    """Merlin2 Action Class"""
 
     def __init__(self, action_name: str, durative: bool = True) -> None:
 
         Node.__init__(self, action_name, namespace="merlin2")
-        PddlActionDto.__init__(
-            self,
-            self.get_name(),
-            durative=durative
-        )
+        PddlActionDto.__init__(self, self.get_name(), durative=durative)
 
         # loading parameters
         parameter_loader = ParameterLoader(self)
@@ -63,11 +59,11 @@ class Merlin2Action(Node, PddlActionDto, ABC):
             DispatchAction,
             self.get_name(),
             self.__execute_server,
-            cancel_callback=self.__cancel_callback
+            cancel_callback=self.__cancel_callback,
         )
 
     def set_parameters(self, parameters: Union[PddlActionDto | Parameter]) -> None:
-        """ set parameters for PddlActionDto and Node
+        """set parameters for PddlActionDto and Node
             both has the same method
 
         Args:
@@ -87,15 +83,15 @@ class Merlin2Action(Node, PddlActionDto, ABC):
                     return Node.set_parameters(self, parameters)
 
     def get_parameters(self, names: List[str] = None) -> None:
-        """ get parameters for PddlActionDto and Node
+        """get parameters for PddlActionDto and Node
             both has the same method
 
         Args:
-            names (List[str], optional): names of parameters for a Node. 
+            names (List[str], optional): names of parameters for a Node.
                                          Only used with Node version. Defaults to None.
 
         Returns:
-            List[PddlObjectDto] || List[Parameter]: returns a list of PddlObjectDto 
+            List[PddlObjectDto] || List[Parameter]: returns a list of PddlObjectDto
                                                    if Dto version or Parameters if Node version
         """
 
@@ -109,14 +105,14 @@ class Merlin2Action(Node, PddlActionDto, ABC):
         return Node.__hash__(self)
 
     def destroy_node(self) -> None:
-        """ destroy node method """
+        """destroy node method"""
 
         self.__pddl_action_dao.delete(self)
         super().destroy_node()
 
     @abstractmethod
     def run_action(self, goal: PlanAction) -> bool:
-        """ Code of the action. Must be implemented.
+        """Code of the action. Must be implemented.
 
         Returns:
             bool: action succeed
@@ -124,11 +120,11 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
     @abstractmethod
     def cancel_action(self) -> None:
-        """ Code to cancel the action. Must be implemented. """
+        """Code to cancel the action. Must be implemented."""
 
     @abstractmethod
     def create_parameters(self) -> List[PddlObjectDto]:
-        """ Code to the parameters of the action. Must be implemented.
+        """Code to the parameters of the action. Must be implemented.
 
         Returns:
             List[PddlObjectDto]: list of parameters
@@ -136,7 +132,7 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
     @abstractmethod
     def create_effects(self) -> List[PddlConditionEffectDto]:
-        """ Code to the efects of the action. Must be implemented.
+        """Code to the efects of the action. Must be implemented.
 
         Returns:
             List[PddlConditionEffectDto]: list of parameters
@@ -144,14 +140,14 @@ class Merlin2Action(Node, PddlActionDto, ABC):
 
     @abstractmethod
     def create_conditions(self) -> List[PddlConditionEffectDto]:
-        """ Code to the conditions of the action. Must be implemented.
+        """Code to the conditions of the action. Must be implemented.
 
         Returns:
             List[PddlConditionEffectDto]: list of parameters
         """
 
     def save_action(self) -> bool:
-        """ save/update action
+        """save/update action
 
         Returns:
             bool: succeedd

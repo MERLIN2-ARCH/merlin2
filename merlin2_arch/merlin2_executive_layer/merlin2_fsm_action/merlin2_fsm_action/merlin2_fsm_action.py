@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" MERLIN2 FSM Action """
+"""MERLIN2 FSM Action"""
 
 from merlin2_msgs.msg import PlanAction
 from merlin2_action.merlin2_action import Merlin2Action
@@ -25,7 +25,7 @@ from yasmin_ros.basic_outcomes import SUCCEED, ABORT, CANCEL
 from yasmin_ros.ros_logs import set_ros_loggers
 from yasmin_viewer import YasminViewerPub
 
-from .merlin2_state_factory import Merlin2StateFactory
+from merlin2_fsm_action.merlin2_state_factory import Merlin2StateFactory
 
 
 class Merlin2FsmAction(Merlin2Action, StateMachine):

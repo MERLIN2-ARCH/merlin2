@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Merlin2 Executor Node """
+"""Merlin2 Executor Node"""
 
 
 import time
@@ -32,7 +32,7 @@ from merlin2_msgs.action import Execute
 
 from simple_node import Node
 
-from .states import (
+from merlin2_executor.states import (
     Merlin2GeneratePddlState,
     Merlin2GeneratePlanState,
     Merlin2DispatchPlanState,

@@ -14,26 +14,28 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" SMTPlan+ Merlin2 Planner """
+"""SMTPlan+ Merlin2 Planner"""
 
 from merlin2_planner.merlin2_planners.popf_merlin2_planner import PopfMerlin2Planner
 import ament_index_python
 
 
 class SmtpMerlin2Planner(PopfMerlin2Planner):
-    """ SMTPlan+ Merlin2 Planner """
+    """SMTPlan+ Merlin2 Planner"""
 
     def __init__(self) -> None:
         super().__init__()
 
-        self.planner_path = ament_index_python.get_package_share_directory(
-            "merlin2_planner") + "/planners/SMTPlan"
+        self.planner_path = (
+            ament_index_python.get_package_share_directory("merlin2_planner")
+            + "/planners/SMTPlan"
+        )
 
         self.planner_cmd = "timeout 60 " + self.planner_path + " {} {} -u 1000"
 
     def _parse_plan(self) -> None:
-        """ parse the current plan from str to
-            list of PlanAction and check if has solution
+        """parse the current plan from str to
+        list of PlanAction and check if has solution
         """
 
         if not "No plan found" in self._str_plan:

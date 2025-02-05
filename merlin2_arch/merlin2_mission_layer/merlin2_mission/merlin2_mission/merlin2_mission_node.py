@@ -14,29 +14,21 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Base class to create MERLIN2 missions """
+"""Base class to create MERLIN2 missions"""
 
 from abc import ABC, abstractmethod
 from typing import List
 
-from kant_dto import (
-    PddlObjectDto,
-    PddlPropositionDto
-)
-
 from simple_node import Node
-
-from .merlin2_goal_dispatcher import Merlin2GoalDispatcher
+from kant_dto import PddlObjectDto, PddlPropositionDto
+from merlin2_mission.merlin2_goal_dispatcher import Merlin2GoalDispatcher
 
 
 class Merlin2MissionNode(Node, ABC):
-    """ MERLIN2 Mission Node Class """
+    """MERLIN2 Mission Node Class"""
 
     def __init__(
-        self,
-        node_name: str,
-        reset_problem: bool = True,
-        run_mission: bool = True
+        self, node_name: str, reset_problem: bool = True, run_mission: bool = True
     ) -> None:
 
         super().__init__(node_name, namespace="merlin2")
@@ -57,20 +49,18 @@ class Merlin2MissionNode(Node, ABC):
         for pddl_object_dto in objects:
             succeed = self.pddl_object_dao.save(pddl_object_dto)
             if not succeed:
-                raise Exception("Wrong Object: " +
-                                str(pddl_object_dto))
+                raise Exception("Wrong Object: " + str(pddl_object_dto))
 
         for pddl_proposition_dto in propositions:
             succeed = self.pddl_proposition_dao.save(pddl_proposition_dto)
             if not succeed:
-                raise Exception("Wrong Proposition: " +
-                                str(pddl_proposition_dto))
+                raise Exception("Wrong Proposition: " + str(pddl_proposition_dto))
 
         if run_mission:
             self.execute_mission()
 
     def execute_goals(self, goals: List[PddlPropositionDto]) -> bool:
-        """ execute list of goals
+        """execute list of goals
 
         Args:
             goals (List[PddlPropositionDto]): list of goals
@@ -82,7 +72,7 @@ class Merlin2MissionNode(Node, ABC):
         return self.goal_dispatcher.execute_goals(goals)
 
     def execute_goal(self, goal: PddlPropositionDto) -> bool:
-        """ execute one goal
+        """execute one goal
 
         Args:
             goal (PddlPropositionDto): goal
@@ -94,7 +84,7 @@ class Merlin2MissionNode(Node, ABC):
         return self.goal_dispatcher.execute_goals([goal])
 
     def cancel_goals(self) -> None:
-        """ cancel executor goals """
+        """cancel executor goals"""
 
         self.goal_dispatcher.cancel_goals()
 
@@ -103,11 +93,11 @@ class Merlin2MissionNode(Node, ABC):
 
     @abstractmethod
     def execute_mission(self) -> None:
-        """ execute mission """
+        """execute mission"""
 
     @abstractmethod
     def create_objects(self) -> List[PddlObjectDto]:
-        """ create initial pddl objects
+        """create initial pddl objects
 
         Returns:
             List[PddlObjectDto]: list of pddl objets
@@ -115,7 +105,7 @@ class Merlin2MissionNode(Node, ABC):
 
     @abstractmethod
     def create_propositions(self) -> List[PddlPropositionDto]:
-        """ create initial pddl propositions
+        """create initial pddl propositions
 
         Returns:
             List[PddlPropositionDto]: list of pddl propositions

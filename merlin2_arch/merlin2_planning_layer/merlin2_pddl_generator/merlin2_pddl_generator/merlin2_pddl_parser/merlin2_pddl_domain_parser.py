@@ -14,25 +14,23 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-""" Pddl Domain Generator """
+"""Pddl Domain Generator"""
 
 from typing import List
 
-from kant_dto import (
-    PddlTypeDto,
-    PddlPredicateDto,
-    PddlActionDto
-)
+from kant_dto import PddlTypeDto, PddlPredicateDto, PddlActionDto
 
 
 class Merlin2PddlDomainParser:
-    """ Pddl Domain Generator Class """
+    """Pddl Domain Generator Class"""
 
     def __init__(self):
-        self._requirements = "(:requirements :typing :negative-preconditions :durative-actions)"
+        self._requirements = (
+            "(:requirements :typing :negative-preconditions :durative-actions)"
+        )
 
     def parse_pddl_type_dto_list(self, pddl_type_dto_list: List[PddlTypeDto]) -> str:
-        """ this method generates the string of the pddl types
+        """this method generates the string of the pddl types
             using a list of pddl type dtos
 
         Args:
@@ -51,8 +49,10 @@ class Merlin2PddlDomainParser:
 
         return string
 
-    def parse_pddl_predicate_dto_list(self, pddl_predicate_dto_list: List[PddlPredicateDto]) -> str:
-        """ this method generates the string of the pddl predicates
+    def parse_pddl_predicate_dto_list(
+        self, pddl_predicate_dto_list: List[PddlPredicateDto]
+    ) -> str:
+        """this method generates the string of the pddl predicates
             using a list of pddl predicate dtos
 
         Args:
@@ -71,8 +71,10 @@ class Merlin2PddlDomainParser:
 
         return string
 
-    def parse_pddl_action_dto_list(self, pddl_action_dto_list: List[PddlActionDto]) -> str:
-        """ this method generates the string of the pddl actions
+    def parse_pddl_action_dto_list(
+        self, pddl_action_dto_list: List[PddlActionDto]
+    ) -> str:
+        """this method generates the string of the pddl actions
             using a list of pddl action dtos
 
         Args:
@@ -89,12 +91,14 @@ class Merlin2PddlDomainParser:
 
         return string
 
-    def parse_pddl_domain_dto(self,
-                              pddl_type_dto_list: List[PddlTypeDto],
-                              pddl_predicate_dto_list: List[PddlPredicateDto],
-                              pddl_action_dto_list: List[PddlActionDto],
-                              domain_name: str = "merlin2") -> str:
-        """ this method generates the string pddl of the domain
+    def parse_pddl_domain_dto(
+        self,
+        pddl_type_dto_list: List[PddlTypeDto],
+        pddl_predicate_dto_list: List[PddlPredicateDto],
+        pddl_action_dto_list: List[PddlActionDto],
+        domain_name: str = "merlin2",
+    ) -> str:
+        """this method generates the string pddl of the domain
             using lists of pddl types dtos, predicates dtos and action dtos
 
         Args:
