@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>merlin2_action</name>
-  <version>0.0.0</version>
+  <version>2.2.0</version>
   <description>MERLIN2 action package</description>
   <maintainer email="mgons@unileon.es">Miguel Ángel González Santamarta</maintainer>
   <license>GPL-3</license>
