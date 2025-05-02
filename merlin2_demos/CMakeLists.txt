@@ -98,6 +98,12 @@ install(PROGRAMS
   RENAME merlin2_listen_audio_node
 )
 
+install(PROGRAMS
+  merlin2_demos/merlin2_ready_to_start_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME merlin2_ready_to_start_node
+)
+
 #
 install(DIRECTORY
   launch params bt_xml
